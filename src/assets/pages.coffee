@@ -96,7 +96,7 @@ app.pages.pageList = [
     name: 'login'
     element: 'page-login'
     windowTitlePostfix: 'Login'
-    headerTitle: 'Doctor App'
+    headerTitle: 'UHCP App'
     preload: true
     hrefList: [ 'login' ]
     requireAuthentication : false
