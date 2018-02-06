@@ -1,0 +1,269 @@
+<!-- iron-* --><!-- paper-* --><!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-reports-manager">
+  <template>
+
+    <!-- style -->
+    <style is="custom-style" include="common-style">
+
+      .limiting-container {
+        margin-top: 10px;
+      }
+      .table{
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table th {
+        text-align: left;
+        background-color: var(--paper-grey-50);
+      }
+
+      .table td {
+        color: #444;
+      }
+
+      .table td, .table th{
+        vertical-align: middle;
+        padding: 10px 20px;
+        border-bottom: 1px solid var(--paper-grey-100);
+      }
+
+       .table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .table.two-col th {
+        text-align: right;
+        background-color: white;
+        width: 50%;
+      }
+
+      .two-col .header th {
+        background-color: var(--paper-grey-50);
+        text-align: center;
+        padding: 20px 0;
+        text-trasnform: uppercase;
+      }
+
+      .block{display: block}
+
+      .filter-query {
+        --paper-input-container: {
+          width: 250px;
+          padding: 0;
+        }
+        --paper-input-container-label: {
+          font-size: 13px;
+        }
+        --paper-input-container-input: {
+          font-size: 13px;
+        }        
+      }
+      .search {
+        @apply(--layout-end-justified);
+      }
+
+      @media only screen and (min-width : 320px) and (max-width : 480px){
+        .table td, .table th{
+          vertical-align: top;
+          font-size: 14px;
+        }
+        .search {
+          margin-top: 10px;
+          @apply(--layout-start-justified);
+        }
+      }
+    </style>
+    <!-- /style -->
+
+    <!-- local DOM -->
+    <div id="tabContainer" class="tabs-container">
+      <paper-tabs id="tabs" selected="{{selectedReportPageIndex}}" scrollable="" noink="true">
+        <paper-tab>[[$TRANSLATE('Pending Reports',LANG)]]</paper-tab>
+        <paper-tab>[[$TRANSLATE('Review Reports',LANG)]]</paper-tab>
+      </paper-tabs>
+    </div>
+    
+    <div class="master-container">
+
+      <div class="limiting-container">
+        <iron-pages selected="{{selectedReportPageIndex}}">
+
+          <!-- Pending Reports - start -->
+          <section>
+            <paper-card heading="Pending Reports">
+
+              <paper-tabs class="basic-tabs" id="tabs" selected="{{selectedPendingReportsPage}}">
+                <paper-tab>[[$TRANSLATE('Unseen',LANG)]]</paper-tab>
+                <paper-tab>[[$TRANSLATE('Seen',LANG)]]</paper-tab>
+              </paper-tabs>
+
+              <iron-pages selected="{{selectedPendingReportsPage}}" on-iron-select="_selectedPendingReportsPageChanged">
+
+                <!-- Page:: Pending Reports - Unseen - start -->
+                <section>
+                  <template is="dom-if" if="[[_isEmptyArray(unseenPendingReportsList)]]">
+                    <div class="card-content">
+                      <div class="layout horizontal center center-justified">
+                        <div class="type body secondary">-- no unseen reports available --</div>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="p-0">
+                    <paper-listbox>
+                      
+                      <template id="pending-reports-list-repeater" is="dom-repeat" items="[[unseenPendingReportsList]]">
+                        <paper-item class="custom layout horizontal center">
+                          <div class="type caption secondary">[[item.reportSerial]]</div>
+                          
+                          <div class="flex m-left-8">
+                            <div class="type body capitalize">[[item.patientName]]</div>
+                            <div class="type caption">
+                              <strong>Created Date: </strong>
+                              <span>[[$mkDateTime(item.createdDateTimeStamp)]]</span>
+                            </div>
+                          </div>
+                
+                          <paper-button class="colored" raised="" on-tap="viewPendingReport">view</paper-button>
+
+                      </paper-item></template>
+
+                    </paper-listbox>
+                  </div>
+                </section>
+                <!-- Page:: Pending Reports - Unseen - end -->
+                
+                <!-- Page:: Pending Reports - Seen - start -->
+                <section>
+                  <template is="dom-if" if="[[_isEmptyArray(seenPendingReportsList)]]">
+                    <div class="card-content">
+                      <div class="layout horizontal center center-justified">
+                        <div class="type body secondary">-- no seen reports available --</div>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="p-0">
+                    <paper-listbox>
+                      
+                      <template is="dom-repeat" items="[[seenPendingReportsList]]">
+                        <paper-item class="custom layout horizontal center">
+                          <div class="type caption secondary">[[item.reportSerial]]</div>
+                          
+                          <div class="flex m-left-8">
+                            <div class="type body capitalize">[[item.patientName]]</div>
+                            <div class="type caption">
+                              <strong>Created Date: </strong>
+                              <span>[[$mkDateTime(item.createdDateTimeStamp)]]</span>
+                            </div>
+                          </div>
+
+                          <div class="type danger" hidden$="[[!item.flagAsError]]">
+                            Flagged as Error
+                          </div>
+
+                      </paper-item></template>
+
+                    </paper-listbox>
+                  </div>
+                </section>
+                <!-- Page:: Pending Reports - Seen - end -->
+
+              </iron-pages>
+
+            </paper-card>
+          </section>
+          <!-- Pending Reports - end -->
+
+          <!-- Review Reports - start -->
+          <section>
+            <paper-card heading="Review Reports">
+
+              <paper-tabs class="basic-tabs" id="tabs" selected="{{selectedReviewReportsPage}}">
+                <paper-tab>[[$TRANSLATE('Unseen',LANG)]]</paper-tab>
+                <paper-tab>[[$TRANSLATE('Seen',LANG)]]</paper-tab>
+              </paper-tabs>
+
+              <iron-pages selected="{{selectedReviewReportsPage}}" on-iron-select="_selectedReviewReportsPageChanged">
+
+                <!-- Page:: Review Reports - Unseen - start -->
+                <section>
+                  <template is="dom-if" if="[[_isEmptyArray(unseenReviewReportsList)]]">
+                    <div class="card-content">
+                      <div class="layout horizontal center center-justified">
+                        <div class="type body secondary">-- no unseen reports available --</div>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="p-0">
+                    <paper-listbox>
+                      
+                      <template id="review-reports-list-repeater" is="dom-repeat" items="[[unseenReviewReportsList]]">
+                        <paper-item class="custom layout horizontal center">
+                          <div class="type caption secondary">[[item.reportSerial]]</div>
+                          
+                          <div class="flex m-left-8">
+                            <div class="type body capitalize">[[item.patientName]]</div>
+                            <div class="type caption">
+                              <strong>Created Date: </strong>
+                              <span>[[$mkDateTime(item.createdDateTimeStamp)]]</span>
+                            </div>
+                          </div>
+                
+                          <paper-button class="colored" raised="" on-tap="viewReviewReport">view</paper-button>
+
+                      </paper-item></template>
+
+                    </paper-listbox>
+                  </div>
+                </section>
+                <!-- Page:: Review Reports - Unseen - end -->
+                
+                <!-- Page:: Review Reports - Seen - start -->
+                <section>
+                  <template is="dom-if" if="[[_isEmptyArray(seenReviewReportsList)]]">
+                    <div class="card-content">
+                      <div class="layout horizontal center center-justified">
+                        <div class="type body secondary">-- no seen reports available --</div>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="p-0">
+                    <paper-listbox>
+                      
+                      <template is="dom-repeat" items="[[seenReviewReportsList]]">
+                        <paper-item class="custom layout horizontal center">
+                          <div class="type caption secondary">[[item.reportSerial]]</div>
+                          
+                          <div class="flex m-left-8">
+                            <div class="type body capitalize">[[item.patientName]]</div>
+                            <div class="type caption">
+                              <strong>Created Date: </strong>
+                              <span>[[$mkDateTime(item.createdDateTimeStamp)]]</span>
+                            </div>
+                          </div>
+
+                          <div class="type danger" hidden$="[[!item.flagAsError]]">
+                            Flagged as Error
+                          </div>
+
+                      </paper-item></template>
+
+                    </paper-listbox>
+                  </div>
+                </section>
+                <!-- Page:: Review Reports - Seen - end -->
+
+              </iron-pages>
+            </paper-card>
+          </section>
+          <!-- Review Reports - end -->
+
+        </iron-pages>
+        
+      </div>
+    </div>
+    <!-- /local DOM -->
+
+  </template>
+  <script>(function(){Polymer({is:"page-reports-manager",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{selectedReportPageIndex:{type:Number,notify:!0,value:0},selectedPendingReportsPage:{type:Number,notify:!0,value:0},selectedReviewReportsPage:{type:Number,notify:!0,value:0},isPatientValid:{type:Boolean,notify:!1,value:!0},user:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},unseenPendingReportsList:{type:Array,notify:!0,value:function(){return[]}},unseenReviewReportsList:{type:Array,notify:!0,value:function(){return[]}},seenPendingReportsList:{type:Array,notify:!0,value:function(){return[]}},seenReviewReportsList:{type:Array,notify:!0,value:function(){return[]}}},arrowBackButtonPressed:function(e){return this.domHost.navigateToPreviousPage()},$findCreator:function(e){return"me"},_isEmptyString:function(e){return null===e||"undefined"===e||""===e},_isEmptyArray:function(e){return 0===e.length},_compareFn:function(e,t,r){return"<"===t?e<r:">"===t?e>r:"=="===t?e===r:">="===t?e>=r:"<="===t?e<=r:"!="===t?e!==r:void 0},_sortByDate:function(e,t){return e.date<t.date?1:e.date>t.date?-1:void 0},_formatDateTime:function(e){return lib.datetime.format(new Date(e),"mmm d, yyyy")},_returnSerial:function(e){return e+1},_loadUser:function(){var e;if(e=app.db.find("user"),1===e.length)return this.user=e[0]},_updatePendingReportsData:function(e){var t;return t={apiKey:this.user.apiKey,serial:e.serial,availableToPatient:e.availableToPatient,flagAsError:e.data.flags.flagAsError},this.callApi("/bdemr-test-result-update",t,function(e){return function(t,r){return r.hasError?e.domHost.showModalDialog(r.error.message):"Updated"===r.message?r.message:void 0}}(this))},_getUnseenPendingReportsList:function(){var e;return e={userIdentifier:this.user.serial,apiKey:this.user.apiKey},this.callApi("/bdemr-unseen-pending-reports-list",e,function(e){return function(t,r){return r.hasError?e.domHost.showModalDialog(r.error.message):(e.unseenPendingReportsList=[],e.unseenPendingReportsList=r.data,e.unseenPendingReportsList.sort(function(e,t){return e.createdDateTimeStamp>t.createdDateTimeStamp?-1:e.createdDateTimeStamp<t.createdDateTimeStamp?1:0}))}}(this))},_getSeenPendingReportsList:function(){var e;return e={userIdentifier:this.user.serial,apiKey:this.user.apiKey},this.callApi("/bdemr-seen-pending-reports-list",e,function(e){return function(t,r){return r.hasError?e.domHost.showModalDialog(r.error.message):(e.seenPendingReportsList=[],e.seenPendingReportsList=r.data,e.seenPendingReportsList.sort(function(e,t){return e.createdDateTimeStamp>t.createdDateTimeStamp?-1:e.createdDateTimeStamp<t.createdDateTimeStamp?1:0}))}}(this))},_getUnseenReviewReportsList:function(){var e;return e={userIdentifier:this.user.serial,apiKey:this.user.apiKey},this.callApi("/bdemr-unseen-review-reports-list",e,function(e){return function(t,r){return r.hasError?e.domHost.showModalDialog(r.error.message):(e.unseenReviewReportsList=[],e.unseenReviewReportsList=r.data,e.unseenReviewReportsList.sort(function(e,t){return e.createdDateTimeStamp>t.createdDateTimeStamp?-1:e.createdDateTimeStamp<t.createdDateTimeStamp?1:0}))}}(this))},_getSeenReviewReportsList:function(){var e;return e={userIdentifier:this.user.serial,apiKey:this.user.apiKey},this.callApi("/bdemr-seen-review-reports-list",e,function(e){return function(t,r){return r.hasError?e.domHost.showModalDialog(r.error.message):(e.seenReviewReportsList=[],e.seenReviewReportsList=r.data,e.seenReviewReportsList.sort(function(e,t){return e.createdDateTimeStamp>t.createdDateTimeStamp?-1:e.createdDateTimeStamp<t.createdDateTimeStamp?1:0}))}}(this))},_setReportsAvailableToPatient:function(e){var t,r,i,n,s;if(t=this.locateParentNode(e.target,"PAPER-BUTTON"),t.opened=!1,n=this.$$("#pending-reports-list-repeater"),r=n.indexForElement(t),s=this.matchingPendingReportsList[r],s.availableToPatient=!0,this.splice("matchingPendingReportsList",r,1),i=this._updatePendingReportsData(s),"Updated"===i)return this.domHost.showToast("Results Now Available For Patient!")},flagAsErrorTestResultsItemClicked:function(e){var t,r,i,n,s;if(t=this.locateParentNode(e.target,"PAPER-ITEM"),t.opened=!1,n=this.$$("#pending-reports-list-repeater"),r=n.indexForElement(t),s=this.matchingPendingReportsList[r],s.data.flags.flagAsError=!0,this.set("matchingPendingReportsList.#{index}.data.flags.flagAsError",!0),i=this._updatePendingReportsData(s),"Updated"===i)return this.domHost.showToast("Flagged Successfully!"),window.location.reload()},viewPendingReport:function(e){var t,r,i,n;return t=this.locateParentNode(e.target,"PAPER-BUTTON"),t.opened=!1,i=this.$$("#pending-reports-list-repeater"),r=i.indexForElement(t),n=this.unseenPendingReportsList[r],this.domHost.navigateToPage("#/pending-report/serial:"+n.reportSerial)},viewReviewReport:function(e){var t,r,i,n;return t=this.locateParentNode(e.target,"PAPER-BUTTON"),t.opened=!1,i=this.$$("#review-reports-list-repeater"),r=i.indexForElement(t),n=this.unseenReviewReportsList[r],this.domHost.navigateToPage("#/review-report/serial:"+n.reportSerial)},_selectedPendingReportsPageChanged:function(){if(0===this.selectedPendingReportsPage&&this._getUnseenPendingReportsList(),1===this.selectedPendingReportsPage)return this._getSeenPendingReportsList()},_selectedReviewReportsPageChanged:function(){if(0===this.selectedReviewReportsPage&&this._getUnseenReviewReportsList(),1===this.selectedReviewReportsPage)return this._getSeenReviewReportsList()},navigatedIn:function(){var e,t;return this._loadUser(),e=this.getCurrentOrganization(),e||this.domHost.navigateToPage("#/select-organization"),t=this.domHost.getPageParams(),this.selectedReportPageIndex=0,"1"===t.selected&&this.set("selectedReportPageIndex",1),this.domHost._syncOnlyPatientTestResults(function(e){return function(){return e._getUnseenPendingReportsList(),e._getSeenPendingReportsList(),e._getUnseenReviewReportsList(),e._getSeenReviewReportsList()}}(this))},navigatedOut:function(){return this.patient=null,this.isPatientValid=!1}})}).call(this);
+//# sourceMappingURL=page-reports-manager.coffee-compiled.js.map</script>
+</dom-module>

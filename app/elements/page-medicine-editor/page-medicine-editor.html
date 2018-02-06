@@ -1,0 +1,434 @@
+<!-- Custom AutoComplete --><!-- Commong Styles --><dom-module id="page-medicine-editor">
+  <template>
+    <style is="custom-style" include="common-style">
+      paper-dropdown-menu {
+        width: 100%;
+      }
+
+
+      paper-checkbox.remind {
+        padding: 15px 25px;
+      }
+
+      paper-checkbox.guideline-checkbox {
+        --paper-checkbox-size: 14px;
+      }
+
+      .guideline {
+        margin-left: 10px;
+        margin-top: 70px;
+        height: 90%;
+        overflow: auto;
+      }
+
+      .guideline h1 {
+        text-align: left;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--paper-green-500);
+        color: var(--brand-primary-color);
+      }
+
+      .guideline .dose {
+        margin: 10px 0;
+        padding: 10px;
+      }
+
+      .guideline .subDose{
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #e0e0e0;
+        border-radius: 3px;
+        /*background-color: var(--paper-grey-50);*/
+      }
+
+      .guideline .age-group {
+        border-bottom: 1px solid #ccc;
+      }
+
+      .disclaimer p {
+        color: red;
+      }
+
+      app-drawer {
+        --app-drawer-width: 400px;
+        --app-drawer-scrim-background: rgba(0,0,0,0.1);
+        --app-drawer-content-container: {
+          border-left: 1px solid #ccc;
+          padding-left: 10px;
+        }
+        text-align: left;
+      }
+
+      paper-material {
+        border: 1px solid var(--paper-grey-200);
+      }
+
+      paper-fab {
+        float: right;
+        margin-right: 10px;
+        margin-top: 30px;
+        color: #333;
+        --paper-fab-background: var(--paper-grey-300);
+      }
+
+      .indication-group {
+        border:1px solid var(--paper-blue-grey-100);
+        padding: 15px;
+        border-radius: 3px;
+      }
+
+      .indication-group paper-dropdown-menu {
+        --paper-input-container-color: var(--paper-orange-500);
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--brand-primary-color);
+      }
+
+      @media screen and (max-width : 480px){
+        app-drawer {
+          --app-drawer-width: 95%;
+        }
+      }
+    </style>
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <!--Add Medicine Form-->
+        <paper-card>
+          <div class="card-custom-header">
+            <div class="layout horizontal justified center">
+              <div class="title">[[$TRANSLATE('Add Medicine',LANG)]]</div>
+              <!--<paper-button class="" disableda$="[[!activeDoseGuideline]]" raised on-tap="toggleGuideline">Show Guideline</paper-button>-->
+              <paper-toggle-button checked="{{showDetailedForm}}">Show Advanced</paper-toggle-button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <div>
+                <paper-autocomplete id="brandName" label="[[$TRANSLATE('Brand Name',LANG)]]" text="{{medicine.brandName}}" source="[[brandNameSourceDataList]]" on-autocomplete-selected="brandNameAutocompleteSelected" on-autocomplete-reset="brandNameCleared" min-length="2" on-input="validate" error-message="Input Required" required=""></paper-autocomplete>
+              </div>
+            </div>
+
+            <div hidden="[[!showDetailedForm]]">
+            <div class="form-group">
+              <div>
+                <paper-autocomplete id="genericName" label="[[$TRANSLATE('Generic Name',LANG)]]" text="{{medicine.genericName}}" source="[[genericNameSourceDataList]]" on-autocomplete-selected="genericNameAutocompleteSelected" on-autocomplete-reset="genericNameCleared" min-length="2" error-message="Input Required" on-input="validate" required=""></paper-autocomplete>
+              </div>
+              <div>
+                <paper-autocomplete id="manufacturer" label="[[$TRANSLATE('Manufacturer Name',LANG)]]" text="{{medicine.manufacturer}}" source="[[manufacturerSourceDataList]]" on-autocomplete-selected="manufacturerAutocompleteSelected" on-autocomplete-reset="manufacturerCleared" error-message="Input Required" min-length="2" on-input="validate" required=""></paper-autocomplete>
+              </div>
+            </div>
+            </div>
+
+            <div class="form-group">
+              <div>
+                <paper-dropdown-menu id="morning" error-message="Chose an option" required="">
+                  <paper-menu selected="{{morningDoseSelectedIndex}}" class="dropdown-content" on-iron-select="_morningDoseSelectedIndexChanged">
+                    <template is="dom-repeat" items="[[doseList]]">
+                      <paper-item>{{item}}</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+              <div>
+                <paper-dropdown-menu id="noon" error-message="Chose an option" required="">
+                  <paper-menu selected="{{noonDoseSelectedIndex}}" class="dropdown-content" on-iron-select="_noonDoseSelectedIndexChanged">
+                    <template is="dom-repeat" items="[[doseList]]">
+                      <paper-item>{{item}}</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+              <div>
+                <paper-dropdown-menu id="night" error-message="Chose an option" required="">
+                  <paper-menu selected="{{nightDoseSelectedIndex}}" class="dropdown-content" on-iron-select="_nightDoseSelectedIndexChanged">
+                    <template is="dom-repeat" items="[[doseList]]">
+                      <paper-item>{{item}}</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <!--Direction-->
+              <div>
+                <paper-dropdown-menu label="[[$TRANSLATE('Direction',LANG)]]">
+                  <paper-menu selected="{{directionSelectedIndex}}" class="dropdown-content" on-iron-select="_directionSelectedIndexChanged">
+                    <template is="dom-repeat" items="[[directionList]]">
+                      <paper-item>[[$TRANSLATE(item,LANG)]]</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+              <!--Direction-->
+              <!--Form-->
+              <div>
+                <paper-dropdown-menu id="form" error-message="Chose an option" label="[[$TRANSLATE('Form',LANG)]]" required="">
+                  <paper-menu selected="{{medicineFormSelectedIndex}}" class="dropdown-content" on-iron-select="_medicineFormSelectedIndexChanged">
+                    <template is="dom-repeat" items="{{medicineFormList}}">
+                      <paper-item>{{item}}</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+              <template is="dom-if" if="[[_isFormCustom(matchingMedicineList, medicineFormSelectedIndex)]]">
+                <div>
+                  <paper-input label="Form" value="{{medicine.form}}" id="custom-form" error-message="Input Required" required=""></paper-input>
+                </div>
+              </template>
+              <!--Form-->
+            </div>
+
+            <div hidden="[[!showDetailedForm]]">
+            <div class="form-group">
+              <!--Strength-->
+              <template is="dom-if" if="[[_isStregnthDropdown(matchingMedicineList)]]">
+                <div>
+                  <paper-dropdown-menu label="[[$TRANSLATE('Strength',LANG)]]" required="" id="strength" error-message="Chose an Option">
+                    <paper-menu id="strengthDropdown" selected="{{strengthSelectedIndex}}" class="dropdown-content" on-iron-select="_strengthSelectedIndexChanged">
+                      <template is="dom-repeat" items="{{strengthList}}">
+                        <paper-item>{{item}}</paper-item>
+                      </template>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                </div>
+              </template>
+              <template is="dom-if" if="[[_isStregnthCustom(matchingMedicineList, strengthSelectedIndex)]]">
+                <div>
+                  <paper-input label="[[$TRANSLATE('Strength',LANG)]]" required="" value="{{medicine.strength}}" id="strength" error-message="Input Required" on-input="validate"></paper-input>
+                </div>
+              </template>
+              <!--Strength-->
+              <!--Route-->
+              <div>
+                <paper-dropdown-menu label="[[$TRANSLATE('Route',LANG)]]">
+                  <paper-menu selected="{{routeSelectedIndex}}" class="dropdown-content" on-iron-select="_routeSelectedIndexChanged">
+                    <template is="dom-repeat" items="[[routeList]]">
+                      <paper-item>[[$TRANSLATE(item,LANG)]]</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+              <template is="dom-if" if="[[_isRouteCustom(routeSelectedIndex)]]">
+                <div>
+                  <paper-input label="[[$TRANSLATE('Route',LANG)]]" value="{{medicine.route}}" error-message="Input Required"></paper-input>
+                </div>
+              </template>
+              <!--Route-->
+            </div>
+
+            <div class="form-group">
+              <!--Dose-->
+              <div>
+                <paper-input label="[[$TRANSLATE('Dose',LANG)]]" value="{{medicine.dose}}" type="number" min="1" max="20" maxlength="2" on-input="_doseValueChanged" required=""></paper-input>
+              </div>
+              <!--Dose-->
+              <!--Unit-->
+              <div>
+                <paper-dropdown-menu id="doseUnit" error-message="Chose an option" label="[[$TRANSLATE('Unit',LANG)]]" required="">
+                  <paper-menu selected="{{doseUnitSelectedIndex}}" class="dropdown-content" on-iron-select="_doseUnitSelectedIndexChanged">
+                    <template is="dom-repeat" items="[[doseUnitList]]">
+                      <paper-item>{{item}}</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+              <template is="dom-if" if="[[_isUnitCustom(doseUnitSelectedIndex)]]">
+                <div>
+                  <paper-input id="custom-dose-unit" label="Custom Unit" value="{{medicine.doseUnit}}" required="" error-message="Input Required"></paper-input>
+                </div>
+              </template>
+              <!--Unit-->
+            </div>
+
+            <div class="form-group">
+              <!--Times Per Interval-->
+              <div>
+                <paper-input type="number" label="[[$TRANSLATE('Times per',LANG)]]" min="1" value="{{medicine.timesPerInterval}}"></paper-input>
+              </div>
+
+              <!--Interval in Days-->
+              <div>
+                <paper-input type="number" label="[[$TRANSLATE('Every',LANG)]]" min="1" max="30" value="{{intervalInDays}}"><div suffix="">[[$TRANSLATE('Days',LANG)]]</div></paper-input>
+              </div>
+            </div>
+            </div>
+
+            <div class="form-group layout horizontal end screen-sm">
+              <!--Start Date-->
+              <div>
+                <vaadin-date-picker label="[[$TRANSLATE('Start Date',LANG)]]" value="{{medicine.startDateTimeStamp}}"></vaadin-date-picker>
+              </div>
+              <!--Start Date-->
+
+              <!--End Date-->
+              
+              <div>
+                <vaadin-date-picker id="endDate" label="[[$TRANSLATE('Ends on',LANG)]]" value="{{medicine.endDateTimeStamp}}"></vaadin-date-picker>
+              </div>
+              <div>
+                <paper-checkbox checked="{{medicine.continue}}" on-change="asNeededSelected">[[$TRANSLATE('Continue As Needed',LANG)]]</paper-checkbox>
+              </div>
+              <!--End Date-->
+            </div>
+
+            <br>
+            <br>
+            
+            <div hidden="[[!showDetailedForm]]">
+              <div class="form-group">
+                <!--Quantity Per Fill-->
+                <div>
+                  <paper-input label="[[$TRANSLATE('Quantity Per Fill',LANG)]]" type="number" min="1" value="{{medicine.quantityPerPrescription}}"></paper-input>
+                </div>
+                <!--Quantity Per Fill-->
+
+                <!--Number of Fill-->
+                <div>
+                  <paper-input label="[[$TRANSLATE('Number of Refill',LANG)]]" type="number" value="{{medicine.numberOfRefill}}"></paper-input>
+                </div>
+                <!--Number of Fill-->
+              </div>
+              
+              <div class="form-group">
+                <div>
+                  <paper-textarea label="[[$TRANSLATE('Comments',LANG)]]" value="{{medicine.comments}}"></paper-textarea>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- <div class="layout horizontal end-justified">
+            <paper-checkbox class="remind" checked="{{medicine.remind}}">[[$TRANSLATE('Remind Me To Take This Medicine',LANG)]]</paper-checkbox>
+          </div> -->
+
+          <div class="card-actions">
+            <paper-button class="btn" on-click="cancelButtonClicked">Cancel</paper-button>
+            <paper-button class="btn" on-click="saveAndAddAsFavoriteMedicinePressed">Add + Favorite</paper-button>
+            <paper-button class="btn btn-success" on-click="saveMedicineButtonClicked" raised="">Add</paper-button>
+          </div>
+
+        </paper-card>
+        <!--End Medicine Form-->
+
+      </div>
+    </div>
+
+    <!-- Dose Guideline Starts -->
+    <app-drawer id="guidelineContainer" align="right" persistent="">
+      <div class="guideline">
+        <template is="dom-if" if="[[!shouldShowDisclaimer(showGuidelineDisclaimer)]]">
+          <div class="disclaimer text-sm text-muted">
+            <p><strong>Disclaimer:</strong> This guideline is just an example and true dosage, indication etc. should be followed from authentic medical sources. This guideline will be updated periodically but at the discretion of the website authority and do not imply that the information is current. Anybody using this guideline should do so at his/her own risk and using their own knowledge base..
+            </p>
+            <div class="layout horizontal justified">
+            <paper-checkbox class="guideline-checkbox" on-change="showGuidelineDisclaimerChanged">Don't Show This Disclaimer Again</paper-checkbox>
+            </div>
+          </div>
+        </template>
+        
+        <paper-fab mini="" icon="close" on-tap="toggleGuideline"></paper-fab>
+        <h1>Guideline</h1>
+        <div class="indication-group">
+          <div>
+            <paper-dropdown-menu label="Indication">
+              <paper-menu selected="{{guidelineIndicationSelectedIndex}}" class="dropdown-content">
+                <template is="dom-repeat" items="[[guidelineIndicationList]]">
+                  <paper-item>{{item}}</paper-item>
+                </template>
+              </paper-menu>
+            </paper-dropdown-menu>
+          </div>
+          <div>
+            <paper-dropdown-menu label="Age">
+              <paper-menu selected="{{guidelineAgeSelectedIndex}}" class="dropdown-content">
+                <template is="dom-repeat" items="[[guidelineAgeList]]">
+                  <paper-item>{{item}}</paper-item>
+                </template>
+              </paper-menu>
+            </paper-dropdown-menu>
+          </div>
+        </div>
+
+        <template is="dom-if" if="[[activeDoseGuideline]]">
+          <template is="dom-repeat" items="[[activeDoseGuideline.doseList]]" as="dose">
+
+            <template is="dom-if" if="[[$doesPassFilter(activeDoseGuideline, dose, 'not-available', guidelineIndicationSelectedIndex, guidelineAgeSelectedIndex)]]">
+
+              <paper-material elevation="1" class="dose">
+
+                <template is="dom-if" if="[[dose.description]]">
+                  <h2 class="age-group">[[dose.ageGroup]]</h2>
+                  <div>[[dose.description]] </div>
+                </template>
+
+                <template is="dom-if" if="[[dose.subDoseList.length]]">
+                  <p style="font-weight: bold">SUBDOSES: </p>
+                  <template is="dom-repeat" items="[[dose.subDoseList]]" as="subDose">
+                    <div class="subDose">
+
+                      <template is="dom-if" if="[[subDose.notes]]">
+                        <div style="text-transform: capitalize">[[subDose.notes]]</div>
+                      </template>
+
+                      <template is="dom-if" if="[[subDose.type]]">
+                        <div><strong>Type:</strong> [[subDose.type]] </div>
+                      </template>
+
+                      <template is="dom-if" if="[[subDose.condition]]">
+                        <div><strong>Condition</strong>: [[subDose.condition]] </div>
+                      </template>
+
+                      <template is="dom-if" if="[[subDose.indication]]">
+                        <div><storng>Indication</storng>: [[subDose.indication]] </div>
+                      </template>
+
+
+                      <template is="dom-if" if="[[subDose.notRecommended]]">
+                        <div style="text-decoration: underline;">NOT RECOMMENDED FOR THE GIVEN COMBINATION</div>
+                      </template>
+
+                      <div hidden="">[[dose]]</div>
+                      <br>
+                      <paper-button raised="" on-tap="fillMinimumPressed">Fill Minimum</paper-button>
+                      <paper-button raised="" on-tap="fillMaximumPressed">Fill Maximum</paper-button>
+                      <!-- <paper-button raised style="background: yellow" on-tap="fillMaximumPressed">Fill Maximum</paper-button> -->
+
+                    </div>
+                  </template>
+                </template>
+
+              </paper-material>
+
+            </template>
+
+          </template>
+        </template>
+
+        <template is="dom-if" if="[[!activeDoseGuideline]]">
+          <template is="dom-if" if="[[medicine.genericName]]">
+            <p>No Dose Guideline available for the given medicine.</p>
+          </template>
+        </template>
+      </div>
+    </app-drawer>
+    <!-- Dose Guideline Ends -->
+
+  </template>
+  <script>(function(){var e=[].indexOf||function(e){for(var t=0,i=this.length;t<i;t++)if(t in this&&this[t]===e)return t;return-1};Polymer({is:"page-medicine-editor",$toJson:function(e){return JSON.stringify(e)},$isNumber:function(e){return"number"==typeof e},$listMissingKeys:function(t,i){var n,a;a=[];for(n in t)e.call(i,n)<0&&a.push(n);return a},behaviors:[app.behaviors.dbUsing,app.behaviors.apiCalling,app.behaviors.pageLike,app.behaviors.translating],properties:{user:{type:Object,notify:!0,value:{}},patient:{type:Object,notify:!0,value:{}},prescription:{type:Object,notify:!0,value:{}},isPrescriptionValid:{type:Boolean,notify:!1,value:!0},isPatientValid:{type:Boolean,notify:!1,value:!0},isMedicineValid:{type:Boolean,notify:!1,value:!0},isThatNewMedicine:{type:Boolean,notify:!1,value:!0},medicine:{type:Object,notify:!0,value:{}},strengthList:{type:Array,value:[]},doseList:{type:Array,value:["0","1/4","1/2","1","2","3","4","5"]},morningDoseSelectedIndex:{type:Number,value:0},noonDoseSelectedIndex:{type:Number,value:0},nightDoseSelectedIndex:{type:Number,value:0},doseUnitList:{type:Array,value:[]},medicineFormList:{type:Array,value:["Tablet","Injection","Syrup","Drop","Capsule","Suspension","I.V Injection","I.M injection","PR (Per Rectal)","Suppository","Solution","Ointment","Cream","Skin Patch","Custom"]},doseUnitList:{type:Array,value:["Custom"]},endDateTimeTypeList:{type:Array,value:["As Needed","0 Weeks","1 Week","2 Weeks","3 Weeks","Custom"]},endDateTimeTypeArgument2List:{type:Array,value:["0 Day","1 Day","2 Days","3 Days","4 Days","5 Days","6 Days"]},directionList:{type:Array,value:["Anytime","Before Meal","After Meal","Full Stomach","Empty Stomach"]},routeList:{type:Array,value:["Oral","I.V injection","I.M injection","PR (Per Rectal)","S/L","S/C","Nebulizer","Inhaler","Topical application skin","Topical application ear","Topical application eye","Intravaginal","Transdermal","Custom"]},intervalInDays:{type:Number,value:1},medicineFormSelectedIndex:{type:Number,value:0},doseUnitSelectedIndex:{type:Number,value:0},directionSelectedIndex:{type:Number,value:0},routeSelectedIndex:{type:Number,value:0},endDateTimeTypeSelectedIndex:{type:Number,value:0},endDateTimeTypeArgument2SelectedIndex:{type:Number,value:0},strengthSelectedIndex:{type:Number,value:0,notify:!0},matchingMedicineList:{type:Array,value:[]},doseGuidelineList:{type:Array},activeDoseGuideline:{type:Object,value:null},guidelineIndicationSelectedIndex:{type:Number,value:null},guidelineAgeSelectedIndex:{type:Number,value:null},guidelineIndicationList:{type:Array,value:function(){return[]}},guidelineAgeList:{type:Array,value:function(){return[]}},medicineCompositionList:{type:Array,value:[]},brandNameSourceDataList:{type:Array,value:[]},brandNameSelectedObjectList:{type:Array,value:[]},genericNameSourceDataList:{type:Array,value:[]},showDetailedForm:{type:Boolean,value:!1},showGuidelineDisclaimer:{type:Boolean,value:!0,notify:!0},computedEndDate:{type:String,computed:"_showComputedEndDate(medicine.endDateTimeStamp)"}},observers:["_computeQuantityPerPrescription(medicine.dose, medicine.timesPerInterval, intervalInDays, medicine.endDateTimeStamp, medicine.startDateTimeStamp)","_computeIntervalInHours(medicine.timesPerInterval, intervalInDays)","_compouteTimesPerInterval(medicine.timeOfDay.morning, medicine.timeOfDay.noon, medicine.timeOfDay.night)"],navigatedIn:function(){var e,t;return e=this.domHost.getPageParams(),this._loadUser(),this._loadPatient(e.patient),this._loadPrescription(e.prescription),this._resetMedicineForm(),this.domHost.getStaticData("medicineList",function(e){return function(t){return e.medicineCompositionList=t,e._loadDefaultMedicineCompositionList()}}(this)),t=lib.localStorage.getItem("showGuidelineDisclaimer"),null===t?this.set("showGuidelineDisclaimer",!0):this.set("showGuidelineDisclaimer",t),e.medicine?"new"===e.medicine?(this.isThatNewMedicine=!0,this._resetMedicineForm()):(this.isThatNewMedicine=!1,this._loadMedicine(e.medicine)):void this._notifyInvalidMedicine()},navigatedOut:function(){return this.user={},this.patient={},this.prescription={},this.medicine={},this.favoriteMedicine={},this.isPrescriptionValid=!1,this.isPatientValid=!1,this.isMedicineValid=!1,this.$.guidelineContainer.close()},_resetMedicineForm:function(){return this.medicine={serial:this.generateSerialForMedication(),genericName:"",strength:"",brandName:"",manufacturer:"",dose:1,timeOfDay:{morning:0,noon:0,night:0},doseUnit:"",form:"",startDateTimeStamp:lib.datetime.mkDate(new Date),endDateTimeStamp:null,route:function(){return this.routeList[this.routeSelectedIndex]},direction:function(){return this.directionList[this.directionSelectedIndex]},quantityPerPrescription:1,numberOfRefill:1,comments:"",intakeDateTimeStampList:[],nextDoseDateTimeStamp:null,timesPerInterval:1,intervalInHours:24,remind:!1,status:"continue"},this.strengthSelectedIndex=null,this.medicineFormSelectedIndex=null,this.doseUnitSelectedIndex=null,this.routeSelectedIndex=0,this.endDateTimeTypeSelectedIndex=0,this.endDateTimeTypeArgument2SelectedIndex=0},_loadUser:function(){var e;if(e=app.db.find("user"),1===e.length)return this.user=e[0]},_loadPatient:function(e){var t;return t=app.db.find("patient-list",function(t){var i;return i=t.serial,i===e}),1===t.length?(this.isPatientValid=!0,this.patient=t[0]):this._notifyInvalidPatient()},_loadPrescription:function(e){var t;return t=app.db.find("visit-prescription",function(t){var i;return i=t.serial,i===e}),1===t.length?(this.isPrescriptionValid=!0,this.prescription=t[0]):this._notifyInvalidPrescription()},_loadMedicine:function(e){var t;return t=app.db.find("patient-medications",function(t){var i;return i=t.serial,i===e}),1===t.length?(this.isMedicineValid=!0,this.medicine=t[0],!0):(this._notifyInvalidMedicine(),!1)},_notifyInvalidPatient:function(){return this.isPatientValid=!1,this.domHost.showModalDialog("Invalid Patient Provided!")},_notifyInvalidPrescription:function(){return this.isPrescriptionValid=!1,this.domHost.showModalDialog("Invalid Prescription Provided!")},_notifyInvalidMedicine:function(){return this.isMedicineValid=!1,this.domHost.showModalDialog("Invalid Medicine Provided!")},_checkValidity:function(e,t){var i,n,a,r,s,o;for(o=[],i=0,r=e.length;i<r;i++)a=e[i],this.medicine.item||(n=this.$$("#"+a).validate(),o.push(n));return s=o.every(function(e){return e}),t(s)},validate:function(e){return e.target.validate()},cancelButtonClicked:function(e){return this.arrowBackButtonPressed()},arrowBackButtonPressed:function(e){return window.history.back()},toggleGuideline:function(e){return this.$.guidelineContainer.toggle()},_loadDefaultMedicineCompositionList:function(){var e,t,i,n,a,r,s;for(e={},r={},t={},s=this.medicineCompositionList,i=0,a=s.length;i<a;i++)n=s[i],e[n.brandName]=null,r[n.manufacturer]=null,n.composition&&(t[n.composition[0].genericName]=null);return this.brandNameSourceDataList=function(){var t,i,a,r;for(a=Object.keys(e),r=[],t=0,i=a.length;t<i;t++)n=a[t],r.push({text:n,value:n});return r}(),this.manufacturerSourceDataList=function(){var e,t,i,a;for(i=Object.keys(r),a=[],e=0,t=i.length;e<t;e++)n=i[e],a.push({text:n,value:n});return a}(),this.genericNameSourceDataList=function(){var e,i,a,r;for(a=Object.keys(t),r=[],e=0,i=a.length;e<i;e++)n=a[e],r.push({text:n,value:n});return r}()},brandNameAutocompleteSelected:function(e){var t,i,n,a;return t=e.detail.text,this.matchingMedicineList=function(){var e,i,a,r;for(a=this.medicineCompositionList,r=[],e=0,i=a.length;e<i;e++)n=a[e],n.brandName===t&&r.push(n);return r}.call(this),0!==this.matchingMedicineList.length&&(this.set("medicine.manufacturer",this.matchingMedicineList[0].manufacturer),this.set("medicine.genericName",this.matchingMedicineList[0].composition[0].genericName),a=lib.array.unique(function(){var e,t,i,a;for(i=this.matchingMedicineList,a=[],e=0,t=i.length;e<t;e++)n=i[e],a.push(n.type);return a}.call(this)),this.medicineFormList=[],this.medicineFormList=a,this.push("medicineFormList","Custom"),this.set("medicineFormSelectedIndex",null),lib.util.delay(5,function(e){return function(){return e.set("medicineFormSelectedIndex",0)}}(this))),i=["genericName","brandName","manufacturer"],this._checkValidity(i,function(e){return function(){}}(this)),this.$.form.invalid=!1,this.$.doseUnit.invalid=!1},genericNameAutocompleteSelected:function(e){var t,i,n,a,r,s,o,d,c,l;for(i=e.detail.text,c=this.medicineCompositionList,n=0,s=c.length;n<s;n++)a=c[n],a.composition&&a.composition[0].genericName===i&&this.matchingMedicineList.push(a);for(t={},d={},l=this.matchingMedicineList,r=0,o=l.length;r<o;r++)a=l[r],t[a.brandName]=null,d[a.manufacturer]=null;return this.brandNameSourceDataList=function(){var e,i,n,r;for(n=Object.keys(t),r=[],e=0,i=n.length;e<i;e++)a=n[e],r.push({text:a,value:a});return r}(),this.manufacturerSourceDataList=function(){var e,t,i,n;for(i=Object.keys(d),n=[],e=0,t=i.length;e<t;e++)a=i[e],n.push({text:a,value:a});return n}()},manufacturerAutocompleteSelected:function(e){var t,i,n,a,r,s,o;if(s=e.detail.text,o=function(){var e,t,i,n;for(i=this.medicineCompositionList,n=[],e=0,t=i.length;e<t;e++)a=i[e],a.manufacturer===s&&n.push(a);return n}.call(this),0!==o.length){for(i={},t={},n=0,r=o.length;n<r;n++)a=o[n],t[a.brandName]=null,a.composition&&(i[a.composition[0].genericName]=null);return this.genericNameSourceDataList=function(){var e,t,n,r;for(n=Object.keys(i),r=[],e=0,t=n.length;e<t;e++)a=n[e],r.push({text:a,value:a});return r}(),this.brandNameSourceDataList=function(){var e,i,n,r;for(n=Object.keys(t),r=[],e=0,i=n.length;e<i;e++)a=n[e],r.push({text:a,value:a});return r}()}},brandNameCleared:function(e){return this._resetMedicineForm(),this.activeDoseGuideline={},this._loadDefaultMedicineCompositionList()},manufacturerCleared:function(e){return this.set("medicine.manufacturer",null),this._loadDefaultMedicineCompositionList()},genericNameCleared:function(e){return this.set("medicine.genericName",null),this.activeDoseGuideline={},this._loadDefaultMedicineCompositionList()},_isNthWeekSelectedAsEndDate:function(e){return 0!==e&&this.endDateTimeTypeList.length!==e+1},_isCustomSelectedAsEndDate:function(e){return this.endDateTimeTypeList.length===e+1},_isRouteCustom:function(){return this.routeSelectedIndex===this.routeList.length-1},_isUnitCustom:function(){return this.doseUnitSelectedIndex===this.doseUnitList.length-1},_isStregnthDropdown:function(){if(this.matchingMedicineList.length)return!0},_isStregnthCustom:function(){return 0===this.matchingMedicineList.length||(this.strengthSelectedIndex===this.strengthList.length-1||void 0)},_isFormCustom:function(){if(this.medicineFormSelectedIndex===this.medicineFormList.length-1)return!0},_makeEndDateStampfromCustom:function(e,t,i){var n;return t<=0||(i+=7*t),n=new Date(e),n=n.setDate(n.getDate()+i)},_doseValueChanged:function(e){if(this.medicine.dose>20&&(this.medicine.dose=20,e.target.value=20),this.medicine.dose<1)return this.medicine.dose=1,e.target.value=1},_compouteTimesPerInterval:function(e,t,i){var n;return n=parseInt(e)+parseInt(t)+parseInt(i),this.set("medicine.timesPerInterval",n)},_computeIntervalInHours:function(e,t){var i;return i=Math.floor(24*t/e),this.set("medicine.intervalInHours",i)},_directionSelectedIndexChanged:function(){var e;return e=this.get(["directionList",this.directionSelectedIndex]),this.set("medicine.direction",e)},_medicineFormSelectedIndexChanged:function(){var e,t,i,n,a,r,s,o,d,c;if(null!==this.medicineFormSelectedIndex){if(t=this.get(["medicineFormList",this.medicineFormSelectedIndex]),this.medicineFormSelectedIndex===this.medicineFormList.length-1?(this.doseUnitSelectedIndex=this.doseUnitList.length-1,this.routeSelectedIndex=this.routeList.length-1,this.set("medicine.form",""),this.set("medicine.doseUnit",""),this.set("medicine.strength","")):this.set("medicine.form",t),this.matchingMedicineList){for(o=[],r=this.matchingMedicineList,e=0,n=r.length;e<n;e++)a=r[e],a.type===t&&o.push(a.composition[0].strength);this.set("strengthList",[]),this.set("strengthList",o),this.push("strengthList","Custom"),this.set("strengthSelectedIndex",null),lib.util.delay(10,function(e){return function(){return e.set("strengthSelectedIndex",0)}}(this))}d={Tablet:["Tablet"],Injection:["Injection"],Syrup:["ml","t.s.f","teaspoonfull"],Drop:["Drop"],Capsule:["Capsule"],Suspension:["ml","t.s.f","teaspoonfull"],"I.V Injection":["ampoule","m/l","vial"],"I.M injection":["ampoule","m/l","vial"],"I.M/I.V Injection":["ampoule","m/l","vial"],"IV/IM Injection":["ampoule","m/l","vial"],"PR (Per Rectal)":["Suppository"],Suppository:["Suppository"],Solution:["ml"],Ointment:["application"],Cream:["application"],"Skin Patch":["skin patch"]},s={Tablet:["p.o"],Injection:["i.v injection","i.m injection"],Syrup:["p.o"],Drop:["p.o","topical application ear","topical application eye"],Capsule:["p.o"],Suspension:["p.o"],"I.V Injection":["i.v injection"],"I.M injection":["i.m injection"],"PR (Per Rectal)":["p.r (per rectal)"],Suppository:["p.r (per rectal)"],Solution:["nebulizer"],Cream:["topical application skin","topical application eye","topical application ear","intravaginal"],Ointment:["topical application skin","topical application eye","topical application ear","intravaginal"],"Skin Patch":["transdermal"]};for(i in d)if(c=d[i],i===t){this.set("doseUnitList",[]),this.set("doseUnitList",c),this.push("doseUnitList","Custom"),this.set("doseUnitSelectedIndex",null),lib.util.delay(10,function(e){return function(){return e.set("doseUnitSelectedIndex",0)}}(this));break}for(i in s)if(c=s[i],i===t){this.set("routeList",[]),this.set("routeList",c),this.push("routeList","Custom"),this.set("routeSelectedIndex",null),lib.util.delay(10,function(e){return function(){return e.set("routeSelectedIndex",0)}}(this));break}return this.$.form.invalid=!1,this.$.doseUnit.invalid=!1}},_routeSelectedIndexChanged:function(){var e;return this.routeSelectedIndex===this.routeList.length-1?this.set("medicine.route",""):(e=this.get(["routeList",this.routeSelectedIndex]),this.set("medicine.route",e))},_strengthSelectedIndexChanged:function(){var e;if(e=this.get(["strengthList",this.strengthSelectedIndex]),this.strengthSelectedIndex!==this.strengthList.length-1)return this.set("medicine.strength",e)},_morningDoseSelectedIndexChanged:function(){var e,t;return t=this.get(["doseList",this.morningDoseSelectedIndex]),e=function(){switch(!1){case"1/4"!==t:return.25;case"1/2"!==t:return.5;default:return Number(t)}}(),this.set("medicine.timeOfDay.morning",e)},_noonDoseSelectedIndexChanged:function(){var e,t;return t=this.get(["doseList",this.noonDoseSelectedIndex]),e=function(){switch(!1){case"1/4"!==t:return.25;case"1/2"!==t:return.5;default:return Number(t)}}(),this.set("medicine.timeOfDay.noon",e)},_nightDoseSelectedIndexChanged:function(){var e,t;return t=this.get(["doseList",this.nightDoseSelectedIndex]),e=function(){switch(!1){case"1/4"!==t:return.25;case"1/2"!==t:return.5;default:return Number(t)}}(),this.set("medicine.timeOfDay.night",e)},_doseUnitSelectedIndexChanged:function(){var e;if(this.doseUnitSelectedIndex!==this.doseUnitList.length-1)return e=this.get(["doseUnitList",this.doseUnitSelectedIndex]),this.set("medicine.doseUnit",e)},_showComputedEndDate:function(e){return 0===this.endDateTimeTypeSelectedIndex?null:lib.datetime.mkDate(e,"dd-mmm-yyyy")},_endDateTimeTypeSelectedIndexChanged:function(){var e,t,i,n,a,r;if(n=this.get(["endDateTimeTypeList",this.endDateTimeTypeSelectedIndex]),i=this.get(["endDateTimeTypeArgument2List",this.endDateTimeTypeArgument2SelectedIndex]),n+=" "+i,a=this.get("medicine.startDateTimeStamp"),r=parseInt(n.substr(0,1)),e=parseInt(i.substr(0,1)),a&&(r||e))return t=this._makeEndDateStampfromCustom(a,r,e),this.set("medicine.endDateTimeStamp",t)},_computeQuantityPerPrescription:function(e,t,i,n){var a,r,s,o;return i>0?(r=864e5,n=new Date(n),a=i-n,o=Math.round(a/r),s=Math.ceil(e*(o/t))):s=e,this.set("medicine.quantityPerPrescription",s)},asNeededSelected:function(e){return e.target.checked?(this.$.endDate.disabled=!0,this.medicine.endDateTimeStamp=null):this.$.endDate.disabled=!1},saveMedicineButtonClicked:function(e){var t,i;return i=this.domHost.getPageParams(),t=this.medicineFormSelectedIndex===this.medicineFormList.length-1?["genericName","brandName","manufacturer","strength","custom-form","custom-dose-unit","custom-route"]:["genericName","brandName","manufacturer","strength","form","doseUnit"],this._checkValidity(t,function(e){return function(t){var n;return t?(n={},n.data=e.medicine,n.serial=e.medicine.serial,delete n.data.serial,n.createdDatetimeStamp=lib.datetime.now(),n.lastSyncedDatetimeStamp=null,n.createdByUserSerial=e.user.serial,n.patientSerial=i.patient,n.prescriptionSerial=i.prescription,n.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.insert("patient-medications",n),window.history.back()):e.domHost.showModalDialog("Enter Required Inputs")}}(this))},_makeNewFavoriteMedicine:function(e){var t;return t={serial:this.generateSerialForFavoriteMedicine(),createdDatetimeStamp:lib.datetime.now(),lastModifiedDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:0,createdByUserSerial:this.user.serial,data:{brandName:e.data.brandName,comments:e.data.comments,direction:e.data.direction,dose:e.data.dose,doseUnit:e.data.doseUnit,endDateTimeStamp:e.data.endDateTimeStamp,form:e.data.form,genericName:e.data.genericName,intakeDateTimeStampList:e.data.intakeDateTimeStampList,intervalInHours:e.data.intervalInHours,manufacturer:e.data.manufacturer,nextDoseDateTimeStamp:null,numberOfRefill:e.data.numberOfRefill,quantityPerPrescription:e.data.quantityPerPrescription,remind:e.data.remind,route:e.data.route,startDateTimeStamp:lib.datetime.now(),status:e.data.status,strength:e.data.strength,timesPerInterval:e.data.timesPerInterval}},app.db.insert("favorite-medicine-list",t)},saveAndAddAsFavoriteMedicinePressed:function(e){var t,i;return i=this.domHost.getPageParams(),t=this.medicineFormSelectedIndex===this.medicineFormList.length-1?["genericName","brandName","manufacturer","strength","custom-form","custom-dose-unit","custom-route"]:["genericName","brandName","manufacturer","strength","form","doseUnit"],this._checkValidity(t,function(e){return function(t){var n;return t?(n={},n.data=e.medicine,n.serial=e.medicine.serial,delete n.data.serial,n.createdDatetimeStamp=lib.datetime.now(),n.lastSyncedDatetimeStamp=null,n.createdByUserSerial=e.user.serial,n.patientSerial=i.patient,n.prescriptionSerial=i.prescription,n.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.insert("patient-medications",n),e._makeNewFavoriteMedicine(n),e.domHost.showToast("Added & Saved As a Favorite!"),window.history.back()):e.domHost.showModalDialog("Enter Required Inputs")}}(this))},shouldShowDisclaimer:function(e){var t;return t=lib.localStorage.getItem("showGuidelineDisclaimer"),!(!t&&"null"!==t)},showGuidelineDisclaimerChanged:function(e){var t;return lib.localStorage.setItem("showGuidelineDisclaimer",!e.target.checked),this.set("showGuidelineDisclaimer",!e.target.checked),t=lib.localStorage.getItem("showGuidelineDisclaimer")},$doesPassFilter:function(t,i,n,a,r){var s,o,d,c;return o=this.guidelineAgeList[r],d=this.guidelineIndicationList[a],"not-available"!==n&&alert("something went wrong"),s=!1,s="No Age Indicated"===o||o===this._ageToText(i),c=!1,c="No Special Indications"===d||e.call(this._extractIndication(i),d)>=0,!(!s||!c)},_extractIndication:function(e){var t,i,n,a,r;for(a=["indication","secondaryIndication","tertiaryIndication","condition","secondaryCondition"],t=[],i=0,r=a.length;i<r;i++)n=a[i],n in e&&t.push(e[n]);return t},_ageToText:function(e){var t;return"ageGroup"in e&&(t=e.ageGroup),"ageRange"in e&&(t="min"in e.ageRange?"max"in e.ageRange?"from "+e.ageRange.min+" "+e.ageRange.unit+"(s) to "+e.ageRange.max+" "+e.ageRange.unit+"(s)":e.ageRange.min+" "+e.ageRange.unit+"(s) and upwards":"Upto "+e.ageRange.max+" "+e.ageRange.unit+"(s)"),t},_setActiveDoseGuideline:function(e){var t,i,n,a,r,s,o,d,c,l,u;for(this.set("activeDoseGuideline",e),n=[],c=e.doseList,a=0,o=c.length;a<o;a++)t=c[a],s=this._extractIndication(t),n=[].concat(n,s);for(n=lib.array.unique(n),n.unshift("No Special Indications"),this.set("guidelineIndicationList",n),this.set("guidelineIndicationSelectedIndex",0),i=[],l=e.doseList,r=0,d=l.length;r<d;r++)t=l[r],u=this._ageToText(t),u.length>0&&i.push(u);return i=lib.array.unique(i),i.unshift("No Age Indicated"),this.set("guidelineAgeList",i),this.set("guidelineAgeSelectedIndex",0)},populateDoseGuideline:function(){var e,t,i,n,a,r;for(t=this.get("medicine.genericName"),a=null,r=this.doseGuidelineList,i=0,n=r.length;i<n;i++)if(e=r[i],t===e.genericName){a=e;break}if(a)return this._setActiveDoseGuideline(a)},runSanitizationCheckForDoseGuidelineList:function(t){var i,n,a,r,s,o,d,c,l,u,m,h;for(a=["subDoseList","route","ageGroup","description","ageRange","notRecommended","indication","secondaryIndication","notes","condition","alternateRoiute","secondaryCondition","tertiaryIndication"],a=[].concat(a,[]),o=[],r=["type","unit","amount","timesDaily","connectionToMeal","notes","condition"],r=[].concat(r,["Interval","treatmentPeriod","timesWeekly","notRecommended","secondaryIndication","timesMonthly","indication"]),r=[].concat(r,[]),d=[],m=[],s=0,c=t.length;s<c;s++)n=t[s],m.push(function(){var t,s,c,m,p,f;for(p=n.doseList,f=[],t=0,c=p.length;t<c;t++){for(i=p[t],u=this.$listMissingKeys(i,a),s=0,m=u.length;s<m;s++)l=u[s],e.call(o,l)<0&&o.push(l);"subDoseList"in i?f.push(function(){var t,n,a,s;for(a=i.subDoseList,s=[],t=0,n=a.length;t<n;t++)h=a[t],u=this.$listMissingKeys(h,r),s.push(function(){var t,i,n;for(n=[],i=0,t=u.length;i<t;i++)l=u[i],e.call(d,l)<0?n.push(d.push(l)):n.push(void 0);return n}());return s}.call(this)):f.push(void 0)}return f}.call(this));return m},_fillCommons:function(e,t){var i,n;if(t.connectionToMeal&&(n={"after meal":"After meal","with meal":"After meal","with food":"After meal","after food":"After meal","after a meal":"After meal","with meals":"After meal",before:"Before meal"},t.connectionToMeal.when in n))return i=this.directionList.indexOf(n[t.connectionToMeal.when]),this.set("directionSelectedIndex",i)},_fillMinOrMax:function(e,t,i){if(t.timesDaily&&t.timesDaily[i]&&this.set("medicine.timesPerInterval",t.timesDaily[i]),t.amount&&t.amount[i],t.route)return"todo when interface supports. take hints from subDose.connectionToMeal"},fillMinimumPressed:function(e){var t,i,n;return i=e.model,t=i.dose,n=i.subDose,this._fillCommons(t,n),this._fillMinOrMax(t,n,"min")},fillMaximumPressed:function(e){var t,i,n;return i=e.model,t=i.dose,n=i.subDose,this._fillCommons(t,n),this._fillMinOrMax(t,n,"max")}})}).call(this);
+//# sourceMappingURL=page-medicine-editor.coffee-compiled.js.map</script>
+</dom-module>
+

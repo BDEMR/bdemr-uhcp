@@ -1,0 +1,758 @@
+<!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-diabetes-record">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+      
+      .patient-info-card-counter {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #777777;
+      }
+      
+      .patient-info-cards {
+        @apply(--layout-vertical);
+        /*@apply(--layout-center);*/
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 20px;
+      }
+      
+      .patient-info-cards .row {
+        margin-left: 10px;
+        /*margin-right: 10px;*/
+        margin-top: 10px;
+      }
+      
+      .patient-info-cards .hr {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: 1px;
+        /*width: 100px;*/
+        background: #dddddd;
+      }
+      
+      .patient-info-cards .row .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+      
+      .patient-info-cards .row .modifier.online {
+        background: #757575;
+      }
+      
+      .patient-info-cards .row .modifier.local-only {
+        background: #039BE5;
+      }
+      
+      .patient-info-cards .row .modifier.locally-updated {
+        background: #009688;
+      }
+      
+      .patient-info-cards .row .modifier.imported {
+        background: #4CAF50;
+      }
+      
+      /*.info-row {
+        margin-top: 10px;
+      }*/
+      
+      .top-info-row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      
+      .serial-number {
+        background: #37474F;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      
+      .address1 {
+        margin-right: 10px;
+      }
+      
+      .break-on-tablet {
+        @apply(--layout-horizontal);
+      }
+      
+      @media screen and (max-width: 740px) {
+        .break-on-tablet {
+          display: block;
+        }
+      }
+      
+      .val {
+        text-decoration: underline;
+      }
+
+      .custom-input {
+        width: calc(100% - 26px);
+      }
+
+      @media screen and (min-width: 656px) {
+        .custom-input {
+          width: calc(50% - 26px);
+        }
+      }
+
+      @media screen and (min-width: 976px) {
+        .custom-input {
+          width: calc(25% - 26px);
+        }
+      }
+
+      .custom-checkbox {
+        width: calc(100% - 34px);
+      }
+
+      @media screen and (min-width: 656px) {
+        .custom-checkbox {
+          width: calc(50% - 34px);
+        }
+      }
+
+      @media screen and (min-width: 976px) {
+        .custom-checkbox {
+          width: calc(25% - 34px);
+        }
+      }
+
+      .paper-custom {
+        background-color: #fafafa;
+        border: 1px solid #dadada;
+        padding: 0px 8px 12px 8px;
+        margin: 4px;
+      }
+
+      paper-checkbox {
+        background-color: #fafafa;
+        border: 1px solid #dadada;
+        padding: 8px;
+      }
+
+      /*Print Preview*/
+      .document {
+        font-family: 'Times New Roman';
+        background: white;
+      }
+
+      .document-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .collection {
+        color: red;
+        background: grey;
+      }
+
+      .document-header {
+        /*background-color: #fafafa;*/
+        padding-left: 10px;
+        padding-right: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .document-header .logo {
+        max-width: 128px;
+        max-height: 128px;
+      }
+
+      .horiline {
+        width: 100%;
+        height: 0px;
+        /*background: black;*/
+        border: 1px solid black;
+        margin-bottom: 6px;
+      }
+
+      .leftSide {
+        margin-left: 6px;
+      }
+
+      .leftSideLine1 {
+        font-size: 24px;
+      }
+
+      .rightSideLine1 {
+        font-size: 22px;
+      }
+
+
+      .document-header2 .logo {
+        max-width: 128px;
+        max-height: 128px;
+      }
+
+      .patient-details {
+        background-color: #5c4575;
+        color: #fff;
+      }
+
+      .print-content {
+        border-top: 1px solid #eee;
+        @apply(--layout-horizontal);
+      }
+
+      .print-content .left {
+        width: 34%;
+        border-right: 1px solid #eee;
+      }
+
+      .print-content .right {
+        width: 66%;
+      }
+
+      ol.order-list {
+        margin: 4px 0;
+        padding-left: 16px;
+        list-style-type: lower-alpha;
+      }
+
+      ul.unorderd-list-custom {
+        margin: 4px 0;
+        padding-left: 16px;
+      }
+
+      ol.order-list li {
+        margin: 4px 0;
+      }
+
+      .print-sub-header {
+        font-size: bold;
+        background-color: #fafafa;
+        margin-bottom: 8px;
+      }
+
+      #printPreview {
+        display: none !important;
+      }
+
+      @media print {
+
+        #hideOnPrint {
+          display: none !important;
+        }
+
+        #printPreview {
+          display: block !important;
+          background-color: transparent;
+        }
+      }
+
+      @media print {
+        app-header-layout #contentContainer {
+          overflow-y: unset !important;
+        }
+      }
+
+      .card-custom-header {
+        padding: 0 16px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--brand-primary-color);
+      }
+
+      vaadin-combo-box ::content paper-input-container {
+        padding: 8px 0;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div id="hideOnPrint">
+      <div class="tabs-container">
+        <paper-tabs selected="{{selectedPatientInfoPage}}" noink="true" scrollable="">
+          <paper-tab>General</paper-tab>
+          <paper-tab>Additonal</paper-tab>
+          <paper-tab>Diabetics Info</paper-tab>
+        </paper-tabs>
+      </div>
+
+      <div class="master-container">
+
+        <div class="limiting-container">
+
+          <iron-pages selected="{{selectedPatientInfoPage}}">
+            <!-- Page - Required Information - START -->
+            <section>
+              <paper-card heading="General">
+                <div class="p-8">
+                  <div class="horizontal layout">
+                    <paper-input class="flex paper-custom" value="{{patient.name}}" label="Patient Full Name" required="" auto-validate="" error-message="Patient Name is Required!"></paper-input>
+                  </div>
+                  
+
+                  <template is="dom-if" if="[[!EDIT_MODE_ON]]">
+                    <div class="horizontal layout">
+                      <paper-input class="flex paper-custom" value="{{patient.emailOrPhone}}" label="Email/Phone Number" pattern="[a-zA-Z]*" required="" auto-validate="" error-message="Valid Email/Phone Number Required"></paper-input>
+                    </div>
+                  </template>
+
+                  <div class="horizontal layout">
+                    <paper-input type="number" class="flex paper-custom" value="{{patient.diabeticRecord.noOfFamilyMember}}" label="Number of Family Member"></paper-input>
+                  </div>
+
+
+                  <div class="layout horizontal wrap">
+                    <vaadin-date-picker required="" auto-validate="" error-message="Date of Birth is Required!" class="flex paper-custom" type="date" value="{{patient.dateOfBirth}}" label="Date of Birth (mm/dd/yyyy)" on-value-changed="calculateAge"></vaadin-date-picker>
+                    
+                    <paper-input class="flex m-left-8 paper-custom" label="Age" type="number" value="{{ageInYears}}" on-change="makeDOBFromYears">
+                      <div class="type secondary" suffix="">Years</div>
+                    </paper-input>
+                    
+                    
+                  </div>
+
+                  <div class="horizontal layout wrap">
+                    <paper-dropdown-menu class="flex paper-custom" label="Gender" value="{{patient.diabeticRecord.gender}}">
+                      <paper-menu class="dropdown-content">
+                        <paper-item>[[$TRANSLATE('Male', LANG)]]</paper-item>
+                        <paper-item>[[$TRANSLATE('Female',LANG)]]</paper-item>
+                        <paper-item>[[$TRANSLATE('Other',LANG)]]</paper-item>
+                      </paper-menu>
+                    </paper-dropdown-menu>
+                    <vaadin-combo-box class="flex paper-custom" label="Marital Status" items="{{maritalStatusList}}" allow-custom-value="true" value="{{patient.diabeticRecord.maritalStatus}}"></vaadin-combo-box>
+                  </div>
+
+                  <div class="horizontal layout">
+                    <paper-input class="flex paper-custom" value="{{patient.effectiveRegion}}" label="Country"></paper-input>
+                  </div>
+                  
+                  <template is="dom-if" if="[[!EDIT_MODE_ON]]">
+                    <div class="horizontal layout">
+                      <paper-input class="flex paper-custom" min="6" value="{{patient.password}}" label="Password" pattern="^.{6,}$" required="" auto-validate="" error-message="Password Must be 6 characters long!"></paper-input>
+                    </div>
+
+                    <div class="horizontal layout">
+                      <paper-input class="flex paper-custom" value="{{patient.doctorAccessPin}}" label="Doctor Access Pin Code" max="4"></paper-input>
+                    </div>
+                    <div class="horizontal layout">
+                      <paper-input class="flex paper-custom" value="{{patient.belongOrganizationList.0.patientIdbyOrganization}}" label="Patient Organization Id/Hospital Id"></paper-input>
+                    </div>
+                  </template>
+                </div>
+              </paper-card>
+            </section>
+            <!-- Page - Required Information - END -->
+            
+            <!-- Page - Personal Information - START -->
+            <section>
+              <paper-card heading="Personal">
+                <div class="p-8">
+                
+                  <div class="info-row break-on-tablet">
+                    <paper-dropdown-menu class="paper-custom" label="Blood Group" value="{{patient.bloodGroup}}">
+                      <paper-menu class="dropdown-content">
+                        <paper-item>A+</paper-item>
+                        <paper-item>A-</paper-item>
+                        <paper-item>B+</paper-item>
+                        <paper-item>B-</paper-item>
+                        <paper-item>O+</paper-item>
+                        <paper-item>O-</paper-item>
+                        <paper-item>AB+</paper-item>
+                        <paper-item>AB-</paper-item>
+                      </paper-menu>
+                    </paper-dropdown-menu>
+                    <paper-input type="text" class="flex paper-custom" value="{{patient.allergy}}" label="Allergy"></paper-input>
+                  </div>
+
+                  <div class="info-row break-on-tablet">
+                    <paper-input type="text" class="flex paper-custom" value="{{patient.diabeticRecord.patientHusbandName}}" label="Husband Name"></paper-input>
+                    <paper-input type="text" class="flex paper-custom" value="{{patient.diabeticRecord.patientFatherName}}" label="Father's Name"></paper-input>
+                  </div>
+
+                  <div class="info-row break-on-tablet">
+
+                    <vaadin-combo-box class="flex paper-custom" label="Monthly Expenditure" items="{{expenditureList}}" allow-custom-value="true" value="{{patient.diabeticRecord.expenditure}}"></vaadin-combo-box>
+                    <vaadin-combo-box class="flex paper-custom" label="Profession" items="{{professionList}}" allow-custom-value="true" value="{{patient.diabeticRecord.profession}}"></vaadin-combo-box>
+                    
+                  </div>
+
+                  <vaadin-combo-box class="flex paper-custom" label="Education" items="{{educationTypeList}}" allow-custom-value="true" value="{{patient.diabeticRecord.education}}"></vaadin-combo-box>
+
+                  <div class="info-row">
+                    <paper-input class=" paper-custom" type="number" value="{{patient.nationalIdCardNumber}}" label="National ID"></paper-input>
+                  </div>
+                  
+                </div> 
+              </paper-card>
+              <paper-card heading="Physical Address" class="m-top-8">
+                <div class="p-8">
+                  <div class="horizontal layout">
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.addressLine1}}" label="Address Line 1"></paper-input>
+                  </div>
+                  <div class="horizontal layout">
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.addressLine2}}" label="Address Line 2"></paper-input>
+                  </div>
+                  <div class="horizontal layout wrap">
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.flat}}" label="Flat"></paper-input>
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.floor}}" label="Floor"></paper-input>
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.plot}}" label="Plot"></paper-input>
+                  </div>
+
+                  <div class="horizontal layout wrap">
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.block}}" label="Block"></paper-input>
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.road}}" label="Road"></paper-input>
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.village}}" label="Village"></paper-input>
+                  </div>
+
+                  <div class="horizontal layout wrap">
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.addressUnion}}" label="Union"></paper-input>
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.subdistrictName}}" label="Sub District"></paper-input>
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.addressDistrict}}" label="Disctrict"></paper-input>
+                  </div>
+
+                  <div class="horizontal layout wrap">
+                    <paper-input type="number" class="flex paper-custom" value="{{patient.addressList.0.addressPostalOrZipCode}}" label="Postal/Zip Code"></paper-input>
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.addressCityOrTown}}" label="City/Town"></paper-input>
+                    <paper-input class="flex paper-custom" value="{{patient.addressList.0.stateOrProvince}}" label="State/Province"></paper-input>
+                  </div>
+           
+                  <paper-input class=" paper-custom" value="{{patient.addressList.0.addressCountry}}" label="Country"></paper-input>
+                </div>
+              </paper-card>
+            </section>
+            <!-- Page - Additional Information - END -->
+
+            <!-- Page - Diabetics Registration - START -->
+            <section>
+
+              <!-- Diabetcs Status - start -->
+              <paper-card heading="Diabetcs Status">
+                <div class="p-8 horizontal layout wrap">
+                  <paper-input class="custom-input paper-custom" label="Patient Book No." value="{{patient.diabeticRecord.diabeticsInfo.patientBookSerial}}"></paper-input>
+                  <paper-dropdown-menu class="custom-input paper-custom" label="DM Status" value="{{patient.diabeticRecord.diabeticsInfo.dmStatus}}">
+                    <paper-menu class="dropdown-content" selected="0">
+                      <template is="dom-repeat" items="{{dmStatusList}}">
+                        <paper-item>[[item]]</paper-item>
+                      </template>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                  <paper-dropdown-menu class="custom-input paper-custom" label="Type of Diabetics" value="{{patient.diabeticRecord.diabeticsInfo.typeOfDiabetics}}">
+                    <paper-menu class="dropdown-content" selected="0">
+                      <paper-item>Type 1</paper-item>
+                      <paper-item>Type 2</paper-item>
+                      <paper-item>Gestational Diabetes</paper-item>
+                      <paper-item>Others</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                  <paper-input type="number" class="custom-input paper-custom" label="Diabetics Duration" value="{{patient.diabeticRecord.diabeticsInfo.diabeticsDuration}}"></paper-input>
+                </div>
+              </paper-card>
+              <!-- Diabetcs Status - end -->
+
+              <!-- Cinical - start -->
+              <paper-card heading="Cinical" class="m-top-8">
+                <div class="p-8 horizontal layout wrap">
+                  <template is="dom-repeat" items="[[patient.diabeticRecord.clinicalInfoList]]">
+                    <template is="dom-if" if="[[!_compareFn(item.type, '==', 'waist-hip-ratio')]]">
+                      <paper-input type="{{item.inputType}}" class="custom-input paper-custom" label="{{item.name}}" value="{{item.value}}" on-value-changed="computeWaistHipRatio">
+                        <div suffix="">{{item.unit}}</div>
+                      </paper-input>
+                    </template>
+
+                    <template is="dom-if" if="[[_compareFn(item.type, '==', 'waist-hip-ratio')]]">
+                      <paper-input type="{{item.inputType}}" class="custom-input paper-custom" label="{{item.name}}" value="{{waistHipRatio}}">
+                      <div suffix="">{{item.unit}}</div>
+                    </paper-input></template>
+
+                  </template>
+                </div>
+              </paper-card>
+              <!-- Cinical - end -->
+
+              <!-- Laboratory - start -->
+              <paper-card heading="" class="m-top-8">
+
+                <div class="card-custom-header">
+                  <div class="layout horizontal center">
+                    <div class="title flex">Laboratory</div>
+                    <paper-dropdown-menu label="Type">
+                    <paper-menu class="dropdown-content" selected="0">
+                      <paper-item>Free</paper-item>
+                      <paper-item>Paid</paper-item>
+                      <paper-item>Others</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                  </div>
+                </div>
+
+                <div class="p-8 horizontal layout wrap">
+                  <template is="dom-repeat" items="[[patient.diabeticRecord.laboratoryTestList]]">
+                    <template is="dom-if" if="[[!$equals(item.name, 'ECG')]]">
+                      <paper-input type="{{item.inputType}}" class="custom-input paper-custom" label="{{item.name}}" value="{{item.value}}">
+                        <div suffix="">{{item.unit}}</div>
+                      </paper-input>
+                    </template>
+
+                    <template is="dom-if" if="[[$equals(item.name, 'ECG')]]">
+                      <vaadin-combo-box class="flex paper-custom" label="{{item.name}}" items="{{ecgTypeList}}" allow-custom-value="true" value="{{item.value}}"></vaadin-combo-box>
+                    </template>
+                  </template>
+                </div>
+              </paper-card>
+              <!-- Laboratory - end -->
+
+              <!-- Complication - start -->
+              <paper-card heading="Complication" class="m-top-8">
+                <div class="p-8 horizontal layout wrap">
+                  <template is="dom-repeat" items="[[patient.diabeticRecord.complicationList]]">
+                    <paper-checkbox class="custom-checkbox m-8" checked="{{item.isSelected}}">{{item.name}}</paper-checkbox>
+                  </template>
+                </div>
+              </paper-card>
+              <!-- Complication - end -->
+
+              <!-- Current Treatment - start -->
+              <paper-card heading="Current Treatment" class="m-top-8">
+                <div class="p-8">
+                  <vaadin-combo-box class="flex paper-custom" label="Type Of Treatment" placeholder="Type/Select Treatment Name" items="{{typeOfTreatmentList}}" allow-custom-value="true" value="{{patient.diabeticRecord.currentTreatment.typeOfTreatment}}"></vaadin-combo-box>
+                </div>
+              </paper-card>
+
+              <paper-card class="m-top-8">
+                <div class="card-custom-header">
+                  <div class="layout horizontal center">
+                    <div class="title flex">OGLD</div>
+                    <paper-dropdown-menu class="" label="OGLD Usage" value="{{patient.diabeticRecord.currentTreatment.ogld.ogldUsage}}">
+                    <paper-menu class="dropdown-content" selected="0">
+                      <paper-item>No</paper-item>
+                      <paper-item>Yes</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                  </div>
+                </div>
+                <div class="p-8">
+
+                  <template is="dom-repeat" items="[[patient.diabeticRecord.currentTreatment.ogld.ogldDrugList]]">
+                    <div class="horizontal layout center">
+                      <paper-input class="flex paper-custom" label="Drug" value="{{item.ogldDrugName}}"></paper-input>
+                      <paper-input class="paper-custom" label="Dosage" value="{{item.drugDosage}}"></paper-input>
+                      <paper-icon-button icon="delete" on-tap="deleteSelectedOgldDrug"></paper-icon-button>
+                    </div>
+                  </template>
+      
+                </div>
+                <div class="card-actions">
+                  <paper-button raised="" on-tap="addOgldDrug">Add Another OGLD Drug</paper-button>
+                </div>
+              </paper-card>
+              <!-- Current Treatment - end -->
+
+              <!-- Insulin - start -->
+              <paper-card class="m-top-8">
+                <div class="card-custom-header">
+                  <div class="layout horizontal center">
+                    <div class="title flex">Insulin</div>
+                    <paper-dropdown-menu class="" label="Insulin Usage" value="{{patient.diabeticRecord.insulin.insulinUsage}}">
+                    <paper-menu class="dropdown-content" selected="0">
+                      <paper-item>No</paper-item>
+                      <paper-item>Yes</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                  </div>
+                </div>
+
+                <div class="p-8">
+                  <vaadin-combo-box class="flex paper-custom" label="Insuline Type" placeholder="Type/Select Insulin type" items="{{insulinTypeList}}" allow-custom-value="true" value="{{patient.diabeticRecord.insulin.insulinType}}"></vaadin-combo-box>
+
+                  <div style="padding: 4px;" class="type body caption-2 secondary"><strong>Insulin</strong></div>
+
+                  <div class="horizontal layout center wrap">
+                    <vaadin-combo-box style="width: calc(40% - 8px);" class="flex paper-custom" label="{{patient.diabeticRecord.insulin.insulinTherapyList.0.therapyType}}" placeholder="Type/Select Drug" items="{{basalDrugList}}" allow-custom-value="true" value="{{patient.diabeticRecord.insulin.insulinTherapyList.0.drugName}}"></vaadin-combo-box>
+                    <template is="dom-repeat" items="[[patient.diabeticRecord.insulin.insulinTherapyList.0.dosageList]]" as="dose">
+                      <paper-input style="width: calc(20% - 8px);" class="paper-custom" label="{{dose.time}}" value="{{dose.value}}">
+                        <div suffix="">{{dose.unit}}</div>
+                      </paper-input>
+                    </template>
+                  </div>
+                  <div class="horizontal layout center wrap">
+                    <vaadin-combo-box style="width: calc(40% - 8px);" class="flex paper-custom" label="{{patient.diabeticRecord.insulin.insulinTherapyList.1.therapyType}}" placeholder="Type/Select Drug" items="{{bolusDrugList}}" allow-custom-value="true" value="{{patient.diabeticRecord.insulin.insulinTherapyList.1.drugName}}"></vaadin-combo-box>
+                    <template is="dom-repeat" items="[[patient.diabeticRecord.insulin.insulinTherapyList.1.dosageList]]" as="dose">
+                      <paper-input style="width: calc(20% - 8px);" class="paper-custom" label="{{dose.time}}" value="{{dose.value}}">
+                        <div suffix="">{{dose.unit}}</div>
+                      </paper-input>
+                    </template>
+                  </div>
+                  <div class="horizontal layout center wrap">
+                    <vaadin-combo-box style="width: calc(40% - 8px);" class="flex paper-custom" label="{{patient.diabeticRecord.insulin.insulinTherapyList.2.therapyType}}" placeholder="Type/Select Drug" items="{{premixDrugList}}" allow-custom-value="true" value="{{patient.diabeticRecord.insulin.insulinTherapyList.2.drugName}}"></vaadin-combo-box>
+                    <template is="dom-repeat" items="[[patient.diabeticRecord.insulin.insulinTherapyList.2.dosageList]]" as="dose">
+                      <paper-input style="width: calc(20% - 8px);" class="paper-custom" label="{{dose.time}}" value="{{dose.value}}">
+                        <div suffix="">{{dose.unit}}</div>
+                      </paper-input>
+                    </template>
+                  </div>
+                  <div class="horizontal layout center wrap">
+                    <vaadin-combo-box style="width: calc(40% - 8px);" class="flex paper-custom" label="{{patient.diabeticRecord.insulin.insulinTherapyList.3.therapyType}}" placeholder="Type/Select Drug" items="{{otherInsulinDrugList}}" allow-custom-value="true" value="{{patient.diabeticRecord.insulin.insulinTherapyList.3.drugName}}"></vaadin-combo-box>
+                    <template is="dom-repeat" items="[[patient.diabeticRecord.insulin.insulinTherapyList.3.dosageList]]" as="dose">
+                      <paper-input style="width: calc(20% - 8px);" class="paper-custom" label="{{dose.time}}" value="{{dose.value}}">
+                        <div suffix="">{{dose.unit}}</div>
+                      </paper-input>
+                    </template>
+                  </div>
+                </div>
+              </paper-card>
+              <!-- Insulin - end -->
+              
+            </section>
+            <!-- Page - Diabetics Registration - END -->
+          </iron-pages>            
+
+        </div>
+        <template is="dom-if" if="[[!EDIT_MODE_ON]]">
+          <paper-button class="colored" raised="" on-tap="standardPatientSignupPressed">Signup</paper-button>
+        </template>
+
+        <template is="dom-if" if="[[EDIT_MODE_ON]]">
+          <paper-button class="colored" raised="" on-tap="updatePatientDetails">UPDATE</paper-button>
+        </template>
+
+      </div>
+    </div>
+
+
+
+    <!-- Print Preview Area - start -->
+    <div id="printPreview">
+
+      <div class="print-header horizontal layout center center-justified">
+        <h1>[[settings.printDecoration.headerLine]]</h1>
+      </div>
+
+      <!-- Print Header - Main - start -->
+      <div class="document-header horizontal layout center">
+        <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
+          <img class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+        </template>
+
+        <div class="leftSide">
+          <div class="leftSideLine1">[[settings.printDecoration.leftSideLine1]]</div>
+          <div class="leftSideLine2">[[settings.printDecoration.leftSideLine2]]</div>
+          <div class="leftSideLine3">[[settings.printDecoration.leftSideLine3]]</div>
+        </div>
+        <div class="flex"></div>
+        <div class="rightSide layout end-justified">
+          <div class="rightSideLine1">[[settings.printDecoration.rightSideLine1]]</div>
+          <div class="rightSideLine2">[[settings.printDecoration.rightSideLine2]]</div>
+          <div class="rightSideLine3">[[settings.printDecoration.rightSideLine3]]</div>
+        </div>
+      </div>
+      <!-- Print Header - Main - end -->
+
+      <!-- Print Header - Patient Details - start -->
+      <div class="document-header horizontal layout center p-vertical-8">
+        <template is="dom-if" if="[[!patient.diabeticRecord.isForOrganizationOnly]]">
+          <div class="m-horizontal-4">
+            <strong>Patient Serial: </strong>
+            <span>{{patient.diabeticRecord.serial}}</span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Patient Name: </strong>
+            <span>{{patient.diabeticRecord.name}}</span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Sex: {{patient.diabeticRecord.gender}}</strong>
+            <span></span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Age: </strong>
+            <span>[[_computeAge(patient.diabeticRecord.dob)]] years </span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Blood Group: </strong> <span>[[patient.diabeticRecord.bloodGroup]]</span>
+            <span> </span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Allergy: [[patient.diabeticRecord.allergy]]</strong>
+            <span> </span>
+          </div>
+        </template>
+
+        <template is="dom-if" if="[[patient.diabeticRecord.isForOrganizationOnly]]">
+          <div class="m-horizontal-4">
+            <strong>Patient Name: </strong>
+            <i></i>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Age: </strong>
+            <i>REDACTED FOR CONFIDENTIALITY</i>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Blood Group: [[patient.diabeticRecord.bloodGroup]]</strong>
+            <span> </span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Allergy: [[patient.diabeticRecord.allergy]]</strong>
+            <span> </span>
+          </div>
+        </template>
+      </div>
+      <!-- Print Header - Patient Details - end -->
+
+      <!-- Print Header - record Title - start -->
+      <div class="p-16 horizontal layout center center-justified">
+        <div class="type headline">Diabetic registration</div>
+      </div>
+      <!-- Print Header - record Title - start -->
+
+      <!-- Print Content [FULL] - start -->
+      <div class="print-content">
+        
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus incidunt eveniet eius. Non dolore excepturi delectus tempore illo veniam, consequatur dignissimos ducimus numquam obcaecati nam ab sunt perferendis alias doloribus.
+      </div>
+      <!-- Print Content [FULL] - end -->
+
+      <div>
+        <div class="horizontal layout end-justified center">
+          <template is="dom-if" if="[[settings.printDecoration.signatureDataUri]]">
+            <img height="96" width="128" class="logo" src="[[settings.printDecoration.signatureDataUri]]" alt="signature">
+          </template>
+        </div>
+        <div class="type caption secondary" style="text-align: center; padding: 8px;">
+          <div><i><strong>prepared by: </strong>{{user.name}}</i></div>
+
+        </div>
+        <template is="dom-if" if="[[settings.flags.showFooterLine]]">
+          <div class="b-top">
+            <div class="type caption secondary">[[settings.printDecoration.footerLine]]</div>
+          </div>
+        </template>
+      </div>
+    
+      
+    </div>
+
+    <!-- Print Preview Area - end -->
+
+  </template>
+  <script>(function(){Polymer({is:"page-diabetes-record",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{EDIT_MODE_ON:{type:Boolean,notify:!0,value:!1},user:{type:Object,notify:!0,value:null},isPatientValid:{type:Boolean,notify:!0,value:!1},patient:{type:Object,notify:!0,value:null},patientSignupData:{type:Object,notify:!0,value:null},patientAddress:{type:Object,notify:!0,value:null},settings:{type:Object,notify:!0,value:null},selectedPatientInfoPage:{type:Number,notify:!0,value:0},sexSelectedIndex:{type:Number,value:0},genderList:{type:Array,value:function(){return["Male","Female","Other"]}},organization:{type:Object,notify:!0,value:null},dmStatusList:{type:Array,value:function(){return["new patient/diabetis","<1 year / diabetis","<1-5 year","6-10 years","11-15 years","16-20 years",">20 years"]}},typeOfTreatmentList:{type:Array,value:function(){return[{label:"No treatment",value:"No treatment"},{label:"Diet",value:"Diet"},{label:"Diet & OGLD",value:"Diet & OGLD"},{label:"Diet, OGLD & insulin",value:"Diet, OGLD & insulin"},{label:"Insulin only",value:"Insulin only"},{label:"Other",value:"Other"}]}},insulinTypeList:{type:Array,value:function(){return[{label:"Bolus (Mealtime Insulin)",value:"Bolus (Mealtime Insulin)"},{label:"Premix",value:"Premix"},{label:"Split Mix",value:"Split Mix"},{label:"Basal & Bolus",value:"Basal & Bolus"},{label:"Basal Plus",value:"Basal Plus"},{label:"Basal Only",value:"Basal Only"}]}},basalDrugList:{type:Array,value:function(){return[{label:"Insulatard 100 IU Vial",value:"Insulatard 100 IU Vial"},{label:"Insulatard Penfill",value:"Insulatard Penfill"},{label:"Levemir",value:"Levemir"},{label:"Tresiba",value:"Tresiba"},{label:"Victoza",value:"Victoza"},{label:"Insulatard Flexpen",value:"Insulatard Flexpen"}]}},bolusDrugList:{type:Array,value:function(){return[{label:"Actrapid Penfill",value:"Actrapid Penfill"},{label:"NovoRapid FlexPen",value:"NovoRapid FlexPen"},{label:"NovoRapid Penfill",value:"NovoRapid Penfill"},{label:"Actrapid 100 IU Vial",value:"Actrapid 100 IU Vial"},{label:"Actrapid FlexPen-Humean Insulin",value:"Actrapid FlexPen-Humean Insulin"}]}},premixDrugList:{type:Array,value:[{label:"Mixtard 30 100 IU Vial",value:"Mixtard 30 100 IU Vial"},{label:"Mixtard 30 Penfill",value:"Mixtard 30 Penfill"},{label:"Mixtard 50 Penfill",value:"Mixtard 50 Penfill"},{label:"NovoMix 30 FlexPen",value:"NovoMix 30 FlexPen"},{label:"Ryzodeg",value:"Ryzodeg"},{label:"NovoMix 30 Penfill",value:"NovoMix 30 Penfill"},{label:"Mixtard 30 FlexPen",value:"Mixtard 30 FlexPen"}]},otherInsulinDrugList:{type:Array,value:function(){return["Maxsuline N","Maxsuline 50/50","Maxsuline R","Maxsuline 30/70","Vibrenta","Glycet Mix","Ansulin N","Ansulin 50/50","Ansulin R","Ansulin 30/70","DIASULIN N","DIASULIN-50/50","DIASULIN-R","DIASULIN-30/70","GLARINE","ACILOG","ACILOG MIX","INSULET N","ISULET 50/50","INSULET-R","INSULET 30/70","INSULET GN","INSULET ASP","INSULET ASP MIX","INSUL N","INSUL-50/50","INSUL R","INSUL 30/70","INSUL GLARGINE","INSUL LISPRO","HUMULIN N","HUMULIN-R","HUMULIN 70/30","HUMALOG-MIX 25","HUMALOG-MIX-50","HUMALOG-KWIKPEN","INSUMAN-COMB","INSUMAN-BASAL","INSUMAN-RAPID","LANTUS","APIDRA","Actrapid FlexPen"]}},waistHipRatio:{type:Number,value:0,notify:!0},professionList:{type:Array,value:function(){return["Govt. employee","Non Govt. employye","Self employed","Student","House wife","Retired","Unemployed","Others"]}},expenditureList:{type:Array,value:function(){return["bellow 10,000","10,000-20,000","20,000-30,000","30,000-40,000","40,000-50,000","50,000 & Above"]}},maritalStatusList:{type:Array,value:function(){return["Married","Unmarried","Divorced","Widowed","Widower","Separated"]}},educationTypeList:{type:Array,value:function(){return["No Education","Primary","Secondary","College","Undergraduate","Post-Graduate"]}},ecgTypeList:{type:Array,value:function(){return["Normal","RBBB","LBBB","LVH","MI"]}}},_compareFn:function(e,t,i){return"<"===t?e<i:">"===t?e>i:"=="===t?e===i:">="===t?e>=i:"<="===t?e<=i:"!="===t?e!==i:void 0},_showComputedWestHipRatio:function(e,t){return e/t},_loadUser:function(){var e;if(e=app.db.find("user"),1===e.length)return this.user=e[0]},arrowBackButtonPressed:function(e){return this.domHost.navigateToPreviousPage()},saveButtonPressed:function(e){var t;return t=this.domHost.getPageParams(),null!==this.patient.serial&&"new"!==t.patient||(this.patient.serial=this.generateSerialForPatient()),this.patient.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.upsert("patient-list",this.patient,function(e){return function(t){var i;return i=t.serial,e.patient.serial===i}}(this)),this.domHost.showToast("Patient Saved"),this.domHost.__patientView__oneTimeSearchFilter=this.patient.serial,this.arrowBackButtonPressed()},$findCreator:function(e){return"me"},_computeAge:function(e){var t,i,a,n;return n=new Date,i=new Date(e),t=n.getFullYear()-i.getFullYear(),a=n.getMonth()-i.getMonth(),(a<0||0===a&&n.getDate()<i.getDate())&&t--,t},_makePatientSignUp:function(){return this.patient={name:"",password:"123456",emailOrPhone:"",dateOfBirth:null,effectiveRegion:"Bangladesh",doctorAccessPin:"0000",gender:"",allergy:"",bloodGroup:"",addressList:[{addressTitle:"Personal",addressType:"personal",flat:null,floor:null,plot:null,block:null,road:null,village:null,addressUnion:null,subdistrictName:null,addressDistrict:null,addressPostalOrZipCode:null,addressCityOrTown:null,addressLine1:null,addressLine2:null,stateOrProvince:null,addressCountry:null}],nationalIdCardNumber:null,belongOrganizationList:[{organizationId:null,patientIdbyOrganization:null}],diabeticRecord:{maritalStatus:null,education:null,expenditure:null,profession:null,numberOfChildren:null,patientHusbandName:"",patientFatherName:"",diabeticsInfo:{patientBookSerial:null,dmStatus:null,typeOfDiabetics:null,diabeticsDuration:null},clinicalInfoList:[{type:"height",name:"Height",value:null,unit:"cm",inputType:"number"},{type:"weight",name:"Weight",value:null,unit:"kg",inputType:"number"},{type:"bmi",name:"BMI",value:null,unit:"km/m2",inputType:"number"},{type:"waist",name:"Waist",value:0,unit:"cm",inputType:"number"},{type:"hip",name:"Hip",value:0,unit:"cm",inputType:"number"},{type:"waist-hip-ratio",name:"Waist Hip Ratio",value:0,unit:"",inputType:"number"},{type:"sbp",name:"SBP",value:null,unit:"mmHg",inputType:"number"},{type:"dbp",name:"DBP",value:null,unit:"mmHg",inputType:"number"}],laboratoryTestList:[{name:"hbA1c",value:null,unit:"%",isSelected:!1,costType:"free",inputType:"number"},{name:"FPG",value:null,unit:"mmol",isSelected:!1,costType:"free",inputType:"number"},{name:"2hPG/Post meal",value:null,unit:"mmol",isSelected:!1,costType:"free",inputType:"number"},{name:"RBS",value:null,unit:"mmol",isSelected:!1,costType:"free",inputType:"number"},{name:"Urine Acetone",value:null,unit:"+",isSelected:!1,costType:"free",inputType:"number"},{name:"Urine Albumine",value:null,unit:"",isSelected:!1,costType:"free",inputType:"number"},{name:"S. Creatinine",value:null,unit:"mg/dl",isSelected:!1,costType:"free",inputType:"number"},{name:"SGPT",value:null,unit:"Units per liter",isSelected:!1,costType:"free",inputType:"number"},{name:"HB",value:null,unit:"%",isSelected:!1,costType:"free",inputType:"number"},{name:"ECG",value:null,unit:"",isSelected:!1,costType:"free",inputType:"combo-box"},{name:"CHOL",value:null,unit:"mg/dl",isSelected:!1,costType:"free",inputType:"number"},{name:"LDL-C",value:null,unit:"mg/dl",isSelected:!1,costType:"free",inputType:"number"},{name:"HDL-C",value:null,unit:"mg/dl",isSelected:!1,costType:"free",inputType:"number"},{name:"Triglycerides",value:null,unit:"mg/dl",isSelected:!1,costType:"free",inputType:"number"}],complicationList:[{name:"Heart Disease",isSelected:!1},{name:"HHNS",isSelected:!1},{name:"Stroke",isSelected:!1},{name:"Foot Complication",isSelected:!1},{name:"Nuropathy",isSelected:!1},{name:"PVD",isSelected:!1},{name:"Retinopathy",isSelected:!1},{name:"Skin Disease",isSelected:!1},{name:"CKD",isSelected:!1},{name:"Gastro Complication",isSelected:!1},{name:"DKA",isSelected:!1},{name:"Hypoglycemia",isSelected:!1},{name:"HTN (Hypertension",isSelected:!1},{name:"Lipid Disorder",isSelected:!1}],currentTreatment:{typeOfTreatment:"",ogld:{ogldUsage:"no",ogldDrugList:[{ogldDrugName:"",drugDosage:""}]}},insulin:{insulinUsage:"no",insulinType:"",insulinTherapyList:[{therapyType:"Basal",drugName:"",preListedDrugPath:"basalDrugList",dosageList:[{time:"Morning",value:"",unit:"unit"},{time:"Noon",value:"",unit:"unit"},{time:"Night",value:"",unit:"unit"}]},{therapyType:"Bolus",drugName:"",preListedDrugPath:"bolusDrugList",dosageList:[{time:"Morning",value:"",unit:"unit"},{time:"Noon",value:"",unit:"unit"},{time:"Night",value:"",unit:"unit"}]},{therapyType:"Premix",drugName:"",preListedDrugPath:"premixDrugList",dosageList:[{time:"Morning",value:"",unit:"unit"},{time:"Noon",value:"",unit:"unit"},{time:"Night",value:"",unit:"unit"}]},{therapyType:"Other",drugName:"",preListedDrugPath:"otherInsulinDrugList",dosageList:[{time:"Morning",value:"",unit:"unit"},{time:"Noon",value:"",unit:"unit"},{time:"Night",value:"",unit:"unit"}]}]}}}},computeWaistHipRatio:function(){var e,t,i,a,n,l;for(l=0,e=0,n=this.patient.clinicalInfoList,i=0,a=n.length;i<a;i++)t=n[i],"waist"===t.type?l=parseInt(t.value):"hip"===t.type&&(e=parseInt(t.value));return this.waistHipRatio=l/e},_loadPatient:function(e){var t,i;return t=app.db.find("patient-list",function(t){var i;return i=t.serial,i===e}),1===t.length?(this.isPatientValid=!0,i=t[0],i.name=this.$getFullName(i.name),this.patient=i,this.EDIT_MODE_ON=!0):this._notifyInvalidPatient()},_notifyInvalidPatient:function(){return this.isPatientValid=!1,this.domHost.showModalDialog("Invalid Patient Provided")},getDefaultPasswordForPatientSignup:function(){return"123456"},createOrganizationSerialForPatient:function(e,t){var i,a,n;return n=e,a=n.match(/\b(\w)/g),i=a.join(""),i+t},calculateAge:function(e){var t,i,a,n;return a=e.detail.value,n=new Date(a).getFullYear(),i=(new Date).getFullYear(),t=i-n,this.ageInYears=t},makeDOBFromYears:function(e){var t,i;return t=e.target.value,i=(new Date).getFullYear(),i-=parseInt(t),this.set("patient.dateOfBirth",i+"-01-01")},printButtonPressed:function(e){return window.print()},saveBPData:function(e){var t,i,a,n;for(t={serial:null,visitSerial:null,createdByUserSerial:null,patientSerial:null,createdDatetimeStamp:null,lastModifiedDatetimeStamp:null,lastSyncedDatetimeStamp:null,data:{systolic:"",diastolic:"",random:"",unit:"mm Hg",flags:{flagAsError:!1}}},a=0,n=e.length;a<n;a++)i=e[a],"sbp"===i.type?t.data.systolic=parseInt(i.value):"dbp"===i.type&&(t.data.diastolic=parseInt(i.value));return t.serial=this.generateSerialForVitals("BP-REG"),t.lastModifiedDatetimeStamp=lib.datetime.now(),t.createdByUserSerial=this.user.serial,t.patientSerial=this.patient.serial,t.createdDatetimeStamp=lib.datetime.now(),app.db.upsert("patient-vitals-blood-pressure",t,function(e){return function(e){var i;return i=e.serial,t.serial===i}}(this))},saveToOtherTest:function(e){var t;return t={serial:this.generateSerialForVitals("OT"),createdByUserSerial:this.user.serial,patientSerial:this.patient.serial,createdDatetimeStamp:lib.datetime.now(),lastModifiedDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:0,data:{date:lib.datetime.mkDate(),name:e.name,institution:null,result:e.value,unit:e.unit,attachmentSerialList:[]}},app.db.upsert("patient-test-other",t,function(e){return function(e){var i;return i=e.serial,t.serial===i}}(this))},saveLabDataToOtherTest:function(e){var t,i,a,n;for(n=[],i=0,a=e.length;i<a;i++)t=e[i],t.value?n.push(this.saveToOtherTest(t)):n.push(void 0);return n},savePatientClinicalData:function(e,t){return this.saveBPData(e.clinicalInfoList),this.saveLabDataToOtherTest(e.laboratoryTestList),t()},navigatedIn:function(){var e;return this.selectedPatientInfoPage=0,e=this.domHost.getPageParams(),this.organization=this.getCurrentOrganization(),this.organization||this.domHost.navigateToPage("#/select-organization"),this._loadUser(),this.settings=this._getSettings(),"new"===e.patient?(this._makePatientSignUp(),this.isPatientValid=!0):this._loadPatient(e.patient)},addOgldDrug:function(e){var t;return t=e.model,this.push("patient.currentTreatment.ogld.ogldDrugList",{ogldDrugName:"",drugDosage:""})},deleteSelectedOgldDrug:function(e){var t,i;return i=this.patient.currentTreatment.ogld.ogldDrugList.length,1===i?this.domHost.showToast("Sorry! Add Another field & TRY AGAIN."):(t=e.model.index,this.splice("patient.currentTreatment.ogld.ogldDrugList",t,1))},standardPatientSignupPressed:function(e){var t;return this.patient.name&&this.patient.password&&this.patient.emailOrPhone&&this.patient.dateOfBirth?(t=this.patient,t.name=this._makeNameObject(t.name),t.belongOrganizationList[0].organizationId=this.organization.idOnServer,this._callBDEMRPatientSignupApi(t)):void this.domHost.showToast("Please Fill Up Required Information")},_callBDEMRPatientSignupApi:function(e){var t,i;return i=e.emailOrPhone,t={patient:e,apiKey:this.user.apiKey},this.callApi("/bdemr-birdem-patient-registration",t,function(t){return function(a,n){return n.hasError?t.domHost.showModalDialog(n.error.message):t.savePatientClinicalData(e,function(){return t.domHost.showModalDialog("Patient Created Successfully!"),t.domHost.navigateToPage("#/patient-manager/query:"+i)})}}(this))},updatePatientDetails:function(e){var t;return this.patient.name&&this.patient.dateOfBirth?(this.patient.gender=this.genderList[this.sexSelectedIndex],t=this.patient,t.name=this._makeNameObject(t.name),this._callBDEMRPatientDetailsUpdateApi(t)):void this.domHost.showToast("Please Fill Up Required Information")},_importPatient:function(e,t,i){return this.callApi("/bdemr-patient-import-new",{serial:e,pin:t,doctorName:this.user.name,organizationId:this.organization.idOnServer},function(e){return function(t,a){var n,l,r,s;return a.hasError?e.domHost.showModalDialog(a.error.message):(s=a.data,1!==s.length?e.domHost.showModalDialog("Unknown error occurred."):(r=s[0],l=app.db.find("patient-list",function(e){var t;return t=e.serial,t===r.serial})[0]._id,l&&app.db.remove("patient-list",l),r.flags={isImported:!1,isLocalOnly:!1,isOnlineOnly:!1},r.flags.isImported=!0,e.domHost.setCurrentPatientsDetails(r),n=app.db.insert("patient-list",r),i(n)))}}(this))},_callBDEMRPatientDetailsUpdateApi:function(e){var t;return t={patient:e,apiKey:this.user.apiKey},this.callApi("/bdemr-birdem-patient-details-update",t,function(t){return function(i,a){var n;return a.hasError?t.domHost.showModalDialog(a.error.message):(n=app.db.find("offline-patient-pin",function(t){var i;return i=t.serial,i===e.serial})[0],e.idOnServer&&(null!=n?n.pin:void 0)?t._importPatient(e.serial,n.pin,function(i){return t.savePatientClinicalData(e,function(){return t.domHost.showToast("Patient Updated!"),t.arrowBackButtonPressed()})}):void 0)}}(this))},_makeSettings:function(){return this.settings={createdByUserSerial:this.user.serial,lastModifiedDatetimeStamp:0,createdDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:null,serial:this.user.serial,printDecoration:{leftSideLine1:"My Institution",leftSideLine2:"My Institution Address",leftSideLine3:"My Institution Contact",rightSideLine1:"My Name",rightSideLine2:"My Degrees",rightSideLine3:"My Contact",fullVisitHeadline:"Print Full Visit/Discharge Certificate",footerLine:"A simple message on the bottom",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT",otherSettings:{patientSignUpDefaultPassword:"123456"}}},_getSettings:function(){var e,t;return e=app.db.find("settings"),t=0===e.length?this._makeSettings():e[0]},_saveSettings:function(){return this.settings.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.upsert("settings",this.settings,function(e){return function(t){var i;return i=t.serial,e.settings.serial===i}}(this))},_generateRandomString:function(){var e,t,i;for(i="",t="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",e=0;e<255;)i+=t.charAt(Math.floor(Math.random()*t.length)),e++;return i},createOfflinePatient:function(e){var t;return t={},t={name:(e.name.first+" "+(e.name.middle||"")+" "+(e.name.last||"")).replace("  "," "),serial:e.serial,idOnServer:"Unregistered",source:"local",lastSyncedDatetimeStamp:0,lastModifiedDatetimeStamp:lib.datetime.mkDate(lib.datetime.now()),createdDatetimeStamp:lib.datetime.mkDate(lib.datetime.now()),createdByUserSerial:this.user.serial,email:this._checkIfEmailAddress(e.emailOrPhone),phone:this._checkIfPhoneNumber(e.emailOrPhone),address:{line1:e.addressList[0].addressLine1,line2:e.addressList[0].addressLine2,postalCode:e.addressList[0].addressPostalOrZipCode,cityOrTown:e.addressList[0].addressCityOrTown,stateOrProvince:e.addressList[0].stateOrProvince,country:e.addressList[0].addressCountry},dob:e.dateOfBirth,nIdOrSsn:""+(e.nationalIdCardNumber||""),doctorsPrivateNote:""+(e.doctorQuickNotes||""),hospitalNumber:""+(e.hospitalSerial||""),initialVisitDate:""+(e.patientInitialVisitDate||""),lastVisitDate:""+(e.lastVisitDate||""),admissionDate:""+(e.admissionDate||"")},app.db.insert("patient-list",t)},_checkIfEmailAddress:function(e){var t;return t=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,t.test(e)?e:""},_checkIfPhoneNumber:function(e){var t;return t=/^[0-9]{11,11}(-[0-9]*){0,1}$/,t.test(e)?e:""},_savePatientOfflineSignupDetails:function(e){return e.serial=this.generateSerialForPatient(),app.db.insert("unregsitered-patient-details",e),this.domHost.showModalDialog("Patient Registered Successfully Offline."),this.createOfflinePatient(e),this._makePatientSignUp(),this.domHost.navigateToPage("#/patient-manager/unregsiterd:"+e.emailOrPhone)},networkCheck:function(){var e;return e=!!navigator.onLine},_makeNameObject:function(e){var t,i,a,n,l,r,s;return"string"==typeof e?(e=e.trim(),s=e.split("."),r=s.pop(),i=0===s.length?"":s.join(".").trim(),s=r.trim().split(" "),l={},s.length<=1?t=s[0]:(t=s.shift(),a=s.pop(),n=s.join(" "),""===n&&(n=null),""===a&&(a=null)),""===i&&(i=null),l.honorifics=i,l.first=t,l.middle=n,l.last=a,l):e},navigatedOut:function(){return this.patient=null,this.isPatientValid=!1}})}).call(this);
+//# sourceMappingURL=page-diabetes-record.coffee-compiled.js.map</script>
+</dom-module>

@@ -1,0 +1,180 @@
+<!-- paper-* --><!-- style --><!-- behavior --><!-- element --><dom-module id="page-visit-invoice">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      paper-button {
+        background: white;
+      }
+
+      .invoice-card {
+        background: white;
+        /*
+        margin: 4px;
+        padding: 4px;
+        */
+      }
+
+      paper-card {
+        margin: 4px;
+      }
+
+      .row {
+        margin-bottom: 10px;
+      }
+
+      .key {
+        padding-right: 10px;
+      }
+
+      .val {
+        font-weight: bold;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container vertical layout">
+
+        <paper-card>
+          <div class="card-content">
+            <div class="invoice-card vertical layout">
+
+              <div class="horizontal layout row">
+                <paper-input value="{{invoice.data.nameOfInstitution}}" label="Name of Institution" class="flex"></paper-input>
+              </div>
+
+              <div class="horizontal layout row">
+                <paper-input value="{{invoice.data.nameOfPatient}}" label="Name of Patient" class="flex"></paper-input>
+              </div>
+
+              <div class="horizontal layout row">
+                <paper-input value="{{invoice.data.billingPersonsName}}" label="Name of Billing Person" class="flex"></paper-input>
+              </div>
+
+              <div class="horizontal layout row">
+                <paper-dropdown-menu label="Service Rendered" class="flex">
+                  <paper-listbox class="dropdown-content" selected="{{invoice.data.serviceRenderedSelectedIndex}}" on-iron-select="_getService">
+                    <template is="dom-repeat" items="[[serviceRenderedOptionList]]" as="item">
+                      <paper-item>[[item]]</paper-item>
+                    </template>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+                <template is="dom-if" if="[[$isLast(serviceRenderedOptionList, invoice.data.serviceRenderedSelectedIndex)]]">
+                  <paper-input value="{{invoice.data.customServiceRendered}}" label="Service Name" class="flex"></paper-input>
+                </template>
+              </div>
+
+              <div class="horizontal layout row">
+                <paper-dropdown-menu label="Source of the Patient" class="flex">
+                  <paper-listbox class="dropdown-content" selected="{{invoice.data.sourceOfPatientSelectedIndex}}">
+                    <template is="dom-repeat" items="[[sourceOfPatientOptionList]]" as="item">
+                      <paper-item>[[item]]</paper-item>
+                    </template>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+                <template is="dom-if" if="[[$isLast(sourceOfPatientOptionList, invoice.data.sourceOfPatientSelectedIndex)]]">
+                  <paper-input value="{{invoice.data.customSourceOfPatient}}" label="Source of the patient" class="flex"></paper-input>
+                </template>
+              </div>
+
+              <div class="horizontal layout row">
+                <paper-input type="date" value="{{invoice.data.datePerformed}}" label="Date Performed" class="flex"></paper-input>
+                <paper-input type="date" value="{{invoice.data.dateDue}}" label="Date Due" class="flex"></paper-input>
+              </div>
+
+              <div class="horizontal layout row">
+                <paper-input type="time" value="{{invoice.data.timeFrom}}" label="Time From" class="flex"></paper-input>
+                <paper-input type="time" value="{{invoice.data.timeTo}}" label="Time To" class="flex"></paper-input>
+              </div>
+
+              <div class="horizontal layout row">
+                <paper-input value="{{invoice.data.comments}}" label="Comments" class="flex"></paper-input>
+              </div>
+
+            </div>
+          </div>
+        </paper-card>
+
+        <paper-card>
+          <div class="card-content">
+            <div class="invoice-card vertical layout">
+
+              <div class="horizontal layout row">
+                <paper-input type="number" value="{{invoice.data.feeBilledAmount}}" label="Fee Billed Amount (in BDT)" class="flex"></paper-input>
+              </div>
+
+              <div class="horizontal layout row center">
+                <paper-input readonly="" value="[[$toReadbleStatus(invoice.data.paymentStatus)]]" label="Payment Status" class="flex"></paper-input>
+                <paper-checkbox checked="{{invoice.data.isCleared}}">Cleared</paper-checkbox>
+              </div>
+
+            </div>
+          </div>
+        </paper-card>
+
+        <paper-card>
+          <div class="card-content">
+            <div class="invoice-card vertical layout">
+
+              <div class="horizontal layout row center">
+                <paper-checkbox checked="{{invoice.data.isThereAnyPaymentMade}}">Payments Made</paper-checkbox>
+              </div>
+
+              <template is="dom-if" if="[[invoice.data.isThereAnyPaymentMade]]">
+
+                <div class="horizontal layout row">
+                  <paper-dropdown-menu label="Fee Paid By" class="flex">
+                    <paper-listbox class="dropdown-content" selected="{{invoice.data.feePaidBySelectedIndex}}">
+                      <template is="dom-repeat" items="[[feePaidByOptionList]]" as="item">
+                        <paper-item>[[item]]</paper-item>
+                      </template>
+                    </paper-listbox>
+                  </paper-dropdown-menu>
+                  <template is="dom-if" if="[[$isLast(feePaidByOptionList, invoice.data.feePaidBySelectedIndex)]]">
+                    <paper-input value="{{invoice.data.customSourceOfPatient}}" label="Fee Paid By" class="flex"></paper-input>
+                  </template>
+                </div>
+
+                <div class="horizontal layout row">
+                  <paper-input type="date" value="{{invoice.data.feePaidOn}}" label="Fee Paid On" class="flex"></paper-input>
+                </div>
+
+                <div class="horizontal layout row">
+                  <paper-input type="number" value="{{invoice.data.feePaidAmount}}" label="Fee Paid Amount" class="flex"></paper-input>
+                </div>
+
+                <div class="horizontal layout row">
+                  <paper-input type="number" value="[[$calculateRemaining(invoice.data.feePaidAmount, invoice.data.feeBilledAmount)]]" label="Remaining" class="flex"></paper-input>
+                </div>
+
+              </template>
+
+            </div>
+          </div>
+          
+        </paper-card>
+
+        <div class="m-top-8">
+          <paper-button raised="" on-tap="savePressed">Save</paper-button>
+          <paper-button raised="" on-tap="printPressed">Save and Print</paper-button>
+          <paper-button raised="" on-tap="sendtoPatientPressed">Save and Send To Patient</paper-button>
+        </div>
+
+      </div>
+      <!--Limiting Container Ends-->
+
+    </div>
+    <!--Master Container Ends-->
+
+  </template>
+  <script>(function(){Polymer({is:"page-visit-invoice",behaviors:[app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling,app.behaviors.commonComputes],$isLast:function(i,t){return t===i.length-1},$toReadbleStatus:function(i){return this.possiblePaymentStatusses[i]},$calculateRemaining:function(i,t){return parseInt(t)-parseInt(i)},possiblePaymentStatusses:{notBilled:"Not Billed",unpaid:"Unpaid",partiallyPaid:"Partially Paid",fullyPaid:"Fully Paid"},properties:{invoice:{type:Object},user:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},visit:{type:Object,notify:!0,value:null},feePaidByOptionList:{type:Array,value:function(){return["Hospital/Clinic","Surgeon","Patient","Insurance","Custom"]}},serviceRenderedOptionList:{type:Array,value:function(){return["Doctor Visit","2nd Visit","Online Phone Consultation","In Patient (Hospital/Clinic Visits)","Report Assessment","Custom"]}},sourceOfPatientOptionList:{type:Array,value:function(){return["Hospital/Clinic","Surgeon","Insurance","Custom"]}}},observers:["ComputePaymentStatus(invoice.data.isCleared, invoice.data.feeBilledAmount, invoice.data.feePaidAmount)"],ComputePaymentStatus:function(i,t,e){return t=parseInt(t)||0,e=parseInt(e)||0,i||t<e?this.set("invoice.data.paymentStatus","fullyPaid"):0===t?this.set("invoice.data.paymentStatus","notBilled"):0===e?this.set("invoice.data.paymentStatus","unpaid"):this.set("invoice.data.paymentStatus","partiallyPaid")},navigatedIn:function(){var i,t;return i=this.getCurrentOrganization(),i||this.domHost.navigateToPage("#/select-organization"),this._loadUser(),t=this.domHost.getPageParams(),t.visit?(this._loadVisit(t.visit),t.patient?(this._loadPatient(t.patient),"new"===t.invoice?this._makeNewInvoice():this._loadInvoice(t.invoice)):void this._notifyInvalidPatient()):void this._notifyInvalidVisit()},_makeNewInvoice:function(){return this.invoice={serial:this.generateSerialForinvoice(),lastModifiedDatetimeStamp:0,createdDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:0,createdByUserSerial:this.user.serial,visitSerial:this.visit.serial,patientSerial:this.patient.serial,doctorName:this.$getFullName(this.user.name),doctorSpeciality:this.getDoctorSpeciality(),data:{nameOfInstitution:"",nameOfPatient:this.patient.name,billingPersonsName:function(i){return function(){return app.db.find("user")[0].name}}(this)(),serviceRenderedSelectedIndex:0,customServiceRendered:"",sourceOfPatientSelectedIndex:0,customSourceOfPatient:"",datePerformed:lib.datetime.mkDate(lib.datetime.now()),dateDue:lib.datetime.mkDate(lib.datetime.now()),timeFrom:function(i){return function(){return lib.datetime.mkTime(lib.datetime.now())}}(this)(),timeTo:function(i){return function(){return lib.datetime.mkTime(lib.datetime.now())}}(this)(),isCleared:!1,paymentStatus:"notBilled",feeBilledAmount:0,isThereAnyPaymentMade:!1,feePaidAmount:0,feePaidOn:lib.datetime.mkDate(lib.datetime.now()),feePaidBySelectedIndex:0,comments:""}}},_loadUser:function(){var i;if(i=app.db.find("user"),1===i.length)return this.user=i[0]},_loadPatient:function(i){var t;return t=app.db.find("patient-list",function(t){var e;return e=t.serial,e===i}),1===t.length?this.patient=t[0]:this._notifyInvalidPatient()},_loadInvoice:function(i){var t;return t=app.db.find("visit-invoice",function(t){var e;return e=t.serial,e===i}),1===t.length?(this.invoice=t[0],!0):(this._notifyInvalidInvoice(),!1)},_loadVisit:function(i){var t;return t=app.db.find("doctor-visit",function(t){var e;return e=t.serial,e===i}),1===t.length?(this.visit=t[0],!0):(this._notifyInvalidVisit(),!1)},_notifyInvalidPatient:function(){return this.domHost.showModalDialog("Invalid Patient Provided")},_notifyInvalidInvoice:function(){return this.domHost.showModalDialog("Invalid Invoice Provided")},_notifyInvalidVisit:function(){return this.domHost.showModalDialog("Invalid Visit Provided")},getDoctorSpeciality:function(){return 0!==this.user.specializationList.length?this.user.specializationList[0].specializationTitle:"not provided yet"},_updateVisit:function(i){return null===this.visit.invoiceSerial&&(this.visit.invoiceSerial=i),this.visit.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.upsert("doctor-visit",this.visit,function(i){return function(t){var e;return e=t.serial,i.visit.serial===e}}(this))},_saveInvoice:function(){return this.invoice.lastModifiedDatetimeStamp=lib.datetime.now(),this._updateVisit(this.invoice.serial),app.db.upsert("visit-invoice",this.invoice,function(i){return function(t){var e;return e=t.serial,i.invoice.serial===e}}(this))},_getService:function(i){return this.invoice.data.serviceRenderedSelectedIndex=i.target.selected},savePressed:function(i){return this._saveInvoice(),this.domHost.showToast("Invoice Saved")},printPressed:function(i){var t;if(this._saveInvoice(),t=this.domHost.getPageParams(),"new"!==t["visit-invoice"])return this.domHost.navigateToPage("#/print-invoice/visit:"+this.visit.serial+"/patient:"+this.patient.serial+"/invoice:"+this.invoice.serial)},sendtoPatientPressed:function(i){return this._saveInvoice(),this.domHost._syncOnlyInvoice(function(i){return function(){return i._sendNotification("A New Invoice Has been issued to you",i.patient.idOnServer),i.domHost.showToast("Saved & Sent to Patient")}}(this))},arrowBackButtonPressed:function(i){return this.domHost.navigateToPreviousPage()},_sendNotification:function(i,t){var e,n;return n=this.getCurrentUser(),e={operation:"notify-single",apiKey:n.apiKey,notificationCategory:"general",notificationMessage:i,notificationTargetId:t,sender:n.name},this.domHost.ws.send(JSON.stringify(e))}})}).call(this);
+//# sourceMappingURL=page-visit-invoice.coffee-compiled.js.map</script>
+</dom-module>

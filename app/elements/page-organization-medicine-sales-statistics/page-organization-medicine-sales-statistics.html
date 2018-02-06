@@ -1,0 +1,244 @@
+<!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-organization-medicine-sales-statistics">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      .organization-info-card-counter {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #777777;
+      }
+
+      .organization-info-cards {
+        @apply(--layout-vertical);
+        /*@apply(--layout-center);*/
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 20px;
+      }
+
+      .organization-info-cards .row {
+        margin-left: 10px;
+        /*margin-right: 10px;*/
+        margin-top: 10px;
+      }
+
+      .organization-info-cards .hr {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: 1px;
+        /*width: 100px;*/
+        background: #dddddd;
+      }
+
+      .organization-info-cards .row .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .organization-info-cards .row .modifier.online {
+        background: #757575;
+      }
+
+      .organization-info-cards .row .modifier.local-only {
+        background: #039BE5;
+      }
+
+      .organization-info-cards .row .modifier.locally-updated {
+        background: #009688;
+      }
+
+      .organization-info-cards .row .modifier.imported {
+        background: #4CAF50;
+      }
+
+      .info-row {
+        margin-top: 10px;
+      }
+
+      .top-info-row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .serial-number {
+        background: #37474F;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .address1 {
+        margin-right: 10px;
+      }
+
+      .break-on-tablet {
+        @apply(--layout-horizontal);
+      }
+
+      @media screen and (max-width: 740px) {
+        .break-on-tablet {
+          display: block;
+        }
+      }
+
+      .val {
+        text-decoration: underline;
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .primary {
+        background: var(--brand-primary-color);
+        color: white;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <template is="dom-if" if="{{!isOrganizationValid}}">
+          Organization invalid
+        </template>
+
+        <!-- editing organization - start -->
+        <template is="dom-if" if="{{isOrganizationValid}}">
+
+          <div class="organization-info-card-counter">
+            <div>Organization: [[organization.name]]</div>
+          </div>
+
+          <paper-card class="organization-info-cards">
+
+            <div class="card-custom-header">
+              <div class="layout horizontal center">
+                <div class="title flex">Search Filters</div>
+              </div>
+            </div>
+
+            <div class="card-content">
+              <div class="layout horizontal center">
+                <paper-radio-button on-change="setSearchByBrandName" checked="[[shouldSearchByBrandName]]"></paper-radio-button>
+                <paper-input type="text" value="{{searchFilterBrandName}}" label="Brand Name" disabled="[[!shouldSearchByBrandName]]"></paper-input>
+                <div style="margin:12px;">or</div>
+                <paper-radio-button on-change="setDontSearchByBrandName" checked="[[!shouldSearchByBrandName]]"></paper-radio-button>
+                <paper-input type="text" value="{{searchFilterGenericName}}" label="Generic Name" disabled="[[shouldSearchByBrandName]]"></paper-input>
+                <paper-input type="text" value="{{searchFilterNameOfManufacturer}}" label="Name of Manufacturer" disabled="[[shouldSearchByBrandName]]"></paper-input>
+              </div>
+              <div class="layout horizontal center">
+                <vaadin-date-picker label="Chose Start Date" value="{{searchFilterStartDate}}"></vaadin-date-picker>
+                <vaadin-date-picker label="Chose End Date" value="{{searchFilterEndDate}}" min="[[searchFilterStartDate]]" disabled$="[[!searchFilterStartDate]]"></vaadin-date-picker>
+                <paper-input type="text" value="{{searchFilterDistrictName}}" label="District Name"></paper-input>
+                <paper-checkbox checked="{{filterByDoctorSerial}}">Include only my prescriptions</paper-checkbox>
+                <paper-button class="primary flex" on-tap="searchButtonTapped">Search</paper-button>
+              </div>
+            </div>
+          </paper-card>
+
+          <template is="dom-if" if="[[statistics]]">
+            <paper-card class="organization-info-cards">
+
+              <div class="card-custom-header">
+                <div class="layout horizontal center">
+                  <div class="title flex">Statistics</div>
+                </div>
+              </div>
+
+              <div class="card-content">
+                <strong class="statistics-item">[[statistics.brandName]]</strong> by
+                <strong class="statistics-item">[[statistics.manufacturer]]</strong> has been prescribed <strong class="statistics-item">[[statistics.prescriptionCountWithBrandName]]</strong> times out of a total of
+                <strong class="statistics-item">[[statistics.prescriptionCountWithGenericName]]</strong> prescriptions of <strong class="statistics-item">[[statistics.genericName]]</strong>. Recommendation Percentage is <strong class="statistics-item">[[statistics.recommendationPercentage]]</strong>%.
+              </div>
+
+            </paper-card>
+          </template>
+          <template is="dom-if" if="[[statistics]]">
+            <paper-card class="organization-info-cards">
+
+              <div class="card-custom-header">
+                <div class="layout horizontal center">
+                  <div class="title flex">Currently there are [[marketShareList.length]] manufacturers marketing [[statistics.genericName]].</div>
+                </div>
+              </div>
+
+              <template is="dom-if" if="[[marketShareList.length]]">
+                <div class="p-0">
+                  <paper-listbox>
+
+                    <template id="assistant-list-repeater" is="dom-repeat" items="[[marketShareList]]" as="marketShare">
+                      <paper-item class="custom layout horizontal center">
+
+                        <div class="flex m-left-8">
+                          <div class="type body capitalize">[[marketShare.manufacturer]]</div>
+                          <div class="type caption secondary">
+                            <div class="layout vertical">
+                              <template is="dom-repeat" items="[[marketShare.brandSalesList]]" as="brandSale" index-as="brandSaleIndex">
+                                <div>
+                                  <template is="dom-if" if="[[$equals(brandSale.brand, statistics.brandName)]]">*&nbsp;</template>[[brandSale.brand]] = [[brandSale.count]]</div>
+                              </template>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="layout horizontal m-horizontal-4 wrap">
+                          <div class="type caption">[[marketShare.count]]</div>
+
+                          <!-- <div class="type caption">([[marketShare.effectiveRegion]])</div> -->
+                        </div>
+
+                      </paper-item>
+                    </template>
+
+                  </paper-listbox>
+
+                </div>
+              </template>
+            </paper-card>
+          </template>
+
+        </template>
+        <!-- editing organization - end -->
+
+      </div>
+
+    </div>
+
+  </template>
+  <script>(function(){var a=[].indexOf||function(a){for(var i=0,t=this.length;i<t;i++)if(i in this&&this[i]===a)return i;return-1};Polymer({is:"page-organization-medicine-sales-statistics",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{user:{type:Object,notify:!0,value:null},isOrganizationValid:{type:Boolean,notify:!0,value:!1},organization:{type:Object,notify:!0,value:null},marketShareList:{type:Array,value:function(){return[]}},shouldSearchByBrandName:{type:Boolean,value:!0},searchFilterOrganizationIndex:{type:Number,value:function(){return 0}}},setSearchByBrandName:function(a){return this.shouldSearchByBrandName=!0},setDontSearchByBrandName:function(a){return this.shouldSearchByBrandName=!1},_loadUser:function(){var a;if(a=app.db.find("user"),1===a.length)return this.user=a[0]},_loadOrganization:function(a,i){var t;return t={apiKey:this.user.apiKey,idList:[a]},this.callApi("/bdemr-organization-list-organizations-by-ids",t,function(a){return function(t,r){return r.hasError?a.domHost.showModalDialog(r.error.message):1!==r.data.matchingOrganizationList.length?void a.domHost.showModalDialog("Invalid Organization"):(a.set("organization",r.data.matchingOrganizationList[0]),a.set("isOrganizationValid",!0),i())}}(this))},arrowBackButtonPressed:function(a){return this.domHost.navigateToPreviousPage()},_notifyInvalidOrganization:function(){return this.isOrganizationValid=!1,this.domHost.showModalDialog("Invalid Organization Provided")},navigatedIn:function(){var a;return this._loadUser(),a=this.domHost.getPageParams(),a.organization?this._loadOrganization(a.organization,function(a){return function(){return"pass"}}(this)):void this._notifyInvalidOrganization()},navigatedOut:function(){return this.organization=null,this.isOrganizationValid=!1,this.authorizedRecordList=[]},searchButtonTapped:function(a){var i;return this.statistics=null,this.marketShareList=[],i={apiKey:this.user.apiKey,organizationId:this.organization.idOnServer,filters:{filterByDoctorSerial:!!this.filterByDoctorSerial&&this.user.serial,shouldSearchByBrandName:this.shouldSearchByBrandName,searchFilterBrandName:this.searchFilterBrandName||null,searchFilterGenericName:this.searchFilterGenericName||null,searchFilterNameOfManufacturer:this.searchFilterNameOfManufacturer||null,searchFilterStartDate:this.searchFilterStartDate||null,searchFilterEndDate:this.searchFilterEndDate||null,searchFilterDistrictName:this.searchFilterDistrictName||null}},this.callApi("/bdemr-organization-get-medicine-sales-statistics",i,function(a){return function(i,t){return t.hasError?a.domHost.showModalDialog(t.error.message):(a.statistics=t.data.statistics,a.marketShareList=t.data.marketShareList)}}(this))},$in:function(i,t){return a.call(t,i)>=0}})}).call(this);
+//# sourceMappingURL=page-organization-medicine-sales-statistics.coffee-compiled.js.map</script>
+</dom-module>

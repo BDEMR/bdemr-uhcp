@@ -1,0 +1,341 @@
+<!--Theme--><div hidden="" by-polymer-bundler=""><link rel="import" href="../custom-vital-search/custom-vital-search.html"></div><dom-module id="page-patient-vitals-editor">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment common-style">
+
+      .tabs-container {
+        background-color: var(--brand-primary-color);
+      }
+
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--brand-primary-color);
+      }
+
+
+      paper-dropdown-menu {
+        width: 100%;
+      }
+
+      .table{
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table td{
+        vertical-align: middle;
+        padding: 10px;
+        border-top: 1px solid var(--paper-grey-300);
+      }
+
+      .table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .table tr td:nth-child(2){
+        color: var(--paper-grey-600);
+        font-size: 14px;
+      }
+
+      .block{display: block}
+
+
+      .pagination li{
+        display: inline-block;
+        list-style: none;
+      }
+
+      .pagination paper-button {
+        min-width: 2em;
+        font-size: 14px;
+        background-color: var(--google-grey-100);
+      }
+
+      .filter paper-input {
+        --paper-input-container: {
+          width: 200px;
+          padding: 0;
+        }
+        --paper-input-container-label: {
+          font-size: 13px;
+          text-align: right;
+        }
+        --paper-input-container-input: {
+          font-size: 13px;
+          text-align: right;
+        }
+        --paper-input-container-underline: {
+          display: none;
+        }
+        --paper-input-container-underline-focus: {
+          display: none;
+        }
+      }
+
+      .filter paper-icon-button {
+        width: 36px;
+        height: 36px
+      }
+
+      .filter .name {
+        --paper-input-container: {
+          width: 100px;
+        }
+      }
+
+      @media only screen and (min-width : 320px) and (max-width : 480px){
+        .table td, .table th{
+          vertical-align: top;
+        }
+      }
+
+      #tabBp {
+        background-color: var(--paper-cyan-400);
+      }
+      #tabHr {
+        background-color: var(--paper-cyan-400);
+
+      }
+      #tabBmi {
+        background-color: var(--paper-cyan-400);
+      }
+      #tabRr {
+        background-color: var(--paper-cyan-400);
+      }
+      #tabSpo2 {
+        background-color: var(--paper-cyan-400);
+      }
+      #tabTemp {
+        background-color: var(--paper-cyan-400);
+      }
+    </style>
+
+
+
+    <div class="tabs-container">
+      <paper-tabs class="main-tabs" id="tabs" selected="{{selectedSubViewIndex}}" scrollable="" fit-container="">
+        <paper-tab>[[$TRANSLATE('BP',LANG)]]</paper-tab>
+        <paper-tab>[[$TRANSLATE('HR',LANG)]]</paper-tab>
+        <paper-tab>[[$TRANSLATE('BMI',LANG)]]</paper-tab>
+        <paper-tab>[[$TRANSLATE('RR',LANG)]]</paper-tab>
+        <paper-tab>[[$TRANSLATE('SpO2',LANG)]]</paper-tab>
+        <paper-tab>[[$TRANSLATE('Temp',LANG)]]</paper-tab>
+      </paper-tabs>
+    </div>
+
+    
+    <div class="master-container">
+
+      <div class="limiting-container">
+        <iron-pages selected="{{selectedSubViewIndex}}">
+
+          <!-- Add Blood Pressure -->
+          <div>
+            <paper-card heading="[[$TRANSLATE('Add Blood Pressure',LANG)]]">
+              <div class="card-content">
+                <div class="form-group">
+                  <div><paper-input id="systolic" label="[[$TRANSLATE('Systolic',LANG)]]" type="number" min="0" max="300" value="{{bloodPressure.data.systolic}}" auto-validate="" error-message="Value must be within 1-300"></paper-input></div>
+                  <div><paper-input id="diastolic" label="[[$TRANSLATE('Diastolic',LANG)]]" type="number" min="0" max="200" value="{{bloodPressure.data.diastolic}}" disabled$="[[!bloodPressure.data.systolic]]" auto-validate="" error-message="Value must not be greater than 200 and Systolic Value"></paper-input></div>
+                  <div><paper-input label="[[$TRANSLATE('Unit',LANG)]]" readonly="" value="[[$TRANSLATE('mm Hg',LANG)]]"></paper-input></div>
+                </div>
+              </div>
+              <div class="card-actions">
+                <paper-button class="btn btn-default" on-tap="_makeBloodPressure">[[$TRANSLATE('Clear',LANG)]]</paper-button>
+                <paper-button class="btn btn-success" on-tap="addBloodPressureButtonClicked">[[$TRANSLATE('Add',LANG)]]</paper-button>
+              </div>
+            </paper-card>
+          </div>
+          <!-- /Add Blood Pressure -->
+
+          <!-- Add Heart Rate -->
+          <div>
+            <paper-card class="" heading="[[$TRANSLATE('Add Heart Rate',LANG)]]">
+              <div class="card-content">
+                <div class="form-group">
+                  <div><paper-input label="[[$TRANSLATE('Heart Rate',LANG)]]" type="number" min="20" max="225" auto-validate="" value="{{pulseRate.data.bpm}}" error-message="Value must be within 20-225"><div class="text-muted" suffix="">[[$TRANSLATE('bpm',LANG)]]</div></paper-input></div>
+                </div>
+              </div>
+              <div class="card-actions">
+                <paper-button class="btn btn-default" on-tap="_makePulseRate">[[$TRANSLATE('Clear',LANG)]]</paper-button>
+                <paper-button class="btn btn-success" on-tap="addPulseRateButtonClicked">[[$TRANSLATE('Add',LANG)]]</paper-button>
+              </div>
+            </paper-card>
+          </div>
+          <!-- /Add Heart Rate -->
+
+          <!-- Add BMI -->
+          <div>
+            <paper-card class="" heading="[[$TRANSLATE('BMI',LANG)]]">
+              <div class="card-content">
+                
+                <div class="form-group">
+                  <div>
+                    <paper-dropdown-menu label="[[$TRANSLATE('Unit',LANG)]]">
+                      <paper-menu class="dropdown-content" selected="{{heightUnitSelectedIndex}}" on-iron-select="heightUnitSelectedIndexChanged">
+                        <paper-item>[[$TRANSLATE('cm',LANG)]]</paper-item>
+                        <paper-item>[[$TRANSLATE('metre',LANG)]]</paper-item>
+                        <paper-item>[[$TRANSLATE('ft/inch',LANG)]]</paper-item>
+                      </paper-menu>
+                    </paper-dropdown-menu>
+                  </div>
+                  <template is="dom-if" if="[[ifChosenCmMtAsHeight(heightUnitSelectedIndex)]]">
+                    <div><paper-input label="[[$TRANSLATE('Height',LANG)]]" type="number" value="{{bmi.data.height}}" error-message="Value must be within 250"></paper-input></div>
+                  </template>
+                  <!--If Chosen Ft/inch as Unit-->
+                  <template is="dom-if" if="[[ifChosenFtInchAsHeight(heightUnitSelectedIndex)]]">
+                    <div><paper-input label="[[$TRANSLATE('Ft',LANG)]]" type="number" max="8" min="0" auto-validate="" value="{{bmi.data.heightInFt}}" error-message="Value must be within 8"></paper-input></div>
+                    <div><paper-input label="[[$TRANSLATE('Inch',LANG)]]" type="number" max="12" min="0" auto-validate="" value="{{bmi.data.heightInInch}}" error-message="Value must be within 12"></paper-input></div>
+                  </template>
+                </div>
+
+                <div class="form-group">
+                  <div><paper-dropdown-menu label="[[$TRANSLATE('Unit',LANG)]]">
+                    <paper-menu class="dropdown-content" selected="{{weightUnitSelectedIndex}}" on-iron-select="weightUnitSelectedIndexChanged">
+                      <paper-item>[[$TRANSLATE('kgs',LANG)]]</paper-item>
+                      <paper-item>[[$TRANSLATE('lbs',LANG)]]</paper-item>
+                      <paper-item>stone-lbs</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                  </div>
+                  <div><paper-input label="[[$TRANSLATE('Weight',LANG)]]" type="number" value="{{bmi.data.weight}}" min="0"></paper-input></div>
+                </div>
+              </div>
+              <div class="card-actions">
+                <paper-button class="btn btn-default" on-tap="_makeBmi">[[$TRANSLATE('Clear',LANG)]]</paper-button>
+                <paper-button class="btn btn-success" on-tap="calculateBMIButtonClicked">[[$TRANSLATE('Calculate',LANG)]]</paper-button>
+              </div>
+            </paper-card>
+          </div>
+          <!-- /Add BMI -->
+
+          <!-- Add Respiratory Rate -->
+          <div>
+            <paper-card class="" heading="[[$TRANSLATE('Add Respiratory Rate',LANG)]]">
+              <div class="card-content">
+                <div class="form-group">
+                  <div>
+                    <paper-input id="rr" label="[[$TRANSLATE('Respiratory Rate',LANG)]]" type="number" min="1" max="65" auto-validate="" value="{{respiratoryRate.data.respiratoryRate}}" error-message="Value Must be within 1-65">
+                      <div class="text-muted" suffix="">[[$TRANSLATE('rpm',LANG)]]</div>
+                    </paper-input>
+                  </div>
+                </div>
+              </div>
+              <div class="card-actions">
+                <paper-button class="btn btn-default" on-tap="_makeRespiratoryRate">[[$TRANSLATE('Clear',LANG)]]</paper-button>
+                <paper-button class="btn btn-success" on-tap="addRespiratoryRateButtonClicked">[[$TRANSLATE('Add',LANG)]]</paper-button>
+              </div>
+            </paper-card>
+          </div>
+          <!-- /Add Respiratory Rate -->
+
+          <!-- Add Oxygen Saturation -->
+          <div>
+            <paper-card class="" heading="[[$TRANSLATE('Add Oxygen Saturation',LANG)]]">
+              <div class="card-content">
+                <div class="form-group">
+                  <div>
+                    <paper-input label="[[$TRANSLATE('Oxygen Saturation',LANG)]]" type="number" min="0" max="100" auto-validate="" value="{{oxygenSaturation.data.spO2Percentage}}" error-message="Value must be within 100"><div class="text-muted" suffix="">%</div>
+                    </paper-input>
+                  </div>
+                </div>
+              </div>
+              <div class="card-actions">
+                <paper-button class="btn btn-default" on-tap="_makeOxygenSaturation">[[$TRANSLATE('Clear',LANG)]]</paper-button>
+                <paper-button class="btn btn-success" on-tap="addOxygenSaturationButtonClicked">[[$TRANSLATE('Add',LANG)]]</paper-button>
+              </div>
+            </paper-card>
+          </div>
+          <!-- /Add Oxygen Saturation -->
+
+          <!-- Add Temperature -->
+          <div>
+            <paper-card class="" heading="Add [[$TRANSLATE('Temperature',LANG)]]">
+              <div class="card-content">
+                <div class="form-group">
+                  <div>
+                    <template is="dom-if" if="[[isTempCelsius(tempUnitSelectedIndex)]]">
+                      <paper-input label="[[$TRANSLATE('Temperature in Celsius',LANG)]]" type="number" max="48" auto-validate="" value="{{temperature.data.temperature}}" error-message="Value must be within 48"></paper-input>
+                    </template>
+                    <template is="dom-if" if="[[!isTempCelsius(tempUnitSelectedIndex)]]">
+                      <paper-input label="[[$TRANSLATE('Temperature in Fahrenheit',LANG)]]" type="number" max="115" auto-validate="" value="{{temperature.data.temperature}}" error-message="Value must be within 115"></paper-input>
+                    </template>
+                  </div>
+                  <div>
+                    <paper-dropdown-menu label="[[$TRANSLATE('Unit',LANG)]]">
+                      <paper-menu class="dropdown-content" selected="{{tempUnitSelectedIndex}}" on-iron-select="tempUnitSelected">
+                        <paper-item>[[$TRANSLATE('°C',LANG)]]</paper-item>
+                        <paper-item>[[$TRANSLATE('°F',LANG)]]</paper-item>
+                      </paper-menu>
+                    </paper-dropdown-menu>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="card-actions">
+                <paper-button class="btn btn-default" on-tap="_makeTemperature">Clear</paper-button>
+                <paper-button class="btn btn-success" on-tap="addTemperatureButtonClicked">Add</paper-button>
+              </div>
+            </paper-card>
+          </div>
+          <!-- /Add Temperature -->
+
+        </iron-pages>
+
+        <paper-card class="m-top-16" heading="Added Vitals">
+          <template is="dom-if" if="[[_isEmpty(addedVitalList.length)]]">
+            <div class="card-content layout horizontal center center-justified">
+              <div class="type body secondary">-- no data available --</div>
+            </div>
+          </template>
+          <template is="dom-if" if="[[!_isEmpty(addedVitalList.length)]]">
+            <div class="p-0">
+              <paper-listbox>
+
+                <template id="added-vital-list-repeater" is="dom-repeat" items="{{addedVitalList}}">
+
+
+                  <paper-item class="custom layout horizontal center">
+
+                    <div class="flex layout horizontal center">
+                      <div class="type caption secondary">[[_returnSerial(index)]]</div>
+                      <div class="m-left-16 flex">
+                        <div class="type body">{{item.vitalType}}: [[_pritifyVitalData(item)]]</div>
+                        <div class="type caption secondary">{{_formatDateTime(item.vitalObject.createdDatetimeStamp)}}</div>
+                      </div>
+                    </div>
+                    
+                    <paper-icon-button icon="delete" on-tap="_deleteAddedVitalItemClicked"></paper-icon-button>
+
+                  </paper-item>
+                </template>
+
+              </paper-listbox>
+            </div>
+          </template>
+
+          <div class="card-actions">
+            <paper-button raised="" class="dropdown-trigger colored" alt="options" on-tap="_addedVitalsSaveButtonPressed">Save<iron-icon class="icon medium-small m-left-8" icon="add"></iron-icon></paper-button>
+          </div>
+      
+
+        </paper-card>
+
+        
+
+      </div>
+
+    </div>
+
+    
+
+  </template>
+  <script>(function(){Polymer({is:"page-patient-vitals-editor",behaviors:[app.behaviors.pageLike,app.behaviors.dbUsing,app.behaviors.translating],properties:{patient:{type:Object,notify:!0,value:null},selectedSubViewIndex:{type:Number,value:0,notify:!0},heightUnitSelectedIndex:{type:Number,value:0,notify:!0},weightUnitSelectedIndex:{type:Number,value:0,notify:!0},tempUnitSelectedIndex:{type:Number,value:0,notify:!0},bloodPressure:{type:Object,notify:!0,value:{}},pulseRate:{type:Object,notify:!0,value:{}},bmi:{type:Object,notify:!0,value:{}},respiratoryRate:{type:Object,notify:!0,rpm:{}},oxygenSaturation:{type:Object,notify:!0,value:{}},temperature:{type:Object,notify:!0,value:{}},addedVitalList:{type:Array,value:[]}},_makeBloodPressure:function(){return this.bloodPressure={serial:null,createdByUserSerial:null,patientSerial:null,createdDatetimeStamp:null,lastModifiedDatetimeStamp:null,lastSyncedDatetimeStamp:null,data:{systolic:"",diastolic:"",random:"",unit:"mm Hg",flags:{flagAsError:!1}}}},_makePulseRate:function(){return this.pulseRate={serial:null,createdByUserSerial:null,patientSerial:null,createdDatetimeStamp:null,lastModifiedDatetimeStamp:null,lastSyncedDatetimeStamp:null,data:{bpm:"",unit:"bpm",flags:{flagAsError:!1}}}},_makeBmi:function(){return this.bmi={serial:null,createdByUserSerial:null,patientSerial:null,createdDatetimeStamp:null,lastModifiedDatetimeStamp:null,lastSyncedDatetimeStamp:null,data:{height:"",heightInFt:"",heightInInch:"",heightUnit:"",weight:"",weightUnit:"",calculatedBMI:"",flags:{flagAsError:!1}}}},_makeRespiratoryRate:function(){return this.respiratoryRate={serial:null,createdByUserSerial:null,patientSerial:null,createdDatetimeStamp:null,lastModifiedDatetimeStamp:null,lastSyncedDatetimeStamp:null,data:{respiratoryRate:"",unit:"rpm",flags:{flagAsError:!1}}}},_makeOxygenSaturation:function(){return this.oxygenSaturation={serial:null,createdByUserSerial:null,patientSerial:null,createdDatetimeStamp:null,lastModifiedDatetimeStamp:null,lastSyncedDatetimeStamp:null,data:{spO2Percentage:"",unit:"%",flags:{flagAsError:!1}}}},_makeTemperature:function(){return this.temperature={serial:null,createdByUserSerial:null,patientSerial:null,createdDatetimeStamp:null,lastModifiedDatetimeStamp:null,lastSyncedDatetimeStamp:null,data:{temperature:"",unit:"",flags:{flagAsError:!1}}}},_loadPatient:function(t){var e;return e=app.db.find("patient-list",function(e){var i;return i=e.serial,i===t}),1===e.length?(this.isPatientValid=!0,this.patient=e[0]):this._notifyInvalidPatient()},navigatedIn:function(){var t,e,i;return this.set("selectedSubViewIndex",0),t=this.getCurrentOrganization(),t||this.domHost.navigateToPage("#/select-organization"),e=this.domHost.getPageParams(),this._loadPatient(e.patient),this.addedVitalList=[],this._makeBloodPressure(),this._makePulseRate(),this._makeBmi(),this._makeRespiratoryRate(),this._makeOxygenSaturation(),this._makeTemperature(),i=parseInt(lib.localStorage.getItem("lastSelectedTempUnit")),i?this.set("tempUnitSelectedIndex",i):this.set("tempUnitSelectedIndex",0),this.userSerial=app.db.find("user")[0].serial},_sortByDate:function(t,e){return t.lastModifiedDatetimeStamp<e.lastModifiedDatetimeStamp?1:t.lastModifiedDatetimeStamp>e.lastModifiedDatetimeStamp?-1:void 0},_returnSerial:function(t){return t+1},_formatDateTime:function(t){return lib.datetime.format(t,"mmm d, yyyy h:MMTT")},_isEmptyTable:function(t){if(t.length<=0)return!0},_isEmpty:function(t){return 0===t},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},_saveBloodPressure:function(t){return app.db.upsert("patient-vitals-blood-pressure",t,function(e){return function(e){var i;return i=e.serial,t.serial===i}}(this))},_savePulseRate:function(t){return app.db.upsert("patient-vitals-pulse-rate",t,function(e){return function(e){var i;return i=e.serial,t.serial===i}}(this))},_saveBmi:function(t){return app.db.upsert("patient-vitals-bmi",t,function(e){return function(e){var i;return i=e.serial,t.serial===i}}(this))},_saveRespiratoryRate:function(t){return app.db.upsert("patient-vitals-respiratory-rate",t,function(e){return function(e){var i;return i=e.serial,t.serial===i}}(this))},_saveOxygenSaturation:function(t){return app.db.upsert("patient-vitals-spo2",t,function(e){return function(e){var i;return i=e.serial,t.serial===i}}(this))},_saveTemperature:function(t){return app.db.upsert("patient-vitals-temperature",t,function(e){return function(e){var i;return i=e.serial,t.serial===i}}(this))},_addToVitalList:function(t,e){return this.push("addedVitalList",{vitalType:e,vitalObject:t})},_pritifyVitalData:function(t){var e,i;return"Blood Pressure"===t.vitalType?"Systolic/Diastolic: "+t.vitalObject.data.systolic+"/"+t.vitalObject.data.diastolic:"Heart Rate"===t.vitalType?t.vitalObject.data.bpm+" "+t.vitalObject.data.unit:"BMI"===t.vitalType?(e="ft/inch"===t.vitalObject.data.heightUnit?t.vitalObject.data.heightInFt+"'"+t.vitalObject.data.heightInInch+"'' "+t.vitalObject.data.heightUnit:t.vitalObject.data.height+" "+t.vitalObject.data.heightUnit,i=t.vitalObject.data.weight+t.vitalObject.data.weightUnit,t.vitalObject.data.calculatedBMI+", Height: "+e+", Weight: "+i):"Respirtory Rate"===t.vitalType?t.vitalObject.data.respiratoryRate+t.vitalObject.data.unit:"SpO2"===t.vitalType?t.vitalObject.data.spO2Percentage+t.vitalObject.data.unit:"Temperature"===t.vitalType?t.vitalObject.data.temperature+t.vitalObject.data.unit:void 0},_addedVitalsSaveButtonPressed:function(){var t,e,i,a;if(0===this.addedVitalList.length)return this.domHost.showToast("Please Add atleast 1 Vital.");for(a=this.addedVitalList,t=0,i=a.length;t<i;t++)e=a[t],"Blood Pressure"===e.vitalType?this._saveBloodPressure(e.vitalObject):"Heart Rate"===e.vitalType?this._savePulseRate(e.vitalObject):"BMI"===e.vitalType?this._saveBmi(e.vitalObject):"Respirtory Rate"===e.vitalType?this._saveRespiratoryRate(e.vitalObject):"SpO2"===e.vitalType?this._saveOxygenSaturation(e.vitalObject):"Temperature"===e.vitalType&&this._saveTemperature(e.vitalObject);return this.domHost.showToast(this.addedVitalList.length+" Vitals Saved."),this.arrowBackButtonPressed()},_deleteAddedVitalItemClicked:function(t){var e;return e=t.model.index,this.splice("addedVitalList",e,1),this.domHost.showToast("Vital Deleted!")},addBloodPressureButtonClicked:function(){var t,e;return e=parseInt(this.get("bloodPressure.data.systolic")),t=parseInt(this.get("bloodPressure.data.diastolic")),e&&t?1<=e&&e<=300?1<=t&&t<=200?t<=e?this.addBP():void this.domHost.showToast("Diastolic value must not be greater than Systolic Value"):void this.domHost.showToast("Diastolic Value must be betwen 1-200"):void this.domHost.showToast("Systolic value must be betwen 1-300"):void this.domHost.showToast("Please Enter All The Data")},addBP:function(){return this.set("bloodPressure.serial",this.generateSerialForVitals("BP")),this.set("bloodPressure.lastModifiedDatetimeStamp",lib.datetime.now()),this.set("bloodPressure.createdByUserSerial",this.userSerial),this.set("bloodPressure.patientSerial",this.patient.serial),this.set("bloodPressure.createdDatetimeStamp",lib.datetime.now()),this._addToVitalList(this.bloodPressure,"Blood Pressure"),this.domHost.addActivityLog("blood-pressure","add",{patientSerial:this.patient.serial,createdByUserSerial:this.userSerial,createdDatetimeStamp:lib.datetime.now()}),this.domHost.showToast("Added Successfully"),this._makeBloodPressure()},addPulseRateButtonClicked:function(){var t;return t=parseInt(this.get("pulseRate.data.bpm")),t?20<=t&&t<=225?(this.set("pulseRate.lastModifiedDatetimeStamp",lib.datetime.now()),this.set("pulseRate.serial",this.generateSerialForVitals("P")),this.set("pulseRate.createdByUserSerial",this.userSerial),this.set("pulseRate.patientSerial",this.patient.serial),this.set("pulseRate.createdDatetimeStamp",lib.datetime.now()),this._addToVitalList(this.pulseRate,"Heart Rate"),this.domHost.addActivityLog("pulse-rate","add",{patientSerial:this.patient.serial,createdByUserSerial:this.userSerial,createdDatetimeStamp:lib.datetime.now()}),this.domHost.showToast("Added Successfully"),this._makePulseRate()):void 0:void this.domHost.showToast("Please Enter BPM")},isHeightCmOrM:function(t){if("ft/inch"!==t)return!0},isHeightFtInch:function(t){if("ft/inch"===t)return!0},heightUnitSelectedIndexChanged:function(){return 0===this.heightUnitSelectedIndex?this.set("bmi.data.heightUnit","cm"):1===this.heightUnitSelectedIndex?this.set("bmi.data.heightUnit","m"):this.set("bmi.data.heightUnit","ft/inch")},weightUnitSelectedIndexChanged:function(){return 0===this.weightUnitSelectedIndex?this.set("bmi.data.weightUnit","kg"):1===this.weightUnitSelectedIndex?this.set("bmi.data.weightUnit","lbs"):this.set("bmi.data.weightUnit","st-lbs")},ifChosenCmMtAsHeight:function(t){return 2!==t||0===t},ifChosenFtInchAsHeight:function(t){return 2===t},_convertHeightToMeter:function(){var t,e;return e=this.get("bmi.data.heightUnit"),t=0,"cm"===e?t=.01*this.get("bmi.data.height"):"m"===e?t=this.get("bmi.data.height"):"ft/inch"===e&&(t=.3048*this.get("bmi.data.heightInFt")+.0254*this.get("bmi.data.heightInInch")),t},_convertWeightToKg:function(){var t,e;return e=this.get("bmi.data.weightUnit"),t=0,"lbs"===e?t=.453592*this.get("bmi.data.weight"):"st-lbs"===e?t=6.35029*this.get("bmi.data.weight"):"kg"===e&&(t=this.get("bmi.data.weight")),t},_calculateBMI:function(t,e){return e/t/t},_calculateBMIVerdict:function(t){return 0!==t&&t?t<18.5?"Underweight":18.5<=t&&t<24.9?"Normal":25<=t&&t<29.9?"Overweight":"Obese":"Pending"},calculateBMIButtonClicked:function(){var t,e,i;return(this.bmi.data.height||this.bmi.data.heightFt)&&this.bmi.data.weight||this.domHost.showToast("Please Enter All The Data"),(this.bmi.data.height>0||this.bmi.data.heightInFt>0)&&this.bmi.data.weight>0?(i=this._convertWeightToKg(),e=this._convertHeightToMeter(),t=this._calculateBMI(e,i),this.set("bmi.data.calculatedBMI",t.toPrecision(3)),this.set("bmi.lastModifiedDatetimeStamp",lib.datetime.now()),this.set("bmi.serial",this.generateSerialForVitals("BMI")),this.set("bmi.createdByUserSerial",this.userSerial),this.set("bmi.patientSerial",this.patient.serial),this.set("bmi.createdDatetimeStamp",lib.datetime.now()),this.domHost.addActivityLog("bmi","add",{patientSerial:this.patient.serial,createdByUserSerial:this.userSerial,createdDatetimeStamp:lib.datetime.now()}),this._addToVitalList(this.bmi,"BMI")):this.domHost.showToast("Correct Required Input")},addRespiratoryRateButtonClicked:function(t){var e;return this.respiratoryRate.data.respiratoryRate||this.domHost.showToast("Please Enter RPM"),1<(e=this.respiratoryRate.data.respiratoryRate)&&e<=65?(this.set("respiratoryRate.lastModifiedDatetimeStamp",lib.datetime.now()),this.set("respiratoryRate.serial",this.generateSerialForVitals("RR")),this.set("respiratoryRate.createdByUserSerial",this.userSerial),this.set("respiratoryRate.patientSerial",this.patient.serial),this.set("respiratoryRate.createdDatetimeStamp",lib.datetime.now()),this._addToVitalList(this.respiratoryRate,"Respirtory Rate"),this.domHost.addActivityLog("respiratory-rate","add",{patientSerial:this.patient.serial,createdByUserSerial:this.userSerial,createdDatetimeStamp:lib.datetime.now()}),this.domHost.showToast("Added Successfully"),this._makeRespiratoryRate()):this.$.rr.invalid=!0},addOxygenSaturationButtonClicked:function(t){var e;if(this.oxygenSaturation.data.spO2Percentage||this.domHost.showToast("Please Enter Percentage"),0<=(e=this.oxygenSaturation.data.spO2Percentage)&&e<=100)return this.set("oxygenSaturation.lastModifiedDatetimeStamp",lib.datetime.now()),this.set("oxygenSaturation.serial",this.generateSerialForVitals("OS")),this.set("oxygenSaturation.createdByUserSerial",this.userSerial),this.set("oxygenSaturation.patientSerial",this.patient.serial),this.set("oxygenSaturation.createdDatetimeStamp",lib.datetime.now()),this._addToVitalList(this.oxygenSaturation,"SpO2"),this.domHost.addActivityLog("oxygen-saturation","add",{patientSerial:this.patient.serial,createdByUserSerial:this.userSerial,createdDatetimeStamp:lib.datetime.now()}),this.domHost.showToast("Added Successfully"),this._makeOxygenSaturation()},isTempCelsius:function(t){return 0===t},tempUnitSelected:function(t){return lib.localStorage.setItem("lastSelectedTempUnit",this.tempUnitSelectedIndex),0===this.tempUnitSelectedIndex?this.set("temperature.data.unit","°C"):this.set("temperature.data.unit","°F")},addTemperatureButtonClicked:function(t){var e;return e=parseInt(this.get("temperature.data.temperature")),e||this.domHost.showToast("Please Enter value"),this.tempUnitSelectedIndex?0<=e&&e<=115?this.addTemperature():this.domHost.showToast("Correct Required Input"):0<=e&&e<=48?this.addTemperature():this.domHost.showToast("Correct Required Input")},addTemperature:function(){return null===this.temperature.data.unit&&(0===this.tempUnitSelectedIndex?this.set("temperature.data.unit","°C"):this.set("temperature.data.unit","°F")),this.set("temperature.lastModifiedDatetimeStamp",lib.datetime.now()),this.set("temperature.serial",this.generateSerialForVitals("T")),this.set("temperature.createdByUserSerial",this.userSerial),this.set("temperature.patientSerial",this.patient.serial),this.set("temperature.createdDatetimeStamp",lib.datetime.now()),this._addToVitalList(this.temperature,"Temperature"),this.domHost.addActivityLog("temperature","add",{patientSerial:this.patient.serial,createdByUserSerial:this.userSerial,createdDatetimeStamp:lib.datetime.now(),temperature:this.temparature}),this.domHost.showToast("Added Successfully"),this._makeTemperature()}})}).call(this);
+//# sourceMappingURL=page-patient-vitals-editor.coffee-compiled.js.map</script>
+</dom-module>

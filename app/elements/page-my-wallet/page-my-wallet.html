@@ -1,0 +1,241 @@
+<!-- Iron elements --><!-- Paper elements --><!-- Required behaviors --><!-- Commong Styles --><dom-module id="page-my-wallet">
+
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment common-style">
+      /*util classes*/
+
+      .m-left-8 {
+        margin-left: 8px;
+      }
+
+      .m-right-8 {
+        margin-right: 8px;
+      }
+
+      .p-0 {
+        padding: 0 !important;
+      }
+
+      .type.body {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+      }
+
+      .type.body-lead {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 28px;
+      }
+
+      .type.caption {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+      }
+
+      .type.text-bold {
+        font-weight: bold;
+      }
+
+      .type.secondary {
+        color: rgba(0, 0, 0, .54) !important;
+      }
+
+      /*paper element*/
+
+      paper-button.colored {
+        background-color: var(--brand-primary-color);
+        color: #fff;
+      }
+
+      paper-dialog {
+        min-width: 320px;
+      }
+
+      paper-listbox {
+        padding: 0 !important;
+      }
+
+      paper-item.custom {
+        border-top: 1px solid #eee !important;
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+      }
+
+      paper-item.custom:first-child {
+        border-top: none !important;
+      }
+
+      /*custom class*/
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--brand-primary-color);
+      }
+
+      .card-sub-header {
+        padding: 8px 16px;
+        background-color: #f7f7f7;
+        border-bottom: 1px solid #eee;
+      }
+    </style>
+
+    <!-- Card - Transaction History - start -->
+    <div class="master-container">
+
+      <div class="limiting-container">
+        <paper-card>
+          <div class="card-custom-header">
+            <div class="layout horizontal justified center">
+              <div class="title">
+                <div>[[$TRANSLATE('Balance',LANG)]]:<span class="m-left-8">[[_fixedToTwoDecimal(walletTransaction.balance)]] {{walletTransaction.nativeCurrency}}</span></div>
+                <div class="type caption-2">SMS Balance: [[userSmsBalance]]</div>
+              </div>
+              <paper-menu-button class="p-0" horizontal-align="right">
+                <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
+                <paper-menu class="dropdown-content">
+
+                  <paper-item on-tap="showAddFundsDialog">Add Funds</paper-item>
+                  <paper-item on-tap="showBuySmsDialog">Buy Bulk SMS</paper-item>
+                  <paper-item on-tap="showSendMoneyDialog">Send Money</paper-item>
+                  <paper-item on-tap="showValidedVoucherDialog">Valided Voucher</paper-item>
+                  <paper-item on-tap="showRedeemVoucherDialog">Redeem Voucher</paper-item>
+
+                </paper-menu>
+              </paper-menu-button>
+            </div>
+          </div>
+          <div class="card-sub-header horizontal layout center">
+            <iron-icon icon="history" class="m-right-8"></iron-icon>
+            <div class="type body-lead">Transaction History</div>
+          </div>
+
+          <template is="dom-if" if="[[$isEmptyArray(walletTransactionList.length)]]">
+            <div class="card-content layout horizontal center center-justified">
+              <div class="type body secondary">-- empty --</div>
+            </div>
+          </template>
+          <template is="dom-if" if="[[!$isEmptyArray(walletTransactionList.length)]]">
+
+            <paper-listbox>
+
+              <template is="dom-repeat" items="[[walletTransactionList]]">
+                <paper-item class="custom layout horizontal center">
+                  <div class="type caption secondary">[[$returnSerial(index)]].</div>
+                  <div class="flex m-left-8">
+                    <div class="type body">{{item.notes}}</div>
+                    <div class="type caption secondary">[[$mkDateTime(item.createdDatetimeStamp)]]</div>
+                  </div>
+                  <div class="type body">{{item.currency}} {{item.amount}}</div>
+                </paper-item>
+
+              </template>
+
+            </paper-listbox>
+
+          </template>
+        </paper-card>
+        <!-- Card - Transaction History - end -->
+
+        <!-- Dialog for - Add Fund(s) - start -->
+        <paper-dialog id="dialogAddFund">
+          <div class="type body-lead" style="color: green;">
+            <iron-icon src="../../images/icons/ico_add_funds_b.png" class="m-right-8"></iron-icon>Add Fund</div>
+          <div class="horizontal layout">
+            <paper-input type="number" class="flex m-right-8" label="Amount" value="{{addFund.amountToAdd}}"></paper-input>
+            <paper-dropdown-menu label="Currency" disabled="">
+              <paper-listbox class="dropdown-content " selected="{{currencyIndex}} " on-iron-select="_currencyValueChanged ">
+                <template is="dom-repeat " items="{{currencyList}} ">
+                  <paper-item>{{item}}</paper-item>
+                </template>
+
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
+          <paper-textarea label="Note" value="{{addFund.notes}}"></paper-textarea>
+          <div class="buttons">
+            <paper-button dialog-dismiss="">Cancel</paper-button>
+            <paper-button class="colored" on-click="addFundRequest" autofocus="" raised="">Proceed to Purchase</paper-button>
+          </div>
+        </paper-dialog>
+        <!-- Dialog for - Add Funds - end -->
+
+        <!-- Dialog for - Send Money(s) - start -->
+        <paper-dialog id="dialogSendMoney">
+          <div class="type body-lead" style="color: green;">
+            <iron-icon src="../../images/icons/ico_add_funds_b.png" class="m-right-8"></iron-icon>Send Money</div>
+          <paper-input type="text" label="Recipients Email/Phone" value="{{sendMoney.recipientsEmailOrPhone}}"></paper-input>
+          <paper-input type="number" label="Amount" value="{{sendMoney.amountInBdt}}"></paper-input>
+          <paper-textarea label="Note" value="{{sendMoney.notes}}"></paper-textarea>
+          <div class="buttons">
+            <paper-button dialog-dismiss="">Cancel</paper-button>
+            <paper-button class="colored" on-click="sendMoneyRequest" autofocus="" raised="">Send</paper-button>
+          </div>
+        </paper-dialog>
+        <!-- Dialog for - Send Money - end -->
+
+        <!-- Dialog for - Valided Voucher - start -->
+        <paper-dialog id="dialogValidedVoucher">
+          <div class="type body-lead" style="color: green;">
+            <iron-icon src="../../images/icons/ico_add_funds_b.png" class="m-right-8"></iron-icon>Valided Voucher</div>
+          <paper-input type="text" label="Enter your Voucher" value="{{validedVoucher.voucherCode}}"></paper-input>
+          <div class="buttons">
+            <paper-button dialog-dismiss="">Cancel</paper-button>
+            <paper-button class="colored" on-click="sendValidedVoucherRequest" autofocus="" raised="">Check</paper-button>
+          </div>
+        </paper-dialog>
+        <!-- Dialog for - Valided Voucher - end -->
+
+        <!-- Dialog for - Redeem Voucher - start -->
+        <paper-dialog id="dialogRedeemVoucher">
+          <div class="type body-lead" style="color: green;">
+            <iron-icon src="../../images/icons/ico_add_funds_b.png" class="m-right-8"></iron-icon>Redeem Voucher</div>
+          <paper-input type="text" label="Enter your Code" value="{{redeemVoucher.voucherCode}}"></paper-input>
+          <div class="buttons">
+            <paper-button dialog-dismiss="">Cancel</paper-button>
+            <paper-button class="colored" on-click="sendRedeemVoucherRequest" autofocus="" raised="">Redeem</paper-button>
+          </div>
+        </paper-dialog>
+        <!-- Dialog for - Redeem Voucher - end -->
+
+
+        <!-- Dialog for - Bulk SMS(s) - start -->
+        <paper-dialog id="dialogBulkSms">
+          <div class="type body-lead">Buy SMS</div>
+          <div class="horizontal layout">
+            <paper-input type="number" class="flex" label="quantity" value="{{bulkSms.quantity}}" on-keyup="quntityEntered" required="">
+              <div suffix="">sms</div>
+            </paper-input>
+          </div>
+
+          <div class="type body text-success">Calculated Amount is: <strong>{{bulkSms.currency}} {{bulkSms.calcAmount}}/=</strong></div>
+
+          <div class="horizontal layout">
+            <paper-dropdown-menu label="For" class="flex" value="{{smsUserType}}">
+              <paper-listbox class="dropdown-content" selected="0">
+                <paper-item>Organization</paper-item>
+                <paper-item>Personal</paper-item>
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
+
+          <div class="buttons m-top-24">
+            <paper-button dialog-dismiss="">Cancel</paper-button>
+            <paper-button class="colored" on-click="buyBulkSmsBtnPressed" autofocus="" raised="">Proceed</paper-button>
+          </div>
+        </paper-dialog>
+        <!-- Dialog for - Bulk SMS - end -->
+      </div>
+    </div>
+  </template>
+  <script>(function(){Polymer({is:"page-my-wallet",behaviors:[app.behaviors.pageLike,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.apiCalling,app.behaviors.commonComputes],properties:{walletTransaction:{type:Object,notify:!0,value:null},addFund:{type:Object,notify:!0,value:null},user:{type:Object,notify:!0,value:null},currencyList:{type:Array,notify:!0,value:["BDT","USD"]},currencyIndex:{type:Number,notify:!0,value:0},walletTransactionList:{type:Array,notify:!0,value:function(){return[]}},currentOrganization:{type:Object,notify:!0,value:null},smsUserType:{type:String,notify:!0,value:null},bulkSms:{type:Object,notify:!0,value:null},userSmsBalance:{type:Number,notify:!0,value:0}},_loadUser:function(){var e;if(e=app.db.find("user"),1===e.length)return this.user=e[0]},loadTransactionHistory:function(){var e;return e={apiKey:this.user.apiKey},this.callApi("/bdemr-wallet-get-balance-and-transaction-details",e,function(e){return function(t,n){return n.hasError?e.domHost.showModalDialog(n.error.message):(e.walletTransaction=n.data,e.walletTransactionList=e.walletTransaction.transactionList)}}(this))},_fixedToTwoDecimal:function(e){return parseFloat(e).toFixed(2)},_makeAddFunds:function(){return this.addFund={apiKey:null,amountToAdd:0,currency:"BDT",notes:"",clientIdentifier:"bdemr-patient"}},showAddFundsDialog:function(){return this.$$("#dialogAddFund").toggle()},addFundRequest:function(){return this.addFund.apiKey=this.user.apiKey,this.addFund.amountToAdd=Number(this.addFund.amountToAdd),this.callApi("/bdemr-wallet-add-funds",this.addFund,function(e){return function(t,n){return n.hasError?e.domHost.showModalDialog(n.error.message):(e._makeAddFunds(),e.$$("#dialogAddFund").close(),window.location.href=n.data.redirectionUrl)}}(this))},_makeSendMoney:function(){return this.sendMoney={apiKey:null,recipientsEmailOrPhone:"",amountInBdt:0,notes:""}},showSendMoneyDialog:function(){return this.$$("#dialogSendMoney").toggle()},sendMoneyRequest:function(){return this.sendMoney.apiKey=this.user.apiKey,this.sendMoney.amountInBdt=Number(this.sendMoney.amountInBdt),this.callApi("/bdemr-wallet-send-money",this.sendMoney,function(e){return function(t,n){return n.hasError?e.domHost.showModalDialog(n.error.message):(e._makeSendMoney(),e.loadTransactionHistory(),e.$$("#dialogSendMoney").close(),e.domHost.showModalDialog("Amount has been sent successfully!"))}}(this))},_makeValidedVoucher:function(){return this.validedVoucher={apiKey:null,voucherCode:""}},showValidedVoucherDialog:function(){return this.$$("#dialogValidedVoucher").toggle()},sendValidedVoucherRequest:function(){return this.validedVoucher.apiKey=this.user.apiKey,this.callApi("/bdemr-com-voucher-validate",this.sendMoney,function(e){return function(t,n){return n.hasError?e.domHost.showModalDialog(n.error.message):e.domHost.showModalDialog("Your Voucher Code:"+e.validedVoucher.voucherCode+" has been sent successfully!"),e._makeValidedVoucher(),e.$$("#dialogValidedVoucher").close()}}(this))},_makeRedeemVoucher:function(){return this.redeemVoucher={apiKey:null,voucherCode:""}},showRedeemVoucherDialog:function(){return this.$$("#dialogRedeemVoucher").toggle()},sendRedeemVoucherRequest:function(){return this.redeemVoucher.apiKey=this.user.apiKey,this.callApi("/bdemr-wallet-redeem-voucher",this.redeemVoucher,function(e){return function(t,n){return n.hasError?"No data found"===n.error.message&&e.domHost.showModalDialog("Your provieded voucher code is invalid!"):e.domHost.showModalDialog("Voucher Redeemed successfully!"),e._makeRedeemVoucher(),e.$$("#dialogRedeemVoucher").close()}}(this))},_makeBulkSms:function(){return this.bulkSms={apiKey:null,quantity:100,usage:{id:this.currentOrganization.idOnServer,type:this.smsUserType},calcAmount:0,currency:"BDT"},this.set("bulkSms.calcAmount",2*this.bulkSms.quantity)},showBuySmsDialog:function(){return this._makeBulkSms(),this.$$("#dialogBulkSms").open()},buyBulkSmsBtnPressed:function(){return this.bulkSms.quantity=Number(this.bulkSms.quantity),"Personal"===this.smsUserType&&(this.set("bulkSms.usage.type","personal"),this.set("bulkSms.usage.id",this.user.idOnServer)),"Organization"===this.smsUserType&&(this.set("bulkSms.usage.type","organization"),this.set("bulkSms.usage.id",this.currentOrganization.idOnServer)),this.bulkSms.quantity>0?this.callBulkSmsApi(this.bulkSms):this.domHost.showToast("Please enter Quantity!")},callBulkSmsApi:function(e){return e.apiKey=this.user.apiKey,this.callApi("/bdemr-buy-bulk-sms",e,function(e){return function(t,n){return n.hasError?e.domHost.showModalDialog(n.error.message):(e.loadUserSmsBalance(),e.domHost.loadOrganizationSmsBalance(e.currentOrganization.idOnServer),e.loadTransactionHistory(),e.domHost.showModalDialog("You'r SMS Purchase has been Successful!")),e.$$("#dialogBulkSms").close()}}(this))},quntityEntered:function(e){return this.bulkSms.quantity=Number(this.bulkSms.quantity),this.set("bulkSms.calcAmount",2*this.bulkSms.quantity)},loadUserSmsBalance:function(){var e;return e={apiKey:this.user.apiKey},this.callApi("/bdemr-get-user-sms-balance",e,function(e){return function(t,n){return n.hasError?"No data found"===n.error.message?e.set("userSmsBalance",0):void 0:e.set("userSmsBalance",n.data.smsBalance)}}(this))},loadOrganizationSmsBalance:function(e){var t;return t={apiKey:this.user.apiKey,organizationId:e},this.callApi("/bdemr-get-organization-sms-balance",t,function(e){return function(t,n){return n.hasError?"No data found"===n.error.message?e.set("orgSmsBalance",0):void 0:e.set("orgSmsBalance",n.data.smsBalance)}}(this))},_loadOrganization:function(e){return this.currentOrganization=this.getCurrentOrganization(),this.currentOrganization||this.domHost.navigateToPage("#/select-organization"),e()},navigatedIn:function(){var e;return e=this.domHost.getPageParams(),"show-generic-payment-success"===e.op&&this.domHost.showModalDialog("Fund Added successfully!"),this._loadUser(),this._loadOrganization(function(e){return function(){return e.set("smsBuyerType",e.currentOrganization.name),e.loadTransactionHistory(),e.loadUserSmsBalance(),e._makeValidedVoucher(),e._makeAddFunds(),e._makeSendMoney(),e._makeRedeemVoucher()}}(this))}})}).call(this);
+//# sourceMappingURL=page-my-wallet.coffee-compiled.js.map</script>
+</dom-module>

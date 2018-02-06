@@ -1,0 +1,235 @@
+<!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-internal">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      .organization-info-card-counter {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #777777;
+      }
+
+      .organization-info-cards {
+        @apply(--layout-vertical);
+        /*@apply(--layout-center);*/
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 20px;
+      }
+
+      .organization-info-cards .row {
+        margin-left: 10px;
+        /*margin-right: 10px;*/
+        margin-top: 10px;
+      }
+
+      .organization-info-cards .hr {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: 1px;
+        /*width: 100px;*/
+        background: #dddddd;
+      }
+
+      .organization-info-cards .row .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .organization-info-cards .row .modifier.online {
+        background: #757575;
+      }
+
+      .organization-info-cards .row .modifier.local-only {
+        background: #039BE5;
+      }
+
+      .organization-info-cards .row .modifier.locally-updated {
+        background: #009688;
+      }
+
+      .organization-info-cards .row .modifier.imported {
+        background: #4CAF50;
+      }
+
+      .info-row {
+        margin-top: 10px;
+      }
+
+      .top-info-row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .serial-number {
+        background: #37474F;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .address1 {
+        margin-right: 10px;
+      }
+
+      .break-on-tablet {
+        @apply(--layout-horizontal);
+      }
+
+      @media screen and (max-width: 740px) {
+        .break-on-tablet {
+          display: block;
+        }
+      }
+
+      .val {
+        text-decoration: underline;
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .stylized {
+        border-bottom: 2px dotted black;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <div class="organization-info-card-counter">
+          <div>Search Parameters</div>
+        </div>
+
+        <paper-card class="organization-info-cards">
+          <div class="card-content">
+            <div class="horizontal layout center top-info-row">
+              <paper-input class="flex" label="Name/Email/Phone/NID" value="{{searchParameters.searchString}}"></paper-input>
+              <paper-input type="number" label="Offset" value="{{searchParameters.offset}}"></paper-input>
+              <paper-input type="number" label="Limit" value="{{searchParameters.limit}}"></paper-input>
+            </div>
+            <div class="horizontal layout center top-info-row">
+              <paper-input class="flex" label="Role (leave empty to ignore)" value="{{searchParameters.role}}"></paper-input>
+              <paper-input type="date" label="From Date" value="{{searchParameters.fromDate}}"></paper-input>
+              <paper-input type="date" label="To Date" value="{{searchParameters.toDate}}"></paper-input>
+              <paper-button class="primary" on-tap="searchTapped">Search</paper-button>
+            </div>
+          </div>
+        </paper-card>
+
+        <div class="organization-info-card-counter">
+          <div>Results</div>
+        </div>
+
+        <paper-card class="organization-info-cards">
+
+          <div class="card-custom-header">
+            <div class="layout horizontal center">
+              <div class="title flex">Showing [[userList.length]] items.</div>
+            </div>
+          </div>
+
+          <template is="dom-if" if="[[userList.length]]">
+            <div class="p-0">
+              <paper-listbox>
+
+                <template id="assistant-list-repeater" is="dom-repeat" items="[[userList]]" as="user" index-as="userIndex">
+                  <paper-item class="custom layout vertical center stylized">
+                    <div class="flex m-left-8">
+                      <div style="max-width: 900px; max-height: 300px; overflow: scroll; font-size:small">
+                        <code>
+                          <pre>[[$stringify(user)]]</pre>
+                        </code>
+                      </div>
+                    </div>
+
+                    <div class="">
+                      <img style="width: 300px;" src="[[user.profileImageData]]">
+                      <img style="width: 300px;" src="[[user.nidScanCopyImageFrontImageData]]">
+                      <img style="width: 300px;" src="[[user.nidScanCopyImageBackImageData]]">
+                    </div>
+
+                    <!-- <div class="layout horizontal m-horizontal-4 wrap">
+                      <div class="type caption">[[member.email]]&nbsp;</div>
+                      <div class="type caption">([[member.phone]])</div>
+                    </div> -->
+                    <!-- 
+                    <paper-menu-button horizontal-align="right" no-animations>
+                      <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+                      <paper-menu class="dropdown-content">
+                        <template is="dom-if" if="[[!$equals(member.idOnServer, user.idOnServer)]]">
+                          <div hidden>[[member]]</div>
+                          <paper-item on-tap="removeMemberTapped">Remove as a member</paper-item>
+                        </template>
+
+                        <template is="dom-if" if="[[!$isAdmin(member.idOnServer, organization.userList)]]">
+                          <div hidden>[[member]]</div>
+                          <paper-item on-tap="makeAdminTapped">Make Admin</paper-item>
+                        </template>
+
+                        <template is="dom-if" if="[[$isAdmin(member.idOnServer, organization.userList)]]">
+                          <template is="dom-if" if="[[!$equals(member.idOnServer, user.idOnServer)]]">
+                            <div hidden>[[member]]</div>
+                            <paper-item on-tap="makeRegularUserTapped">Convert to Regular User</paper-item>
+                          </template>
+                        </template>
+
+                        <paper-item on-tap="showDialogForSetRole">Set Role</paper-item>
+
+                      </paper-menu>
+                    </paper-menu-button> -->
+
+                  </paper-item>
+                </template>
+
+              </paper-listbox>
+
+            </div>
+          </template>
+        </paper-card>
+
+
+      </div>
+
+    </div>
+
+  </template>
+  <script>(function(){Polymer({is:"page-internal",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{user:{type:Object,notify:!0,value:null},searchParameters:{type:Object,notify:!0,value:function(){return{searchString:"",offset:0,limit:10,role:"",fromDate:"2017-12-01",toDate:"2017-12-31"}}},userList:{type:Array,value:function(){return[]}}},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},_sampleApi:function(t){return t={apiKey:this.user.apiKey,organizationId:organizationIdentifier},this.callApi("/bdemr-organization-patient-stay-get-object",t,function(t){return function(e,n){var a,r;return n.hasError?t.domHost.showModalDialog(n.error.message):(a=n.data.patientStayObject.departmentList,r=n.data.patientStayObject.seatList,void t.set("departmentList",t._modifyList(a,r)))}}(this))},$stringify:function(t){var e,n,a,r;a={};for(n in t)r=t[n],"profileImageData"!==n&&"nidScanCopyImageFrontImageData"!==n&&"nidScanCopyImageBackImageData"!==n&&(a[n]=r);return e=JSON.stringify(a,null,2)},navigatedIn:function(){return this._loadUser(),lib.util.delay(300,function(t){return function(){return t.searchTapped(null)}}(this))},navigatedOut:function(){return null},_searchUsers:function(t){var e;return e={apiKey:this.user.apiKey},Object.assign(e,this.searchParameters),this.callApi("/internal-search-users",e,function(e){return function(n,a){return a.hasError?e.domHost.showModalDialog(a.error.message):t(a.data.userList)}}(this))},_getImageData:function(t,e){var n;return n={apiKey:this.user.apiKey,imageId:t},this.callApi("/get-image-data-raw",n,function(t){return function(n,a){return a.hasError?t.domHost.showModalDialog(a.error.message):e(a.data.imageData)}}(this))},_getUserImages:function(t,e){var n,a,r;return n={},r=[],t.profileImage&&t.profileImage.length>2&&(a=new Promise(function(e){return function(a,r){return e._getImageData(t.profileImage,function(t){return n.profileImageData=t,a()})}}(this)),r.push(a)),t.nidScanCopyImageFront&&t.nidScanCopyImageFront.length>2&&(a=new Promise(function(e){return function(a,r){return e._getImageData(t.nidScanCopyImageFront,function(t){return n.nidScanCopyImageFrontImageData=t,a()})}}(this)),r.push(a)),t.nidScanCopyImageBack&&t.nidScanCopyImageBack.length>2&&(a=new Promise(function(e){return function(a,r){return e._getImageData(t.nidScanCopyImageBack,function(t){return n.nidScanCopyImageBackImageData=t,a()})}}(this)),r.push(a)),Promise.all(r).then(function(t){return function(){return e(n)}}(this))},searchTapped:function(t){return null==t&&(t=null),this._searchUsers(function(t){return function(e){var n;return t.userList=[],n=e.map(function(e){return new Promise(function(n,a){return t._getUserImages(e,function(t){return Object.assign(e,t),n()})})}),Promise.all(n).then(function(){return t.userList=e})}}(this))}})}).call(this);
+//# sourceMappingURL=page-internal.coffee-compiled.js.map</script>
+</dom-module>

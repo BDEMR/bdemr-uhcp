@@ -1,0 +1,18 @@
+<!-- element --><dom-module id="de-array">
+  <template>
+
+    <!-- style -->
+
+    <!-- <style is="custom-style" include="common-style">
+
+    </style> -->
+
+    <!-- local DOM - start -->
+
+    <div class="element-insertion-point"></div>
+
+    <!-- local DOM - end -->
+  </template>
+  <script>(function(){Polymer({is:"de-array",properties:{data:{type:Object,value:null},def:{type:Object,value:null},depth:{type:Number,value:0},elementMap:{type:Object,value:function(){return{card:{elementName:"de-card",canHaveChildren:"yes"},label:{elementName:"de-label",canHaveChildren:"no"},container:{elementName:"de-container",canHaveChildren:"yes"},checkbox:{elementName:"de-checkbox",canHaveChildren:"no"},toggleableContainer:{elementName:"de-toggleable-container",canHaveChildren:"yes"},checkList:{elementName:"de-check-list",canHaveChildren:"no"},radioList:{elementName:"de-radio-list",canHaveChildren:"no"},singleSelectDropdown:{elementName:"de-single-select-dropdown",canHaveChildren:"no"},input:{elementName:"de-input",canHaveChildren:"no"},incrementalCounter:{elementName:"de-incremental-counter",canHaveChildren:"no"},autocomplete:{elementName:"de-autocomplete",canHaveChildren:"no"}}}},shouldRender:{type:Boolean,value:!1}},$both:function(e,n){return e&&n},$equals:function(e,n){return e===n},$inc:function(e){return e+1},observers:["systemChanged(def, data)","shouldRenderChanged(shouldRender, elementMap)"],shouldRenderChanged:function(e,n){var a,t,l,i,d,r,o,c;if(e){for(i=this.$$(".element-insertion-point");Polymer.dom(i).firstChild;)Polymer.dom(i).firstChild.remove();for(o=this.def.childList,c=[],l=0,d=o.length;l<d;l++)t=o[l],a=this.elementMap[t.type],r=document.createElement(a.elementName),r.data=this.$makeData(t,a.canHaveChildren),r.def=t,r.depth=this.$inc(this.depth),c.push(Polymer.dom(i).appendChild(r));return c}},systemChanged:function(e,n){return e&&n&&e.key===n.forKey&&e.type===n.forType?void(this.shouldRender=!0):this.shouldRender=!1},$makeData:function(e,n){var a;return null==n&&(n="yes"),"childMap"in this.data||(this.data.childMap={}),e.key in this.data.childMap||(a={forType:e.type,forKey:e.key},"yes"===n&&(a.childMap={}),this.data.childMap[e.key]=a),this.data.childMap[e.key]},propagateDynamicDataAlterationSignal:function(e,n){return n.unshift("<array>"),this.domHost.propagateDynamicDataAlterationSignal(e,n)}})}).call(this);
+//# sourceMappingURL=de-array.coffee-compiled.js.map</script>
+</dom-module>

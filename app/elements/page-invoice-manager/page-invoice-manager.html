@@ -1,0 +1,121 @@
+<!-- paper-* --><!-- style --><!-- behavior --><!-- element --><div hidden="" by-polymer-bundler=""><link rel="import" href="../custom-vital-search/custom-vital-search.html"></div><dom-module id="page-invoice-manager">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+
+      paper-button {
+        background: white;
+      }
+
+      .invoice-card {
+        background: white;
+        /*
+        margin: 4px;
+        padding: 4px;
+        */
+      }
+
+      paper-card {
+        margin: 4px;
+      }
+
+      .row {
+        margin-bottom: 10px;
+      }
+
+      .key {
+        padding-right: 10px;
+      }
+
+      .val {
+        font-weight: bold;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table thead {
+        background-color: #fafafa;
+        border-bottom: 1px solid #eee;
+      }
+
+      .table thead th {
+        text-align: left;
+        padding: 15px 0;
+      }
+
+      .table tbody tr {
+        border-bottom: 1px solid #eee;
+      }
+
+      .table tbody td {
+        padding: 15px 0;
+
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container vertical layout">
+
+        <paper-card>
+          <div class="card-content">
+            <div class="search layout horizontal end">
+              <paper-input class="flex" label="Search By Patient or Institution" value="{{searchString}}"></paper-input>
+              <custom-vital-search class="flex" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>PERFORMED ON</th>
+                  <th>SERVICE RENDERED</th>
+                  <th>INSTITUTION</th>
+                  <th>PATIENT</th>
+                  <th>FEE BILLED</th>
+                  <th>FEE PAID</th>
+                  <th>FEE BALANCE</th>
+                  <th>CLEARED</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template is="dom-repeat" items="[[invoiceList]]" filter="{{filterFn(searchString)}}">
+                  <tr>
+                    <td>[[item.data.datePerformed]]</td>
+                    <td>[[showServiceName(item.data.serviceRenderedSelectedIndex)]]</td>
+                    <td>[[item.data.nameOfInstitution]]</td>
+                    <td>[[item.data.nameOfPatient]]</td>
+                    <td>[[item.data.feeBilledAmount]]</td>
+                    <td>[[item.data.feePaidAmount]]</td>
+                    <td>[[$calculateRemaining(item.data.feePaidAmount, item.data.feeBilledAmount)]]</td>
+                    <td>
+                      <span hidden$="[[item.data.isCleared]]">Yes</span>
+                      <span hidden$="[[!item.data.isCleared]]">No</span>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </paper-card>
+
+      </div>
+      <!--Limiting Container Ends-->
+
+    </div>
+    <!--Master Container Ends-->
+
+  </template>
+  <script>(function(){Polymer({is:"page-invoice-manager",behaviors:[app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],possiblePaymentStatusses:{notBilled:"Not Billed",unpaid:"Unpaid",partiallyPaid:"Partially Paid",fullyPaid:"Fully Paid"},properties:{invoiceList:{type:Array,value:[]},user:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},visit:{type:Object,notify:!0,value:null},feePaidByOptionList:{type:Array,value:function(){return["Hospital/Clinic","Surgeon","Patient","Insurance","Custom"]}},serviceRenderedOptionList:{type:Array,value:function(){return["Doctor Visit","2nd Visit","Online Phone Consultation","In Patient (Hospital/Clinic Visits)","Report Assessment","Custom"]}},sourceOfPatientOptionList:{type:Array,value:function(){return["Hospital/Clinic","Surgeon","Insurance","Custom"]}},possiblePaymentStatusses:{any:"Any",notBilled:"Not Billed",unpaid:"Unpaid",partiallyPaid:"Partially Paid",fullyPaid:"Fully Paid"}},observers:["ComputePaymentStatus(invoice.data.isCleared, invoice.data.feeBilledAmount, invoice.data.feePaidAmount)"],$toReadbleStatus:function(t){return this.possiblePaymentStatusses[t]},$calculateRemaining:function(t,i){return parseInt(i)-parseInt(t)},ComputePaymentStatus:function(t,i,e){return i=parseInt(i)||0,e=parseInt(e)||0,t||i<e?this.set("invoice.data.paymentStatus","fullyPaid"):0===i?this.set("invoice.data.paymentStatus","notBilled"):0===e?this.set("invoice.data.paymentStatus","unpaid"):this.set("invoice.data.paymentStatus","partiallyPaid")},navigatedIn:function(){var t;return t=this.getCurrentOrganization(),t||this.domHost.navigateToPage("#/select-organization"),this._loadUser(),this._loadInvoices(this.user.serial)},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},_loadInvoices:function(t){return this.invoiceListOriginal=app.db.find("visit-invoice",function(i){var e;return e=i.createdByUserSerial,e===t}),this.set("invoiceList",this.invoiceListOriginal)},_notifyInvalidPatient:function(){return this.domHost.showModalDialog("Invalid Patient Provided")},_notifyInvalidInvoice:function(){return this.domHost.showModalDialog("Invalid Invoice Provided")},$calculateRemaining:function(t,i){return parseInt(i)-parseInt(t)},filterFn:function(t){return t?function(i){var e;if(e=new RegExp("\\b"+t,"gi"),e.test(i.data.nameOfPatient)||e.test(i.data.nameOfInstitution))return!0}:null},filterByDateClicked:function(t){var i,e,n;return n=new Date(t.detail.startDate),n.setHours(0,0,1),i=new Date(t.detail.endDate),i.setHours(23,59,59),this.invoiceList=function(){var t,a,s,o,r;for(s=this.invoiceListOriginal,r=[],t=0,a=s.length;t<a;t++)e=s[t],n.getTime()<=(o=new Date(e.lastModifiedDatetimeStamp).getTime())&&o<=i.getTime()&&r.push(e);return r}.call(this)},filterByDateClearButtonClicked:function(t){return this.set("invoiceList",this.invoiceListOriginal)},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},showServiceName:function(t){return this.serviceRenderedOptionList[t]}})}).call(this);
+//# sourceMappingURL=page-invoice-manager.coffee-compiled.js.map</script>
+</dom-module>

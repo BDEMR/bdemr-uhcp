@@ -1,0 +1,42 @@
+<!-- paper-* --><!-- style --><!-- element --><dom-module id="custom-autocomplete">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+    paper-input {
+      color: black;
+    }
+    
+    .projection-item {
+      background: white;
+      margin: 1px;
+      padding: 6px;
+      color: black;
+    }
+    
+    .projection-item.active {
+      background: grey;
+    }
+
+    #nomatch {
+      font-size: 12px;
+      color: var(--paper-red-400);
+    }
+    </style>
+    <!-- local DOM - start -->
+
+    <paper-input label="[[label]]" type="search" value="{{typedValue}}" on-keyup="inputKeyUpped"></paper-input>
+
+    <template is="dom-repeat" items="[[projectedMatchingDataList]]" as="projectedMatchingData" index-as="projectedMatchingDataIndex">
+      <div on-tap="projectedMatchingDataDivPressed" class$="projection-item [[$getProjectionClass(projectedMatchingDataIndex, projectedMatchingDataListSelectedIndex)]]">
+        [[projectedMatchingData.text]]
+      </div>
+    </template>
+    <div id="nomatch">
+
+    <!-- local DOM - end -->
+  </div></template>
+  <script>(function(){Polymer({is:"custom-autocomplete",properties:{sourceDataList:{type:Array,value:[]},selectedStringObjectList:{type:Array,notify:!0,value:function(){return[]}},matchingDataList:{type:Array,value:[]},typedValue:{type:String,value:""},allowCustom:{type:Boolean,value:!0},allowRepeatation:{type:Boolean,value:!0},projectedMatchingDataList:{type:Array,value:[]},projectionStartIndex:{type:Number,value:0},projectionEndIndex:{type:Number,value:0},projectionCount:{type:Number,readonly:!0,value:5},projectedMatchingDataListSelectedIndex:{type:Number,value:null}},observers:["matchingDataListAltered(matchingDataList)"],$getProjectionClass:function(t,e){return t===e?"active":""},_generateProjection:function(){var t;return this.projectionEndIndex=Math.min(this.projectionStartIndex+this.projectionCount,this.matchingDataList.length),t=this.matchingDataList.slice(this.projectionStartIndex,this.projectionEndIndex),this.projectedMatchingDataList=t},matchingDataListAltered:function(){return this.projectionStartIndex=0,this.projectedMatchingDataListSelectedIndex=null,this._generateProjection()},_goUpOnProjection:function(){if(null!==this.projectedMatchingDataListSelectedIndex)return 0===this.projectedMatchingDataListSelectedIndex?0===this.projectionStartIndex?this.projectedMatchingDataListSelectedIndex=null:(this.projectionStartIndex-=1,this._generateProjection()):this.projectedMatchingDataListSelectedIndex-=1},_goDownOnProjection:function(){return null===this.projectedMatchingDataListSelectedIndex?this.projectedMatchingDataListSelectedIndex=0:this.projectedMatchingDataListSelectedIndex!==this.projectionCount-1?this.projectedMatchingDataListSelectedIndex+=1:this.projectionEndIndex<this.matchingDataList.length-1?(this.projectionStartIndex+=1,this._generateProjection()):void 0},_insertTypedValueIfAllowed:function(t){var e,i,a,n,o,s,r,c,h,l,d,u;for(s=null,r=this.selectedStringObjectList,e=0,a=r.length;e<a;e++)d=r[e],d.text===t&&(s=d);if(s&&!this.allowRepeatation)return!1;for(o=null,c=this.sourceDataList,i=0,n=c.length;i<n;i++)l=c[i],l.text===t&&(o=l);return!(!o&&!this.allowCustom)&&(h=s?s.serial+1:0,u={text:t,serial:h},this.push("selectedStringObjectList",u),this.fire("autocomplete-select",{selectedStringObject:u,typedValue:this.typedValue}),!0)},_match:function(t){var e,i,a,n,o,s,r,c,h,l,d;if(0===t.length)return this.matchingDataList=[],void(this.$.nomatch.textContent="Enter Data");for(a=[],n=[],o=[],s=[],r=[],c=[],h=[],l=this.sourceDataList,e=0,i=l.length;e<i;e++)d=l[e],d.alt===t?a.push(d):d.text===t?n.push(d):d.text.toLowerCase()===t.toLowerCase()?o.push(d):0===d.text.indexOf(t)?s.push(d):0===d.text.toLowerCase().indexOf(t.toLowerCase())?r.push(d):d.text.indexOf(t)>-1?c.push(d):d.text.toLowerCase().indexOf(t.toLowerCase())>-1&&h.push(d);return this.matchingDataList=[].concat(a,n,o,s,r,c,h),0===this.matchingDataList.length?this.$.nomatch.textContent="No Match Found":void 0},projectedMatchingDataDivPressed:function(t){var e;return e=t.model.projectedMatchingData,this._insertTypedValueIfAllowed(e.text)&&this._match(this.typedValue),this.projectedMatchingDataList=[],this.typedValue=e.text},inputKeyUpped:function(t){var e;if(13!==t.which)return 27===t.which?null!==this.projectedMatchingDataListSelectedIndex?this.projectedMatchingDataListSelectedIndex=null:(this.typedValue="",this._match(this.typedValue)):38===t.which?this._goUpOnProjection():40===t.which?this._goDownOnProjection():(this.$.nomatch.textContent="",this._match(this.typedValue));if(null!==this.projectedMatchingDataListSelectedIndex){if(e=this.projectedMatchingDataList[this.projectedMatchingDataListSelectedIndex],this._insertTypedValueIfAllowed(e.text))return this.typedValue=e.text,this.projectedMatchingDataList=[]}else if(this._insertTypedValueIfAllowed(this.typedValue))return this.typedValue=e.text,this._match(this.typedValue)}})}).call(this);
+//# sourceMappingURL=custom-autocomplete.coffee-compiled.js.map</script>
+</dom-module>

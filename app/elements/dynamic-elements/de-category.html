@@ -1,0 +1,27 @@
+<!-- element --><dom-module id="de-category">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+    .category-container {
+      background: #FFFFFF;
+      padding-bottom: 300px;
+      margin-top: 2px;
+      margin-left: 2px;
+    }
+    </style>
+
+    <!-- local DOM - start -->
+
+    <div class="category-container horizontal layout wrap">
+      <template is="dom-repeat" items="[[def.childList]]" as="collection" index-as="collectionIndex">
+        <de-collection data="[[$makeData(collection)]]" def="[[collection]]"></de-collection>
+      </template>
+    </div>
+
+    <!-- local DOM - end -->
+  </template>
+  <script>(function(){Polymer({is:"de-category",properties:{data:{type:Object,value:null},def:{type:Object,value:null}},$makeData:function(a){return a.key in this.data.childMap||(this.data.childMap[a.key]={forType:"collection",forKey:a.key,childMap:{}}),this.data.childMap[a.key]},propagateDynamicDataAlterationSignal:function(a,t){return t.unshift(this.def.key),this.domHost.propagateDynamicDataAlterationSignal(a,t)}})}).call(this);
+//# sourceMappingURL=de-category.coffee-compiled.js.map</script>
+</dom-module>
