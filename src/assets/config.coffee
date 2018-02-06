@@ -7,7 +7,7 @@ window.app =
 
     clientIdentifier: 'bdemr-doctor-app'
 
-    clientVersion: '1.0.0'
+    clientVersion: '0.0.0'
 
     clientPlatform: 'web' # can be - 'web', 'android', 'ios', 'windows', 'osx', 'ubuntu'
 
