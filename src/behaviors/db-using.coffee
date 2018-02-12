@@ -111,6 +111,7 @@ app.behaviors.dbUsing =
       'patient-seed': 0
       'doctor-visit-seed': 0
       'doctor-pcc-seed': 1
+      'doctor-ndr-seed': 1
       'doctor-visit-prescription-seed': 0
       'doctor-visit-note-seed': 0
       'doctor-patient-stay-seed': 0
@@ -492,6 +493,17 @@ app.behaviors.dbUsing =
     seed = serialGenerator['doctor-pcc-seed']
     console.log 'seed', seed
     serialGenerator['doctor-pcc-seed'] += 1
+    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
+    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+
+  generateSerialForNdrRecord: ->
+    appIdentifier = 'D'
+    itemType = 'NDR'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    serialGenerator = (app.db.find '--serial-generator')[0]
+    seed = serialGenerator['doctor-ndr-seed']
+    console.log 'seed', seed
+    serialGenerator['doctor-ndr-seed'] += 1
     app.db.update '--serial-generator', serialGenerator._id, serialGenerator
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 

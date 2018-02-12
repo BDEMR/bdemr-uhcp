@@ -902,7 +902,7 @@ Polymer {
   _sync: (navigateToAfterSyncing = null)->
     @_syncTemporaryOfflinePccPatients =>
 
-      collector1 = new lib.util.Collector 36
+      collector1 = new lib.util.Collector 37
 
       @_syncUser @syncDoctorFavoriteMedicationConfig, ()=> collector1.collect 'A1', null
       @_syncUser @syncSettings, ()=> collector1.collect 'A1', null
@@ -954,6 +954,7 @@ Polymer {
       @_syncPatients @syncVisitDiagnosis, ()=> collector1.collect 'A1', null
 
       @_syncPatients @syncPccRecords, ()=> collector1.collect 'A1', null
+      @_syncPatients @syncNdrRecords, ()=> collector1.collect 'A1', null
 
       collector1.finally =>
         console.log 'time to reload'

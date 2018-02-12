@@ -501,16 +501,22 @@ Polymer {
     @domHost.navigateToPreviousPage()
 
   saveButtonPressed: (e)->
-    params = @domHost.getPageParams()
+    # params = @domHost.getPageParams()
 
-    if @patient.serial is null or params['patient'] is 'new'
-      @patient.serial = @generateSerialForPatient()
+    # if @patient.serial is null or params['patient'] is 'new'
+    #   @patient.serial = @generateSerialForPatient()
+
+    @patient.name = @$makeNameObject @patient.name
 
     @patient.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'patient-list', @patient, ({serial})=> @patient.serial is serial
-    @domHost.showToast 'Patient Saved'
-    @domHost.__patientView__oneTimeSearchFilter = @patient.serial
-    @arrowBackButtonPressed()
+
+
+
+    @_callBDEMRPatientDetailsUpdateApi @patient, =>
+      @domHost.showToast 'Patient Details Updated!'
+      # @domHost.__patientView__oneTimeSearchFilter = @patient.serial
+      @arrowBackButtonPressed()
 
   $findCreator: (creatorSerial)-> 'me'
 
@@ -2201,20 +2207,16 @@ Polymer {
         cbfn _id
 
 
-  _callBDEMRPatientDetailsUpdateApi: (patient) ->
-
+  _callBDEMRPatientDetailsUpdateApi: (patient, cbfn) ->
     data =
       patient: patient
       apiKey: @user.apiKey
-
-    @callApi '/bdemr-birdem-patient-details-update', data, (err, response)=>
+    @callApi '/bdemr-patient-details-update', data, (err, response)=>
       console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message
-        return
       else
-        @arrowBackButtonPressed()
-        return
+        cbfn()
 
 
   _makeSettings: ->

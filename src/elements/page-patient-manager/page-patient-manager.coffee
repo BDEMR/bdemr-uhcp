@@ -290,7 +290,7 @@ Polymer {
           condition4 = false
           condition5 = false
         else
-          condition1 = (name.first.indexOf searchFieldMainInput) or (name.last.indexOf searchFieldMainInput) > -1
+          condition1 = (name.first.indexOf searchFieldMainInput) > -1
           condition2 = (email.indexOf searchFieldMainInput) > -1
           condition3 = (phone.indexOf searchFieldMainInput) > -1
           condition4 = (serial.indexOf searchFieldMainInput) > -1
@@ -358,10 +358,12 @@ Polymer {
     @domHost.showModalDialog 'You can search records (instead of patients) by many other options including diseases from the "Record Manager" option from the left menu.'
 
   newPatientFabPressed: (e)->
-    @domHost.navigateToPage '#/patient-editor/patient:new'
+    # @domHost.navigateToPage '#/patient-editor/patient:new'
+    @domHost.navigateToPage '#/patient-signup'
 
   newPCCPatient: (e)->
-    @domHost.navigateToPage '#/preconception-record/record:new/patients:new'
+    # @domHost.navigateToPage '#/preconception-record/record:new/patients:new'
+    @domHost.navigateToPage '#/patient-signup'
 
   ## ------------------ import / publish start
 
@@ -372,8 +374,13 @@ Polymer {
       return pin
     else return null
 
-  _savePinForLocalPatient: (data)->
-    app.db.upsert 'local-patient-pin-code-list', data, ({patientSerial})=> data.patientSerial is patientSerial
+  _savePinForLocalPatient: (pin, patientSerial)->
+    patientPinObject = {}
+    patientPinObject.organizationId = @organization.idOnServer
+    patientPinObject.patientSerial = patientSerial
+    patientPinObject.pin = pin
+
+    app.db.upsert 'local-patient-pin-code-list', patientPinObject, ({patientSerial})=> patientPinObject.patientSerial is patientSerial
 
   _publishPatient: (patient, pin, cbfn)->
     @callApi '/bdemr-patient-publish', {patient: patient, pin: pin}, (err, response)=>
@@ -423,8 +430,8 @@ Polymer {
           return @domHost.showModalDialog 'Unknown error occurred.'
         patient = patientList[0]
 
-        patientPinObject = {patientSerial: serial, pin: pin}
-        @_savePinForLocalPatient patientPinObject
+        # patientPinObject = {patientSerial: serial, pin: pin}
+        @_savePinForLocalPatient pin, patient.serial
         patient.flags = {
           isImported: false
           isLocalOnly: false
@@ -455,11 +462,11 @@ Polymer {
     index = repeater.indexForElement el
     patient = @matchingPatientList[index]
 
-    offlinePin = (app.db.find 'offline-patient-pin', ({serial})-> serial is patient.serial)[0]
+    offlinePin = @_getPinForLocalPatient patient.serial
 
     if patient.idOnServer
-      if offlinePin?.pin
-        @_importPatient patient.serial, offlinePin.pin, (importedPatientLocalId)=>
+      if offlinePin
+        @_importPatient patient.serial, offlinePin, (importedPatientLocalId)=>
           @searchFieldMainInput = ''
           @searchContextDropdownSelectedIndex = 0
           @oneTimeSearchFilter = patient.serial
@@ -550,6 +557,8 @@ Polymer {
 
     index = repeater.indexForElement el
     patient = @matchingPatientList[index]
+
+    console.log 'PATIENT', patient
 
     @createdPatientVisitedLog patient
 

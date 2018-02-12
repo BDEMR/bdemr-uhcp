@@ -214,4 +214,10 @@ app.behaviors.local['root-element'].patientsDataSyncConfig =
     headerApi: '/bdemr-doctor-app--sync--pcc-records--exchange-headers'
     dataApi: '/bdemr-doctor-app--sync--pcc-records--exchange-data'
 
+  syncNdrRecords:
+    collectionName: 'ndr-records'
+    deletedCollectionName: 'ndr-records--deleted'
+    headerApi: '/bdemr-doctor-app--sync--ndr-records--exchange-headers'
+    dataApi: '/bdemr-doctor-app--sync--ndr-records--exchange-data'
+
   

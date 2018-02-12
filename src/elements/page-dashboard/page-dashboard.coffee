@@ -24,16 +24,16 @@ Polymer {
       type: Array
       value: -> [
         {
-          title: 'NEW'
-          subTitle: 'PCC Record'
+          title: 'Create'
+          subTitle: 'New Patient'
           info: ''
           imagePath: 'assets/img/partners/badas_logo.png'
-          urlPath: '#/preconception-record/record:new/patients:new'
+          urlPath: '#/patient-signup'
           accessId: ''
         }
         {
           title: 'FOLLOW UP'
-          subTitle: 'PCC Record'
+          subTitle: 'Patient'
           info: ''
           imagePath: 'assets/img/partners/badas_logo.png'
           urlPath: '#/patient-manager/selected:0'
@@ -41,11 +41,11 @@ Polymer {
         }
 
         {
-          title: 'Create New Patient'
-          subTitle: 'Nationwide Diabetic Registry'
+          title: 'Create '
+          subTitle: 'New Patient'
           info: ''
           imagePath: 'assets/img/partners/badas.jpg'
-          urlPath: '#/patient-editor/patient:new'
+          urlPath: '#/patient-signup'
           accessId: ''
         }
         
@@ -62,6 +62,20 @@ Polymer {
     sortcutList:
       type: Array
       value: -> [
+        {
+          title: 'Create New Patient'
+          info: ''
+          icon: 'icons:open-in-new'
+          urlPath: '#/patient-signup'
+          accessId: ''
+        }
+        {
+          title: 'Patient Manager'
+          info: ''
+          icon: 'icons:open-in-new'
+          urlPath: '#/patient-manager'
+          accessId: ''
+        }
         {
           title: 'Report Manager'
           info: ''
@@ -195,10 +209,10 @@ Polymer {
 
   $getString1: (daysLeft, LANG)->
     if LANG is 'en-us'
-      return "Your license for UHCP App will <br>expire in #{daysLeft} days."
+      return "Your license for Doctor App will <br>expire in #{daysLeft} days."
     else if LANG is 'bn-bd'
       daysLeft = @$TRANSLATE_NUMBER daysLeft, LANG
-      return "আপনার UHCP App এর লাইসেন্স বাতিল <br>হতে #{daysLeft} দিন বাকি আছে।"
+      return "আপনার Doctor App এর লাইসেন্স বাতিল <br>হতে #{daysLeft} দিন বাকি আছে।"
     else
       return "TRANSLATION_FAILED"
 

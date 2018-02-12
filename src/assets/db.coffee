@@ -1064,3 +1064,24 @@ app.db.defineCollection {
   name: 'existing-patient-log-for-pending-pcc-records'
 }
 
+
+### 
+ndr-record
+  serial: null
+  lastModifiedDatetimeStamp: 0
+  createdDatetimeStamp: 0
+  lastSyncedDatetimeStamp: 0
+  createdByUserSerial
+  patientSerial
+  data:
+
+###
+
+app.db.defineCollection {
+  name: 'ndr-records'
+}
+
+app.db.defineCollection {
+  name: 'ndr-records--deleted'
+}
+

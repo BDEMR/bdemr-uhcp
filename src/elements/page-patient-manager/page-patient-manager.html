@@ -644,13 +644,8 @@
 
     
 
-    <paper-menu-button class="custom-menu-button" horizontal-align="right" vertical-align="bottom">
-      <paper-fab class="dropdown-trigger" icon="add"></paper-fab>
-      <div class="dropdown-content custom-menu">
-        <div class="custom-item horizontal layout center" on-tap="newPCCPatient"><img class="custom-img m-right-8" width="24" height="24" src="../../assets/img/partners/badas_logo.png" alt="">New PCC Patient</div>
-        <div class="custom-item" on-tap="newPatientFabPressed"><iron-icon icon="icons:account-circle" class="m-right-8"></iron-icon>New Patient</div>
-      </div>
-    </paper-menu-button>
+    <paper-fab class="custom-menu-button" icon="add" on-tap="newPatientFabPressed"></paper-fab>
+     
 
 
   </template>

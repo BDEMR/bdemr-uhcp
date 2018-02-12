@@ -96,9 +96,23 @@ app.pages.pageList = [
     name: 'login'
     element: 'page-login'
     windowTitlePostfix: 'Login'
-    headerTitle: 'UHCP App'
+    headerTitle: 'Doctor App'
     preload: true
     hrefList: [ 'login' ]
+    requireAuthentication : false
+    headerType: 'normal'
+    leftMenuEnabled: false
+    showPatientsDetails: false
+    showToolbar: false
+    hideHeaderTitle: false
+  }
+  {
+    name: 'patient-signup'
+    element: 'page-patient-signup'
+    windowTitlePostfix: 'patient-signup'
+    headerTitle: 'Patient Signup'
+    preload: true
+    hrefList: [ 'patient-signup' ]
     requireAuthentication : false
     headerType: 'normal'
     leftMenuEnabled: false
@@ -363,10 +377,28 @@ app.pages.pageList = [
   {
     name: 'patient-editor'
     element: 'page-patient-editor'
-    windowTitlePostfix: 'Patient Editor'
-    headerTitle: 'New Patient'
+    windowTitlePostfix: 'Patient Profile'
+    headerTitle: 'Patient Profile'
     preload: true
     hrefList: [ 'patient-editor' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: true
+    showSaveButton: true
+    showPatientsDetails: false
+    showToolbar: false
+    hideHeaderTitle: false
+    accessId: 'D001'
+    # showPrintButton: true
+  }
+
+  {
+    name: 'ndr-editor'
+    element: 'page-ndr-editor'
+    windowTitlePostfix: 'NDR'
+    headerTitle: 'NDR Form'
+    preload: true
+    hrefList: [ 'ndr' ]
     requireAuthentication : true
     headerType: 'modal'
     leftMenuEnabled: true

@@ -2315,6 +2315,8 @@ Polymer {
       @pcc.createdDatetimeStamp = lib.datetime.now()
       @pcc.patientSerial = @patient.serial
 
+    @pcc.pccOthers = @pccOthers
+
     console.log "PCC UP", @pcc
 
     @updatePatientDetails =>
@@ -2499,16 +2501,24 @@ Polymer {
           @domHost.showToast 'Please Fill Up Required Information'
           @set 'selectedPatientInfoPage', 0
           return
-        if @selectedPatientInfoPage > 2
-          if @pcc.visitReason.type isnt 'At Delivery'
-            unless height and weight
-              @domHost.showToast 'Please Add Height & Weight'
-              @set 'selectedPatientInfoPage', 2
-              return
+        if @pcc.visitReason.type is 'Preconception'
+          if @selectedPatientInfoPage > 3
+            if @pcc.visitReason.type isnt 'At Delivery'
+              unless height and weight
+                @domHost.showToast 'Please Add Height & Weight'
+                @set 'selectedPatientInfoPage', 3
+                return
+        else
+          if @selectedPatientInfoPage > 2
+            if @pcc.visitReason.type isnt 'At Delivery'
+              unless height and weight
+                @domHost.showToast 'Please Add Height & Weight'
+                @set 'selectedPatientInfoPage', 2
+                return
 
 
-        if @selectedPatientInfoPage is 4
-          @getAddedMedicatonList()
+        # if @selectedPatientInfoPage is 4
+        @getAddedMedicatonList()
 
     if @EDIT_RECORD
       if (@selectedPatientInfoPage is 2) or (@selectedPatientInfoPage is 4)
@@ -2835,7 +2845,8 @@ Polymer {
           @set "EDIT_MODE_ON", true
           if params['record'] is 'new'
             @createPccRecord()
-            @set 'visitReasonIndex', 1
+            @createOtherPccRecordData()
+            @set 'visitReasonIndex', 0
           else
             @_loadPccRecord params['record']
             @set 'EDIT_RECORD', true

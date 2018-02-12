@@ -180,6 +180,10 @@ Polymer {
       type: Number
       value: null
 
+    toAuthorizeNdrIndex:
+      type: Number
+      value: null
+
     organizationsIBelongToList:
       type: Array
       value: -> []
@@ -207,6 +211,11 @@ Polymer {
       value: []
 
     matchingPccRecordList:
+      type: Array
+      notify: true
+      value: -> []
+
+    matchingNdrRecordList:
       type: Array
       notify: true
       value: -> []
@@ -368,6 +377,18 @@ Polymer {
 
     @checkIfPatientHaveDiabeticsOrNot()
 
+  loadPatientNdrRecords: (patientIdentifier) ->
+    list = app.db.find 'ndr-records', ({patientSerial}) -> patientSerial is patientIdentifier
+
+    console.log 'NDR records', list    
+    if list.length > 0
+      list.sort (left, right)->
+        return -1 if left.createdDatetimeStamp > right.createdDatetimeStamp
+        return 1 if left.createdDatetimeStamp < right.createdDatetimeStamp
+        return 0
+
+    @matchingNdrRecordList = list
+
   checkIfPatientHaveDiabeticsOrNot: ()->
     possibleDMStringList = ['Known Diabetes', 'DM', 'KNOWN DIABETES']
     if @matchingPccRecordList.length > 0
@@ -378,6 +399,123 @@ Polymer {
             return
     else return
 
+  _callBDEMRPatientDetailsUpdateApi: (patient) ->
+    data =
+      patient: patient
+      apiKey: @user.apiKey
+    @callApi '/bdemr-patient-details-update', data, (err, response)=>
+      console.log response
+      if response.hasError
+        @domHost.showModalDialog response.error.message
+      else
+        @domHost.showToast 'Patient Updated!'
+
+  formatDate: (d)->
+    # get the month
+    month = d.getMonth()
+    # get the day
+    # convert day to string
+    day = d.getDate().toString()
+    # get the year
+    year = d.getFullYear()
+    
+    # pull the last two digits of the year
+    year = year.toString().substr(-2)
+    
+    # increment month by 1 since it is 0 indexed
+    # converts month to a string
+    month = (month + 1).toString()
+
+    # if month is 1-9 pad right with a 0 for two digits
+    if (month.length is 1)
+      month = "0" + month
+ 
+
+    # if day is between 1-9 pad right with a 0 for two digits
+    if (day.length is 1)
+      day = "0" + day
+      
+
+    # return the string "MMddyy"
+    return day + month +  + year
+
+  generateRandomString : ( randomStringLength ) ->
+    randomString = ''
+    characterList = []
+    for item in [0..25]
+      characterList.push String.fromCharCode( 'a'.charCodeAt() + item )
+    for item in [0..25]
+      characterList.push String.fromCharCode( 'A'.charCodeAt() + item )
+    for item in [0..9]
+      characterList.push String.fromCharCode( '0'.charCodeAt() + item )
+
+    len = characterList.length
+    for item in [ 1..randomStringLength ]
+      idx = ( Math.floor ( Math.random() * 10000363 ) ) % 10000019
+      idx %= len
+      randomString += characterList[ idx ]
+
+    return randomString
+
+  generateRandomNumericString : ( randomStringLength ) ->
+    randomString = ''
+    characterList = []
+    for item in [0..9]
+      characterList.push String.fromCharCode( '0'.charCodeAt() + item )
+
+    len = characterList.length
+    for item in [ 1..randomStringLength ]
+      idx = ( Math.floor ( Math.random() * 10000363 ) ) % 10000019
+      idx %= len
+      randomString += characterList[ idx ]
+
+    return randomString
+
+  generatedRecordSpecificRandomPatientId: (recordTypeIdentifier)->
+    string = @generateRandomString 6
+    number = @generateRandomNumericString 4
+    ms = lib.datetime.now()
+    d = new Date()
+    date = @formatDate d
+
+    id = string + "-" +  date + "-" + recordTypeIdentifier + "-" + number
+
+    console.log 'ID --->', id
+
+    return id
+
+
+  checkForRecordSpecificPatientId: (recordTypeIdentifier, cbfn)->
+    recordSpecificIdList = []
+
+    patientIdExist = false
+
+    if ((typeof @patient.recordSpecificPatientIdList is 'undefined') or (@patient.recordSpecificPatientIdList is null))
+      @patient.recordSpecificPatientIdList = []
+    else
+      recordSpecificIdList = @patient.recordSpecificPatientIdList
+
+    if recordSpecificIdList.length > 0
+      for item in recordSpecificIdList
+        if item.recordType is recordTypeIdentifier
+          patientIdExist = true
+          break
+        else
+          patientIdExist = false
+
+    if !patientIdExist
+      object = {
+        recordType: recordTypeIdentifier
+        patientId: @generatedRecordSpecificRandomPatientId recordTypeIdentifier
+      }
+
+      @patient.recordSpecificPatientIdList.push object
+
+      app.db.upsert 'patient-list', @patient, ({serial})=> @patient.serial is serial
+
+      @_callBDEMRPatientDetailsUpdateApi @patient
+
+    cbfn()
 
   viewPccRecord: (e)->
     index = e.model.index
@@ -389,10 +527,38 @@ Polymer {
     record = @matchingPccRecordList[index]
     @domHost.navigateToPage "#/preconception-record/record:" + record.serial + "/patients:" + record.patientSerial
 
+  getPatientIdForRecordType: (recordTypeIdentifier, list)->
+    if typeof list is 'undefined'
+      return null
+    
+    else
+      if list.length > 0
+        for item in list
+          if item.recordType is recordTypeIdentifier
+            return item.patientId
+            break
+          else 
+            return null
+      else
+        return null
+
+
   addNewPccRecord: ()->
-    @domHost.navigateToPage "#/preconception-record/record:new" + "/patients:" + @patient.serial
+    @checkForRecordSpecificPatientId 'PC', =>
+      @domHost.navigateToPage "#/preconception-record/record:new" + "/patients:" + @patient.serial
+
+
+  editNdrRecord: (e)->
+    index = e.model.index
+    record = @matchingNdrRecordList[index]
+    @domHost.navigateToPage "#/ndr/record:" + record.serial + "/patient:" + record.patientSerial
+
+  addNewNdrRecord: ()->
+    @checkForRecordSpecificPatientId 'NR', =>
+      @domHost.navigateToPage "#/ndr/record:new" + "/patient:" + @patient.serial
 
   navigatedIn: ->
+    console.log @generatedRecordSpecificRandomPatientId 'BH'
     currentOrganization = @getCurrentOrganization()
     unless currentOrganization
       @domHost.navigateToPage "#/select-organization"
@@ -445,6 +611,7 @@ Polymer {
     @_loadPatientNextVisit params['patient']
 
     @loadPatientPccRecords params['patient']
+    @loadPatientNdrRecords params['patient']
 
     @_makeDoctorComment()
 

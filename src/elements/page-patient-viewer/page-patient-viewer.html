@@ -593,7 +593,7 @@
 
 
               <div class="horizontal layout wrap center">
-                <iron-image class="profile-image m-right-8" src="../../images/avatar.png" preload sizing="cover"></iron-image>
+                <iron-image class="profile-image m-right-8" src$="[[$getProfileImage(patient.profileImage)]]" preload sizing="cover"></iron-image>
 
                 <div class="flex">
                   <div class="m-horizontal-4 horizontal layout">
@@ -761,261 +761,6 @@
                 </div>
               </paper-card>
               <!-- Demography - end -->
-              <!-- Diabetic Info - start -->
-              <paper-card class="m-top-8 p-0 bg-white">
-
-                <!--Custom Header-->
-                <div class="card-custom-header">
-                  <div class="layout horizontal justified center">
-                    <div class="title flex">[[$TRANSLATE('Diabetic Info',LANG)]]</div>
-                  </div>
-                </div>
-                <!--Custom Header-->
-
-                <div class="type body">
-
-                  <div class="type body-lead sub-header">Visit Type</div>
-                  <div class="horizontal layout wrap p-12">
-                    <div class="m-horizontal-4">
-                      <span>
-                        <strong>Type: </strong>{{patient.diabeticRecord.visitType}}</span>
-                    </div>
-                  </div>
-
-                  <div class="type body-lead sub-header">Diabetes Status</div>
-                  <div class="horizontal layout wrap p-12">
-                      <div class="m-horizontal-4">
-                      <strong>DM Status: </strong>
-                      <span>{{patient.diabeticRecord.diabeticsInfo.dmStatus}}</span>
-                    </div>
-                    <div class="m-horizontal-4">
-                      <strong>Type of Diabetes: </strong>
-                      <span>{{patient.diabeticRecord.diabeticsInfo.typeOfDiabetics}}</span>
-                    </div>
-                    <div class="m-horizontal-4">
-                      <strong>Duration of Diabetes: </strong>
-                      <span>{{patient.diabeticRecord.diabeticsInfo.diabeticsDuration}}</span>
-                    </div>
-                    <div class="m-horizontal-4">
-                      <strong>Patient Book No: </strong>
-                      <span>{{patient.diabeticRecord.diabeticsInfo.patientBookSerial}}</span>
-                    </div>
-                  </div>
-
-                  <div class="type body-lead m-top-8 sub-header">Cinical Info</div>
-                  <div class="horizontal layout wrap p-12">
-                    <template is="dom-repeat" items="[[patient.diabeticRecord.clinicalInfoList]]">
-                      <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
-                        <strong>{{item.name}}: </strong>
-                        <span>{{item.value}} {{item.unit}}</span>
-                      </div>
-                    </template>
-                  </div>
-
-                  <div class="type body-lead m-top-8 sub-header">Laboratory</div>
-                  <div class="horizontal layout wrap p-12">
-                    <template is="dom-repeat" items="[[patient.diabeticRecord.laboratoryTestList]]">
-                      <div class="m-horizontal-4">
-                        <strong>{{item.name}}: </strong>
-                        <span>{{item.value}}{{item.type}} {{item.unit}}</span>
-                      </div>
-                    </template>
-                  </div>
-
-                  <div class="type body-lead m-top-8 sub-header">Complication</div>
-                  <div class="p-12">
-                    <template is="dom-repeat" items="[[patient.diabeticRecord.complicationList]]">
-                      <div class="m-horizontal-4" hidden$="{{!item.isSelected}}">
-                        <strong>{{item.name}} </strong>
-                      </div>
-                    </template>
-                  </div>
-
-                  <div class="type body-lead sub-header">Personal habit(s)</div>
-                  <div class="horizontal layout wrap p-12">
-                    <template is="dom-repeat" items="[[patient.diabeticRecord.medicalInfo.drugAddictionList]]">
-                      <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.amount)]]">
-                        <strong>{{item.type}}: </strong>
-                        <span>{{item.amount}}</span>
-                      </div>
-                    </template>
-                  </div>
-
-                  <div class="type body-lead sub-header">Family History</div>
-                  <div class="horizontal layout wrap p-12">
-                    <template is="dom-repeat" items="[[patient.diabeticRecord.medicalInfo.familyHistoryList]]">
-                      <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
-                        <strong>{{item.disease}}: </strong>
-                        <span>{{item.value}}</span>
-                      </div>
-                    </template>
-                  </div>
-
-                  <div class="type body-lead m-top-8 sub-header">Current Treatment</div>
-                  <div class="p-12">
-                    <div class="m-horizontal-4">
-                      <strong>Type of treatment: </strong>
-                      <span>{{patient.diabeticRecord.currentTreatment.typeOfTreatment}}</span>
-                    </div>
-                  </div>
-                </div>
-              </paper-card>
-              <!-- Diabetic Info - end -->
-              <!-- Lifestyle - start -->
-              <paper-card class="m-top-8 p-0 bg-white">
-
-                <!--Custom Header-->
-                <div class="card-custom-header">
-                  <div class="layout horizontal justified center">
-                    <div class="title flex">[[$TRANSLATE('Lifestyle',LANG)]]</div>
-                  </div>
-                </div>
-                <!--Custom Header-->
-
-                <div class="type body">
-
-                  <div class="type body-lead sub-header">Dietary History</div>
-                  <div class="horizontal layout wrap p-12">
-                    <template id="dietary-list-repeater" is="dom-repeat" items="[[patient.diabeticRecord.medicalInfo.dietaryHistoryList]]" as="dietItem">
-                      <div class="layout horizontal center wrap custom-item">
-                        <div class="type caption secondary m-right-8">[[_returnSerial(index)]]</div>
-                        <div class="m-horizontal-4">
-                          <span>
-                            <strong>{{dietItem.type}}</strong>
-                          </span>
-                          <template is="dom-repeat" items="[[dietItem.consumeAmount]]">
-                            <span>{{item.time}}: {{item.value}}</span>
-                            <span>{{item.unit}}</span>
-                          </template>
-                        </div>
-                      </div>
-                    </template>
-                  </div>
-
-                  <div class="type body-lead sub-header">Type of Cooking Oil</div>
-                  <div class="horizontal layout wrap p-12">
-                    <template is="dom-repeat" items="[[patient.diabeticRecord.medicalInfo.typeOfCookingOilList]]">
-                      <div class="layout horizontal center wrap custom-item">
-                        <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.amount)]]">
-                          <span>
-                            <strong>{{item.type}}:</strong>
-                          </span>
-                          <template is="dom-if" if="[[$equals(item.isYes, 'yes')]]">
-                            <span>{{item.amount}}</span>
-                            <span>{{item.unit}}/{{item.duration}}</span>
-                          </template>
-                        </div>
-                      </div>
-                    </template>
-                  </div>
-
-                  <div class="type body-lead sub-header">Physical Activity</div>
-                  <div class="horizontal layout wrap p-12">
-                    <template is="dom-repeat" items="[[patient.diabeticRecord.physicalActivityList]]">
-                      <div class="layout horizontal center wrap custom-item">
-                        <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.amount)]]">
-                          <strong>{{item.name}}: </strong>
-                          <span>{{item.duration}} {{item.unit}}</span>
-                        </div>
-                      </div>
-                    </template>
-                  </div>
-
-                </div>
-              </paper-card>
-              <!-- Lifestyle - End -->
-              <!-- Medication - start -->
-              <paper-card class="m-top-8 p-0 bg-white">
-
-                <!--Custom Header-->
-                <div class="card-custom-header">
-                  <div class="layout horizontal justified center">
-                    <div class="title flex">[[$TRANSLATE('Medication',LANG)]]</div>
-                  </div>
-                </div>
-                <!--Custom Header-->
-                <div class="type body">
-
-                  <div class="type body-lead sub-header">OAD</div>
-                  <div class="p-12">
-                    <div class="m-horizontal-4">
-                      <strong>OGLD Usage: </strong>
-                      <span>{{patient.diabeticRecord.currentTreatment.ogld.ogldUsage}}</span>
-                      <br>
-                      <template is="dom-repeat" items="[[patient.diabeticRecord.currentTreatment.ogld.ogldDrugList]]">
-                        <span>
-                          <strong>OAD Drug Name: </strong>{{item.ogldDrugName}}</span>
-                        <span>
-                          <strong>Dose: </strong>{{item.drugDosage}}</span>
-                      </template>
-                    </div>
-                  </div>
-
-                  <div class="type body-lead m-top-8 sub-header">Insulin</div>
-                  <div class="p-12">
-                    <div class="m-horizontal-4">
-                      <strong>Insulin Usage: </strong>
-                      <span>{{patient.diabeticRecord.insulin.insulinUsage}}</span>
-                    </div>
-                    <div class="m-horizontal-4">
-                      <strong>Insulin Type: </strong>
-                      <span>{{patient.diabeticRecord.insulin.insulinType}}</span>
-                    </div>
-                    <template is="dom-repeat" items="[[patient.diabeticRecord.insulin.insulinTherapyList]]">
-                      <div class="horizontal layout wrap">
-
-                        <div class="m-horizontal-4">
-                          <strong>{{item.therapyType}}: </strong>
-                          <span>{{item.drugName}}</span>
-                        </div>
-                        <div class="horizontal layout wrap">
-                          [
-                          <template is="dom-repeat" items="[[item.dosageList]]" as="dose">
-                            <div class="m-horizontal-4" hidden$="[[_isEmptyString(dose.value)]]">
-                              <strong>{{dose.time}}: </strong>
-                              <span>{{dose.value}} </span>
-                              <span>{{dose.unit}}</span>
-                            </div>
-                          </template> ]
-                        </div>
-
-                      </div>
-                    </template>
-                  </div>
-
-                  <div class="type body-lead m-top-8 sub-header">Other Medication</div>
-                  <div class="p-12">
-                    <div class="m-horizontal-4">
-                      <template is="dom-repeat" items="[[patient.diabeticRecord.otherMedicationList]]">
-
-                        <div class="m-horizontal-4" hidden$="[[!$equals(item.isYes, 'yes')]]">
-                          <div>
-                            <strong>{{item.name}}:</strong>
-                          </div>
-                        </div>
-                        <div hidden$="[[!$equals(item.isYes, 'yes')]]">
-                          <div>
-                            <template is="dom-repeat" items="[[item.medicineList]]" as="medicine" index-as="medicineIndex">
-                              <div class="horizontal layout center">
-                                <div class="m-right-8 type caption secondary">{{_returnSerial(medicineIndex)}}.</div>
-                                <div class="m-horizontal-4">
-                                  <span>
-                                    <strong>Name: </strong>{{medicine.name}}</span>
-                                  <span>
-                                    <strong>Dose: </strong>{{medicine.dose}}</span>
-                                  <span> {{medicine.unit}}</span>
-                                </div>
-                              </div>
-                            </template>
-                          </div>
-                        </div>
-                      </template>
-                    </div>
-                  </div>
-
-                </div>
-              </paper-card>
-              <!-- Medication - End -->
             </section>
 
             <section>
@@ -1649,9 +1394,12 @@
                 <!--Custom Header-->
                 <div class="card-custom-header">
                   <div class="layout horizontal justified center wrap">
-                    <div class="title flex">[[$TRANSLATE('PCC Record',LANG)]]</div>
+                    <div class=" flex">
+                      <div class="title">[[$TRANSLATE('PCC Record',LANG)]]</div>
+                      <div class="type caption-2"><strong>PatientId for PCC: </strong>[[getPatientIdForRecordType('PC', patient.recordSpecificPatientIdList)]]</div>
+                    </div>
                     <paper-button on-tap="addNewPccRecord" raised class="btn-add colored">
-                      <iron-icon icon="add" class="m-right-8"></iron-icon>Add New</paper-button>
+                      <iron-icon icon="add" class="m-right-8"></iron-icon>New</paper-button>
                   </div>
                 </div>
                 <!--Custom Header-->
@@ -1701,12 +1449,75 @@
               </paper-card>
               <!-- Preconception Records - end -->
 
+
+              <!-- NDR Records - start -->
+              <paper-card class="m-top-8">
+
+                <!--Custom Header-->
+                <div class="card-custom-header">
+                  <div class="layout horizontal justified center wrap">
+                    <div class="flex">
+                      <div class="title">[[$TRANSLATE('NDR Records',LANG)]]</div>
+                      <div class="type caption-2"><strong>PatientId for NDR: </strong>[[getPatientIdForRecordType('NR', patient.recordSpecificPatientIdList)]]</div>
+                    </div>
+                    <paper-button on-tap="addNewNdrRecord" raised class="btn-add colored">
+                      <iron-icon icon="add" class="m-right-8"></iron-icon>New</paper-button>
+                  </div>
+                </div>
+                <!--Custom Header-->
+
+                <template is="dom-if" if="[[_isEmptyArray(matchingNdrRecordList)]]">
+                  <div class="card-content horizontal layout center center-justified">
+                    <div class="body type secondary">-- no data available --</div>
+                  </div>
+                </template>
+
+                <paper-listbox>
+                  <template id="pcc-record-list" is="dom-repeat" items="[[matchingNdrRecordList]]">
+                    <paper-item class="custom layout horizontal center">
+                      <div class="type caption secondary">[[_returnSerial(index)]]</div>
+                      <div class="flex m-left-8">
+                        <div class="type body-lead">{{item.data.visitType}}</div>
+                        <div class="type caption-2 secondary">
+                          <strong>Serial: </strong> {{item.serial}}
+                          <strong>Created on: </strong>[[$mkDateTime(item.createdDatetimeStamp)]]<strong> by: </strong>[[item.doctorName]] <i>[[item.doctorSpeciality]]</i>
+                        </div>
+                      </div>
+
+
+                      <template is="dom-if" if="[[$equals(toAuthorizeNdrIndex, index)]]">
+                        <paper-dropdown-menu label="Authorize To" class="flex">
+                          <paper-listbox class="dropdown-content" on-iron-select="authorizeToSelected" selected="{{authorizeToSelectedIndex}}">
+                            <template is="dom-repeat" items="{{organizationsIBelongToList}}" as="authorizeTo">
+                              <paper-item>{{authorizeTo.name}}</paper-item>
+                            </template>
+                          </paper-listbox>
+                        </paper-dropdown-menu>
+                      </template>
+                                  
+                      <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
+
+                        <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
+                        <paper-menu class="dropdown-content">
+                          <!-- <paper-item on-tap="viewNdrRecord">View</paper-item> -->
+                          <paper-item on-tap="editNdrRecord">Edit</paper-item>
+                          <!-- <paper-item on-tap="authorizeNdrRecord">Authorize</paper-item> -->
+                        </paper-menu>
+                      </paper-menu-button>
+                    </paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-card>
+              <!-- NDR Records - end -->
+
               <!-- Visit - start -->
-              <paper-card class="with-table m-top-8">
+              <paper-card class="m-top-8">
                 <!--Custom Header with Search-->
                 <div class="card-custom-header">
                   <div class="layout horizontal justified center wrap">
-                    <div class="title">[[$TRANSLATE('Old Visits & Report',LANG)]]</div>
+                    <div class="flex">
+                      <div class="title">[[$TRANSLATE('Old Visits & Report',LANG)]]</div>
+                    </div>
                     <div class="layout horizontal center search wrap">
                       <paper-input type="search" class="filter-query" label="Filter By Hosptial, Doctor or Specialty" no-label-float value="{{searchString}}"></paper-input>
                       <custom-vital-search on-date-select="visitCustomSearchClicked" on-clear="visitSearchClearButtonClicked"></custom-vital-search>
@@ -1934,7 +1745,7 @@
                                   </div>
                                 </div>
                                 <div class="type caption secondary layout vertical">
-                                  <span>Created: [[$mkDate(test.createdDatetimeStamp)]]</span>
+                                  <span>Created: [[$mkDateTime(test.createdDatetimeStamp)]]</span>
                                   <span>LastModified: [[$mkDateTime(test.lastModifiedDatetimeStamp)]]</span>
                                 </div>
                               </div>

@@ -439,7 +439,7 @@
       <div class="tabs-container">
         <paper-tabs selected="{{selectedPatientInfoPage}}" noink='true' scrollable on-iron-select="onPageSelect">
           <paper-tab>General</paper-tab>
-          <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+          <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
             <paper-tab>Additional</paper-tab>
           </template>
           <!-- <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]"> -->
@@ -447,12 +447,10 @@
           <!-- </template> -->
 
           <paper-tab>Clinical</paper-tab>
-          <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+          <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
             <paper-tab>Questionnaire</paper-tab>
           </template>
           <paper-tab>
-            <!-- <span hidden$="[[!IS_NEW_PATIENT]]">Medical Information</span>
-            <span hidden$="[[IS_NEW_PATIENT]]">Medication Information</span> -->
             Medication Information
           </paper-tab>
           <paper-tab>Complete</paper-tab>
@@ -479,7 +477,7 @@
                     </div>
 
                     <div class="horizontal layout">
-                      <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+                      <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
                         <paper-button class="btn-add colored" on-tap="nextButton" raised>
                           <iron-icon class="m-right-8" icon="arrow-forward"></iron-icon>Next</paper-button>
                       </template>
@@ -610,7 +608,7 @@
                   </template>
 
                 </div>
-                <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+                <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
                   <div class="card-content">
                     <div class="type body">
                       <strong>{{pccOthers.survey.0.question}}</strong>
@@ -628,7 +626,7 @@
             <!-- Page - General - END -->
 
             <!-- Page - Personal - START -->
-            <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+            <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
               <section>
                 <paper-card>
                   <div class="card-custom-header">
@@ -809,7 +807,7 @@
                       </div>
                     </div>
                     <div class="horizontal layout">
-                      <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+                      <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
                         <paper-button class="btn-add" on-tap="backButton" raised>
                           <iron-icon icon="arrow-back"></iron-icon>
                         </paper-button>
@@ -1218,7 +1216,7 @@
                     </div>
 
                     <div class="horizontal layout">
-                      <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+                      <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
                         <paper-button class="btn-add" on-tap="backButton" raised>
                           <iron-icon class="" icon="arrow-back"></iron-icon>
                         </paper-button>
@@ -1711,7 +1709,7 @@
             <!-- Page - Clinical - END -->
 
             <!-- Page - Questionnaire - START -->
-            <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+            <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
               <section>
 
                 <!-- card - Questionnaire - start -->
@@ -1726,7 +1724,7 @@
                         </div>
                       </div>
                       <div class="horizontal layout">
-                        <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+                        <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
                           <paper-button class="btn-add" on-tap="backButton" raised>
                             <iron-icon class="" icon="arrow-back"></iron-icon>
                           </paper-button>
@@ -1783,7 +1781,7 @@
                     </div>
 
                     <div class="horizontal layout">
-                      <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+                      <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
                         <paper-button class="btn-add" on-tap="backButton" raised>
                           <iron-icon class="" icon="arrow-back"></iron-icon>
                         </paper-button>
@@ -2020,13 +2018,13 @@
                     </div>
 
                     <div class="horizontal layout">
-                      <template is="dom-if" if="[[IS_NEW_PATIENT]]">
+                      <template is="dom-if" if="[[$equals(pcc.visitReason.type, 'Preconception')]]">
                         <paper-button class="btn-add" on-tap="backButton" raised>
                           <iron-icon class="" icon="arrow-back"></iron-icon>
                         </paper-button>
                       </template>
                       <template is="dom-if" if="[[!EDIT_MODE_ON]]">
-                        <paper-button class="btn-add" raised on-tap="pccPatientOfflineSignupPressed">
+                        <paper-button class="btn-add" disabled raised on-tap="pccPatientOfflineSignupPressed">
                           <iron-icon class="m-right-8" icon="icons:cloud-off"></iron-icon>Submit (offline)
                         </paper-button>
 
@@ -2040,10 +2038,8 @@
                         <paper-button class="colored" raised on-tap="updatePatientDetails"><iron-icon class="m-right-8" icon="icons:check"></iron-icon>Update</paper-button>
                       </template> -->
 
-                      <template is="dom-if" if="[[!IS_NEW_PATIENT]]">
-                        <paper-button class="colored" raised on-tap="upsertPccRecord">
-                          <iron-icon class="m-right-8" icon="icons:save"></iron-icon>Save PCC Record</paper-button>
-                      </template>
+                      
+                      <paper-button class="colored" raised on-tap="upsertPccRecord"><iron-icon class="m-right-8" icon="icons:save"></iron-icon>Save PCC Record</paper-button>
                     </div>
                   </div>
 
