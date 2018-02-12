@@ -92,15 +92,14 @@ Polymer {
       type: Array
       notify: false
       value: [
-        'Complete Visit',
-        'Discharge Note',
+        'UHCP Complete Visit',
+        'UHCP Discharge Note',
       ]
 
     visitHeaderTitleSelectedIndex:
       type: Number
       notify: false
       value: 0
-
 
 
     isVisitValid:
