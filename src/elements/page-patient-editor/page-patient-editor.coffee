@@ -1203,7 +1203,7 @@ Polymer {
       numberOfFamilyMember: ''
       numberOfChildren: ''
       education: null
-
+      employmentInfo: {}
       belongOrganizationList: [
         {
           organizationId: null
@@ -1853,7 +1853,8 @@ Polymer {
       patient = list[0]
       patient.name = @$getFullName patient.name
       @patient = patient
-
+      unless @patient.employmentInfo
+        @patient.employmentInfo = {}
     else
       @_notifyInvalidPatient()
 
