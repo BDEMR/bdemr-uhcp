@@ -462,6 +462,9 @@ Polymer {
       type: Array
       value: -> ['At time of diagnosis', 'At 5 years of diagnosis', 'After 5 years of diagnosis', 'Recruitment', 'Visit 1', 'Visit 2', 'Visit 3', 'Visit 4', 'Visit 5', 'Visit 6', 'Visit 7', 'Visit 8', 'Visit 9', 'Visit 10', 'Visit 11', 'Visit 12', 'Visit 13', 'Visit 14', 'Visit 15', 'Other']
 
+    policy:
+      type: Object
+      value: -> {}
 
   _compareFn: (left, op, right) ->
     # lib.util.delay 5, ()=>
@@ -2362,7 +2365,28 @@ Polymer {
       return fullName
 
 
-    
+  openPolicyModalClicked: ->
+    @$.policyModal.toggle()
+    @policy = {}
+
+  addPolicyButtonClicked: (e)->
+    return unless @policy.number and @policy.insuranceProvider and @policy.startDate and @policy.endDate
+    if @patient.policyList
+      @push 'patient.policyList', @policy
+    else
+      @set 'patient.policyList', []
+      @push 'patient.policyList', @policy
+    @policy = {}
+    @$.policyModal.close()
+
+  editPolicyClicked: (e)->
+    index = e.model.index
+    @policy = @patient.policyList[index]
+    @$.policyModal.toggle()
+
+  deletePolicyClicked: (e)->
+    index = e.model.index
+    @splice 'patient.policyList', index, 1
 
     
 

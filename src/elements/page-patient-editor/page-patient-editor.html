@@ -16,6 +16,7 @@
 <link rel="import" href="../../bower-assets/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../bower-assets/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower-assets/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower-assets/paper-dialog/paper-dialog.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -139,20 +140,20 @@
         text-decoration: underline;
       }
 
-      .custom-input{
+      .custom-input {
         margin-left: 8px;
         margin-right: 8px;
         width: calc(100% - 16px);
       }
 
       @media screen and (min-width: 656px) {
-        .custom-input{
+        .custom-input {
           width: calc(50% - 16px);
         }
       }
 
       @media screen and (min-width: 976px) {
-        .custom-input{
+        .custom-input {
           width: calc(33.33333% - 16px);
         }
       }
@@ -234,12 +235,14 @@
         border-radius: 50%;
         border: 2px solid #f7f7f7;
       }
+
       .card-item {
         border-radius: 6px;
         margin: 4px;
         border: 1px solid #eee;
         background-color: #fff;
       }
+
       .btn-add {
         min-width: 0;
         padding-top: 0.5em;
@@ -280,12 +283,12 @@
       }
 
       .custom-input ::content paper-input-container [suffix] {
-        color: rgba(0,0,0, .54) !important;
+        color: rgba(0, 0, 0, .54) !important;
       }
 
       .text-bold {
         font-weight: 500;
-        color: rgba(0,0,0,.87);
+        color: rgba(0, 0, 0, .87);
       }
     </style>
 
@@ -305,7 +308,8 @@
                   <div class="type body-lead capitalize">{{$getFullName(patient.name)}}</div>
                   <div class="m-left-8 type caption bg-gray">{{patient.serial}}</div>
                 </div>
-                <div class="type body p-horizontal-4"><span class="text-bold">Registerd Number: </span>{{patient.phone}}</div>
+                <div class="type body p-horizontal-4">
+                  <span class="text-bold">Registerd Number: </span>{{patient.phone}}</div>
                 <div class="horizontal layout wrap type caption-2">
 
                   <template is="dom-if" if="[[!patient.isForOrganizationOnly]]">
@@ -341,7 +345,7 @@
             <paper-input class="custom-input full-width" type="number" value="{{patient.nationalIdCardNumber}}" label="National ID"></paper-input>
 
             <paper-input class="custom-input full-width" value="{{patient.email}}" label="Email Address" pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
-                auto-validate error-message="Valid Email Address Required"></paper-input>
+              auto-validate error-message="Valid Email Address Required"></paper-input>
 
             <paper-input type="number" class="custom-input full-width" value="{{patient.numberOfFamilyMember}}" label="Number of Family Member"></paper-input>
 
@@ -367,12 +371,46 @@
               <paper-input type="text" class="custom-input" value="{{patient.patientMotherName}}" label="Mother's Name"></paper-input>
             </div>
             <div class="horizontal layout wrap">
-              <vaadin-combo-box class="custom-input" label="Monthly Expenditure" items="{{expenditureList}}" allow-custom-value="true" value="{{patient.expenditure}}"></vaadin-combo-box>
+              <vaadin-combo-box class="custom-input" label="Monthly Expenditure" items="{{expenditureList}}" allow-custom-value="true"
+                value="{{patient.expenditure}}"></vaadin-combo-box>
               <vaadin-combo-box class="custom-input" label="Profession" items="{{professionList}}" allow-custom-value="true" value="{{patient.profession}}"></vaadin-combo-box>
               <vaadin-combo-box class="custom-input" label="Education" items="{{educationTypeList}}" allow-custom-value="true" value="{{patient.education}}"></vaadin-combo-box>
             </div>
           </div>
           <!-- basic - end -->
+
+          <!-- Policy Info start -->
+          <div class="card-item p-8">
+            <div class="type body-lead primary m-horizontal-4">Policy Info</div>
+
+            <div class="m-vertical-16"><paper-button class="btn btn-primary btn-sm" on-tap="openPolicyModalClicked">
+              <iron-icon icon="add"></iron-icon>&nbsp;
+              Add New Policy</paper-button></div>
+
+            <paper-item style="border-bottom: 1px solid #ccc">
+                <div class="flex type bold">Number</div>
+                <div class="flex-2 type bold">Insurance Company</div>
+                <div class="flex type bold">Start Date</div>
+                <div class="flex type bold">End Date</div>
+                <div class="flex type bold">Action</div>
+            </paper-item>
+            <template is="dom-if" if="[[!patient.policyList.length]]">
+              <p class="layout vertical center type secondary">-- No Policy yet --</p>
+            </template>
+            <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
+              <paper-item>
+                <div class="flex">[[policy.number]]</div>
+                <div class="flex-2">[[policy.insuranceProvider]]</div>
+                <div class="flex">[[policy.startDate]]</div>
+                <div class="flex">[[policy.endDate]]</div>
+                <div class="flex">
+                  <paper-icon-button icon="create" on-tap="editPolicyClicked"></paper-icon-button>
+                  <paper-icon-button icon="delete" on-tap="deletePolicyClicked"></paper-icon-button>
+                </div>
+              </paper-item>
+            </template>
+          </div>
+          <!-- Policy Info End -->
 
           <!-- Contact Address - start -->
           <div class="card-item p-8">
@@ -402,7 +440,7 @@
 
               <!-- <paper-input class="flex custom-input" value="{{patient.addressList.0.addressDistrict}}" label="Disctrict"></paper-input> -->
               <paper-input class="custom-input" value="{{patient.addressList.0.subdistrictName}}" label="Thana/Sub Disctrict"></paper-input>
-                
+
             </div>
 
             <paper-input readonly="true" class="custom-input full-width" value="{{patient.addressList.0.addressCountry}}" label="Country"></paper-input>
@@ -416,11 +454,11 @@
               <paper-input class="custom-input" value="{{patient.addressList.0.flat}}" label="Flat"></paper-input>
               <paper-input class="custom-input" value="{{patient.addressList.0.floor}}" label="Floor"></paper-input>
               <paper-input class="custom-input" value="{{patient.addressList.0.plot}}" label="Plot"></paper-input>
-            
+
               <paper-input class="custom-input" value="{{patient.addressList.0.block}}" label="Block"></paper-input>
               <paper-input class="custom-input" value="{{patient.addressList.0.road}}" label="Road"></paper-input>
               <paper-input class="custom-input" value="{{patient.addressList.0.village}}" label="Village"></paper-input>
-            
+
               <paper-input class="custom-input" value="{{patient.addressList.0.addressUnion}}" label="Union"></paper-input>
 
               <paper-input type="number" class="custom-input" value="{{patient.addressList.0.addressPostalOrZipCode}}" label="Postal/Zip Code"></paper-input>
@@ -429,7 +467,7 @@
               <paper-input class="custom-input" value="{{patient.addressList.0.stateOrProvince}}" label="State/Province"></paper-input>
             </div>
 
-            
+
           </div>
           <!-- Contact Address - end -->
 
@@ -437,11 +475,27 @@
 
 
 
-  
+        <paper-dialog id="policyModal">
+          <h2>Add Policy</h2>
+          <paper-dialog-scrollable>
+            <div class="layout vertical p-16">
+            <paper-input required auto-validate error-message="input policy number" label="Policy Number" value="{{policy.number}}"></paper-input>
+            <paper-input required auto-validate error-message="input insurance provider name" label="Insurance Provider" value="{{policy.insuranceProvider}}"></paper-input>
+            <vaadin-date-picker required label="Policy Start Date" value="{{policy.startDate}}"></vaadin-date-picker>
+            <vaadin-date-picker required label="Policy End Date" value="{{policy.endDate}}"></vaadin-date-picker>
+          </div>
+          </paper-dialog-scrollable>
+          <div class="buttons">
+            <paper-button dialog-dismiss>Cancel</paper-button>
+            <paper-button on-tap="addPolicyButtonClicked" autofocus>Add</paper-button>
+          </div>
+        </paper-dialog>
 
-                  
+
       </div>
     </div>
+
+    
 
   </template>
   <script src="page-patient-editor.coffee-compiled.js"></script>
