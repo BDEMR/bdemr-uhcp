@@ -57,3 +57,55 @@ app.behaviors.commonComputes =
       return honorifics + first + middle + last
 
     else return data
+
+
+  $makeNameObject: (fullName)->
+
+    if typeof fullName is 'string'
+
+      fullName = fullName.trim()
+
+      partArray = fullName.split('.')
+
+      namePart = partArray.pop()
+
+      if partArray.length is 0 
+        honorifics = ''
+      else
+        honorifics = partArray.join('.').trim()
+
+      partArray = (namePart.trim()).split(' ')
+
+      nameObject = {}
+
+      if (partArray.length <= 1)
+        first = partArray[0]
+      else
+        first = partArray.shift()
+        last = partArray.pop()
+        middle = partArray.join(' ')
+
+        if middle is ''
+          middle = null
+        
+        if last is ''
+          last = null
+
+      if honorifics is ''
+        honorifics = null
+
+      nameObject.honorifics = honorifics
+      nameObject.first = first
+      nameObject.middle = middle
+      nameObject.last = last
+      return nameObject
+    else
+      return fullName
+
+
+  $getProfileImage: (data)->
+    if data
+      return data
+    else
+      return 'images/avatar.png'
+      
