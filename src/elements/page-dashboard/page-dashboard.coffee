@@ -209,7 +209,7 @@ Polymer {
 
   $getString1: (daysLeft, LANG)->
     if LANG is 'en-us'
-      return "Your license for Doctor App will <br>expire in #{daysLeft} days."
+      return "Your license for UHCP App will <br>expire in #{daysLeft} days."
     else if LANG is 'bn-bd'
       daysLeft = @$TRANSLATE_NUMBER daysLeft, LANG
       return "আপনার UHCP App এর লাইসেন্স বাতিল <br>হতে #{daysLeft} দিন বাকি আছে।"
