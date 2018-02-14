@@ -1,0 +1,398 @@
+<!-- iron-* --><!-- paper-* --><!-- style --><!-- behavior --><!-- custom-elements --><!--<link rel="import" href="../custom-graph/custom-graph.html">--><!-- element --><div hidden="" by-polymer-bundler=""><link rel="import" href="../html-block/html-block.html"></div><dom-module id="page-print-anaesmon-record">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+    .limiting-container {
+      margin-top: 10px;
+    }
+    
+    .limiting-container {
+      max-width: 210mm;
+      min-height: 230mm;
+      /*min-height: 297mm;*/
+    }
+    
+    .document {
+      font-family: 'Times New Roman';
+      background: white;
+    }
+    
+    .document-title {
+      font-size: 16px;
+      text-decoration: underline;
+      font-weight: bold;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+    }
+    
+    @media print {
+      .limiting-container {
+        margin-top: -60px;
+        /*border: 1px solid black;*/
+      }
+    }
+    
+    .collection {
+      color: red;
+      background: grey;
+    }
+    
+    .document-header {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    
+    .document-header .logo {
+      max-width: 128px;
+      max-height: 128px;
+    }
+    
+    .horiline {
+      width: 100%;
+      height: 0px;
+      /*background: black;*/
+      border: 1px solid black;
+      margin-bottom: 6px;
+    }
+    
+    .leftSide {
+      margin-left: 6px;
+    }
+    
+    .leftSideLine1 {
+      font-size: 24px;
+    }
+    
+    .rightSideLine1 {
+      font-size: 22px;
+    }
+    /*NSQIP START*/
+    
+    .nsqip-card,
+    .billing-card {
+      margin-top: 20px;
+    }
+    
+    .x-end {
+      text-align: right;
+    }
+    
+    .row {
+      margin-bottom: 10px;
+    }
+    
+    .key {
+      padding-right: 10px;
+    }
+    
+    .val {
+      font-weight: bold;
+    }
+
+    .footerLine {
+      /*position: absolute;*/
+      /*bottom: 0px;*/
+      margin-top: 600px;
+      color: #cccccc;
+    }
+    /*NSQIP END*/
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container document vertical layout">
+
+        <template is="dom-if" if="[[shouldRender]]">
+
+          <div class="document-header horizontal layout center">
+
+            <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
+              <img class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+            </template>
+
+            <div class="leftSide vertical layout">
+              <div class="leftSideLine1">[[settings.printDecoration.leftSideLine1]]</div>
+              <div class="leftSideLine2">[[settings.printDecoration.leftSideLine2]]</div>
+              <div class="leftSideLine3">[[settings.printDecoration.leftSideLine3]]</div>
+            </div>
+            <div class="flex"></div>
+            <div class="rightSide vertical layout end">
+              <div class="rightSideLine1">[[settings.printDecoration.rightSideLine1]]</div>
+              <div class="rightSideLine2">[[settings.printDecoration.rightSideLine2]]</div>
+              <div class="rightSideLine3">[[settings.printDecoration.rightSideLine3]]</div>
+            </div>
+          </div>
+
+          <div class="horiline"></div>
+
+          <div class="document-title">[[recordPartTitle]]</div>
+
+          <template is="dom-if" if="[[isCustom]]">
+
+            <template is="dom-if" if="[[$equals(recordPartTitle, 'NSQIP Summary')]]">
+
+              <div class="nsqip-card vertical layout">
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Physical:</div>
+                  <div class="flex val">Weight: [[recordPartData.physical.weight]], Height: [[recordPartData.physical.weight]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Diabetes Mellitus:</div>
+                  <div class="flex val">[[recordPartData.diabetesMellitus]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Current Smoker:</div>
+                  <div class="flex val">[[recordPartData.currentSmoker]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Dyspnea:</div>
+                  <div class="flex val">[[recordPartData.dyspnea]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Functional Health Status:</div>
+                  <div class="flex val">[[recordPartData.functionalHealthStatus]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Ventilator Dependent:</div>
+                  <div class="flex val">[[recordPartData.ventilatorDependent]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">COPD:</div>
+                  <div class="flex val">[[recordPartData.copd]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">CHF:</div>
+                  <div class="flex val">[[recordPartData.chf]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Hypertension Requiring Medication:</div>
+                  <div class="flex val">[[recordPartData.hypertensionRequiringMedication]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Ascites:</div>
+                  <div class="flex val">[[recordPartData.ascites]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Acute Renal Failure:</div>
+                  <div class="flex val">[[recordPartData.acuteRenalFailure]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Temperature:</div>
+                  <div class="flex val">[[recordPartData.temperature]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Fasting Time:</div>
+                  <div class="flex val">[[recordPartData.fastingTime]]</div>
+                </div>
+
+              </div>
+
+            </template>
+
+            <template is="dom-if" if="[[$equals(recordPartTitle, 'Billing Summary')]]">
+
+              <div class="billing-card vertical layout">
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Name:</div>
+                  <div class="flex val">[[recordPartData.patientRecords.name]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Date of Birth:</div>
+                  <div class="flex val">[[recordPartData.patientRecords.dob]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">ID:</div>
+                  <div class="flex val">[[recordPartData.patientRecords.id]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Operation Name:</div>
+                  <div class="flex val">[[recordPartData.preop.nameOfOperation]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Procedure Date:</div>
+                  <div class="flex val">[[recordPartData.preop.dateOfProcedure]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Operation Code:</div>
+                  <div class="flex val">[[recordPartData.preop.operationCode]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Surgeon Name:</div>
+                  <div class="flex val">[[recordPartData.preop.nameOfSurgeon]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Start Time:</div>
+                  <div class="flex val">[[recordPartData.preop.startTime]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Finish Time:</div>
+                  <div class="flex val">[[recordPartData.preop.finishTime]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Handover Time:</div>
+                  <div class="flex val">[[recordPartData.preop.handoverTime]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Handover To:</div>
+                  <div class="flex val">[[recordPartData.preop.handoverTo]]</div>
+                </div>
+
+              </div>
+
+            </template>
+
+            <template is="dom-if" if="[[$equals(recordPartTitle, 'Invoice')]]">
+
+              <div class="billing-card vertical layout">
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Serial:</div>
+                  <div class="flex val">[[record.serial]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Name of Institution:</div>
+                  <div class="flex val">[[recordPartData.nameOfInstitution]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Name of Patient:</div>
+                  <div class="flex val">[[recordPartData.nameOfPatient]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Name of Billing Person:</div>
+                  <div class="flex val">[[recordPartData.billingPersonsName]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Service Rendered:</div>
+                  <div class="flex val">[[$fromListOrCustom(serviceRenderedOptionList, recordPartData.serviceRenderedSelectedIndex, recordPartData.customServiceRendered)]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Source of the patient:</div>
+                  <div class="flex val">[[$fromListOrCustom(sourceOfPatientOptionList, recordPartData.sourceOfPatientSelectedIndex, recordPartData.customSourceOfPatient)]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Date Performed:</div>
+                  <div class="flex val">[[recordPartData.datePerformed]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Date Due:</div>
+                  <div class="flex val">[[recordPartData.dateDue]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Time From:</div>
+                  <div class="flex val">[[recordPartData.timeFrom]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Time To:</div>
+                  <div class="flex val">[[recordPartData.timeTo]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Comments:</div>
+                  <div class="flex val">[[recordPartData.comments]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Fee Paid On:</div>
+                  <div class="flex val">[[recordPartData.feePaidOn]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Fee Paid By:</div>
+                  <div class="flex val">[[$fromListOrCustom(feePaidByOptionList, recordPartData.feePaidBySelectedIndex, recordPartData.customSourceOfPatient)]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <hr class="flex">
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Fee Billed:</div>
+                  <div class="flex val">[[recordPartData.feeBilledAmount]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Fee Paid:</div>
+                  <div class="flex val">[[recordPartData.feePaidAmount]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Fee Remaining:</div>
+                  <div class="flex val">[[$calculateRemaining(recordPartData.feePaidAmount, recordPartData.feeBilledAmount)]]</div>
+                </div>
+
+                <div class="horizontal layout row">
+                  <hr class="flex">
+                </div>
+
+                <div class="horizontal layout row">
+                  <div class="flex x-end key">Payment Status</div>
+                  <div class="flex val">[[$toReadbleStatus(recordPartData.paymentStatus)]]</div>
+                </div>
+
+              </div>
+
+            </template>
+
+          </template>
+
+          <!-- <template is="dom-if" if="[[!isCustom]]"></template> -->
+          <html-block html="[[recordPartHtmlContent]]"></html-block>
+
+        </template>
+
+        <div class="sp-2"></div>
+        <div class="horizontal layout center center-justified p-horizontal-16">
+          <div class="type body italic"><strong>printed by: </strong>[[user.name]]</div>
+        </div>
+
+        <div class="footerLine">[[settings.printDecoration.footerLine]]</div>
+
+        <!-- UNCOMMENT IF SOMETHING GOES WRONG!</template> -->
+
+      </div>
+
+    </div>
+
+    <div class="graph-temporary-insertion-point"></div>
+
+  </template>
+  <script>(function(){var e=[].indexOf||function(e){for(var t=0,n=this.length;t<n;t++)if(t in this&&this[t]===e)return t;return-1};Polymer({is:"page-print-anaesmon-record",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike],properties:{record:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},recordDatabaseCollectionName:{type:String,value:null},recordPartName:{type:String,value:null},recordPartData:{type:Object,value:null},recordPartDef:{type:Object,value:null},recordPartTitle:{type:String,value:null},recordPartHtmlContent:{type:String,value:null},shouldRender:{type:Boolean,value:!1},delayRendering:{type:Boolean,value:!1},settings:{type:Object,notify:!0}},printButtonPressed:function(e){return window.print()},arrowBackButtonPressed:function(e){return this.domHost.navigateToPreviousPage()},_getRecord:function(e,t){var n;return n=app.db.find(t,function(t){var n;return n=t.serial,n===e}),1===n.length?n[0]:null},_getPatient:function(e){var t;return t=app.db.find("patient-list",function(t){var n;return n=t.serial,n===e}),1===t.length?t[0]:null},navigatedIn:function(){var t,n,i,r;if(i=this.domHost.getPageParams(),!i.record)return void this.domHost.showModalDialog("Missing Record!");if(!i.part)return void this.domHost.showModalDialog("Missing Record Part Directive!");if(n={"preop-assessment":{key:"preopAssessment",title:"Preoperative Assessment",defName:"dynamicElementDefinitionPreoperativeAssessment"},"postop-assessment":{key:"postopAssessment",title:"Postoperative Assessment",defName:"dynamicElementDefinitionPostoperativeAssessment"},"postop-analysis":{key:"postopAnalysis",title:"Postoperative Analysis",defName:"dynamicElementDefinitionPostoperativeAnalysis"},"op-anaesthesia":{key:"opAnaesthesia",title:"Operation (Anaesthesia)",defName:"dynamicElementDefinitionOperationAnaesthesia"},"op-surgery":{key:"opSurgery",title:"Operation (Surgery)",defName:"dynamicElementDefinitionOperationSurgery"},"progress-note":{key:"progressNote",title:"Progress Note",defName:"dynamicElementDefinitionProgressNote"},"academic-record":{key:"academicRecord",title:"Academic Record",defName:"dynamicElementDefinitionAcademicRecord"},nsqip:{key:"nsqipSummary",title:"NSQIP Summary",isCustom:!0},billing:{key:"billingSummary",title:"Billing Summary",isCustom:!0},invoice:{key:"invoice",title:"Invoice",isCustom:!0}},t=Object.keys(n),r=i.part,e.call(t,r)<0)return void this.domHost.showModalDialog("Unknown Record Part Directive!");if(this.set("recordPartName",i.part),"progress-note"===this.recordPartName?this.recordDatabaseCollectionName="progress-note-record":"academic-record"===this.recordPartName?this.recordDatabaseCollectionName="academic-record":this.recordDatabaseCollectionName="anaesmon-record",this.record=this._getRecord(i.record,this.recordDatabaseCollectionName),!this.record)return void this.domHost.showModalDialog("Invalid Record Identifier");if("academic-record"!==this.recordPartName){if(!("patientSerial"in this.record))return void this.domHost.showModalDialog("Missing Patient from Record");if(this.patient=this._getPatient(this.record.patientSerial),!this.patient)return void this.domHost.showModalDialog("Invalid Patient Identifier");if(!(n[this.recordPartName].key in this.record.content))return void this.domHost.showModalDialog("Desired Record Part Does not Exist in Record")}return this.settings=this._getSettings(),this.recordPartData=this.record.content[n[this.recordPartName].key],this.recordPartTitle=n[this.recordPartName].title,n[this.recordPartName].isCustom?(this.isCustom=!0,this.recordPartHtmlContent="",this.delayRendering?void 0:this.shouldRender=!0):this.domHost.getStaticData(n[this.recordPartName].defName,function(e){return function(t){if(e.recordPartDef=t,e.recordPartHtmlContent=e.generateHtmlContent(e.recordPartDef,e.recordPartData),!e.delayRendering)return e.shouldRender=!0}}(this))},navigatedOut:function(){return this.shouldRender=!1},_makeSettings:function(){var e;return e={serial:"only",isSyncEnabled:!1,printDecoration:{leftSideLine1:"My Institution",leftSideLine2:"My Institution Address",leftSideLine3:"My Institution Contact",rightSideLine1:"My Name",rightSideLine2:"My Degrees",rightSideLine3:"My Contact",footerLine:"A simple message on the bottom",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT"}},_getSettings:function(){var e,t;return e=app.db.find("settings"),t=0===e.length?this._makeSettings():e[0]},generateHtmlContent:function(e,t){var n;return n=this.handle_type(e,t.data),n=this.filterHtmlContent(n)},filterHtmlContent:function(e){return e=e.replace(/@VALUE@/g,"")},printOutStyleSheet:function(){return"<style>\n  .default-category {\n    /* font-size: 20px; \n    font-weight: bold; */\n    text-align: center; \n  }\n  .default-collection {\n    /* font-size: 16px; \n    font-weight: bold; */\n  }\n  .default-group {\n    /* text-decoration: overline; */\n  }\n  .default-card {\n    /* text-decoration: underline; */\n  }\n  span {\n    font-size: 14px;\n  }\n  .unprocessed {\n    color: red;\n  }\n  .timeline-table td, .timeline-table th{\n    border: 1px solid black;\n    text-align: center;\n  }\n\n  .graph-image {\n    width: 100%;\n    height: 400px;\n  }\n</style>"},handle_custom_graph:function(e,t){var n,i,r,a,l,o,s,p,h,d,c,u;for(d=this.record.content.opCommon,h=d.recordingStartTime,p=d.recordingEffectiveEndTime,r=this.$$(".graph-temporary-insertion-point"),o=document.createElement("custom-graph"),o.isLive=!1,o.setTimeRange(h,p),o.setPointList(t.pointList),Polymer.dom(r).firstChild&&Polymer.dom(r).firstChild.remove(),Polymer.dom(r).appendChild(o),s=(p-h)/108e5,s=Math.ceil(s),s=function(){c=[];for(var e=0;0<=s?e<s:e>s;0<=s?e++:e--)c.push(e);return c}.apply(this),n="",a=0,l=s.length;a<l;a++)i=s[a],o.draw(),u=o.toImageUrl(),n+='<img class="graph-image" src="'+u+'">',o.shiftRightThreeHours();return Polymer.dom(r).firstChild&&Polymer.dom(r).firstChild.remove(),n},_makeDateOnly:function(e){var t;return t=new Date(e),t.setHours(0),t.setMinutes(0),t.setSeconds(0),t.setMilliseconds(0),t.getTime()},makeTimeline:function(e,t){var n,i,r,a,l,o,s,p,h,d;for(p=3e5,r=t-e,d=[],s=a=0,o=Math.floor(r/p);0<=o?a<=o:a>=o;s=0<=o?++a:--a)l=p*s,n=e+l,i=(this._makeDateOnly(n)-this._makeDateOnly(e))/864e5+1,h={datetimeStamp:n,dayNumber:i},d.push(h);return d},makeTable:function(e,t,n,i){var r,a,l,o,s,p,h,d,c,u,f;for(a='<table class="timeline-table"><thead><tr><th>'+e+"</th>",o=0,h=t.length;o<h;o++)r=t[o],a+="<th>"+this.$mkShortTime(r.datetimeStamp)+"</th>";for(a+="</tr></thead><tbody>",s=0,d=n.length;s<d;s++){for(u=n[s],a+="<tr><td>"+u+"</td>",p=0,c=t.length;p<c;p++)r=t[p],l=r.datetimeStamp+"_"+u,f=l in i?i[l]:"-",a+="<td>"+f+"</td>";a+="</tr>"}return a+="</tbody></table>"},handle_custom_timeline:function(e,t){var n,i,r,a,l,o,s,p,h,d,c;for(d=this.record.content.opCommon,h=d.recordingStartTime,p=d.recordingEffectiveEndTime,s=h,o=36e5,n="",r="";s<p;)l=s+o,l>p&&(l=p),c=this.makeTimeline(s,l),i=this.makeTable("Measurement",c,t.measurementRowHeaderList,t.measurementDataGridMap),n+=i+"<br />",a=this.makeTable("Medicine",c,t.medicineRowHeaderList,t.medicineDataGridMap),r+=a+"<br />",s=l;return n+r},handle_custom_fluidBalance:function(e,t){var n,i,r,a,l,o,s,p,h,d;if(a='<table class="timeline-table"><tbody>',a+="<tr><th>Item</th><th>Details</th><th>Total</th></tr>","fluidInList"in t.fbData){for(a+="<tr><th>Fluid In</th><td>",h=t.fbData.fluidInList,l=0,s=h.length;l<s;l++)i=h[l],a+=i.type+":"+i.name+" - "+i.givenVolume+i.unit+"<br/>";a+="</td>",a+="<th>"+t.fbData.displayFluidIn+"ml</th>",a+="</tr>"}if("fluidOutList"in t.fbData){for(a+="<tr><th>Fluid Out</th><td>",d=t.fbData.fluidOutList,o=0,p=d.length;o<p;o++)r=d[o],n=r.subType?":"+r.subType:"",a+=""+r.type+n+" - "+r.givenVolume+r.unit+"<br/>";a+="</td>",a+="<th>"+t.fbData.displayFluidOut+"ml</th>",a+="</tr>"}return a+="<tr><th>Fluid Deficit</th>",a+="<td>Including due to fasting</td>",a+="<th>"+t.fbData.displayFluidDeficit+"ml</th>",a+="</tr>",a+="<tr><th>Total Fluid Balane</th>",a+="<td></td>",a+="<th>"+t.fbData.displayFluidBalance+"ml</th>",a+="</tr>"},handle_children:function(e,t){var n,i,r,a,l,o,s,p;if(a="","category"!==t.forType||"graph"!==(s=t.forKey)&&"timeline"!==s&&"fluidBalance"!==s){if("childMap"in t&&"childList"in e&&null!==e.childList)for(p=e.childList,r=l=0,o=p.length;l<o;r=++l)n=p[r],n.key in t.childMap&&(i=this.handle_type(n,t.childMap[n.key]),i&&";"!==i&&":;"!==i&&": ;"!==i&&(i=this.sanitizeOutput(i),a+=i))}else"graph"===t.forKey&&(a+=this.handle_custom_graph(e,t)),"timeline"===t.forKey&&(a+=this.handle_custom_timeline(e,t)),"fluidBalance"===t.forKey&&(a+=this.handle_custom_fluidBalance(e,t));return a},handle_type:function(e,t){return"print"in e||(e.print={}),"systemRoot"===e.type?(this.flattenStyle(e),this.type_systemRoot(e,t)):"category"===e.type?("boldLabel"in e.print||(e.print.boldLabel=!0),"fontSize"in e.print||(e.print.fontSize=18),this.flattenStyle(e),this.type_category(e,t)):"collection"===e.type?("boldLabel"in e.print||(e.print.boldLabel=!0),"fontSize"in e.print||(e.print.fontSize=16),this.flattenStyle(e),this.type_collection(e,t)):"group"===e.type?("passThrough"in e.print||(e.print.passThrough=!0),"fontSize"in e.print||(e.print.fontSize=14),this.flattenStyle(e),this.type_group(e,t)):"card"===e.type?("boldLabel"in e.print||(e.print.boldLabel=!0),"fontSize"in e.print||(e.print.fontSize=14),this.flattenStyle(e),this.type_card(e,t)):"checkbox"===e.type?(this.flattenStyle(e),this.type_checkbox(e,t)):"toggleableContainer"===e.type?(this.flattenStyle(e),this.type_toggleableContainer(e,t)):"label"===e.type?(this.flattenStyle(e),this.type_label(e,t)):"autocomplete"===e.type?("selectionType"in e&&"label"===e.selectionType&&("separatorString"in e.print||(e.print.separatorString=", ")),this.flattenStyle(e),this.type_autocomplete(e,t)):"container"===e.type?(this.flattenStyle(e),this.type_container(e,t)):"checkList"===e.type?("separatorString"in e.print||(e.print.separatorString=", "),this.flattenStyle(e),this.type_checkList(e,t)):"radioList"===e.type?("separatorString"in e.print||(e.print.separatorString=", "),this.flattenStyle(e),this.type_radioList(e,t)):"input"===e.type?(this.flattenStyle(e),this.type_input(e,t)):"singleSelectDropdown"===e.type?(this.flattenStyle(e),this.type_singleSelectDropdown(e,t)):"incrementalCounter"===e.type?(this.flattenStyle(e),this.type_incrementalCounter(e,t)):'<span class="unprocessed">UNPROCESSED '+e.type+" - "+e.key+"</span>"},flattenStyle:function(e){if("passThrough"in e.print&&("hideLabel"in e.print||(e.print.hideLabel=!0),"noColonAfterThis"in e.print||(e.print.noColonAfterThis=!0),"noSemicolonAfterThis"in e.print||(e.print.noSemicolonAfterThis=!0)),"newLineBeforeThis"in e.print&&("boolean"==typeof e.print.newLineBeforeThis?e.print.newLineBeforeThis=e.print.newLineBeforeThis===!0?1:0:e.print.newLineBeforeThis=parseInt(e.print.newLineBeforeThis)),"newLineAfterThis"in e.print&&("boolean"==typeof e.print.newLineAfterThis?e.print.newLineAfterThis=e.print.newLineAfterThis===!0?1:0:e.print.newLineAfterThis=parseInt(e.print.newLineAfterThis)),"newLineAfterThisAndChildren"in e.print&&("boolean"==typeof e.print.newLineAfterThisAndChildren?e.print.newLineAfterThisAndChildren=e.print.newLineAfterThisAndChildren===!0?1:0:e.print.newLineAfterThisAndChildren=parseInt(e.print.newLineAfterThisAndChildren)),"newLineAfterEachValue"in e.print)return"boolean"==typeof e.print.newLineAfterEachValue?e.print.newLineAfterEachValue=e.print.newLineAfterEachValue===!0?1:0:e.print.newLineAfterEachValue=parseInt(e.print.newLineAfterEachValue)},sanitizeOutput:function(e){var t,n;for(t=n=0;n<=2;t=++n)e=e.replace(/\;;/g,";"),e=e.replace(/\;;/g,";"),e=e.replace(/\; ;/g,";"),e=e.replace(/\: ;/g,";"),e=e.replace(/\: :/g,":"),e=e.replace(/\, ;/g,";"),e=e.replace(/\; ,/g,";"),e=e.replace(/\,;/g,";"),e=e.replace(/<\/span style=""><\/span>/g,""),e=e.replace(/<\/span>;<\/span>/g,"</span></span>"),e=e.replace(/<\/span>; <\/span>/g,"</span></span>"),e=e.replace(/<\/span> ,<\/span>/g,"</span></span>");return e},_computeElementStyle:function(e){var t;return t="",e.print.fontSize&&(t+="font-size: "+e.print.fontSize+"px;"),e.print.hide&&(t+="display: none;"),t},_computeTitleOrLabelStyle:function(e){var t;return t="",e.print.boldLabel&&(t+="font-weight: bold;"),t},type_systemRoot:function(e,t){var n;return n=this.handle_children(e,t),this.printOutStyleSheet()+n},type_category:function(e,t){var n,i,r,a;return n=this.handle_children(e,t),0===n.length?"":(r=this._computeTitleOrLabelStyle(e),a='<span style="'+r+'">'+e.label+"</span>",r=this._computeElementStyle(e),i='<div class="default-category" style="'+r+'">'+a+"</div>"+n)},type_collection:function(e,t){var n,i,r,a;return 0===Object.keys(t.childMap).length?"":(n=e.defaultGroup&&!t.isDefaultGroupDismissed?this.handle_type(e.defaultGroup,t.childMap[e.defaultGroup.key]):this.handle_children(e,t),r=this._computeTitleOrLabelStyle(e),a='<span style="'+r+'">'+e.label+"</span>",r=this._computeElementStyle(e),i='<span class="default-collection" style="'+r+'">'+a+"</span>: "+n+"<br>")},type_group:function(e,t){var n,i,r,a,l;return"Details"===(r=e.label)||"Default"===r,n=this.handle_children(e,t),a=this._computeTitleOrLabelStyle(e),l='<span style="'+a+'">'+e.label+"</span>",e.print.passThrough?i=n+";":(a=this._computeElementStyle(e),i='<span class="default-group" style="'+a+'">'+l+"</span>: "+n+"; "),i},_makePrintableContent:function(e,t,n,i,r){var a,l,o,s,p,h,d,c,u,f,m,y,g,b,_;if(0===t.length&&0===n.length&&"label"!==i.type)return"";if(u=i.print,c="",l="",_="",u.hide)return"";if(e.length>0&&(u.hideLabel||(b="",u.boldLabel&&(b+="font-weight: bold;"),u.fontSize&&(b+="font-size:"+u.fontSize+"px;"),c='<span style="'+b+'">'+e+"</span>")),n.length>0&&(u.hideValue||(b="",u.boldValue&&(b+="font-weight: bold;"),u.fontSize&&(b+="font-size:"+u.fontSize+"px;"),_='<span style="'+b+'">'+n+"</span>")),t.length>0&&(u.hideChildren||(b="",u.boldChildren&&(b+="font-weight: bold;"),l='<span style="'+b+'">'+t+"</span>")),0===(c+l+_).length)return"";if("newLineBeforeThis"in u)for(s=p=0,f=u.newLineBeforeThis;0<=f?p<f:p>f;s=0<=f?++p:--p)c="<br>"+c;if("newLineAfterThis"in u)for(s=h=0,m=u.newLineAfterThis;0<=m?h<m:h>m;s=0<=m?++h:--h)c+="<br>";if(a="noColonAfterThis"in u&&u.noColonAfterThis||0===c.length?"":": ",g="noSemicolonAfterThis"in u&&u.noSemicolonAfterThis?"":"; ",o=c+a+l+_+g,"newLineAfterThisAndChildren"in u)for(s=d=0,y=u.newLineAfterThisAndChildren;0<=y?d<y:d>y;s=0<=y?++d:--d)o+="<br>";return o},type_card:function(e,t){var n,i,r,a;return"Details"===(r=e.label)||"Default"===r||"List"===r?(i="",e.print.passThrough=!0,e.print.noColonAfterThis=!0):i=e.label,n=this.handle_children(e,t),a=null,this._makePrintableContent(i||"",n||"",a||"",e,t)},type_checkbox:function(e,t){var n,i,r;return n=null,i=null,r=t.isChecked?e.label:"",this._makePrintableContent(i||"",n||"",r||"",e,t)},type_label:function(e,t){var n,i,r;return n=null,i=t.label||e.label||e.defaultLabel,r=null,this._makePrintableContent(i||"",n||"",r||"",e,t)},type_toggleableContainer:function(e,t){var n,i,r;return t.isChecked?(n=this.handle_children(e,t),i=e.label,r=null,this._makePrintableContent(i||"",n||"",r||"",e,t)):""},type_container:function(e,t){var n,i,r;return n=this.handle_children(e,t),i=t.label||e.defaultLabel,r=null,this._makePrintableContent(i||"",n||"",r||"",e,t)},type_checkList:function(e,t){var n,i,r,a,l,o,s,p,h,d,c,u,f;for(p=e.print,u=[],h=t.checkedValueList,a=0,s=h.length;a<s;a++)r=h[a],u.push(r);if(c=p.separatorString,"newLineAfterEachValue"in p)for(i=l=0,d=p.newLineAfterEachValue;0<=d?l<d:l>d;i=0<=d?++l:--l)c+="<br>";return f=u.join(c),o=null,n=null,this._makePrintableContent(o||"",n||"",f||"",e,t)},type_radioList:function(e,t){var n,i,r;return r=t.selectedValue,i=null,n=null,this._makePrintableContent(i||"",n||"",r||"",e,t)},type_singleSelectDropdown:function(e,t){var n,i,r;return r=e.possibleValueList[t.selectedIndex],i=null,n=null,this._makePrintableContent(i||"",n||"",r||"",e,t)},type_input:function(e,t){var n,i,r,a;return n=t.value,e.unitDetails&&(r=e.unitDetails.unitList[t.selectedUnitIndex],n+=" "+r.name),a=n,i=e.label,n=null,this._makePrintableContent(i||"",n||"",a||"",e,t)},type_autocomplete:function(e,t){var n,i,r,a,l,o,s,p,h,d,c,u,f,m,y;if(s=e.print,"label"===e.selectionType){u=[],p=t.virtualChildMap;for(l in p)m=p[l],f=l.split("_"),f.pop(),f.shift(),f=f.join("_"),u.push(f);if(c=s.separatorString,"newLineAfterEachValue"in s)for(r=a=0,h=s.newLineAfterEachValue;0<=h?a<h:a>h;r=0<=h?++a:--a)c+="<br>";return m=u.join(c),o=e.label,i=null,this._makePrintableContent(o||"",i||"",m||"",e,t)}i="",d=t.virtualChildMap;for(l in d)m=d[l],f=l.split("_"),f.pop(),f.shift(),f=f.join("_"),y={type:"container",defaultLabel:f,key:l,childList:e.childListForEachContainer},n=this.handle_type(y,m)+", ",i+=n;return m=null,o=e.label,this._makePrintableContent(o||"",i||"",m||"",e,t)},type_incrementalCounter:function(e,t){var n,i,r,a,l,o,s,p,h;n="",l=t.virtualChildMap;for(r in l)p=l[r],s=r.replace("item",""),o=parseInt(s),h={type:"container",defaultLabel:function(){try{return e.unit.singular}catch(t){return i=t,"unit"}}()+" #"+(o+1),key:r,childList:e.childListForEachContainer},n+=this.handle_type(h,p)+";";return p=null,a=e.label,this._makePrintableContent(a||"",n||"",p||"",e,t)},should_boldLabel:function(e){return"print"in e&&"boldLabel"in e.print&&e.print.boldLabel},should_passThrough:function(e){return"print"in e&&"passThrough"in e.print&&e.print.passThrough},should_newLineBeforeThis:function(e){return"print"in e&&"newLineBeforeThis"in e.print&&e.print.newLineBeforeThis},inject_passThrough_special_card:function(e,t){var n;if(e.key===e.label&&("Details"===(n=e.key)||"Default"===n))return e.print||(e.print={}),e.print.passThrough=!0},inject_passThrough_special_group:function(e,t){var n;if(e.key===e.label&&("List"===(n=e.key)||"Default"===n))return e.print||(e.print={}),e.print.passThrough=!0},__debug_print:function(e,t){var n,i;n="print"in e?Object.keys(e.print):[],i=lib.array.minus(n,t),i.length>0}})}).call(this);
+//# sourceMappingURL=page-print-anaesmon-record.coffee-compiled.js.map</script>
+</dom-module>

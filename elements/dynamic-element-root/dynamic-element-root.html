@@ -1,0 +1,159 @@
+<!-- 
+  dynamic-element-root
+
+  this element serves as the root element for all dynamic elements. all required 'imports' should be 
+  done in this file.
+  
+ --><!-- iron-* --><!-- paper-* --><!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><div hidden="" by-polymer-bundler=""><dom-module id="dynamic-element-styles" assetpath="../../styles/">
+
+  <style is="custom-style" include="iron-flex iron-flex-alignment">
+  .generic-container {
+    /*max-width: 400px;*/
+    width: 100%;
+    margin: 4px;
+
+  }
+  
+  .title {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #212121;
+    color: white;
+    min-height: 32px;
+    @apply(--layout-horizontal);
+    @apply(--layout-center);
+  }
+  
+  .title paper-checkbox {
+    --paper-checkbox-unchecked-color: white;
+    --paper-checkbox-label-color: white;
+  }
+  
+  .content {
+    background: #F5F5F5;
+    padding: 10px;
+  }
+
+  .content:empty {
+    padding: 0px;
+  }
+
+  /* styleSet1 */
+  
+  .styleSet1 .title {
+    background: #009688;
+  }
+  
+  .styleSet1 .content {
+    background: #E0F2F1;
+  }
+  /* styleSet2 */
+  
+  .styleSet2 .title {
+    background: #4CAF50;
+  }
+  
+  .styleSet2 .content {
+    background: #E8F5E9;
+  }
+  /* styleSet3 */
+  
+  .styleSet3 .title {
+    background: #4A148C;
+  }
+  
+  .styleSet3 .content {
+    background: #E1BEE7;
+  }
+  /* styleSet4 */
+  
+  .styleSet4 .title {
+    background: #311B92;
+  }
+  
+  .styleSet4 .content {
+    background: #D1C4E9;
+  }
+  /* styleSet5 */
+  
+  .styleSet5 .title {
+    background: #1A237E;
+  }
+  
+  .styleSet5 .content {
+    background: #C5CAE9;
+  }
+  /* styleSet6 */
+  
+  .styleSet6 .title {
+    background: #0D47A1;
+  }
+  
+  .styleSet6 .content {
+    background: #BBDEFB;
+  }
+  /* styleSet7 */
+  
+  .styleSet7 .title {
+    background: #01579B;
+  }
+  
+  .styleSet7 .content {
+    background: #B3E5FC;
+  }
+  </style>
+
+</dom-module><script type="text/javascript">(function(){app.behaviors.utils={_locateParentNode:function(e,o){for(;e.nodeName!==o;)e=e.parentNode;return e},_locateRepeater:function(e){for(;"TEMPLATE"!==e.nodeName;)if(e.parentNode)e=e.parentNode;else{if(!e.domHost)break;e=e.domHost}return e}}}).call(this);
+//# sourceMappingURL=utils.coffee-compiled.js.map</script><link rel="import" href="../custom-autocomplete/custom-autocomplete.html"><link rel="import" href="../dynamic-elements/de-category.html"><link rel="import" href="../dynamic-elements/de-collection.html"><link rel="import" href="../dynamic-elements/de-array.html"><link rel="import" href="../dynamic-elements/de-all.html"></div><dom-module id="dynamic-element-root">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+    paper-tabs.category-tabs {
+      --paper-tabs-selection-bar-color: white;
+      --paper-tabs: {
+        background: #5c4575;
+        color: white;
+      }
+    }
+    </style>
+    <!-- local DOM - start -->
+
+    <template is="dom-if" if="[[isSystemReady]]">
+
+      <paper-tabs class="category-tabs" selected="{{categoryTabSelectedIndex}}" scrollable="" on-iron-select="categoryTabSelected">
+        <template is="dom-repeat" items="[[def.childList]]" as="category">
+          <paper-tab>[[category.label]]</paper-tab>
+        </template>
+      </paper-tabs>
+
+      <template is="dom-if" if="[[currentCategory]]">
+        <template is="dom-if" if="[[!currentCategory.isCustomCategory]]">
+
+          <div hidden="">[[$loadGenericCategoryElement(currentCategory)]]</div>
+
+          <!-- <de-category data="[[currentCategoryData]]" def="[[currentCategory]]"></de-category> -->
+
+        </template>
+        <template is="dom-if" if="[[currentCategory.isCustomCategory]]">
+
+          <!-- collection-container - start -->
+          <div hidden="">[[$loadCustomCategoryElement(currentCategory)]]</div>
+          <!-- collection-container - start -->
+
+        </template>
+      </template>
+
+      <div class="element-insertion-point"></div>
+
+    </template>
+
+    <!-- <paper-button on-tap="debugPressed" raised>DEBUG</paper-button> -->
+    <!-- local DOM - end -->
+  </template>
+  <script>(function(){Polymer({is:"dynamic-element-root",properties:{categoryTabSelectedIndex:{type:Number,notify:!0},def:{type:Object,value:null},data:{type:Object,value:null},currentCategory:{type:Object,value:null},currentCategoryData:{type:Object,value:null},isSystemReady:{type:Boolean,value:!1}},observers:["systemChanged(def, data)","categoryTabSelectedIndexChanged(categoryTabSelectedIndex)"],systemChanged:function(e,t){if(this.isSystemReady=!1,e&&t)return this.isSystemReady=!0,this.tryRememberingPreviousCategory()},categoryTabSelected:function(e){var t,a;return t=this.def.childList[this.categoryTabSelectedIndex],"childMap"in this.data||(this.data.childMap={},this.data.forKey="systemRoot",this.data.forType="systemRoot"),t.key in this.data.childMap||(this.data.childMap[t.key]={forType:"category",forKey:t.key,childMap:{}}),a=this.data.childMap[t.key],this.set("currentCategoryData",a),this.set("currentCategory",t)},debugPressed:function(){},attached:function(){return this.tryRememberingPreviousCategory()},tryRememberingPreviousCategory:function(){var e,t;{if(!this.domHost)return this.categoryTabSelectedIndex=null,this.categoryTabSelectedIndex=0;if(e="LAST-TAB-INDEX-OF-"+this.domHost.nodeName,t=sessionStorage.getItem(e))return this.categoryTabSelectedIndex=null,void(this.categoryTabSelectedIndex=parseInt(t))}},categoryTabSelectedIndexChanged:function(){var e;if(this.domHost&&null!==this.categoryTabSelectedIndex)return e="LAST-TAB-INDEX-OF-"+this.domHost.nodeName,sessionStorage.setItem(e,this.categoryTabSelectedIndex)},$loadGenericCategoryElement:function(e){var t,a;if(!e.isCustomCategory)return t=this.$$(".element-insertion-point"),a=document.createElement("de-category"),a.data=this.currentCategoryData,a.def=this.currentCategory,Polymer.dom(t).firstChild&&Polymer.dom(t).firstChild.remove(),Polymer.dom(t).appendChild(a)},$loadCustomCategoryElement:function(e){var t,a;if(e.isCustomCategory)return t=this.categoryTabSelectedIndex,a=this.$$(".element-insertion-point"),this.importHref("elements/"+e.customElementName+"/"+e.customElementName+".html",function(i){var n,o,r,d,s,m;return d=document.createElement(e.customElementName),o=this.data.childMap[e.key],"graph"===e.key?(m=this.domHost.record.content.opCommon.recordingStartTime,s=this.domHost.record.content.opCommon.recordingEndTime,d.setTimeRange(m,s),n=this.domHost.clockDatetimeStamp,d.setCurrentTime(n),r=function(e){return function(){if(t===e.categoryTabSelectedIndex)return d.setCurrentTime(e.domHost.clockDatetimeStamp),setTimeout(r,500)}}(this),r(),d.startTimeOutOfBoundCallback=function(e){return function(a){if(t===e.categoryTabSelectedIndex)return e.domHost.record.content.opCommon.recordingStartTime=a}}(this),d.endTimeOutOfBoundCallback=function(e){return function(a){if(t===e.categoryTabSelectedIndex)return e.domHost.record.content.opCommon.recordingEndTime=a}}(this),"pointList"in o||(o.pointList=[]),d.setPointList(o.pointList),d.pointListUpdateCallback=function(e){return function(a){if(t===e.categoryTabSelectedIndex)return o.pointList=a}}(this),"additionalData"in o||(o.additionalData={}),d.setAdditionalData(o.additionalData)):"timeline"===e.key?(m=this.domHost.record.content.opCommon.recordingStartTime,s=this.domHost.record.content.opCommon.recordingEndTime,d.setTimeRange(m,s),n=this.domHost.clockDatetimeStamp,d.setCurrentTime(n),r=function(e){return function(){if(t===e.categoryTabSelectedIndex)return d.setCurrentTime(e.domHost.clockDatetimeStamp),setTimeout(r,500)}}(this),r(),"medicineRowHeaderList"in o||(o.medicineRowHeaderList=[]),d.setMedicineRowHeaderList(o.medicineRowHeaderList),"medicineDataGridMap"in o||(o.medicineDataGridMap={}),d.setMedicineDataGridMap(o.medicineDataGridMap),"measurementRowHeaderList"in o||(o.measurementRowHeaderList=[]),d.setMeasurementRowHeaderList(o.measurementRowHeaderList),"measurementDataGridMap"in o||(o.measurementDataGridMap={}),d.setMeasurementDataGridMap(o.measurementDataGridMap),"additionalData"in o||(o.additionalData={}),d.setAdditionalData(o.additionalData)):"fluidBalance"===e.key&&(n=this.domHost.clockDatetimeStamp,d.setCurrentTime(n),r=function(e){return function(){if(t===e.categoryTabSelectedIndex)return d.setCurrentTime(e.domHost.clockDatetimeStamp),setTimeout(r,500)}}(this),r(),"fbData"in o||(o.fbData={}),d.setFbData(o.fbData)),Polymer.dom(a).firstChild&&Polymer.dom(a).firstChild.remove(),Polymer.dom(a).appendChild(d)})},propagateDynamicDataAlterationSignal:function(e,t){return t.unshift("<root>"),this.domHost.dynamicDataAltered(e,t)}})}).call(this);
+//# sourceMappingURL=dynamic-element-root.coffee-compiled.js.map</script>
+</dom-module>
