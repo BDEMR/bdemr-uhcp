@@ -1,307 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
   <head>
-    <!--Basic Page Needs-->
+    <title>Doctor App 1.0.0</title>
+    <link rel="stylesheet" type="text/css" href="assets/global.css">
     <meta charset="utf-8">
-    <title>Doctor App - Home</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!--Mobile Specific Metas-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--FONT-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,600" rel="stylesheet" type="text/css">
-    <!--CSS-->
-    <link rel="stylesheet" href="css/normalize.css?sha1=ece571f38180febaf02ace8187ead8318a300ea7">
-    <link rel="stylesheet" href="css/main.css?sha1=75fca7ffc1d75835cda028f9bdd44d9709756c9c">
-    <!--Favicon-->
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico?sha1=c8ffcab85e2fce40aa5c4570f52eceb10bd21684">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.png">
+
+    
+
+    <!-- 
+      other known exposed globals - 
+        window.
+          'Polymer'
+
+      vendor exposed globals - 
+        window.
+          'evolvenode-stdlib'
+          'date-format-library'
+          'database-engine'
+
+      our exposed globals - 
+        window.
+          'lib'
+          'app'
+     -->
+
+    
+    <script src="all.js"></script>
+
+
+    <!-- Set polymer's global settings -->
+    <script type="text/javascript">
+      window.Polymer = {
+        lazyRegister: false,
+        dom: 'Shadow',
+        passiveTouchGestures: true
+      };
+      // Load webcomponentsjs polyfill if browser does not support native Web Components
+      (function() {
+        'use strict';
+
+        var onload = function() {
+          // For native Imports, manually fire WebComponentsReady so user code
+          // can use the same code path for native and polyfill'd imports.
+          if (!window.HTMLImports) {
+            document.dispatchEvent(
+              new CustomEvent('WebComponentsReady', {bubbles: true})
+            );
+          }
+        };
+
+        var webComponentsSupported = (
+          'registerElement' in document
+          && 'import' in document.createElement('link')
+          && 'content' in document.createElement('template')
+        );
+
+        if (!webComponentsSupported) {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'bower-assets/webcomponentsjs/webcomponents-lite.min.js';
+          script.onload = onload;
+          document.head.appendChild(script);
+        } else {
+          onload();
+        }
+      })();
+    </script>
+    
+    <script>"serviceWorker"in navigator&&window.addEventListener("load",function(){navigator.serviceWorker.register("./service-worker.js")});</script>
+
+    
+    <!-- Import root element -->
+    <link rel="import" href="elements/root-element/root-element.html">
+    
   </head>
-  <body id="body" onload="bodyOnload()">
-    <div id="toolBar" class="toolbar">
-      <div class="top-bar"><a href="https://doctor.bdemr.com" class="logo"><img src="images/logo-doctor-app.png?sha1=1bc3a146f2319fdc9ba26b28dbebb4fdc9c23b11" alt=""></a>
-        <div class="topbar-action">
-          <div class="dropdown btn transparent toggleTopBarBtn"><span>go to</span>
-            <div class="dropdown-content"><a href="https://patient.bdemr.com">BDEMR Patient</a><a href="https://clinic.bdemr.com">BDEMR Clinic</a><a href="https://anaesmon.bdemr.com">Anaesmon</a><a href="https://booking.bdemr.com">BDEMR Booking</a></div>
-          </div><a href="https://bdemr.com/help" class="btn transparent toggleTopBarBtn">help</a><a href="https://bdemr.com/faq" class="btn transparent toggleTopBarBtn">faq</a><a href="https://bdemr.com/video-gallery" class="btn transparent toggleTopBarBtn">video</a><a href="https://bdemr.com/doctor-finder" class="btn transparent toggleTopBarBtn">doctor finder</a><a href="https://bdemr.com/agent" class="btn transparent toggleTopBarBtn">agent</a><a href="https://bdemr.com/signup" class="btn transparent toggleTopBarBtn">signup</a><a href="https://doctor.bdemr.com/app/" class="btn shadow danger">App Login</a>
-        </div>
-        <button id="toggleMenuBar" onclick="toggleMenu()">&#x2630;</button>
-        <ul id="toggleMenu">
-          <li class="toogleMenuItem"><a href="https://bdemr.com/doctor-finder">Doctor Finder</a></li>
-          <li class="toogleMenuItem"><a href="https://bdemr.com/agent">Find Agent</a></li>
-          <li class="toogleMenuItem"><a href="https://bdemr.com/signup">signup</a></li>
-          <li class="toogleMenuItem"><a href="https://bdemr.com/faq">faq</a></li>
-          <li class="toogleMenuItem"><a href="https://bdemr.com/help">Help</a></li>
-          <li class="toogleMenuItem"><a href="https://bdemr.com/video-gallery">Video Gallery</a></li>
-        </ul>
-      </div>
-      <div class="bottom-bar">
-        <ul class="tabs">
-          <li class="tab active"><a href="#main-slider" onclick="smoothScroll(&apos;main-slider&apos;)">intro</a></li>
-          <li class="tab"><a href="#features" onclick="smoothScroll(&apos;features&apos;)">features</a></li>
-          <li class="tab"><a href="#about" onclick="smoothScroll(&apos;about&apos;)">about</a></li>
-          <li class="tab"><a href="#contact" onclick="smoothScroll(&apos;contact&apos;)">contact</a></li>
-        </ul>
-      </div>
+  <body>
+    <root-element></root-element>
+    
+    <div id="unsupported-screen-size-overlay">
+      Sorry! Your screen resolution is too low for this application to function properly.
     </div>
-    <div id="main-slider" class="section">
-      <div id="sequence" class="seq">
-        <div class="seq-screen">
-          <ul class="seq-canvas">
-            <li id="step1" class="seq-step1">
-              <div class="seq-content">
-                <h2 data-seq="" class="seq-title">BDEMR <span class="text green bold">Doctor App</span></h2>
-                <h3 data-seq="" class="seq-subtitle">&#x9B0;&#x9CB;&#x997;&#x9C0;&#x9B0; &#x98F;&#x995;&#x99C;&#x9C0;&#x9AC;&#x9A8;&#x9C7;&#x9B0; &#x9AE;&#x9C7;&#x9A1;&#x9BF;&#x995;&#x9C7;&#x9B2; &#x9A4;&#x9A5;&#x9CD;&#x9AF; &#x98F;&#x995; &#x99C;&#x9BE;&#x9DF;&#x997;&#x9BE;&#x9DF;</h3>
-                <h3 data-seq="" class="seq-subtitle"><span>&#x985;&#x9A8;&#x9B2;&#x9BE;&#x987;&#x9A8; &#x9AA;&#x9CD;&#x9B0;&#x9C7;&#x9B8;&#x9CD;&#x995;&#x9CD;&#x9B0;&#x9BF;&#x9AA;&#x9B6;&#x9BE;&#x9A8;, &#x985;&#x9A8;&#x9B2;&#x9BE;&#x987;&#x9A8; &#x995;&#x9A8;&#x9CD;&#x9B8;&#x9BE;&#x9B2;&#x9CD;&#x99F;&#x9C7;&#x9B6;&#x9BE;&#x9A8;</span><span>&#x98F;&#x9AA;&#x9DF;&#x9C7;&#x9A8;&#x9CD;&#x99F;&#x9AE;&#x9C7;&#x9A8;&#x9CD;&#x99F; ,  &#x9B8;&#x9C7;&#x995;&#x9C7;&#x9A8;&#x9CD;&#x9A1; &#x993;&#x9AA;&#x9BF;&#x9A8;&#x9BF;&#x9DF;&#x9A8; , &#x9A8;&#x9CB;&#x99F; &#x993; &#x9A8;&#x9CB;&#x99F;&#x9BF;&#x9AB;&#x9BF;&#x995;&#x9C7;&#x9B6;&#x9A8; &#x9AC;&#x9BF;&#x9A8;&#x9BF;&#x9AE;&#x9DF;</span><span>&#x993; &#x986;&#x9B0;&#x993; &#x9B8;&#x9C1;&#x9AC;&#x9BF;&#x9A7;&#x9BE;</span></h3><a href="https://play.google.com/store/apps/details?id=com.bdemr.doctor" target="_blank" tabindex="-1" class="seq-image"><img src="images/en-play-badge.png?sha1=dedc1bcff51b46eb61498896f24e5772c9a95d33" alt="" class="m-top-24"></a>
-              </div>
-            </li>
-            <li id="step2" class="seq-step2">
-              <div class="seq-content">
-                <h2 data-seq="" class="seq-title">Anaes<span class="text green bold">Mon</span></h2>
-                <h3 data-seq="" class="seq-subtitle">&#x986;&#x9AE;&#x9BE;&#x9A6;&#x9C7;&#x9B0; &#x9AA;&#x9CD;&#x9B0;&#x9A5;&#x9AE; &#x9AE;&#x9C7;&#x9A1;&#x9BF;&#x995;&#x9C7;&#x9B2; &#x9B8;&#x9AB;&#x99F;&#x993;&#x9DF;&#x9CD;&#x9AF;&#x9BE;&#x9B0; &#x98F;&#x996;&#x9A8; &#x9AA;&#x9BE;&#x993;&#x9DF;&#x9BE; &#x9AF;&#x9BE;&#x99A;&#x9CD;&#x99B;&#x9C7;</h3>
-                <h3 data-seq="" class="seq-subtitle"><span>&#x98F;&#x9A8;&#x9C7;&#x9B8;&#x9CD;&#x9A5;&#x9C7;&#x9B8;&#x9BF;&#x9DF;&#x9BE;</span><span>&#x986;&#x987;&#x9B8;&#x9BF;&#x987;&#x989;</span><span>&#x995;&#x9CD;&#x9B0;&#x9A8;&#x9BF;&#x995; &#x9AA;&#x9C7;&#x987;&#x9A8;</span><span>&#x993; &#x9B8;&#x9AC; &#x9B0;&#x995;&#x9AE; &#x9B8;&#x9BE;&#x9B0;&#x9CD;&#x99C;&#x9BE;&#x9B0;&#x9BF;&#x9B0; (&#x985;&#x9AA;&#x9BE;&#x9B0;&#x9C7;&#x9B6;&#x9A8;&#x9C7;&#x9B0;) &#x9A4;&#x9A5;&#x9CD;&#x9AF;&#x9C7;&#x9B0; &#x99C;&#x9A8;&#x9CD;&#x9AF;</span></h3>
-                <h3 data-seq="" class="seq-subtitle">&#x9B8;&#x995;&#x9B2; &#x99A;&#x9BF;&#x995;&#x9BF;&#x9CE;&#x9B8;&#x995; <a href="/signup" class="green">&#x9B8;&#x9BE;&#x987;&#x9A8; &#x986;&#x9AA;</a> &#x995;&#x9B0;&#x9C1;&#x9A8; &#x993; &#x9AC;&#x9CD;&#x9AF;&#x9AC;&#x9B9;&#x9BE;&#x9B0; &#x995;&#x9B0;&#x9C1;&#x9A8;</h3><a href="/signup" class="seq-button">Signup now</a>
-              </div>
-            </li>
-            <li id="step3" class="seq-step4">
-              <div class="seq-content">
-                <h2 data-seq="" class="seq-title">&#x9AC;&#x9BF;&#x9A1;&#x9BF;&#x987;&#x98F;&#x9AE;&#x986;&#x9B0; <span class="text green bold">&#x9AA;&#x9C7;&#x9B6;&#x9C7;&#x9A8;&#x9CD;&#x99F;</span></h2>
-                <h3 data-seq="" class="seq-subtitle">&#x986;&#x9AA;&#x9A8;&#x9BE;&#x9B0; &#x9AF;&#x9BE;&#x9AC;&#x9A4;&#x9C0;&#x9DF; &#x9AE;&#x9C7;&#x9A1;&#x9BF;&#x995;&#x9C7;&#x9B2; &#x9A4;&#x9A5;&#x9CD;&#x9AF; &#x9B8;&#x982;&#x9B0;&#x995;&#x9CD;&#x9B7;&#x9A3; &#x995;&#x9B0;&#x9C1;&#x9A8; &#x98F;&#x995; &#x99C;&#x9BE;&#x9DF;&#x997;&#x9BE;&#x9DF;&#x964;</h3>
-                <h3 data-seq="" class="seq-subtitle"><span>&#x9AE;&#x9C7;&#x9A1;&#x9BF;&#x9B8;&#x9BF;&#x9A8; &#x9B0;&#x9BF;&#x9AE;&#x9BE;&#x987;&#x9A8;&#x9CD;&#x9A1;&#x9BE;&#x9B0;</span><span>&#x9B0;&#x995;&#x9CD;&#x9A4; &#x99A;&#x9BE;&#x9AA;, &#x9A1;&#x9BE;&#x9DF;&#x9BE;&#x9AC;&#x9C7;&#x99F;&#x9BF;&#x9B8; &#x98F;&#x9B0; &#x9A4;&#x9A5;&#x9CD;&#x9AF; &#x9B8;&#x982;&#x9B0;&#x995;&#x9CD;&#x9B7;&#x9A3;&#x9C7;&#x9B0; &#x9B8;&#x9C1;&#x9AC;&#x9BF;&#x9A7;&#x9BE;</span><span>&#x993; &#x986;&#x9B0;&#x993; &#x985;&#x9A8;&#x9C7;&#x995; &#x9AB;&#x9CD;&#x9B0;&#x9BF; &#x9B8;&#x9C1;&#x9AC;&#x9BF;&#x9A7;&#x9BE; &#x964;</span></h3><a href="https://play.google.com/store/apps/details?id=com.bdemr.patient" target="_blank" tabindex="-1" class="seq-image"><img src="images/en-play-badge.png?sha1=dedc1bcff51b46eb61498896f24e5772c9a95d33" alt="" class="m-top-24"></a>
-              </div>
-            </li>
-            <li id="step4" class="seq-step4">
-              <div class="seq-content">
-                <h1 data-seq="" class="seq-title green">BDEMR</h1>
-                <h2 data-seq="" class="seq-subtitle">A cloud-based <br>electronic health record platform</h2>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <ul rel="sequence" role="navigation" aria-label="Pagination" class="seq-pagination">
-          <li><a href="#step2" rel="step3" title="BDEMR Doctor App(BN)"></a></li>
-          <li><a href="#step2" rel="step3" title="Anaesmon(BN)"></a></li>
-          <li><a href="#step3" rel="step3" title="BDEMR Patient(BN)"></a></li>
-          <li><a href="#step4" rel="step1" title="Welcome"></a></li>
-        </ul>
-      </div>
-    </div>
-    <div id="multi-section" class="section colored">
-      <div id="features">
-        <div class="section-header m-bottom-40">
-          <div class="type headline">key features</div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_pencil_w.png?sha1=a6923f11fe3d080dbd07a85f0cbcf023b6c28065" alt="" class="content-thumb">
-                <div class="type body-lead-2">Quick elligible prescription</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_drugs_w.png?sha1=cebcde26612d8ef048df1eb00f43fa318eb0a6ce" alt="" class="content-thumb">
-                <div class="type body-lead-2">Dose guideline availabale for most drugs with name of the disease.</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_assistant_w.png?sha1=db32c2b0fe8bee1b29a981bca48707a03e1f2043" alt="" class="content-thumb">
-                <div class="type body-lead-2">Your assistant can provide input for your patients, thus saving time.</div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_investigation_w.png?sha1=23507cd7f50ffdc821ae4fd7a9c96b029e39b983" alt="" class="content-thumb">
-                <div class="type body-lead-2">Includes history writting, sign/symptom, vitals, prescription,  investigation advise, notes to patients.</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_investigation_w.png?sha1=23507cd7f50ffdc821ae4fd7a9c96b029e39b983" alt="" class="content-thumb">
-                <div class="type body-lead-2">Previous history availability reduces time, shows trend, increases efficiency and quick decision making.</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_graphical_w.png?sha1=59164aa2efb4b0b9a3aa33954975f7c538541a65" alt="" class="content-thumb">
-                <div class="type body-lead-2">Graphical presentation available for chronic disease.</div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_communication_w.png?sha1=6a28597d65b65d996ee1dfa6596e0af8ae953fa3" alt="" class="content-thumb">
-                <div class="type body-lead-2">Quickly communication with other physician in no time.</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_circular-info-sign_w.png?sha1=188a40e5ed025ab93fd9eae86138c1077ccd8c84" alt="" class="content-thumb">
-                <div class="type body-lead-2">Can send patient advice without having the patient in his chamber.</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_investigation_w.png?sha1=23507cd7f50ffdc821ae4fd7a9c96b029e39b983" alt="" class="content-thumb">
-                <div class="type body-lead-2">Easy ordering of investigations.</div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_online_search_w.png?sha1=e7958857d45f2a4aece64685802f6b609316f766" alt="" class="content-thumb">
-                <div class="type body-lead-2">Checking results online, reduces wait time to minimum in urgent cases.</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_layers_w.png?sha1=b6b312c691fb3e545a82491abff12ca7fc49d5fb" alt="" class="content-thumb">
-                <div class="type body-lead-2">Streamline patients and Much More.</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_list_w.png?sha1=bb9f34495c62a4fbeab45ec6d7d96ed6f708b62c" alt="" class="content-thumb">
-                <div class="type body-lead-2">You can do online treatment of your patient and collect fee through our payment system.</div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_list_w.png?sha1=bb9f34495c62a4fbeab45ec6d7d96ed6f708b62c" alt="" class="content-thumb">
-                <div class="type body-lead-2">You can provide second opinion when patient is seen by other physician and receive your fees</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_agenda_w.png?sha1=59fe172c63b996e4846163ca3894a2ae20849a9e" alt="" class="content-thumb">
-                <div class="type body-lead-2">Online booking, easy online booking and organizing prepaid visit if necessary.</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_consultation_w.png?sha1=2a505083ad7c9dd559f4c61eaf8c9127df277b42" alt="" class="content-thumb">
-                <div class="type body-lead-2">Online consultation done by anybody but specially for medical officers for detailed history taking and updating the patient&#x2019;s file.</div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_notifications_w.png?sha1=6fac0bc2b7bea8e9207281b1f75bb36cadddf369" alt="" class="content-thumb">
-                <div class="type body-lead-2">Get instant notification when a report is available or a patients not is available</div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_circular-info-sign_w.png?sha1=188a40e5ed025ab93fd9eae86138c1077ccd8c84" alt="" class="content-thumb">
-                <div class="type body-lead-2">Notification reduces unnecessary phone call and annoyance Answer </div>
-              </div>
-            </div>
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_smartphone_w.png?sha1=c271d14df73544acbe8929e5265ba88f47d88634" alt="" class="content-thumb">
-                <div class="type body-lead-2">Send notification to any user in our system. Patient, clinic, hospital, assistant etc.</div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="one-third column card-2">
-              <div class="card-content-2"><img src="images/icons/ico_layers_w.png?sha1=b6b312c691fb3e545a82491abff12ca7fc49d5fb" alt="" class="content-thumb">
-                <div class="type body-lead-2">For surgeons, anaesthetists and other speciality can produce invoice, check bills, manage dues, and other features available</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="about" class="section">
-      <div class="section-header">
-        <div class="type headline">About</div>
-      </div>
-      <div class="container">
-        <div class="type body-lead center">BDEMR is a medical software company. Our current services are cloud based . We are providing web based/app based platform to create, save, organize the medical record in one place. It is a onestop service for doctors, patient, and allied health professionals alike. Our endavour is to minimize cost, increase efficiency, ease communication, ensure fairness and easy accesibilty of data by the interested party. We will also help to create medical solutions for hospitals.</div>
-      </div>
-    </div>
-    <div id="contact" class="section colored contact">
-      <div class="container">
-        <div class="card p-0 absolute">
-          <div class="section-header colored">
-            <div class="type headline">get in touch</div>
-            <div class="type body secondary">Contact Us or Say Hello!</div>
-          </div>
-          <div class="p-16">
-            <div class="row">
-              <div class="one-half column">
-                <div class="m-bottom-16">
-                  <div class="type body-lead">Head Office</div>
-                  <div class="type body">8505 wildwood pl , Surrey, BC, V4N5C5, Canada</div>
-                </div>
-                <div class="m-bottom-16">
-                  <div class="type body-lead">Bangladesh Office</div>
-                  <div class="type body">SRA Enterprise Ltd, House # 1, Road #6, Kanaikhali Zale Para, Natore - 6400</div>
-                </div>
-                <div class="m-bottom-16">
-                  <div class="type body-lead">Email Us</div>
-                  <div class="type body">contact@bdemr.com</div>
-                </div>
-                <div class="m-bottom-16">
-                  <div class="type body-lead">Call Us</div>
-                  <div class="type body">+88 017 3123 7323</div>
-                  <div class="type body">+88 077161320 (Landline)</div>
-                </div>
-              </div>
-              <div class="one-half column">
-                <div id="contactMessageSuccess" class="type body-lead text-success"></div>
-                <input id="btnToggleContactUsForm" type="button" value="Write Another Message!" onclick="_onToggleContactUsForm()" class="btn shadow success m-0">
-                <form id="contactForm">
-                  <div class="p-vertical-16">
-                    <div class="paper-input__wrapper">
-                      <input id="inputContactName" type="text" class="paper-input paper-input--floating">
-                      <label>Your Name</label>
-                      <div id="contactNameError" class="paper-input__error"> </div>
-                    </div>
-                  </div>
-                  <div class="p-vertical-16">
-                    <div class="paper-input__wrapper">
-                      <input id="inputContactEmail" type="text" class="paper-input paper-input--floating">
-                      <label>Email</label>
-                      <div id="contactEmailError" class="paper-input__error"> </div>
-                    </div>
-                  </div>
-                  <div class="p-vertical-16">
-                    <div class="paper-input__wrapper">
-                      <input id="inputContactMessage" type="text" class="paper-input paper-input--floating">
-                      <label>Message</label>
-                      <div id="inputMessageError" class="paper-input__error"> </div>
-                    </div>
-                  </div>
-                  <input type="button" value="say hello" onclick="_onContactUsBtnPressed()" class="btn shadow success m-0">
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer>
-      <div class="footer-top">
-        <div class="row">
-          <div class="one-half column">
-            <div id="subscribe-box">
-              <div class="paper-input__wrapper m-0">
-                <input id="inputSubscribedEmailId" type="text" class="paper-input paper-input--floating">
-                <label>Your Email</label><span id="subscribeInfoMessage" class="type body text-success"></span><span id="subscribeErrorMessage" class="paper-input__error"></span>
-              </div>
-              <button onclick="_onSubscribeUsBtnPressed()" class="btn shadow success m-0 no-radius no-width fixed-height"><img src="images/ico_send.png?sha1=8dc8a6cc089868666d319f15e97c249d4253b1df" alt=""></button>
-            </div>
-          </div>
-          <div class="one-half column">
-            <div id="social-links"><a href="http://facebook.com/BangladeshEMR" target="_blank" tabindex="-1" class="social-item"><img src="images/ico_facebook.png?sha1=28ed1327d9755cc821d8359a27f48dee761bd71c"></a><a href="https://twitter.com/BDEMRSolutions" target="_blank" tabindex="-1" class="social-item"><img src="images/ico_twitter.png?sha1=90ff1eff8ae4e54cd3c11819f616c653ea2cc68b"></a><a href="https://plus.google.com/u/0/113386496880005887426" target="_blank" tabindex="-1" class="social-item"><img src="images/ico_gplus.png?sha1=e700aa3bfb1b1e67fc6004addcd04e854f350e69"></a><a href="https://www.youtube.com/channel/UCqgVPVPxbhVOyV_ddkRC6oA" target="_blank" tabindex="-1" class="social-item"><img src="images/ico_youtube.png?sha1=fb0224f5b21861f3496cf3a4b3367dd512c34980"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="copyrght">All rights reserved. 2017 &#xA9; BDEMR Solutions. Corp.</div><a href="#body" onclick="scrollToTop();return false" class="btn transparent black">back to top<img src="images/up-arrow.png?sha1=dcbf3db092c42ccb57f102fb2e031f7b7d1748e2" alt="" class="ico tiny m-left-16"></a>
-      </div>
-    </footer>
-    <script type="text/javascript" src="js/sjcl.js?sha1=2bad7e804fc95f022eab0a5a1cb706a7cf97c411"></script>
-    <script type="text/javascript" src="js/system-configs.js?sha1=bf499f52a3153579e9ae3cc9d43a7f4263ec0405"></script>
-    <script type="text/javascript" src="js/client-libraries.js?sha1=05e95816ba3ef4b44b653c39652ec88fc0d11ef9"></script>
-    <script type="text/javascript" src="js/jquery.js?sha1=f16bd01623fd56d1372ea2eb55cd52a28cd883f8"></script>
-    <script type="text/javascript" src="js/sequencejs/hammer.min.js?sha1=acf211b20a4932fc5798a0d8605c6a2a319a5159"></script>
-    <script type="text/javascript" src="js/sequencejs/imagesloaded.pkgd.min.js?sha1=3ee7b31e9645444844371bbc586ba1f17e6a07d5"></script>
-    <script type="text/javascript" src="js/sequencejs/sequence.min.js?sha1=60d8ee6b650145f521737c3db6640ada40d4cffe"></script>
-    <script type="text/javascript" src="js/custom.js?sha1=8cf0f7462c53436ca2b7577b4977c0443f5b4f2d"></script>
-    <script type="text/javascript" src="js/toolbar.js?sha1=d0a2bf3e372b9c4cb78b5a6804efcb3ada80bc39"></script>
   </body>
 </html>

@@ -1,0 +1,32 @@
+<!-- element --><dom-module id="dev-tools">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+
+    </style>
+
+    <!-- local DOM -->
+
+    <paper-button on-tap="cleanseClicked">Cleanse</paper-button>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <pre>[[dbDump]]</pre>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+  </template>
+
+</dom-module>
+
+<script>(function(){Polymer({is:"dev-tools",detached:function(){},attached:function(){},created:function(){},navigatedIn:function(){},navigatedOut:function(){},ready:function(){var n,t,o,i,e;for(this.domHost.pageReady(this),i={},e=app.db.getCollectionNameList(),t=0,o=e.length;t<o;t++)n=e[t],i[n]=app.db.find(n);return this.dbDump=JSON.stringify(i,null,2)},cleanseClicked:function(){return window.localStorage.clear(),window.sessionStorage.clear(),window.location="#/",window.location.reload()}})}).call(this);
+//# sourceMappingURL=dev-tools.coffee-compiled.js.map</script>

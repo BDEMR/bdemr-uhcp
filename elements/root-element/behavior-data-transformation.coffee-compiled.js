@@ -1,0 +1,2 @@
+(function(){app.behaviors.local["root-element"]||(app.behaviors.local["root-element"]={}),app.behaviors.local["root-element"].dataTransformation={_applyTransformations:function(a){var e,o;return e=a.dynamicElementDefinitionOperationAnaesthesia.childList,o={type:"category",key:"graph",label:"Graph",isCustomCategory:!0,customElementName:"custom-graph"},e.splice(1,0,o)}}}).call(this);
+//# sourceMappingURL=behavior-data-transformation.coffee-compiled.js.map

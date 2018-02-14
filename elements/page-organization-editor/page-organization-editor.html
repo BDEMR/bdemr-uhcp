@@ -1,0 +1,275 @@
+<!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-organization-editor">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+      
+      .organization-info-card-counter {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #777777;
+      }
+      
+      .organization-info-cards {
+        @apply(--layout-vertical);
+        /*@apply(--layout-center);*/
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 20px;
+      }
+      
+      .organization-info-cards .row {
+        margin-left: 10px;
+        /*margin-right: 10px;*/
+        margin-top: 10px;
+      }
+      
+      .organization-info-cards .hr {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: 1px;
+        /*width: 100px;*/
+        background: #dddddd;
+      }
+      
+      .organization-info-cards .row .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+      
+      .organization-info-cards .row .modifier.online {
+        background: #757575;
+      }
+      
+      .organization-info-cards .row .modifier.local-only {
+        background: #039BE5;
+      }
+      
+      .organization-info-cards .row .modifier.locally-updated {
+        background: #009688;
+      }
+      
+      .organization-info-cards .row .modifier.imported {
+        background: #4CAF50;
+      }
+      
+      .info-row {
+        margin-top: 10px;
+      }
+      
+      .top-info-row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      
+      .serial-number {
+        background: #37474F;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      
+      .address1 {
+        margin-right: 10px;
+      }
+      
+      .break-on-tablet {
+        @apply(--layout-horizontal);
+      }
+      
+      @media screen and (max-width: 740px) {
+        .break-on-tablet {
+          display: block;
+        }
+      }
+      
+      .val {
+        text-decoration: underline;
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <template is="dom-if" if="{{!isOrganizationValid}}">
+          Organization invalid
+        </template>
+
+        <!-- editing organization - start -->
+        <template is="dom-if" if="{{isOrganizationValid}}">
+
+          <div class="organization-info-card-counter">
+            <div>Basic Information</div>
+          </div>
+
+          <paper-card class="organization-info-cards">
+            <div class="card-content">
+              <div class="horizontal layout center top-info-row">
+                <div>ID: </div>
+                <div class="serial-number">[[organization.idOnServer]]</div>
+                <div class="flex"></div>
+              </div>
+              <div class="info-row">
+                <paper-input always-float-label="" value="{{organization.name}}" label="Name of the organization"></paper-input>
+              </div>
+              <div class="info-row">
+                <paper-input always-float-label="" value="{{organization.effectiveRegion}}" label="Effective Region for the Organization"></paper-input>
+              </div>
+            </div>
+          </paper-card>
+
+          <div class="organization-info-card-counter">
+            <div>Contact Information</div>
+          </div>
+
+          <paper-card class="organization-info-cards">
+            <div class="card-content">
+              <div class="info-row">
+                <paper-textarea rows="6" always-float-label="" value="{{organization.address}}" label="Full Address"></paper-textarea>
+              </div>
+            </div>
+          </paper-card>
+
+          <div class="organization-info-card-counter">
+            <div>Parent Organizations</div>
+          </div>
+
+          <paper-card class="organization-info-cards">
+            
+                
+            <div class="card-custom-header">
+              <div class="layout horizontal center">
+                <div class="title flex">Currently there are [[parentList.length]] parent organizations.</div>  
+              </div>
+            </div>
+
+            <template is="dom-if" if="[[parentList.length]]">
+              <div class="p-0">
+                <paper-listbox>
+                  
+                  <template id="assistant-list-repeater" is="dom-repeat" items="[[parentList]]" as="parent">
+                    <paper-item class="custom layout horizontal center">
+                      
+                      <div class="flex m-left-8">
+                        <div class="type body capitalize">[[parent.name]]</div>
+                        <div class="type caption secondary">[[parent.idOnServer]]</div>
+                      </div>
+
+                      <div class="layout horizontal m-horizontal-4 wrap">
+                        <div class="type caption">[[parent.address]]&nbsp;</div>
+                         <div class="type caption">([[parent.effectiveRegion]])</div>
+                      </div>
+            
+                      <paper-menu-button horizontal-align="right" no-animations="">
+                        <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+                        <paper-menu class="dropdown-content">
+                          <div hidden="">[[parent]]</div>
+                          <paper-item on-tap="removeParentTapped">Remove as a parent</paper-item>
+                        </paper-menu>
+                      </paper-menu-button>
+
+                    </paper-item>
+                  </template>
+
+                </paper-listbox>
+                
+              </div>
+            </template>
+          </paper-card>
+
+          <div class="organization-info-card-counter">
+            <div>Add A Parent Organization</div>
+          </div>
+
+          <paper-card class="organization-info-cards">
+            <div class="card-content">
+              <div class="info-row horizontal layout center">
+                <paper-input class="flex" always-float-label="" value="{{parentOrganizationSearchString}}" label="Name/Region/Address of the organization"></paper-input>
+                <paper-button raised="" on-tap="searchParentOrganizationTapped">Search</paper-button>
+              </div>
+            </div>
+            <template is="dom-if" if="[[parentSearchResultList.length]]">
+              <div class="p-0">
+                <paper-listbox>
+                  
+                  <template id="assistant-list-repeater" is="dom-repeat" items="[[parentSearchResultList]]" as="parent">
+                    <paper-item class="custom layout horizontal center">
+                      
+                      <div class="flex m-left-8">
+                        <div class="type body capitalize">[[parent.name]]</div>
+                        <div class="type caption secondary">[[parent.idOnServer]]</div>
+                      </div>
+
+                      <div class="layout horizontal m-horizontal-4 wrap">
+                        <div class="type caption">[[parent.address]]&nbsp;</div>
+                         <div class="type caption">([[parent.effectiveRegion]])</div>
+                      </div>
+            
+                      <paper-menu-button horizontal-align="right" no-animations="">
+                        <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+                        <paper-menu class="dropdown-content">
+
+                        <template is="dom-if" if="[[!$in(parent.idOnServer, organization.parentOrganizationIdList)]]">
+                          <div hidden="">[[parent]]</div>
+                          <paper-item on-tap="addParentTapped">Add as a parent</paper-item>
+                        </template>
+                        </paper-menu>
+                      </paper-menu-button>
+
+                    </paper-item>
+                  </template>
+
+                </paper-listbox>
+                
+              </div>
+            </template>
+          </paper-card>
+
+        </template>
+        <!-- editing organization - end -->
+
+      </div>
+
+    </div>
+
+  </template>
+  <script>(function(){var i=[].indexOf||function(i){for(var t=0,a=this.length;t<a;t++)if(t in this&&this[t]===i)return t;return-1};Polymer({is:"page-organization-editor",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{user:{type:Object,notify:!0,value:null},isOrganizationValid:{type:Boolean,notify:!0,value:!1},organization:{type:Object,notify:!0,value:null},parentSearchResultList:{type:Array,value:function(){return[]}},parentList:{type:Array,value:function(){return[]}}},_loadUser:function(){var i;if(i=app.db.find("user"),1===i.length)return this.user=i[0]},arrowBackButtonPressed:function(i){return this.domHost.navigateToPreviousPage()},saveButtonPressed:function(i){var t;return t=this.domHost.getPageParams(),"new"===t.organization?this._createOrganization(function(i){return function(){return i.domHost.showToast("Organization Created"),i.arrowBackButtonPressed()}}(this)):this._updateOrganization(function(i){return function(){return i.domHost.showToast("Organization Updated"),i.arrowBackButtonPressed()}}(this))},_makeNewOrganization:function(){return this.organization={idOnServer:null,name:"",address:"",effectiveRegion:"",parentOrganizationIdList:[]},this.isOrganizationValid=!0},_notifyInvalidOrganization:function(){return this.isOrganizationValid=!1,this.domHost.showModalDialog("Invalid Organization Provided")},_createOrganization:function(i){var t;return t={apiKey:this.user.apiKey,name:this.organization.name,address:this.organization.address,effectiveRegion:this.organization.effectiveRegion,parentOrganizationIdList:this.organization.parentOrganizationIdList},this.callApi("/bdemr-organization-create",t,function(t){return function(a,n){return n.hasError?t.domHost.showModalDialog(n.error.message):i()}}(this))},_updateOrganization:function(i){var t;return t={apiKey:this.user.apiKey,organizationId:this.organization.idOnServer,name:this.organization.name,address:this.organization.address,effectiveRegion:this.organization.effectiveRegion,parentOrganizationIdList:this.organization.parentOrganizationIdList},this.callApi("/bdemr-organization-update",t,function(t){return function(a,n){return n.hasError?t.domHost.showModalDialog(n.error.message):i()}}(this))},navigatedIn:function(){var i;return this._loadUser(),i=this.domHost.getPageParams(),i.organization?"new"===i.organization?this._makeNewOrganization():this._loadOrganization(i.organization):this._notifyInvalidOrganization()},navigatedOut:function(){return this.organization=null,this.isOrganizationValid=!1,this.parentSearchResultList=[],this.parentList=[]},searchParentOrganizationTapped:function(i){var t;return t={apiKey:this.user.apiKey,searchString:this.parentOrganizationSearchString},this.callApi("/bdemr-organization-search",t,function(i){return function(t,a){return a.hasError?i.domHost.showModalDialog(a.error.message):i.set("parentSearchResultList",a.data.matchingOrganizationList)}}(this))},$in:function(t,a){return i.call(a,t)>=0},addParentTapped:function(i){var t;return t=i.model.parent,this.push("organization.parentOrganizationIdList",t.idOnServer),this.push("parentList",t),this.splice("parentSearchResultList",this.parentSearchResultList.indexOf(t),1)},removeParentTapped:function(i){var t;return t=i.model.parent,this.splice("organization.parentOrganizationIdList",this.organization.parentOrganizationIdList.indexOf(t.idOnServer),1),this.splice("parentList",this.parentList.indexOf(t),1)},_loadOrganization:function(i){var t;return t={apiKey:this.user.apiKey,idList:[i]},this.callApi("/bdemr-organization-list-organizations-by-ids",t,function(i){return function(t,a){return a.hasError?i.domHost.showModalDialog(a.error.message):1!==a.data.matchingOrganizationList.length?void i.domHost.showModalDialog("Invalid Organization"):(i.set("organization",a.data.matchingOrganizationList[0]),i.set("isOrganizationValid",!0),i._loadParentList())}}(this))},_loadParentList:function(){var i;return i={apiKey:this.user.apiKey,idList:this.organization.parentOrganizationIdList},this.callApi("/bdemr-organization-list-organizations-by-ids",i,function(i){return function(t,a){return a.hasError?i.domHost.showModalDialog(a.error.message):i.set("parentList",a.data.matchingOrganizationList)}}(this))}})}).call(this);
+//# sourceMappingURL=page-organization-editor.coffee-compiled.js.map</script>
+</dom-module>

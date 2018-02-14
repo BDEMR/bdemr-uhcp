@@ -1,0 +1,70 @@
+<dom-module id="custom-vital-search">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+      
+      :host {
+        display: inline-block;
+      }
+
+      .filter paper-input {
+        --paper-input-container: {
+          margin-left: 10px;
+        }
+        --paper-input-container-label: {
+          font-size: 13px;
+        }
+        --paper-input-container-input: {
+          font-size: 13px;
+        }
+      }
+
+      .filter paper-icon-button {
+        width: 36px;
+        height: 36px
+      }
+
+      @media only screen and (max-width : 380px){
+        .filter paper-input {
+          --paper-input-container: {
+            margin-left: 0;
+          }
+          --paper-input-container-label: {
+            font-size: 13px;
+            text-align: left;
+          }
+          --paper-input-container-input: {
+            font-size: 13px;
+            text-align: left;
+          }
+        }
+      }
+
+    </style>
+    
+    <div class="filter layout horizontal center wrap">
+      <paper-input label="Click to Filter By Date" no-label-float="" readonly="" value="[[filterDateRange]]" on-click="showFilterModalButtonClicked"></paper-input>
+      <paper-icon-button icon="close" on-tap="clearIconClicked" hidden$="[[!filterDateRange]]"></paper-icon-button>
+    </div>
+    
+    <!--Filter Modal-->
+    <paper-dialog id="filterModal">
+      <h3>Filter By</h3>
+      <div class="layout vertical">
+        <vaadin-date-picker label="Chose Start Date" value="{{startDate}}"></vaadin-date-picker>
+        <vaadin-date-picker label="Chose End Date" value="{{endDate}}" min="[[startDate]]" disabled$="[[!startDate]]"></vaadin-date-picker>
+        <br>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss="">Cancel</paper-button>
+        <paper-button raised="" dialog-confirm="" on-tap="filterButtonClicked" disabled$="[[!endDate]]">Filter</paper-button>
+      </div>
+    </paper-dialog>
+
+  </template>
+  <script>(function(){Polymer({is:"custom-vital-search",properties:{startDate:{type:String,value:"",reflectToAttribute:!0},endDate:{type:String,value:"",reflectToAttribute:!0},filterDateRange:{type:String,value:""}},filterButtonClicked:function(t,e){return this.filterDateRange=lib.datetime.format(this.startDate,"mmm d, yyyy")+" - "+lib.datetime.format(this.endDate,"mmm d, yyyy"),this.fire("date-select",{startDate:this.startDate,endDate:this.endDate})},clearIconClicked:function(){return this.filterDateRange="",this.startDate="",this.endDate="",this.fire("clear",{})},showFilterModalButtonClicked:function(t){return this.$.filterModal.toggle(),this.startDate="",this.endDate=""}})}).call(this);
+//# sourceMappingURL=custom-vital-search.coffee-compiled.js.map</script>
+</dom-module>
+
+
+
+
