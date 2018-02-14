@@ -1,0 +1,171 @@
+<!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-assistant-manager">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+    
+      paper-tabs {
+        background-color: var(--brand-primary-color);
+        color: #fff;
+        --paper-tabs-selection-bar-color: #fff;
+
+      }
+
+
+      .limiting-container {
+        margin-top: 10px;
+      }
+      
+      
+      .more-optons {
+        color: #777777;
+      }
+      
+      
+      .new-patient-fab {
+        position: fixed;
+        right: 20px;
+        bottom: 164px;
+      }
+      
+      
+      paper-button {
+        margin: 3px;
+      }
+
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin: 0 4px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+      
+      .modifier.online {
+        background: #757575;
+      }
+      
+      .modifier.local-only {
+        background: #039BE5;
+      }
+      
+      .modifier.locally-updated {
+        background: #009688;
+      }
+      
+      .modifier.imported {
+        background: #4CAF50;
+      }
+
+
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+        
+        <!-- Card - Search - start -->
+        <paper-card>
+          <div class="card-content">
+
+            <paper-input class="flex" value="{{searchFieldMainInput}}" label="Search with Assistant Name, phone, Email, NID"></paper-input>
+          </div>
+          <div class="card-actions">
+            <paper-button raised="" on-tap="searchAllAssistantButtonPressed">MY ALL ASSISTANT</paper-button>
+            <paper-button class="colored" raised="" on-tap="searchOnlineButtonPressed">SEARCH</paper-button>
+          </div>
+        </paper-card>
+        <!-- Card - Search - end -->
+
+        <!-- Card - Search Results - start -->
+        <paper-card class="m-top-8">
+  
+          <div class="card-custom-header">
+            <div class="layout horizontal center">
+              <template is="dom-if" if="[[hasSearchBeenPressed]]">
+                <div class="title flex">Results: [[matchingAssistantList.length]] Assistant(s) found</div>
+              </template>              
+              <paper-icon-button icon="clear" on-tap="clearSearchResultsClicked"></paper-icon-button>
+            </div>
+          </div>
+
+          <template is="dom-if" if="[[hasSearchBeenPressed]]">
+            <div class="p-0">
+              <paper-listbox>
+                
+                <template id="assistant-list-repeater" is="dom-repeat" items="[[matchingAssistantList]]" as="assistant">
+                  <paper-item class="custom layout horizontal center">
+                    <div class="type caption secondary">[[assistant.serial]]</div>
+                    
+                    <div class="flex m-left-8">
+                      <div class="type body capitalize">[[assistant.name]]</div>
+                      <div class="type caption">[[assistant.email]]</div>
+                      <div class="type caption">[[assistant.phone]]</div>
+                      <!-- <div class="type caption">[[$mkDate(patient.createdDatetimeStamp)]]</div> -->
+<!--                       <template is="dom-if" if="[[patient.doctorsPrivateNote]]">
+                        <div class="type caption">([[$truncate(patient.doctorsPrivateNote, 20)]])</div>
+                      </template> -->
+                    </div>
+                    <div class="layout horizontal m-horizontal-4 wrap">
+                      <template is="dom-if" if="[[assistant.flags.isDoctorsAssistant]]">
+                        <div class="modifier imported">my assistant</div>
+                      </template>
+                    </div>
+          
+                    <paper-menu-button horizontal-align="right" no-animations="">
+                      <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+                      <paper-menu class="dropdown-content">
+                        <!-- export/import start -->
+                        <template is="dom-if" if="[[!assistant.flags.isDoctorsAssistant]]">
+                          <paper-item on-tap="addAsMyAssistantPressed">Add as my Assistant</paper-item>
+                        </template>
+                        <template is="dom-if" if="[[assistant.flags.isDoctorsAssistant]]">
+                          <paper-item on-tap="removeFromMyAssistantPressed">Remove from my Assistant</paper-item>
+                        </template>
+                      </paper-menu>
+                    </paper-menu-button>
+                  </paper-item>
+                </template>
+
+              </paper-listbox>
+              
+            </div>
+          </template>
+     
+        </paper-card>
+        <!-- Card - Search Results - end -->
+            
+
+        
+        <!-- <paper-fab class="new-patient-fab" icon="add" on-tap="newPatientFabPressed"></paper-fab> -->
+
+      </div>
+
+    </div>
+
+    
+
+  </template>
+  <script>(function(){Polymer({is:"page-assistant-manager",behaviors:[app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling,app.behaviors.commonComputes,app.behaviors.dbUsing],properties:{selectedTabPageIndex:{type:Number,notify:!0,value:0},searchContextDropdownSelectedIndex:{type:Number,notify:!0,value:1},isAdvancedSearchEnabled:{type:Boolean,notify:!0,value:!1},advancedSearchParameters:{type:Object,notify:!0,value:{createdDate:{enabled:!1,lowerBound:lib.datetime.mkDate(lib.datetime.now()),upperBound:lib.datetime.mkDate(lib.datetime.now())},initialVisitDate:{enabled:!1,lowerBound:lib.datetime.mkDate(lib.datetime.now()),upperBound:lib.datetime.mkDate(lib.datetime.now())},lastVisitDate:{enabled:!1,lowerBound:lib.datetime.mkDate(lib.datetime.now()),upperBound:lib.datetime.mkDate(lib.datetime.now())},admissionDate:{enabled:!1,lowerBound:lib.datetime.mkDate(lib.datetime.now()),upperBound:lib.datetime.mkDate(lib.datetime.now())},handledDate:{lowerBound:lib.datetime.mkDate(lib.datetime.now()),upperBound:lib.datetime.mkDate(lib.datetime.now())}}},hasSearchBeenPressed:{type:Boolean,notify:!0,value:!0},matchingAssistantList:{type:Array,notify:!0,value:[]},searchFieldMainInput:{type:String,notify:!0,value:""},user:{type:Object,value:null}},navigatedIn:function(){var e,t,i;return e=this.getCurrentOrganization(),e||this.domHost.navigateToPage("#/select-organization"),this.user=function(){try{return app.db.find("user")[0]}catch(e){return t=e,null}}()||null,this.user.isUsingAsAssistant===!0&&this.domHost.navigateToPage("#/dashboard"),i=this.domHost.getPageParams(),i.filter&&"clear"===i.filter?(this.domHost.modifyCurrentPagePath("#/assistant-manager"),this.searchFieldMainInput="",this.listAllImportedAndOfflinePatientsPressed(null)):this.listAllImportedAndOfflinePatientsPressed(null)},searchButtonPressed:function(e){return 1===this.searchContextDropdownSelectedIndex?this._searchOnline():this._searchOffline()},listAllImportedAndOfflinePatientsPressed:function(e){return this.searchFieldMainInput="",this.searchContextDropdownSelectedIndex=0,this.searchButtonPressed(null)},searchAllAssistantButtonPressed:function(e){var t;return this.matchingAssistantList=[],t=app.db.find("user")[0].apiKey,this.callApi("/bdemr-doctor-assistant-search",{searchQuery:this.searchFieldMainInput,apiKey:t},function(e){return function(t,i){var n;return i.hasError?e.domHost.showModalDialog(i.error.message):(n=i.data,e.matchingAssistantList=n)}}(this))},searchOnlineButtonPressed:function(e){return this.searchContextDropdownSelectedIndex=1,this.searchButtonPressed(null)},_searchOnline:function(){var e;return this.matchingAssistantList=[],e=app.db.find("user")[0].apiKey,this.callApi("/bdemr-doctor-assistant-search",{searchQuery:this.searchFieldMainInput,apiKey:e,special:"none"},function(e){return function(t,i){var n;return i.hasError?e.domHost.showModalDialog(i.error.message):(n=i.data,e.matchingAssistantList=n)}}(this))},_searchOffline:function(){var e,t,i,n,a;for(a=this.searchFieldMainInput,0===a.length,n=app.db.find("patient-list",function(e){return function(t){var i,n,s,r,o,l,d,u,c,h,m,p,f,g,b,P;return P=t.serial,g=t.name,d=t.email,b=t.phone,f=t.nIdOrSsn,c=t.hospitalNumber,h=t.initialVisitDate,p=t.lastVisitDate,i=t.admissionDate,e.oneTimeSearchFilter?(n=""+P==""+e.oneTimeSearchFilter,s=!1,r=!1,o=!1,l=!1):(n=g.first.indexOf(a)||g.last.indexOf(a)>-1,s=d.indexOf(a)>-1,r=b.indexOf(a)>-1,o=P.indexOf(a)>-1,l=function(){try{return f.indexOf(a)>-1}catch(e){return u=e,!1}}()),m=!0,n||s||r||o||l||condition6}}(this)),this.oneTimeSearchFilter=null,e=0,t=n.length;e<t;e++)i=n[e],"flags"in i||(i.flags={isImported:!1,isLocalOnly:!1,isOnlineOnly:!1},i.flags.isLocalOnly=!0);return this.matchingPatientList=n},clearSearchResultsClicked:function(e){return this.matchingAssistantList=[]},moreOptionsPressed:function(e){return this.domHost.showModalDialog('You can search records (instead of patients) by many other options including diseases from the "Record Manager" option from the left menu.')},_publishPatient:function(e,t,i){return this.callApi("/bdemr-patient-publish",{patient:e,pin:t},function(n){return function(a,s){return s.hasError?"U_PIN_ERR"===s.error.message?n.domHost.showModalInput("Please enter correct patient PIN","0000",function(t){if(t)return n._publishPatient(e,t,i)}):n.domHost.showModalDialog(s.error.message):"success"===s.data.status?n._importPatient(e.serial,t,function(t){return app.db.remove("patient-list",e._id),n.searchContextDropdownSelectedIndex=0,n.oneTimeSearchFilter=e.serial,n.searchButtonPressed(null)}):n.domHost.showModalDialog("Unkown response "+s.data.status)}}(this))},publishPatientPressed:function(e){var t,i,n,a;return t=this.locateParentNode(e.target,"PAPER-MENU-BUTTON"),t.opened=!1,a=this.$$("#patient-list-repeater"),i=a.indexForElement(t),n=this.matchingPatientList[i],this.domHost.showModalPrompt("Publishing will overwrite remote changes (if any). Continue?",function(e){return function(t){if(t)return e._publishPatient(n,null,function(e){})}}(this))},_importPatient:function(e,t,i){return this.callApi("/bdemr-patient-import",{serial:e,pin:t},function(e){return function(t,n){var a,s,r;return n.hasError?e.domHost.showModalDialog(n.error.message):(r=n.data,1!==r.length?e.domHost.showModalDialog("Unknown error occurred."):(s=r[0],s.flags={isImported:!1,isLocalOnly:!1,isOnlineOnly:!1},s.flags.isImported=!0,a=app.db.insert("patient-list",s),i(a)))}}(this))},addAsMyAssistantPressed:function(e){return this.domHost.showModalPrompt("Are you sure?",function(t){return function(i){var n,a,s,r,o;if(i===!0)return s=t.locateParentNode(e.target,"PAPER-MENU-BUTTON"),s.opened=!1,o=t.$$("#assistant-list-repeater"),r=o.indexForElement(s),a=t.matchingAssistantList[r],n=app.db.find("user")[0].apiKey,t.callApi("/bdemr-doctor-assistant-set-as-assistant",{assistantId:a.idOnServer,apiKey:n},function(e,i){return i.hasError?t.domHost.showModalDialog(i.error.message):"ok"===i.data?(t._searchOnline(),t.domHost.showModalDialog("successfully added")):void 0})}}(this))},removeFromMyAssistantPressed:function(e){return this.domHost.showModalPrompt("Are you sure?",function(t){return function(i){var n,a,s,r,o;if(i===!0)return s=t.locateParentNode(e.target,"PAPER-MENU-BUTTON"),s.opened=!1,o=t.$$("#assistant-list-repeater"),r=o.indexForElement(s),a=t.matchingAssistantList[r],n=app.db.find("user")[0].apiKey,t.callApi("/bdemr-doctor-assistant-remove-as-assistant",{assistantId:a.idOnServer,apiKey:n},function(e,i){return i.hasError?t.domHost.showModalDialog(i.error.message):"ok"===i.data?t.domHost.showModalDialog("successfully removed"):void 0})}}(this))},$or:function(e,t){return e||t},$log:function(e){},_isEmptyArray:function(e){return 0===e.length}})}).call(this);
+//# sourceMappingURL=page-assistant-manager.coffee-compiled.js.map</script>
+</dom-module>

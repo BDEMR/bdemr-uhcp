@@ -1,0 +1,231 @@
+<!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-organization-manage-patient">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      .organization-info-card-counter {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #777777;
+      }
+
+      .organization-info-cards {
+        @apply(--layout-vertical);
+        /*@apply(--layout-center);*/
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 20px;
+      }
+
+      .organization-info-cards .row {
+        margin-left: 10px;
+        /*margin-right: 10px;*/
+        margin-top: 10px;
+      }
+
+      .organization-info-cards .hr {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: 1px;
+        /*width: 100px;*/
+        background: #dddddd;
+      }
+
+      .organization-info-cards .row .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .organization-info-cards .row .modifier.online {
+        background: #757575;
+      }
+
+      .organization-info-cards .row .modifier.local-only {
+        background: #039BE5;
+      }
+
+      .organization-info-cards .row .modifier.locally-updated {
+        background: #009688;
+      }
+
+      .organization-info-cards .row .modifier.imported {
+        background: #4CAF50;
+      }
+
+      .info-row {
+        margin-top: 10px;
+      }
+
+      .top-info-row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .serial-number {
+        background: #37474F;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .address1 {
+        margin-right: 10px;
+      }
+
+      .break-on-tablet {
+        @apply(--layout-horizontal);
+      }
+
+      @media screen and (max-width: 740px) {
+        .break-on-tablet {
+          display: block;
+        }
+      }
+
+      .val {
+        text-decoration: underline;
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .primary {
+        background: #388E3C;
+        color: white;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <template is="dom-if" if="{{!isOrganizationValid}}">
+          Organization invalid
+        </template>
+
+        <!-- editing organization - start -->
+        <template is="dom-if" if="{{isOrganizationValid}}">
+
+          <div class="organization-info-card-counter">
+            <div>Basic Information</div>
+          </div>
+
+          <paper-card class="organization-info-cards">
+            <div class="card-content">
+              <div class="horizontal layout center top-info-row">
+                <div>ID: </div>
+                <div class="serial-number">[[organization.idOnServer]]</div>
+                <div class="flex"></div>
+              </div>
+              <div class="info-row">
+                <div>Name: [[organization.name]]</div>
+              </div>
+              <div class="info-row">
+                <div>Region: [[organization.effectiveRegion]]</div>
+              </div>
+              <div class="info-row">
+                <div>Address: [[organization.address]]</div>
+              </div>
+            </div>
+          </paper-card>
+
+          <div class="organization-info-card-counter">
+            <div>Wallet Balance and money distribution</div>
+          </div>
+
+          <paper-card class="organization-info-cards">
+            <div class="card-content">
+              <paper-input label="Indoor Balance" type="number" value="{{indoorBalance}}"></paper-input>
+              <div>
+                <strong>Indoor Balance:</strong> This amount can only be used to avail services when patient is admitted to your
+                organization.
+              </div>
+              <paper-input label="Outdoor Balance" type="number" value="{{outdoorBalance}}"></paper-input>
+              <div>
+                <strong>Outdoor Balance:</strong> This amount can only be used to avail services when patient is not admitted.
+                <!-- However, you can always convert more indoor balance to outdoor balance. -->
+              </div>
+              <br>
+              <div>
+                <strong>Summary:</strong> When you add a patient below, your wallet balance will be reduced by
+                <strong>[[$add(outdoorBalance,indoorBalance)]]</strong> BDT. This amount will be added to the patient you select.
+                You currently have
+                <strong>[[walletBalance]]</strong> BDT in your wallet. You can
+                <paper-button class="primary" on-tap="addBalanceTapped" data-amount="5000">Add More Money</paper-button> to your wallet.
+              </div>
+            </div>
+          </paper-card>
+
+          <!-- Add Patient Start -->
+          <paper-card class="organization-info-cards" heading="">
+            <div class="card-content">
+              <paper-autocomplete class="flex" id="userSearch" text="{{searchFieldMainInput}}" label="Search with Patient Name, phone, Email, NID or Hospital Number" on-autocomplete-selected="userSelected" on-keyup="onlineSearchEnterKeyPressed" error-message="Input Required" required=""></paper-autocomplete>
+              <br>
+              <template is="dom-if" if="[[!matchingPatientList.length]]">
+                <div class="layout vertical center type secondary">-- No Patient Data--</div>
+              </template>
+              <template id="patient-list-repeater" is="dom-repeat" items="[[matchingPatientList]]" as="patient">
+                <paper-item class="custom layout horizontal center">
+                  <div class="type caption secondary">[[patient.serial]]</div>
+                  <div class="flex m-left-8">
+                    <div class="type body capitalize">[[patient.name]]</div>
+                    <div class="type caption">[[patient.email]]</div>
+                    <div class="type caption">[[patient.phone]]</div>
+                    <div class="type caption">Indoor Balance: [[patient.indoorBalance]] BDT</div>
+                    <div class="type caption">Outdoor Balance: [[patient.outdoorBalance]] BDT</div>
+                  </div>
+                  <paper-button raised="" class="btn-add colored" on-tap="viewPatientExpenseHistoryPressed">
+                    <!-- <iron-icon icon="icons:visibility" class="m-right-8"></iron-icon> -->
+                    View Expenses</paper-button>
+                  <paper-icon-button icon="delete" on-tap="removePatientPressed"></paper-icon-button>
+                </paper-item>
+              </template>
+            </div>
+            <div class="card-actions"></div>
+          </paper-card>
+          <!-- Add Patient End -->
+
+        </template>
+        <!-- editing organization - end -->
+
+      </div>
+
+    </div>
+
+  </template>
+  <script>(function(){Polymer({is:"page-organization-manage-patient",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{user:{type:Object,notify:!0,value:null},isOrganizationValid:{type:Boolean,notify:!0,value:!1},organization:{type:Object,notify:!0,value:null},matchingPatientList:{type:Array,value:function(){return[]}},indoorBalance:{type:Number,value:800},outdoorBalance:{type:Number,value:200}},$add:function(t,i){return parseInt(t)+parseInt(i)},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},_notifyInvalidOrganization:function(){return this.isOrganizationValid=!1,this.domHost.showModalDialog("Invalid Organization Provided")},navigatedIn:function(){var t;return this._loadUser(),this._loadWallet(),t=this.domHost.getPageParams(),t.organization?this._loadOrganization(t.organization):this._notifyInvalidOrganization()},navigatedOut:function(){return this.organization=null,this.isOrganizationValid=!1},_loadOrganization:function(t){var i;return i={apiKey:this.user.apiKey,idList:[t]},this.callApi("/bdemr-organization-list-organizations-by-ids",i,function(t){return function(i,n){return n.hasError?t.domHost.showModalDialog(n.error.message):1!==n.data.matchingOrganizationList.length?void t.domHost.showModalDialog("Invalid Organization"):(t.set("organization",n.data.matchingOrganizationList[0]),t.set("isOrganizationValid",!0),t._loadPatientList())}}(this))},searchOnlineButtonPressed:function(t){return this.searchContextDropdownSelectedIndex=1,this.searchButtonPressed()},onlineSearchEnterKeyPressed:function(t){if(13===t.keyCode){if(!this.searchFieldMainInput)return;return this._searchOnline(this.searchFieldMainInput)}},_searchOnline:function(t){return this.callApi("/bdemr-patient-search",{searchQuery:t},function(t){return function(i,n){var a,e,r,o,s,d,l;if(n.hasError)return t.domHost.showModalDialog(n.error.message);if(0===n.data.length)return t.domHost.showToast("No Patient Found with that Search"),t.searchFieldMainInput="";for(s=n.data,a=0,r=s.length;a<r;a++)d=s[a],d.flags={isImported:!1,isLocalOnly:!1,isOnlineOnly:!1},o=app.db.find("patient-list",function(t){var i;return i=t.serial,i===d.serial}),0===o.length?d.flags.isOnlineOnly=!0:(d.flags.isImported=!0,d._tempLocalDbId=o[0]._id);return l=function(){var t,i,n;for(n=[],t=0,i=s.length;t<i;t++)e=s[t],n.push({text:e.name+"--"+e.email+"--"+e.phone,value:e});return n}(),t.$$("#userSearch").suggestions(l)}}(this))},userSelected:function(t){var i;return t.stopPropagation(),i=t.detail.value,this.searchFieldMainInput="",i.organizationId=this.organization.idOnServer,this.addPatient(i)},addPatient:function(t){var i;return i={apiKey:this.user.apiKey,organizationId:this.organization.idOnServer,targetUserId:t.idOnServer,outdoorBalance:this.outdoorBalance,indoorBalance:this.indoorBalance},this.callApi("/bdemr-organization-add-patient",i,function(t){return function(i,n){return n.hasError?t.domHost.showModalDialog(n.error.message):(t.domHost.showToast("Patient Added Successfully"),t._loadPatientList(),t._loadWallet())}}(this))},_loadPatientList:function(){var t;return t={apiKey:this.user.apiKey,organizationId:this.organization.idOnServer,searchString:""},this.callApi("/bdemr-organization-list-patient",t,function(t){return function(i,n){return n.hasError?t.domHost.showToast(n.error.message):t.set("matchingPatientList",n.data.matchingPatientList)}}(this))},removePatientPressed:function(t){var i,n,a,e;return e=t.model,a=e.patient,n=e.index,i={apiKey:this.user.apiKey,organizationId:this.organization.idOnServer,targetUserId:a.patientId},this.callApi("/bdemr-organization-remove-patient",i,function(t){return function(i,a){return a.hasError?t.domHost.showModalDialog(a.error.message):t.splice("matchingPatientList",n,1)}}(this))},viewPatientExpenseHistoryPressed:function(t){var i,n,a,e,r,o,s,d,l,u,h;for(d=t.model,s=d.patient,a=d.index,h=["Outdoor Expenses:"],l=s.outdoorTransactionHistory,n=0,r=l.length;n<r;n++)i=l[n],h.push(i.notes+" - "+i.amountInBdt+" BDT - "+this.$mkDate(i.createDatetimeStamp));for(h.push(""),h.push("Indoor Expenses:"),u=s.indoorTransactionHistory,e=0,o=u.length;e<o;e++)i=u[e],h.push(i.notes+" - "+i.amountInBdt+" BDT - "+this.$mkDate(i.createDatetimeStamp));return this.domHost.showModalDialog(h)}})}).call(this);
+//# sourceMappingURL=page-organization-manage-patient.coffee-compiled.js.map</script>
+</dom-module>

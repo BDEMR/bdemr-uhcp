@@ -1,0 +1,74 @@
+<!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-print-preview">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      :host {
+        background-color: #fff;
+        position: absolute;
+        left: 0;
+        top: 64px;
+        right: 0;
+        bottom: 0;
+      }
+
+      .patient-details {
+        background-color: #f7f7f7;
+        padding: 8px 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+      }
+
+      .header-details {
+        padding: 8px 0;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <!-- Header - Image -->
+    <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
+      <div>
+        <img width="100%" height="128px" class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+      </div>
+    </template>
+    <!-- /Header - Image -->
+
+    <!-- Header - Details -->
+    <div class="horizontal layout center header-details">
+      <div class="vertical layout flex">
+        <div class="type title-2">[[settings.printDecoration.leftSideLine1]]</div>
+        <div class="type body">[[settings.printDecoration.leftSideLine2]]</div>
+        <div class="type body">[[settings.printDecoration.leftSideLine3]]</div>
+      </div>
+      <div class="vertical layout end">
+        <div class="type title-2">[[settings.printDecoration.rightSideLine1]]</div>
+        <div class="type body">[[settings.printDecoration.rightSideLine2]]</div>
+        <div class="type body">[[settings.printDecoration.rightSideLine3]]</div>
+      </div>
+    </div>
+    <!-- /Header - Details -->
+
+    <!-- Patient - Details -->
+    <div class="horizontal layout center type body patient-details">
+      <template is="dom-if" if="[[!patient.isForOrganizationOnly]]">
+        <div class="m-right-16"><strong>Patient Name: </strong>{{patient.name}}</div>
+        <div class="m-right-16"><strong>Age: </strong>[[_computeAge(patient.dob)]] years</div>
+        <div class="m-right-16"><strong>Allergy: </strong></div>
+        <div><strong>Blood Group: </strong></div>
+      </template>
+      <template is="dom-if" if="[[patient.isForOrganizationOnly]]">
+        <div class="m-right-16"><strong>Patient Name: </strong><span class="type italic secondary">[REDACTED FOR CONFIDENTIALITY]</span></div>
+        <div class="m-right-16"><strong>Age: </strong><span class="type italic secondary">[REDACTED FOR CONFIDENTIALITY]</span></div>
+        <div class="m-right-16"><strong>Allergy: </strong></div>
+        <div><strong>Blood Group: </strong></div>
+      </template>
+    </div>
+    <!-- /Patient - Details -->
+
+    
+  </template>
+  <script>(function(){Polymer({is:"page-print-preview",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike],properties:{isPatientValid:{type:Boolean,notify:!1,value:!0},user:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},settings:{type:Object,notify:!0}},_makeSettings:function(){var t;return t={serial:"only",isSyncEnabled:!1,printDecoration:{leftSideLine1:"My Institution",leftSideLine2:"My Institution Address",leftSideLine3:"My Institution Contact",rightSideLine1:"My Name",rightSideLine2:"My Degrees",rightSideLine3:"My Contact",footerLine:"A simple message on the bottom",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT"}},_getSettings:function(){var t,e;return t=app.db.find("settings"),e=0===t.length?this._makeSettings():t[0]},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},$findCreator:function(t){return"me"},_isEmptyString:function(t){return null===t||"undefined"===t||""===t},_isEmptyArray:function(t){return 0===t.length},_computeTotalDaysCount:function(t,e){var i,n;return t?(n=864e5,e=new Date(e),i=t-e,Math.round(i/n)):"As Needed"},_computeAge:function(t){var e,i,n,a;return a=new Date,i=new Date(t),e=a.getFullYear()-i.getFullYear(),n=a.getMonth()-i.getMonth(),(n<0||0===n&&a.getDate()<i.getDate())&&e--,e},printButtonPressed:function(t){return window.print()},_sortByDate:function(t,e){return t.date<e.date?1:t.date>e.date?-1:void 0},_formatDateTime:function(t){return lib.datetime.format(new Date(t),"mmm d, yyyy h:MMTT")},_returnSerial:function(t){return t+1},getDoctorSpeciality:function(){if(0!==this.user.specializationList.length)return this.user.specializationList[0].specializationTitle},_loadPatient:function(t){var e;return e=app.db.find("patient-list",function(e){var i;return i=e.serial,i===t}),1===e.length?(this.isPatientValid=!0,this.patient=e[0]):this._notifyInvalidPatient()},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},_notifyInvalidPatient:function(){return this.isPatientValid=!1,this.showModal("Invalid Patient Provided")},navigatedIn:function(){var t;return t=this.domHost.getPageParams(),this._loadUser(),this.settings=this._getSettings(),t.patient?this._loadPatient(t.patient):this._notifyInvalidPatient()},navigatedOut:function(){return this.patient=null,this.isPatientValid=!1,this.patient=null},ready:function(){}})}).call(this);
+//# sourceMappingURL=page-print-preview.coffee-compiled.js.map</script>
+</dom-module>

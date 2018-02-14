@@ -1,0 +1,618 @@
+<!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-preview-preconception-record">
+  <template>
+
+    <!-- style -->
+    <style is="custom-style" include="common-style">
+      .card {
+        background-color: #fff
+      }
+
+      .limiting-container {
+        margin-top: 8px;
+      }
+
+      .sub-header {
+        background-color: #f7f7f7;
+        padding: 4px 16px;
+        border-bottom: 1px solid #eee;
+        font-weight: 500;
+      }
+
+      .patient-details {
+        background-color: #f7f7f7;
+        padding: 8px 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+      }
+
+      .header-details {
+        padding: 8px 0;
+      }
+
+      .document-header {
+        /*background-color: #fafafa;*/
+        padding-left: 10px;
+        padding-right: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .document-header .logo {
+        max-width: 128px;
+        max-height: 128px;
+      }
+
+      .horiline {
+        width: 100%;
+        height: 0px;
+        /*background: black;*/
+        border: 1px solid black;
+        margin-bottom: 6px;
+      }
+
+      .leftSide {
+        margin-left: 6px;
+      }
+
+      .leftSideLine1 {
+        font-size: 24px;
+      }
+
+      .rightSideLine1 {
+        font-size: 22px;
+      }
+
+
+      .document-header2 .logo {
+        max-width: 128px;
+        max-height: 128px;
+      }
+
+      @media print {
+        .hideOnprint {
+          display: none;
+        }
+      }
+    </style>
+
+    <!-- local DOM -->
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <div class="card hideOnprint">
+
+          <div class="card-actions p-16 horizontal layout end-justified center">
+            <!-- <paper-button raised on-tap="createAnotherPatient" class="btn-add"><iron-icon icon="add" class="m-right-8" ></iron-icon>Create New Patient</paper-button> -->
+            <paper-button raised="" on-tap="goDashboard" class="btn-add">
+              <iron-icon icon="home" class="m-right-8"></iron-icon>Dashboard</paper-button>
+            <paper-button raised="" on-tap="editButtonPressed" class="btn-add">
+              <iron-icon icon="create" class="m-right-8"></iron-icon>Edit</paper-button>
+            <paper-button raised="" on-tap="printButtonPressed" class="btn-add colored">
+              <iron-icon icon="print" class="m-right-8"></iron-icon>Print</paper-button>
+          </div>
+
+        </div>
+
+        <div class="card m-top-8">
+
+          <div class="print-header horizontal layout center center-justified">
+            <h1>[[settings.printDecoration.headerLine]]</h1>
+          </div>
+
+          <!-- Print Header - Main - start -->
+          <div class="document-header horizontal layout center">
+            <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
+              <img class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+            </template>
+
+            <div class="leftSide">
+              <div class="leftSideLine1">[[settings.printDecoration.leftSideLine1]]</div>
+              <div class="leftSideLine2">[[settings.printDecoration.leftSideLine2]]</div>
+              <div class="leftSideLine3">[[settings.printDecoration.leftSideLine3]]</div>
+            </div>
+            <div class="flex"></div>
+            <div class="rightSide layout end-justified">
+              <div class="rightSideLine1">[[settings.printDecoration.rightSideLine1]]</div>
+              <div class="rightSideLine2">[[settings.printDecoration.rightSideLine2]]</div>
+              <div class="rightSideLine3">[[settings.printDecoration.rightSideLine3]]</div>
+            </div>
+          </div>
+          <!-- Print Header - Main - end -->
+
+          <div class="p-16 horizontal layout center center-justified">
+            <div class="type headline">{{pcc.visitReason.type}}</div>
+          </div>
+
+          <div class="type body">
+            <div class="type body-lead sub-header">General Info</div>
+            <div class="horizontal layout wrap p-12">
+              <div class="m-horizontal-4">
+                <strong>Patient Id: </strong>
+                <span>{{patient.serial}}</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Created on: </strong>
+                <span>[[$mkDate(patient.createdDatetimeStamp)]]</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Patient Name: </strong>
+                <span>{{getFullName(patient.name)}}</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Age: </strong>
+                <span>[[_computeAge(patient.dateOfBirth)]] years</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Sex: </strong>
+                <span>{{patient.gender}}</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Blood Group: </strong>
+                <span>{{patient.bloodGroup}}</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Email: </strong>
+                <span>{{patient.email}}</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Phone: </strong>
+                <span>{{patient.phone}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.additionalPhoneNumber)]]">
+                <strong>Additional Phone Number: </strong>
+                <span>{{patient.additionalPhoneNumber}}</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Center Name: </strong>
+                <span>{{pcc.centerInfo.centerName}}</span>
+              </div>
+            </div>
+
+            <div class="type body-lead sub-header">Additional Details</div>
+            <div class="horizontal layout wrap p-12">
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.bloodGroup)]]">
+                <strong>Blood Group: </strong>
+                <span>{{patient.bloodGroup}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.allergy)]]">
+                <strong>Allergy: </strong>
+                <span>{{patient.allergy}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.nationalIdCardNumber)]]">
+                <strong>National ID: </strong>
+                <span>{{patient.nationalIdCardNumber}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.patientSpouseName)]]">
+                <strong>Spouse's Name: </strong>
+                <span>{{patient.patientSpouseName}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.patientFatherName)]]">
+                <strong>Father's Name: </strong>
+                <span>{{patient.patientFatherName}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.patientMotherName)]]">
+                <strong>Mother's Name: </strong>
+                <span>{{patient.patientMotherName}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.expenditure)]]">
+                <strong>Expenditure: </strong>
+                <span>{{patient.expenditure}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.profession)]]">
+                <strong>Profession: </strong>
+                <span>{{patient.profession}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.maritalAge)]]">
+                <strong>Marital Age: </strong>
+                <span>{{patient.maritalAge}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.numberOfFamilyMember)]]">
+                <strong>No of Family Member: </strong>
+                <span>{{patient.numberOfFamilyMember}}</span>
+              </div>
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.numberOfChildren)]]">
+                <strong>No of children: </strong>
+                <span>{{patient.numberOfChildren}}</span>
+              </div>
+            </div>
+
+            <div class="type body-lead m-top-8 sub-header">Address</div>
+            <div class="p-12">
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.addressLine1,patient.addressList.0.addressLine2)]]">
+                <strong>Address line: </strong>
+                <span>{{patient.addressList.0.addressLine1}}</span>
+                <span>, {{patient.addressList.0.addressLine2}}</span>
+              </div>
+              <div class="horizontal layout wrap">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.addressDivision)]]">
+                  <strong>District: </strong>{{patient.addressList.0.addressDivision}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.addressDistrict)]]">
+                  <strong>District: </strong>{{patient.addressList.0.addressDistrict}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.subdistrictName)]]">
+                  <strong>Thana/Sub District: </strong>{{patient.addressList.0.subdistrictName}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.addressAreaName)]]">
+                  <strong>Area: </strong>{{patient.addressList.0.addressAreaName}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.flat)]]">
+                  <strong>Flat: </strong>{{patient.addressList.0.flat}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.floor)]]">
+                  <strong>Floor: </strong>{{patient.addressList.0.floor}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.plot)]]">
+                  <strong>Plot: </strong>{{patient.addressList.0.plot}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.block)]]">
+                  <strong>Block: </strong>{{patient.addressList.0.block}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.road)]]">
+                  <strong>Road: </strong>{{patient.addressList.0.road}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.village)]]">
+                  <strong>Village: </strong>{{patient.addressList.0.village}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.addressUnion)]]">
+                  <strong>Union: </strong>{{patient.addressList.0.addressUnion}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.addressPostalOrZipCode)]]">
+                  <strong>Postal/Zip Code: </strong>{{patient.addressList.0.addressPostalOrZipCode}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.addressCityOrTown)]]">
+                  <strong>City/Town: </strong>{{patient.addressList.0.addressCityOrTown}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.stateOrProvince)]]">
+                  <strong>State/Province: </strong>{{patient.addressList.0.stateOrProvince}}</div>
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.addressList.0.addressCountry)]]">
+                  <strong>Country: </strong>{{patient.addressList.0.addressCountry}}</div>
+              </div>
+            </div>
+
+            <div class="type body-lead sub-header">Medical Info</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.medicalInfo.vaccinationList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
+                  <strong>{{item.name}}: </strong>
+                  <span>{{item.value}}</span>
+                </div>
+              </template>
+
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(pcc.medicalInfo.didPreviousPreconceptionCare)]]">
+                <strong>Previous Preconception Care: </strong>
+                <span>{{pcc.medicalInfo.didPreviousPreconceptionCare}}</span>
+              </div>
+
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(pcc.medicalInfo.familyPlanning.haveFamilyPlanning)]]">
+                <strong>Have Family Planning?: </strong>
+                <span>{{pcc.medicalInfo.familyPlanning.haveFamilyPlanning}}</span>
+              </div>
+
+              <div class="m-horizontal-4" hidden$="[[_isEmptyString(pcc.medicalInfo.familyPlanning.methodsOfFamilyPlanning)]]">
+                <strong>Methods of Family Planning: </strong>
+                <span>{{pcc.medicalInfo.familyPlanning.methodsOfFamilyPlanning}}</span>
+              </div>
+            </div>
+
+            <div class="type body-lead sub-header">Addiction</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.medicalInfo.drugAddictionList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.isYes)]]">
+                  <strong>{{item.type}}: </strong>
+                  <span>{{item.isYes}}</span>
+                  <span hidden$="[[_isEmptyString(item.amount)]]">Amount: {{item.amount}}</span>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">Physical Activity</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.physicalActivityList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.duraton)]]">
+                  <strong>{{item.name}}: </strong>
+                  <span>{{item.duration}}</span>
+                  <span> {{item.unit}}</span>
+                </div>
+              </template>
+
+              <template is="dom-repeat" items="[[pcc.medicalInfo.otherActivityList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.duration)]]">
+                  <strong>{{item.name}}: </strong>
+                  <span>{{item.duration}}</span>
+                  <span> {{item.unit}}</span>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">Dietary history</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.medicalInfo.dietaryHistoryList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.consumeAmount.2.value)]]">
+                  <strong>{{item.type}}: </strong>
+                  <template is="dom-repeat" items="[[item.consumeAmount]]">
+                    <span style="text-transform: capitalize;">{{item.time}}: {{item.value}} {{item.unit}}</span>
+                  </template>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">Type of cooking oil</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.medicalInfo.typeOfCookingOilList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.amount)]]">
+                  <strong>{{item.type}}: </strong>
+                  <span>{{item.amount}} {{item.unit}}/{{item.duration}}</span>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">History of disease(s)</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.medicalInfo.historyOfDeseaseList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
+                  <strong>{{item.diseaseName}}: </strong>
+                  <span>{{item.value}}</span>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">History of Medication</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.medicalInfo.historyOfMedicationList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
+                  <strong>{{item.name}}: </strong>
+                  <span>{{item.value}}</span>
+                  <span hidden$="[[_isEmptyString(item.type)]]">, type: {{item.type}}</span>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">Family History</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.medicalInfo.familyHistoryList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
+                  <strong>{{item.disease}}: </strong>
+                  <span>{{item.value}}</span>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">Clinical Examination</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.clinical.clinicalExaminationList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
+                  <strong>{{item.type}}: </strong>
+                  <span>{{item.value}} {{item.unit}}</span>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">Labratory Reports</div>
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.clinical.labReportsList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
+                  <strong>{{item.type}}: </strong>
+                  <span>{{item.value}} {{item.unit}}</span>
+                </div>
+              </template>
+            </div>
+
+            <div class="horizontal layout wrap p-12">
+              <template is="dom-repeat" items="[[pcc.clinical.labReportsOtherList]]">
+                <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
+                  <strong>{{item.type}}: </strong>
+                  <span>{{item.value}} {{item.unit}}</span>
+                </div>
+              </template>
+            </div>
+
+
+
+            <div class="type body-lead sub-header">Medication</div>
+            <div class="p-12">
+              <template is="dom-repeat" items="[[pcc.medicalManagement.medicationList]]">
+                <div class="m-horizontal-4 body-lead type">
+                  <div class="body-lead type">
+                    <strong>{{item.type}}</strong>
+                  </div>
+                  <template is="dom-repeat" items="[[item.list]]" as="medication">
+                    <div class="m-horizontal-4" hidden$="[[!$equals(medication.isYes, 'yes')]]">
+                      <span>{{medication.name}}: </span>
+                      <span>{{medication.value}}</span>
+                      <template is="dom-if" if="[[$equals(medication.name, 'On insulin')]]">
+                        <span>Insulin Device Type: {{medication.typeOfDevice}}</span>
+                      </template>
+                      <template is="dom-repeat" items="[[medication.medicineList]]" as="medicine" index-as="medicineIndex">
+                        <div class="horizontal layout center">
+                          <div class="m-right-8 type caption secondary">[[_returnSerial(medicineIndex)]].</div>
+                          <div class="m-horizontal-4">
+                            <span>Name: {{medicine.name}}, </span>
+                            <span>Dose: {{medicine.dose}}</span>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </template>
+                </div>
+              </template>
+            </div>
+
+            <div class="type body-lead sub-header">Health Results</div>
+            <div class="p-12">
+              <template is="dom-if" if="[[_compareFn(bmi.results, '>', 0)]]">
+                <div class$="custom-label-2 {{bmi.class}} horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <strong>BMI: </strong>{{bmi.results}},
+                    <span>{{bmi.classification}}</span>
+                  </div>
+                </div>
+              </template>
+              <template is="dom-if" if="[[_compareFn(idealWeight, '>', 0)]]">
+                <div class="custom-label-2 normal horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <span class="type body-lead">
+                      <strong>Ideal Weight: </strong>{{idealWeight}}Kg</span>
+                  </div>
+                  <!-- <paper-icon-button icon="close" on-tap="hideIdealWeight"></paper-icon-button> -->
+                </div>
+              </template>
+              <template is="dom-if" if="[[_compareFn(bmi.results, '>', 0)]]">
+                <template is="dom-if" if="[[_compareFn(estimateCaloriesIntake, '>', 0)]]">
+                  <div class="custom-label-2 normal horizontal layout center">
+                    <div class="m-horizontal-4">
+                      <div class="type body-lead">
+                        <strong>Calorie: </strong>{{estimateCaloriesIntake}}</div>
+                    </div>
+                    <!-- <paper-icon-button icon="close" on-tap="hideHypertension"></paper-icon-button> -->
+                  </div>
+                </template>
+              </template>
+              <template is="dom-if" if="[[_compareFn(bmi.results, '>', 0)]]">
+                <template is="dom-if" if="[[!_compareFn(foodChartName, '==', '')]]">
+                  <div class="custom-label-2 normal horizontal layout center">
+                    <div class="m-horizontal-4">
+                      <div class="type body-lead">
+                        <strong>Food Chart: </strong>"{{foodChartName}}"</div>
+                    </div>
+                    <!-- <paper-icon-button icon="close" on-tap="hideHypertension"></paper-icon-button> -->
+                  </div>
+                </template>
+              </template>
+              <template is="dom-if" if="[[!_isEmptyString(patientWaistValue)]]">
+                <div class$="custom-label-2 {{waistHipRatio.class}} horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <div class="type body-lead">
+                      <strong>Waist-Hip Ratio: </strong>{{waistHipRatio.value}}, {{waistHipRatio.comment}}</div>
+                  </div>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[!_compareFn(hypertension.type, '==', '')]]">
+                <div class$="custom-label-2 {{hypertension.class}} horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <div class="type body-lead">
+                      <strong>Hypertension Type: </strong>{{hypertension.type}}</div>
+                  </div>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[!_compareFn(glycemiaType.value, '==', '')]]">
+                <div class$="custom-label-2 {{glycemiaType.class}} horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <span class="type body-lead">
+                      <strong>Glyecemia:</strong> {{glycemiaType.value}}</span>
+                  </div>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[!_compareFn(glycemiaTypeAdditionalMsg.value, '==', '')]]">
+                <div class$="custom-label-2 {{glycemiaTypeAdditionalMsg.class}} horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <span class="type body-lead">{{glycemiaTypeAdditionalMsg.value}}</span>
+                  </div>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[!_compareFn(hbStatus, '==', '')]]">
+                <div class="custom-label-2 warning horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <span class="type body-lead">
+                      <strong>Hb:</strong> You have {{hbStatus}}</span>
+                  </div>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[!_compareFn(albuminType, '==', '')]]">
+                <div class="custom-label-2 warning horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <span class="type body-lead">
+                      <strong>Urine Albumin:</strong> You have {{albuminType}}</span>
+                  </div>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[!_compareFn(urinePusCellStatus, '==', '')]]">
+                <div class="custom-label-2 warning horizontal layout center">
+                  <div class="m-horizontal-4">
+                    <span class="type body-lead">
+                      <strong>Urine Pus Cell:</strong> You have {{urinePusCellStatus}}</span>
+                  </div>
+                </div>
+              </template>
+
+              <div hidden$="[[$equals(pcc.visitReason.type, '2nd ANC (24 - 28 weeks)')]]">
+                <template is="dom-if" if="[[!_compareFn(hBsAgStatus, '==', '')]]">
+                  <div class="custom-label-2 warning horizontal layout center">
+                    <div class="m-horizontal-4">
+                      <span class="type body-lead">
+                        <strong>HbsAg:</strong> {{hBsAgStatus}}</span>
+                    </div>
+                  </div>
+                </template>
+
+                <template is="dom-if" if="[[!_compareFn(vdrlStatus, '==', '')]]">
+                  <div class="custom-label-2 warning horizontal layout center">
+                    <div class="m-horizontal-4">
+                      <span class="type body-lead">
+                        <strong>Vdrl:</strong> {{vdrlStatus}}</span>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+
+            <template is="dom-if" if="[[pcc.pccOthers]]">
+              <div class="type body-lead sub-header">Questionnaire</div>
+              <div class="horizontal layout wrap p-12">
+                <template is="dom-repeat" items="[[pcc.pccOthers.questionList]]">
+                  <div class="m-horizontal-4" hidden$="[[_isEmptyString(item.value)]]">
+                    <div class="horizontal layout">
+                      <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
+                      <div class="type body flex">
+                        <div>{{item.question.en}}</div>
+                        <div>{{item.question.bd}}</div>
+                      </div>
+                    </div>
+                    <div style="margin-right: 24px;">
+                      <strong>Answer: {{item.value}}</strong>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </template>
+
+            <template is="dom-if" if="[[pcc.pccOthers]]">
+              <div class="type body-lead sub-header">Reffered</div>
+              <div class="p-12">
+                <template is="dom-repeat" items="[[pcc.pccOthers.referredList]]">
+                  <div class="m-horizontal-4 flex" hidden$="[[!item.isSelected]]">
+                    <div class="type body" hidden$="[[!$equals(item.type, 'general')]]">
+                      <div>
+                        <iron-icon icon="icons:check"></iron-icon> {{item.value}}</div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </template>
+
+
+          </div>
+
+          <div>
+            <div class="horizontal layout end-justified center">
+              <template is="dom-if" if="[[settings.printDecoration.signatureDataUri]]">
+                <img height="96" width="128" class="logo" src="[[settings.printDecoration.signatureDataUri]]" alt="signature">
+              </template>
+            </div>
+            <div class="type caption secondary" style="text-align: center; padding: 8px;">
+              <div>
+                <i>
+                  <strong>prepared by: </strong>{{user.name}}</i>
+              </div>
+
+            </div>
+            <template is="dom-if" if="[[settings.flags.showFooterLine]]">
+              <div class="b-top">
+                <div class="type caption secondary">[[settings.printDecoration.footerLine]]</div>
+              </div>
+            </template>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </template>
+  <script>(function(){Polymer({is:"page-preview-preconception-record",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike],properties:{isPatientValid:{type:Boolean,notify:!1,value:!0},user:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},pcc:{type:Object,notify:!0,value:null},getPatientHeight:{type:Number,value:0},getPatientWeight:{type:Number,value:0},patientWaistValue:{type:Number,value:0},patientHipValue:{type:Number,value:0},sbpValue:{type:String,value:""},dbpValue:{type:String,value:""},hypertension:{type:Object,value:function(){return{type:"",comment:"","class":""}}},bmi:{type:Object,value:function(){return{results:0,classification:""}}},waistHipRatio:{type:Object,notify:!0,value:function(){return{value:0,comment:"","class":"normal"}}},idealWeight:{type:Number,value:0},estimateCaloriesIntake:{type:Number,value:0,notify:!0},albuminType:{type:String,value:""},urinePusCellStatus:{type:String,value:""},ageInYears:{type:Number,value:-1},vdrlStatus:{type:String,value:""},hBsAgStatus:{type:String,value:""},hbStatus:{type:String,value:""},usgReport:{type:String,value:""},foodChartName:{type:String,value:""},fpg:{type:Number,value:0},twoHpg:{type:Number,value:0},glycemiaType:{type:Object,value:function(){return{value:"","class":""}}},settings:{type:Object,notify:!0}},_makeSettings:function(){var t;return t={serial:"only",isSyncEnabled:!1,printDecoration:{leftSideLine1:"My Institution",leftSideLine2:"My Institution Address",leftSideLine3:"My Institution Contact",rightSideLine1:"My Name",rightSideLine2:"My Degrees",rightSideLine3:"My Contact",footerLine:"A simple message on the bottom",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT"}},_getSettings:function(){var t,e;return t=app.db.find("settings"),e=0===t.length?this._makeSettings():t[0]},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},$findCreator:function(t){return"me"},_isEmptyString:function(t){return null===t||"undefined"===t||""===t},_isEmptyArray:function(t){return 0===t.length},_computeTotalDaysCount:function(t,e){var i,s;return t?(s=864e5,e=new Date(e),i=t-e,Math.round(i/s)):"As Needed"},_computeAge:function(t){var e,i,s,a;return a=new Date,i=new Date(t),e=a.getFullYear()-i.getFullYear(),s=a.getMonth()-i.getMonth(),(s<0||0===s&&a.getDate()<i.getDate())&&e--,e},printButtonPressed:function(t){return window.print()},editButtonPressed:function(t){return this.domHost.navigateToPage("#/preconception-record/record:"+this.pcc.serial+"/patients:"+this.patient.serial)},getFullName:function(t){var e,i,s,a;return"object"==typeof t?(i="",e="",s="",a="",t.honorifics&&(i=t.honorifics+". "),t.first&&(e=t.first),t.middle&&(a=" "+t.middle),t.last&&(s=" "+t.last),i+e+a+s):t},_sortByDate:function(t,e){return t.date<e.date?1:t.date>e.date?-1:void 0},_formatDateTime:function(t){return lib.datetime.format(new Date(t),"mmm d, yyyy h:MMTT")},_returnSerial:function(t){return t+1},getDoctorSpeciality:function(){if(0!==this.user.specializationList.length)return this.user.specializationList[0].specializationTitle},_loadPatient:function(t){var e,i;return e=app.db.find("patient-list",function(e){var i;return i=e.serial,i===t}),1===e.length?(this.isPatientValid=!0,i=e[0],i.name=this.getFullName(i.name),void(this.patient=i)):this._notifyInvalidPatient()},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},_notifyInvalidPatient:function(){return this.isPatientValid=!1,this.domHost.showModalDialog("Invalid Patient Provided")},goToPatientManger:function(){return this.domHost.navigateToPage("#/patient-manager/query:"+this.patient.phoneNumber)},_loadPccRecord:function(t,e){var i;return i=app.db.find("pcc-records",function(e){var i;return i=e.serial,i===t}),1===i.length&&(this.pcc=i[0],this._loadPatient(this.pcc.patientSerial)),e()},createAnotherPatient:function(){return this.domHost.navigateToPage("#/preconception-record/record:new/patients:new")},goDashboard:function(){return this.domHost.navigateToPage("#/dashboard")},navigatedIn:function(){var t;return t=this.domHost.getPageParams(),this._loadUser(),this.settings=this._getSettings(),t.record?this._loadPccRecord(t.record,function(t){return function(){return t.getResultsForLabData(),t.getResultsForClinicalData()}}(this)):this._notifyInvalidPatient()},navigatedOut:function(){return this.patient=null,this.isPatientValid=!1,this.patient=null},calcAlbuminType:function(t){return"Present"===t?this.set("albuminType","ALBUMINURIA"):this.set("albuminType","")},calcUrinePusCellStatus:function(t){return"Present (More than 4/HPF)"===t?this.set("urinePusCellStatus","UTI"):this.set("urinePusCellStatus","")},calcHbStatus:function(t){return t=parseFloat(t),"1st ANC (6 - 14 weeks)"===this.pcc.visitReason.type||"2nd ANC (24 - 28 weeks)"===this.pcc.visitReason.type?t<11?this.set("hbStatus","ANEMIA"):this.set("hbStatus",""):t<12?this.set("hbStatus","ANEMIA"):this.set("hbStatus","")},calcHBsAgStatus:function(t){return"Present"===t?this.set("hBsAgStatus","HEPATITIS B POSITIVE"):this.set("hBsAgStatus","")},calcVdrlStatus:function(t){return"Present"===t?this.set("vdrlStatus","VDRL POSITIVE"):this.set("vdrlStatus","")},calc2HpgValue:function(t,e){if(0!==t)return"1st ANC (6 - 14 weeks)"===this.pcc.visitReason.type||"2nd ANC (24 - 28 weeks)"===this.pcc.visitReason.type?t<5.1?(this.set("glycemiaType.value","NORMAL GLYCEMIA"),this.set("glycemiaType.class","normal"),e<8.5?(this.set("glycemiaType.value","Normal GLYCEMIA"),this.set("glycemiaType.class","normal")):e>=8.5&&(this.set("glycemiaType.value","GDM"),this.set("glycemiaType.class","warning"))):t>=5.1&&(this.set("glycemiaType.value","GDM"),this.set("glycemiaType.class","warning")):t<6.1?(this.set("glycemiaType.value","NORMAL GLYCEMIA"),this.set("glycemiaType.class","normal"),e>=11.1?(this.set("glycemiaType.value","DM"),this.set("glycemiaType.class","warning")):7.8<=e&&e<11.1?(this.set("glycemiaType.value","IGT"),this.set("glycemiaType.class","warning")):e<7.8&&(this.set("glycemiaType.value","Normal GLYCEMIA"),this.set("glycemiaType.class","normal"))):6.1<=t&&t<7?(this.set("glycemiaType.value","IFG"),this.set("glycemiaType.class","warning"),11.1>e&&e>=7.8?(this.set("glycemiaType.value","IGT"),this.set("glycemiaType.class","warning")):e>=11.1&&(this.set("glycemiaType.value","DM"),this.set("glycemiaType.class","warning"))):t>=7&&(this.set("glycemiaType.value","DM"),this.set("glycemiaType.class","warning")),"Preconception"!==this.pcc.visitReason.type&&"At Delivery"!==this.pcc.visitReason.type?t<=5.1?(this.set("glycemiaTypeAdditionalMsg.value","Good Control"),this.set("glycemiaTypeAdditionalMsg.class","normal"),e<=6.7?(this.set("glycemiaTypeAdditionalMsg.value","Good Control"),this.set("glycemiaTypeAdditionalMsg.class","normal")):(this.set("glycemiaTypeAdditionalMsg.value","Uncontrolled"),this.set("glycemiaTypeAdditionalMsg.class","warning"))):(this.set("glycemiaTypeAdditionalMsg.value","Uncontrolled"),this.set("glycemiaTypeAdditionalMsg.class","warning")):void 0},calcIdealWeight:function(t){var e;return e=t-100,this.set("idealWeight",e)},calcHypertension:function(t,e){if(t=parseInt(t),e=parseInt(e),t<=e)this.set("hypertension.type","Invalid"),this.set("hypertension.comment","SBP Value cannot be equal or lower than DBP value"),this.set("hypertension.class","danger");else if(t<=120&&e<=80)this.set("hypertension.type","BP normal"),this.set("hypertension.comment","Normal"),this.set("hypertension.class","normal");else if(120<t&&t<=139||80<e&&e<=89)this.set("hypertension.type","Prehypertension"),this.set("hypertension.comment","Need lifestyle change"),this.set("hypertension.class","warning");else if(140<=t&&t<=159||90<=e&&e<=99)this.set("hypertension.type","Stage 1 hypertension"),this.set("hypertension.comment","Need lifestyle change and Need physician consultation"),this.set("hypertension.class","danger");else if(t>=160||e>=100)return this.set("hypertension.type","Stage 2 hypertension"),this.set("hypertension.comment","Need lifestyle change and Need immediate physician consultation"),this.set("hypertension.class","danger")},calcWaistHipRatio:function(t,e){var i;return t=parseFloat(t),e=parseFloat(e),e>0?(i=t/e,i=Math.round(100*i)/100,i<.8?lib.util.delay(100,function(t){return function(){return t.set("waistHipRatio.value",i),t.set("waistHipRatio.comment","YOU ARE HEALTHY"),t.set("waistHipRatio.class","normal")}}(this)):lib.util.delay(100,function(t){return function(){return t.set("waistHipRatio.value",i),t.set("waistHipRatio.comment","YOU ARE OBESE"),t.set("waistHipRatio.class","warning")}}(this))):t>=80?lib.util.delay(100,function(t){return function(){return t.set("waistHipRatio.value",""),t.set("waistHipRatio.comment","YOU ARE C.OBESE"),t.set("waistHipRatio.class","warning")}}(this)):t<80?lib.util.delay(100,function(t){return function(){return t.set("waistHipRatio.value",""),t.set("waistHipRatio.comment","YOU ARE HEALTHY"),t.set("waistHipRatio.class","normal")}}(this)):void 0},calcBMI:function(t,e){var i,s,a,n,l;return l=e/(t*t),this.set("bmi.results",Math.round(100*l)/100),this.bmi.results<18.5?(this.set("bmi.classification","Underweight"),this.set("bmi.class","warning"),this.calcCalories(parseFloat(35*this.idealWeight))):18.5<=(i=this.bmi.results)&&i<23?(this.set("bmi.classification","Normal weight"),this.set("bmi.class","normal"),this.calcCalories(parseFloat(30*this.idealWeight))):23<=(s=this.bmi.results)&&s<=25?(this.set("bmi.classification","Overweight"),this.set("bmi.class","warning"),this.calcCalories(parseFloat(25*this.idealWeight))):25<=(a=this.bmi.results)&&a<30?(this.set("bmi.classification","Class I obesity"),this.set("bmi.class","danger"),this.calcCalories(parseFloat(20*this.idealWeight))):30<=(n=this.bmi.results)&&n<35?(this.set("bmi.classification","Class II obesity"),this.set("bmi.class","danger"),this.calcCalories(parseFloat(20*this.idealWeight))):this.bmi.results>=35?(this.set("bmi.classification","Class III obesity"),this.set("bmi.class","danger"),this.calcCalories(parseFloat(20*this.idealWeight))):void 0},calcCalories:function(t){var e,i;return this.set("estimateCaloriesIntake",0),e=t,i=this.pcc.visitReason.type,"2nd ANC (24 - 28 weeks)"===i?e=t+340:"At Delivery"!==i&&"6 weeks after delivery"!==i||(e=t+700),this.set("estimateCaloriesIntake",e),this.getFoodChart(this.estimateCaloriesIntake)},getFoodChart:function(t){var e;return e="",this.set("foodChartName",""),1100>t?e="Food Chart 1":1300>t&&t>=1100?e="Food Chart 2":1500>t&&t>=1300?e="Food Chart 3":1700>t&&t>=1500?e="Food Chart 4":1900>t&&t>=1700?e="Food Chart 5":2100>t&&t>=1900?e="Food Chart 6":2300>t&&t>=2100?e="Food Chart 7":2500>t&&t>=2300?e="Food Chart 8":2500<=t&&(e="Food Chart 9"),this.set("foodChartName",e)},getResultsForLabData:function(){var t,e,i,s,a;for(s=this.pcc.clinical.labReportsList,a=[],t=0,i=s.length;t<i;t++)e=s[t],"FPG"===e.type?this.fpg=parseFloat(e.value):"2hPG/Post meal"===e.type?this.twoHpg=parseFloat(e.value):"Urine Albumin"===e.type?this.calcAlbuminType(e.value):"Urine Pus cell"===e.type?this.calcUrinePusCellStatus(e.value):"Hb"===e.type?this.calcHbStatus(e.value):"HBsAg"===e.type?this.calcHBsAgStatus(e.value):"VDRL"===e.type&&this.calcVdrlStatus(e.value),a.push(this.calc2HpgValue(this.fpg,this.twoHpg));return a},getResultsForClinicalData:function(){var t,e,i,s,a;for(s=this.pcc.clinical.clinicalExaminationList,a=[],t=0,i=s.length;t<i;t++)e=s[t],"Height"===e.type?(this.getPatientHeight=e.value/100,this.calcIdealWeight(e.value)):"Weight"===e.type?this.getPatientWeight=e.value:"Waist"===e.type?this.patientWaistValue=e.value:"Hip"===e.type?this.patientHipValue=e.value:"SBP"===e.type?(this.sbpValue=e.value,this.calcHypertension(this.sbpValue,this.dbpValue)):"DBP"===e.type&&(this.dbpValue=e.value,this.calcHypertension(this.sbpValue,this.dbpValue)),this.calcWaistHipRatio(this.patientWaistValue,this.patientHipValue),a.push(this.calcBMI(this.getPatientHeight,this.getPatientWeight));return a},_compareFn:function(t,e,i){return"<"===e?t<i:">"===e?t>i:"=="===e?t===i:">="===e?t>=i:"<="===e?t<=i:"!="===e?t!==i:void 0}})}).call(this);
+//# sourceMappingURL=page-preview-preconception-record.coffee-compiled.js.map</script>
+</dom-module>

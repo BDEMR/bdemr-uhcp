@@ -1,0 +1,56 @@
+<!-- Custom AutoComplete --><!-- Commong Styles --><dom-module id="page-notification-panel">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment common-style">
+      .search-area {
+        padding: 10px;
+        background-color: var(--paper-blue-grey-50);
+        border-radius: 5px;
+      }
+
+      paper-autocomplete {
+        --paper-input-container-color: var(--paper-indigo-500);
+      }
+      
+    </style>
+
+    <!--local dom-->
+    <div class="master-container">
+      <div class="limiting-container">
+
+        <paper-card>
+          <div class="card-content">
+            <h2>Send Notification</h2>
+            <div class="layout horizontal center search-area">
+              <paper-dropdown-menu label="Type of Recipient">
+                <paper-menu class="dropdown-content" selected="{{roleSelected}}">
+                  <paper-item>[[$TRANSLATE('Patient',LANG)]]</paper-item>
+                  <paper-item>[[$TRANSLATE('Doctor',LANG)]]</paper-item>
+                  <paper-item>[[$TRANSLATE('Clinic',LANG)]]</paper-item>
+                </paper-menu>
+              </paper-dropdown-menu>
+              <paper-autocomplete class="flex" id="userSearch" label="[[$TRANSLATE('Search for User',LANG)]]" text="{{searchFieldMainInput}}" remote-source="true" on-autocomplete-selected="userSelected" on-autocomplete-reset="userSearchCleared" on-keyup="userSearchStartKeyPressed" min-length="4" error-message="Input Required" required="" style="margin-left: 10px;">  
+              </paper-autocomplete>
+              <paper-button class="btn btn-success" on-tap="userSearchButtonPressed">Search</paper-button>
+            </div>
+            <paper-input class="flex" label="Message" value="{{notificationMessage}}"></paper-input>
+          </div>
+          <div class="card-actions layout horizontal justified">
+            <paper-button class="btn btn-info" raised="" on-tap="smsSendButtonPressed">
+              Send SMS &nbsp;
+              <iron-icon icon="mail"></iron-icon>
+            </paper-button>
+            <paper-button class="btn btn-success" raised="" on-tap="notificationSendButtonPressed">
+              Send (1 BDT, Patient) &nbsp;
+              <iron-icon icon="send"></iron-icon>
+              </paper-button>
+          </div>
+        </paper-card>  
+
+      </div>
+    </div>
+
+    
+  </template>
+  <script>(function(){Polymer({is:"page-notification-panel",behaviors:[app.behaviors.pageLike,app.behaviors.translating,app.behaviors.apiCalling,app.behaviors.dbUsing],properties:{searchFieldMainInput:{type:String,notify:!0,value:""},selectedUserId:{type:String,value:""},roleSelected:{type:Number,value:0}},_patientSearch:function(e){return this.callApi("/bdemr-patient-search",{searchQuery:this.searchFieldMainInput},function(t){return function(r,n){return n.hasError?t.domHost.showModalDialog(n.error.message):e(n.data)}}(this))},_doctorSearch:function(e){return this.callApi("/bdemr-doctor-search",{searchQuery:this.searchFieldMainInput},function(t){return function(r,n){return n.hasError?t.domHost.showModalDialog(n.error.message):e(n.data)}}(this))},_clinicSearch:function(e){return this.callApi("/bdemr-clinic-search",{searchQuery:this.searchFieldMainInput},function(t){return function(r,n){return n.hasError?t.domHost.showModalDialog(n.error.message):e(n.data)}}(this))},_searchUser:function(){return 0===this.roleSelected?this._patientSearch(function(e){return function(t){var r,n;return t.length>0?(n=function(){var e,n,s;for(s=[],e=0,n=t.length;e<n;e++)r=t[e],s.push({text:r.name+"-"+r.email+"-"+r.phone,value:r.idOnServer});return s}(),e.$.userSearch.suggestions(n)):e.domHost.showToast("No Match Found")}}(this)):1===this.roleSelected?this._doctorSearch(function(e){return function(t){var r,n;return t.length>0?(n=function(){var e,n,s;for(s=[],e=0,n=t.length;e<n;e++)r=t[e],s.push({text:r.name+"-"+r.email+"-"+r.phone,value:r.idOnServer});return s}(),e.$.userSearch.suggestions(n)):e.domHost.showToast("No Match Found")}}(this)):this.domHost.showModalDialog("Work In Progress")},userSearchStartKeyPressed:function(e){if(13===e.which)return this._searchUser()},userSearchButtonPressed:function(){return this._searchUser()},userSelected:function(e){var t;return e.preventDefault(),t=e.detail.value,this.set("selectedUserId",t)},userSearchCleared:function(){return this.set("searchFieldMainInput","")},notificationSendButtonPressed:function(){return this._chargePatient(this.selectedUserId,1,"Payment BDEMR Doctor Generic",function(e){return function(t){var r,n;return t?void e.domHost.showModalDialog("Unable to charge the patient. "+t.message):(n=e.getCurrentUser(),r={operation:"notify-single",apiKey:n.apiKey,notificationCategory:"general",notificationMessage:e.notificationMessage,notificationTargetId:e.selectedUserId,sender:n.name},e.domHost.ws.send(JSON.stringify(r)))}}(this))},smsSendButtonPressed:function(e){return this.selectedUserId?this.notificationMessage?this.domHost.showModalPrompt("SMS Sending will cost you 1.23 BDT/sms. Are you sure?",function(e){return function(t){var r;if(t)return r={apiKey:e.getCurrentUser().apiKey,receiverUserId:e.selectedUserId,phoneNumber:null,smsBody:e.notificationMessage},e.callApi("/send-individual-sms",r,function(t,r){return r.hasError?e.domHost.showModalDialog(r.error.message):e.domHost.showModalDialog("Successfuly Sent")})}}(this)):void this.domHost.showToast("Write a message to be sent."):void this.domHost.showToast("Select an User from Search")},arrowBackButtonPressed:function(e){return window.location="#/dashboard"}})}).call(this);
+//# sourceMappingURL=page-notification-panel.coffee-compiled.js.map</script>
+</dom-module>
