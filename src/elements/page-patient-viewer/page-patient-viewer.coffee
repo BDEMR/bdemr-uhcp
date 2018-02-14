@@ -247,6 +247,10 @@ Polymer {
       type: Array
       computed: '_getLeaveCountByMonthYear(leaveData.data)'
 
+    employeeLeaveCountByYear:
+      type: Array
+      computed: '_getLeaveCountByYear(leaveData.data)'
+
     selectedLeaveView:
       type: Number
       value: -> 0
@@ -2595,11 +2599,8 @@ Polymer {
   # === Organization [END] ===
 
   # LEAVE INFO
-  # ===============================
+  # =====================================================
 
-  _calculateLeaveLength: (leaveFromDate, leaveToDate)->
-
-  
   _loadLeaveData: (employeeIdentifier)->
     leaveData = (app.db.find 'employee-leave-data', ({patientSerial})=> patientSerial is employeeIdentifier)
     if leaveData.length
@@ -2662,20 +2663,23 @@ Polymer {
       counter.push {monthYear: key, leaveCount: value}
 
     return counter
-      
 
-  viewLeaveDetailsClicked: (e)->
-    date = e.model.item.monthYear
-    year = (new Date date).getFullYear()
-    month = (new Date date).getMonth()
-    viewLeaveDetails = []
-    for item in @leaveData.data
-      itemYear = (new Date item.startDate).getFullYear()
-      itemMonth = (new Date item.startDate).getMonth()
-      if (year is itemYear) and (month is itemMonth)
-        viewLeaveDetails.push item
-    @set 'viewLeaveDetails', viewLeaveDetails
-    @selectedLeaveView = 1
+  _getLeaveCountByYear: (data)->
+    map = {}
+    for item in data
+      leaveLength = @calculateLeaveLength(item.startDate, item.endDate)
+      year = (new Date item.startDate).getFullYear()
+      if (year of map)
+        map[year] += leaveLength
+      else
+        map[year] = leaveLength
+
+    counter = []
+    for own key, value of map
+      counter.push {year: key, leaveCount: value}
+
+    return counter
+      
 
   deleteLeaveInfoClicked: (e)->
     index = e.model.index

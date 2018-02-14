@@ -2133,6 +2133,7 @@
                   <div class="m-vertical-16">
                     <paper-tabs selected="{{selectedLeaveView}}">
                       <paper-tab>Month View</paper-tab>
+                      <paper-tab>Year View</paper-tab>
                       <paper-tab>View All</paper-tab>
                     </paper-tabs>
                     <iron-pages selected="{{selectedLeaveView}}">
@@ -2146,6 +2147,18 @@
                           </template>
                         </paper-listbox>
                       </section>
+
+                      <section>
+                          <paper-listbox>
+                            <template is="dom-repeat" items="[[employeeLeaveCountByYear]]">
+                              <paper-item>
+                                <div class="flex">[[item.year]]</div>
+                                <div class="flex">[[item.leaveCount]] Days</div>
+                              </paper-item>
+                            </template>
+                          </paper-listbox>
+                        </section>
+                      
                       <section>
                         <paper-listbox>
                           <template is="dom-repeat" items="[[leaveData.data]]">
