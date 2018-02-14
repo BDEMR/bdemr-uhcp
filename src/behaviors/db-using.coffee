@@ -507,4 +507,10 @@ app.behaviors.dbUsing =
     app.db.update '--serial-generator', serialGenerator._id, serialGenerator
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
+  generateSerialForEmployeeLeaveData: ->
+    appIdentifier = 'U'
+    itemType = 'EL'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType )
+
 

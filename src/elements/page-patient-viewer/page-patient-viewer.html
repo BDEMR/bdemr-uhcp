@@ -22,7 +22,7 @@
 <link rel="import" href="../../bower-assets/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower-assets/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower-assets/paper-dialog/paper-dialog.html">
-
+<link rel="import" href="../../bower-assets/vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="../../elements/custom-vital-search/custom-vital-search.html">
 
 <link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
@@ -48,7 +48,6 @@
     <!-- style -->
 
     <style is="custom-style" include="common-style">
-
       .sub-header {
         background-color: #f7f7f7;
         padding: 4px 16px;
@@ -561,7 +560,6 @@
           width: calc(100% - 16px);
         }
       }
-
     </style>
 
     <!-- local DOM -->
@@ -1396,7 +1394,8 @@
                   <div class="layout horizontal justified center wrap">
                     <div class=" flex">
                       <div class="title">[[$TRANSLATE('PCC Record',LANG)]]</div>
-                      <div class="type caption-2"><strong>PatientId for PCC: </strong>[[getPatientIdForRecordType('PC', patient.recordSpecificPatientIdList)]]</div>
+                      <div class="type caption-2">
+                        <strong>PatientId for PCC: </strong>[[getPatientIdForRecordType('PC', patient.recordSpecificPatientIdList)]]</div>
                     </div>
                     <paper-button on-tap="addNewPccRecord" raised class="btn-add colored">
                       <iron-icon icon="add" class="m-right-8"></iron-icon>New</paper-button>
@@ -1433,7 +1432,7 @@
                           </paper-listbox>
                         </paper-dropdown-menu>
                       </template>
-                                  
+
                       <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
 
                         <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
@@ -1458,7 +1457,8 @@
                   <div class="layout horizontal justified center wrap">
                     <div class="flex">
                       <div class="title">[[$TRANSLATE('NDR Records',LANG)]]</div>
-                      <div class="type caption-2"><strong>PatientId for NDR: </strong>[[getPatientIdForRecordType('NR', patient.recordSpecificPatientIdList)]]</div>
+                      <div class="type caption-2">
+                        <strong>PatientId for NDR: </strong>[[getPatientIdForRecordType('NR', patient.recordSpecificPatientIdList)]]</div>
                     </div>
                     <paper-button on-tap="addNewNdrRecord" raised class="btn-add colored">
                       <iron-icon icon="add" class="m-right-8"></iron-icon>New</paper-button>
@@ -1480,7 +1480,9 @@
                         <div class="type body-lead">{{item.data.visitType}}</div>
                         <div class="type caption-2 secondary">
                           <strong>Serial: </strong> {{item.serial}}
-                          <strong>Created on: </strong>[[$mkDateTime(item.createdDatetimeStamp)]]<strong> by: </strong>[[item.doctorName]] <i>[[item.doctorSpeciality]]</i>
+                          <strong>Created on: </strong>[[$mkDateTime(item.createdDatetimeStamp)]]
+                          <strong> by: </strong>[[item.doctorName]]
+                          <i>[[item.doctorSpeciality]]</i>
                         </div>
                       </div>
 
@@ -1494,7 +1496,7 @@
                           </paper-listbox>
                         </paper-dropdown-menu>
                       </template>
-                                  
+
                       <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
 
                         <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
@@ -1539,19 +1541,21 @@
                         <div class="type body secondary p-16">-- no data available --</div>
                       </div>
                     </template>
-                    
+
                     <template id="visit-list-repeater" is="dom-repeat" items="[[matchingVisitList]]">
                       <div class="custom-list vertical layout">
                         <div class="horizontal layout center">
                           <div class="flex type caption-2 secondary horizontal layout wrap m-top-8">
                             <div class="m-horizontal-8">Visit Serial: [[item.serial]]</div>
                             <div class="m-horizontal-8">Created Date: [[$mkDateTime(item.createdDatetimeStamp)]]</div>
-                            <div class="m-horizontal-8">Created by: [[item.doctorName]] <span>[[item.doctorSpeciality]]</span></div>
+                            <div class="m-horizontal-8">Created by: [[item.doctorName]]
+                              <span>[[item.doctorSpeciality]]</span>
+                            </div>
                             <div class="m-horizontal-8">Organization/Hospital: [[item.hospitalName]]</div>
                           </div>
                           <template is="dom-if" if="[[_compareFn(item.recordType, '==', 'anaesmon-record')]]">
                             <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
-                            <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
+                              <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
                               <paper-menu class="dropdown-content">
                                 <paper-item on-tap="preopPreviewButtonClicked">
                                   <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
@@ -1574,7 +1578,7 @@
                           </template>
                           <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
                             <div class="layout horizontal center">
-                              
+
                               <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
                                 <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
                                 <paper-menu class="dropdown-content">
@@ -1588,15 +1592,15 @@
                                       Copy History & Physical
                                     </paper-item>
                                   </template>
-                                  
+
                                   <!-- <paper-item on-tap="authorizeRecordPressed">
                                     Authorize
                                   </paper-item> -->
-                                
+
                                 </paper-menu>
                               </paper-menu-button>
 
-                              
+
 
                             </div>
                           </template>
@@ -1621,11 +1625,11 @@
                                       <paper-menu class="dropdown-content">
                                         <paper-item on-tap="authorizeRecordPressed" hidden="[[record.hideAuthorizeButton]]">Authorize </paper-item>
                                         <paper-item on-tap="deleteRecordFromSelectedVisit">Delete</paper-item>
-                                      
+
                                       </paper-menu>
                                     </paper-menu-button>
                                   </div>
-                                  
+
                                   <div class="horizontal layout">
                                     <template is="dom-if" if="[[$equals(toAuthorizeIndex, recordIndex)]]">
                                       <paper-dropdown-menu label="Authorize To" class="flex">
@@ -1637,21 +1641,21 @@
                                       </paper-dropdown-menu>
                                     </template>
                                   </div>
-                                  
+
                                 </div>
                               </template>
-                              
+
                             </template>
 
                           </div>
                         </div>
-        
+
                       </div>
                     </template>
                   </section>
-                  
+
                   <!-- visit and reports - end -->
-                  
+
                   <!-- next visit - start -->
                   <section>
                     <div class="card-content">
@@ -1672,13 +1676,15 @@
                         </template>
                         <template id="visit-list-repeater" is="dom-repeat" items="[[matchingNextVisitList]]" sort="_sortByDate" filter="{{computeVisitFilter(searchString)}}">
                           <tr>
-                            <td><span class="text-muted">[[$mkDateTime(item.createdDatetimeStamp)]]</span></td>
+                            <td>
+                              <span class="text-muted">[[$mkDateTime(item.createdDatetimeStamp)]]</span>
+                            </td>
                             <td>[[$mkDateTime(item.data.nextVisitDateTimestamp)]]</td>
 
                             <td>[[item.doctorName]]</td>
                             <td>[[item.doctorSpeciality]]</td>
-                            <td>[[item.data.priorityType]]</td>        
-                            
+                            <td>[[item.data.priorityType]]</td>
+
                           </tr>
                         </template>
                       </table>
@@ -2106,6 +2112,58 @@
                 </div>
 
                 <!--Activity Log End-->
+            </section>
+
+            <!-- Leave Info -->
+            <section>
+              <paper-card heading="Employee Leave Info">
+                <div class="card-content">
+                  <div class="m-vertical-16 layout horizontal wrap start">
+                    <vaadin-date-picker class="m-left-8" label="From Date" value="{{leaveFromDate}}"></vaadin-date-picker>
+                    <vaadin-date-picker class="m-left-8" label="End Date" value="{{leaveToDate}}"></vaadin-date-picker>
+                    <paper-dropdown-menu class="m-left-8" label="Reason" class="">
+                      <paper-listbox class="dropdown-content" selected="{{sickReasonSelectedIndex}}">
+                        <template is="dom-repeat" items="[[sickReasonList]]">
+                          <paper-item>{{item}}</paper-item>
+                        </template>
+                      </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-button class="btn btn-primary" on-tap="leaveInfoAddedButtonClicked">Add</paper-button>
+                  </div>
+                  <div class="m-vertical-16">
+                    <paper-tabs selected="{{selectedLeaveView}}">
+                      <paper-tab>Month View</paper-tab>
+                      <paper-tab>View All</paper-tab>
+                    </paper-tabs>
+                    <iron-pages selected="{{selectedLeaveView}}">
+                      <section>
+                        <paper-listbox>
+                          <template is="dom-repeat" items="[[employeeLeaveCountByMonth]]">
+                            <paper-item>
+                              <div class="flex">[[getMonthYearString(item.monthYear)]]</div>
+                              <div class="flex">[[item.leaveCount]] Days</div>
+                            </paper-item>
+                          </template>
+                        </paper-listbox>
+                      </section>
+                      <section>
+                        <paper-listbox>
+                          <template is="dom-repeat" items="[[leaveData.data]]">
+                            <paper-item>
+                              <div class="flex">From: [[_formatDateTime(item.startDate)]]</div>
+                              <div class="flex">To: [[_formatDateTime(item.endDate)]]</div>
+                              <div class="flex">Reason [[item.reason]]</div>
+                              <paper-icon-button icon="delete" on-tap="deleteLeaveInfoClicked"></paper-icon-button>
+                            </paper-item>
+                          </template>
+                        </paper-listbox>
+                      </section>
+                    </iron-pages>
+
+                  </div>
+                </div>
+
+              </paper-card>
             </section>
           </iron-pages>
 

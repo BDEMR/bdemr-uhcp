@@ -12,7 +12,7 @@ exports.config =
     javascriptDir: null
     compiledDir: 'build-debug'
   server:
-    port: 8005
+    port: 8011
     defaultServer:
       enabled: true
       onePage: true

@@ -1085,3 +1085,6 @@ app.db.defineCollection {
   name: 'ndr-records--deleted'
 }
 
+app.db.defineCollection { name: 'employee-leave-data' }
+app.db.defineCollection { name: 'employee-leave-data--deleted' }
+

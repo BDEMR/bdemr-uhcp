@@ -220,7 +220,40 @@ Polymer {
       notify: true
       value: -> []
 
+    leaveData:
+      type: Object
+      value: -> {}
+    
+    sickReasonList: 
+      type: Array
+      value: [
+        'Sick'
+        'Personal'
+        'Injury'
+        'Others'
+      ]
 
+    leaveData:
+      type: Object
+      value: -> {data: []}
+
+    monthList:
+      type: Array
+      value: -> [
+        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+      ]
+
+    employeeLeaveCountByMonth:
+      type: Array
+      computed: '_getLeaveCountByMonthYear(leaveData.data)'
+
+    selectedLeaveView:
+      type: Number
+      value: -> 0
+
+    viewLeaveDetails:
+      type: Array
+      value: -> []
 
   # Helper
   # ================================
@@ -625,6 +658,8 @@ Polymer {
     @_loadDiagnosisNameList()
 
     # @showGraphPressed()
+
+    @_loadLeaveData @patient.serial
 
       
 
@@ -2558,5 +2593,97 @@ Polymer {
 
 
   # === Organization [END] ===
+
+  # LEAVE INFO
+  # ===============================
+
+  _calculateLeaveLength: (leaveFromDate, leaveToDate)->
+
+  
+  _loadLeaveData: (employeeIdentifier)->
+    leaveData = (app.db.find 'employee-leave-data', ({patientSerial})=> patientSerial is employeeIdentifier)
+    if leaveData.length
+      @set 'leaveData', leaveData[0]
+      # @_getLeaveCountByMonthYear(@leaveData.data)
+    else
+      @set 'leaveData', @_makeLeaveData()
+  
+  _makeLeaveData: ->
+    return {
+      serial: @generateSerialForEmployeeLeaveData()
+      createdDatetimeStamp: lib.datetime.now()
+      lastModifiedDatetimeStamp: null
+      createdByUserSerial: @user.serial
+      patientSerial: @patient.serial
+      data: []
+    }
+  
+  leaveInfoAddedButtonClicked: (e)->
+    leaveFromDate = (new Date @leaveFromDate).getTime()
+    leaveToDate = (new Date @leaveToDate).getTime()
+
+    @push 'leaveData.data', {
+      startDate: leaveFromDate
+      endDate: leaveToDate
+      reason: @sickReasonList[@sickReasonSelectedIndex]
+    }
+    
+    app.db.upsert 'employee-leave-data', @leaveData, ({serial})=> serial is @leaveData.serial
+
+    @leaveFromDate = ""
+    @leaveToDate = ""
+    @sickReasonSelectedIndex = ""
+  
+  calculateLeaveLength: (from, to)->
+    return (to - from)/(24*60*60*1000)
+
+  getMonthYearString: (fromDate)->
+    year = (new Date fromDate).getFullYear()
+    month = @monthList[(new Date fromDate).getMonth()]
+    return "#{month} #{year}"
+
+  _getMonthYearByISO: (fromDate)->
+    year = (new Date fromDate).getFullYear()
+    month = (new Date fromDate).getMonth() + 1
+    return "#{year}-#{month}-01"
+  
+  _getLeaveCountByMonthYear: (data)->
+    map = {}
+    for item in data
+      leaveLength = @calculateLeaveLength(item.startDate, item.endDate)
+      yearMonth = @_getMonthYearByISO(item.startDate)
+      if (yearMonth of map)
+        map[yearMonth] += leaveLength
+      else
+        map[yearMonth] = leaveLength
+
+    counter = []
+    for own key, value of map
+      counter.push {monthYear: key, leaveCount: value}
+
+    return counter
+      
+
+  viewLeaveDetailsClicked: (e)->
+    date = e.model.item.monthYear
+    year = (new Date date).getFullYear()
+    month = (new Date date).getMonth()
+    viewLeaveDetails = []
+    for item in @leaveData.data
+      itemYear = (new Date item.startDate).getFullYear()
+      itemMonth = (new Date item.startDate).getMonth()
+      if (year is itemYear) and (month is itemMonth)
+        viewLeaveDetails.push item
+    @set 'viewLeaveDetails', viewLeaveDetails
+    @selectedLeaveView = 1
+
+  deleteLeaveInfoClicked: (e)->
+    index = e.model.index
+    console.log index
+    @domHost.showModalPrompt 'Are you sure to Delete', (done)=>
+      if done
+        @splice 'leaveData.data', index, 1
+        app.db.upsert 'employee-leave-data', @leaveData, ({serial})=> serial is @leaveData.serial
+  
 
 }
