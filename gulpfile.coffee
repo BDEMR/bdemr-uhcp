@@ -113,7 +113,7 @@ gulp.task 'watch', ->
 gulp.task 'serve-debug', ->
   gulp.src paths.debug.root
   .pipe webserver {
-    livereload: true
+    livereload: false
     directoryListing: false
     host: '127.0.0.1'
     port: 8011
