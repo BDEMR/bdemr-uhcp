@@ -28337,7 +28337,7 @@ jfr:"𝔧",Jfr:"𝔍",jmath:"ȷ",jopf:"𝕛",Jopf:"𝕁",jscr:"𝒿",Jscr:"𝒥"
 //# sourceMappingURL=he.min.js.map</script>
 <script type="text/javascript">(function(){var e,o=[].slice;e=function(o){var t,r;if("string"==typeof o)return he.decode(o);if("object"==typeof o&&null!==o)if(Array.isArray(o))for(t=0;t<o.length;)o[t]=e(o[t]),t++;else for(r=Object.keys(o),t=0;t<r.length;)o[r[t]]=e(o[r[t]]),t++;return o},app.behaviors.apiCalling={showMessageLocal:function(){var e;return e=1<=arguments.length?o.call(arguments,0):[],this.showModalDialog?this.showModalDialog.apply(this,e):this.domHost.showModalDialog.apply(this.domHost,e)},callApi:function(){var t,r,a,n,l,i,s;if(r=1<=arguments.length?o.call(arguments,0):[],3===r.length)t=r[0],l=r[1],n=r[2],s={automaticallyHandleNetworkErrors:!1};else{if(4!==r.length)throw new Error("Developer Error: Missing arguments in callApi");t=r[0],l=r[1],s=r[2],n=r[3]}return a=s.automaticallyHandleNetworkErrors,navigator.onLine||window.location.href.indexOf("localhost:")!==-1?lib.network.callBdemrPostApi(t,l,function(o){return function(t,r){var l,i,s;if(t&&a)return s="Could not contact server. Please make sure you have an active internet connection and try again.",i=document.querySelector("root-element"),i.showModalDialog(s);{if(t||!r.hasError||"API_KEY_AUTH_FAILED"!==r.error.name)return n(t,e(r));l=o.logoutPressed?o:o.domHost;try{l.routeData&&l.routeData.page.indexOf("login")>-1||l.logoutPressed(null)}catch(c){t=c,l.logoutPressed(null)}}}}(this)):(i="You are not Connected to the Internet. Please Try Again.",this.showMessageLocal(i))}}}).call(this);
 //# sourceMappingURL=api-calling.coffee-compiled.js.map</script><script type="text/javascript">(function(){var t=[].slice,n=[].indexOf||function(t){for(var n=0,e=this.length;n<e;n++)if(n in this&&this[n]===t)return n;return-1};app.behaviors.commonComputes={$equals:function(t,n){return t===n},$if:function(t,n,e){return t?n:e},$iff:function(t){return t},$sum:function(t,n){return t+n},$and:function(t,n){return t&&n},$truncate:function(t,n){return t.length<=n?t:t.substr(0,n-3)+"..."},$mkDate:function(t){return lib.datetime.mkDate(t)},$mkDateTime:function(t){return"undefined"==typeof t?lib.datetime.now():lib.datetime.format(new Date(t),"mmm d, yyyy h:MMTT")},$mkTime:function(t){return lib.datetime.format(new Date(t),"HH-MM-ss")},$in:function(){var e,i;return e=arguments[0],i=2<=arguments.length?t.call(arguments,1):[],n.call(i,e)>=0},$returnSerial:function(t){return t+1},$isEmptyArray:function(t){return 0===t},$getFullName:function(t){var n,e,i,r;return"object"==typeof t?(e="",n="",i="",r="",t.honorifics&&(e=t.honorifics+". "),t.first&&(n=t.first),t.middle&&(r=" "+t.middle),t.last&&(i=" "+t.last),e+n+r+i):t},$makeNameObject:function(t){var n,e,i,r,u,o,a;return"string"==typeof t?(t=t.trim(),a=t.split("."),o=a.pop(),e=0===a.length?"":a.join(".").trim(),a=o.trim().split(" "),u={},a.length<=1?n=a[0]:(n=a.shift(),i=a.pop(),r=a.join(" "),""===r&&(r=null),""===i&&(i=null)),""===e&&(e=null),u.honorifics=e,u.first=n,u.middle=r,u.last=i,u):t},$getProfileImage:function(t){return t?t:"images/avatar.png"}}}).call(this);
-//# sourceMappingURL=common-computes.coffee-compiled.js.map</script><script type="text/javascript">(function(){app.behaviors.dbUsing={_locateItem:function(e,r){var i,t,a,s,n,d;if(0===e.length)return r;if(t=e.shift(),t!==r.forKey)return null;if(0===e.length)return r;if(i=e[0],"childMap"in r&&i in r.childMap)return s=r.childMap[i],this._locateItem(e,s);if("virtualChildMap"in r){s=null;for(n in r.virtualChildMap)if(d=n,d=d.split("_"),d.pop(),d.shift(),d=d.join("_"),a=r.virtualChildMap[n],this._locateItem(e,a)){s=a;break}return null!==s&&this._locateItem(e,s)}return!1},locateItem:function(e,r){var i,t,a,s;return null==r&&(r=null),null===r&&(r=this.record),s=e.split("//"),t=s.shift(),"preopAssessment"===t||"opAnaesthesia"===t||"opSurgery"===t||"postopAnalysis"===t||"postopAssessment"===t||"progressNote"===t?(s.unshift("systemRoot"),a=function(){try{return r.data}catch(e){return i=e,null}}(),a?this._locateItem(s,a):null):void 0},safeExtractItem:function(e,r){var i;return null==r&&(r=null),i=this.locateItem(e,r),i?i:null},safeExtractInput:function(e,r,i){var t;return null==i&&(i=null),t=this.locateItem(e,i),t?t.value:r},isUserLoggedIn:function(){var e;if(e=app.db.find("user"),0===e.length)return!1;if(1===e.length)return!0;throw new Error("More than one active user")},removeAllUserInfo:function(){var e,r,i,t,a,s,n,d,o,p,l;for(d=app.db.find("user"),e=0,a=d.length;e<a;e++)r=d[e],app.db.remove("user",r._id);for(o=app.db.find("--persistent-session"),i=0,s=o.length;i<s;i++)r=o[i],app.db.remove("--persistent-session",r._id);for(p=app.db.find("--serial-generator"),l=[],t=0,n=p.length;t<n;t++)r=p[t],l.push(app.db.remove("--serial-generator",r._id));return l},removeUserUnlessSessionIsPersistent:function(){var e,r,i;if(i=app.db.find("user"),r=app.db.find("--persistent-session"),1===i.length&&1===r.length&&r[0].shouldRememberUser!==!0){if(e=lib.tabStorage.getItem("is-tab-authenticated"),!e)return this.removeAllUserInfo();if(lib.json.parse(e)===!1)return this.removeAllUserInfo()}},loginDbAction:function(e,r){var i,t,a;return t=app.db.find("user")[0],this.removeAllUserInfo(),t&&e.serial!==t.serial&&app.db.initializeDatabase({removeExisting:!0}),app.db.insert("user",e),i={shouldRememberUser:r},app.db.insert("--persistent-session",i),a={"patient-seed":0,"doctor-visit-seed":0,"doctor-pcc-seed":1,"doctor-ndr-seed":1,"doctor-visit-prescription-seed":0,"doctor-visit-note-seed":0,"doctor-patient-stay-seed":0,"doctor-visit-next-visit-seed":0,"doctor-visit-test-advise-seed":0,"doctor-advised-test-seed":0,"doctor-visit-examination-seed":0,"doctor-visit-identified-symptoms-seed":1,"doctor-visit-custom-symptoms-seed":1,"doctor-visit-custom-examination-seed":1,"anaesmon-record-seed":0,"history-physical-record-seed":1,"medication-record-seed":0,"favorite-medicine-seed":0,"favorite-investigation-seed":0,"vital-record-seed":0,"vital-comment-thread-seed":0,"vital-comment-message-seed":0,"custom-investigation-name-seed":0,"user-added-institution-list-seed":0,"attachment-record-seed":0,"user-setting-record-seed":0,"activity-seed":0,"invoice-seed":1,"diagnosis-seed":1,"visited-patient-log":0,"diag-patient-log":0,"org-role-item-log":1},app.db.insert("--serial-generator",a),lib.tabStorage.setItem("is-tab-authenticated",lib.json.stringify(!0))},skipWelcomePage:function(){var e;return e=lib.localStorage.getItem("welcomePageViewed"),!!e},getDashboardMetrics:function(){var e,r,i,t;return r={},t=app.db.find("user")[0],e=new Date(t.accountExpiresOnDate),i=new Date(lib.datetime.mkDate(lib.datetime.now())),r.daysLeft=Math.floor(lib.datetime.diff(e,i)/1e3/60/60/24),r},getCurrentUser:function(){return app.db.find("user")[0]},getCurrentUserSerial:function(){return app.db.find("user")[0].serial},getCurrentOrganization:function(){return app.db.find("organization")[0]},generateSerialForPatient:function(){var e,r,i,t,a,s,n;return e="D",r="P",t=app.db.find("user")[0],n=t.serial,s=t.sessionSerial,a=app.db.find("--serial-generator")[0],i=a["patient-seed"],a["patient-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+i},generateSerialForVisit:function(){var e,r,i,t,a,s,n;return e="D",r="V",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-seed"],a["doctor-visit-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForRecord:function(){var e,r,i,t,a,s,n;return e="A",r="R",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["anaesmon-record-seed"],a["anaesmon-record-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForHistoryAndPhysical:function(){var e,r,i,t,a,s,n;return e="A",r="R",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["history-physical-record-seed"],a["history-physical-record-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForPrescription:function(){var e,r,i,t,a,s,n;return e="D",r="PR",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-prescription-seed"],a["doctor-visit-prescription-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForNote:function(){var e,r,i,t,a,s,n;return e="D",r="NT",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-note-seed"],a["doctor-visit-note-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForPatientStay:function(){var e,r,i,t,a,s,n;return e="D",r="PS",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-patient-stay-seed"],a["doctor-patient-stay-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForNextVisit:function(){var e,r,i,t,a,s,n;return e="D",r="NV",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-next-visit-seed"],a["doctor-visit-next-visit-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForTestAdvised:function(){var e,r,i,t,a,s,n;return e="D",r="TA",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-test-advise-seed"],a["doctor-visit-test-advise-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForIdentifiedSymptoms:function(){var e,r,i,t,a,s,n;return e="D",r="SYMP",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-identified-symptoms-seed"],a["doctor-visit-identified-symptoms-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForExamination:function(){var e,r,i,t,a,s,n;return e="D",r="EXM",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-examination-seed"],a["doctor-visit-examination-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForCustomSymptoms:function(){var e,r,i,t,a,s,n;return e="D",r="CSYMP",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-custom-symptoms-seed"],a["doctor-visit-custom-symptoms-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForCustomExamination:function(){var e,r,i,t,a,s,n;return e="D",r="CEXM",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-custom-examination-seed"],a["doctor-visit-custom-examination-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForTestAdvisedInvestigation:function(){var e,r,i,t,a,s,n;return e="D",r="TST",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-test-advise-seed"],a["doctor-visit-test-advise-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForCustomInvestigation:function(){var e,r,i,t,a,s,n;return e="D",r="TA",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-visit-test-advise-seed"],a["doctor-visit-test-advise-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForMedication:function(){var e,r,i,t,a,s,n;return e="D",r="M",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["medication-record-seed"],a["medication-record-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForFavoriteMedicine:function(){var e,r,i,t,a,s,n;return e="D",r="FM",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["favorite-medicine-seed"],a["favorite-medicine-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForFavoriteInvestigation:function(){var e,r,i,t,a,s,n;return e="D",r="FI",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["favorite-investigation-seed"],a["favorite-investigation-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForVitals:function(e){var r,i,t,a,s,n,d;return r="D",i="V",e=e,t=app.db.find("user")[0],d=t.serial,n=t.sessionSerial,s=app.db.find("--serial-generator")[0],a=s["vital-record-seed"],s["vital-record-seed"]+=1,app.db.update("--serial-generator",s._id,s),r+d+n+i+e+a},generateSerialForCommentMessage:function(e){var r,i,t,a,s,n,d;return r="D",i="C",e=e,t=app.db.find("user")[0],d=t.serial,n=t.sessionSerial,s=app.db.find("--serial-generator")[0],a=s["vital-comment-message-seed"],s["vital-comment-message-seed"]+=1,app.db.update("--serial-generator",s._id,s),r+d+n+i+e+a},generateSerialForUserAddedInstituion:function(e){var r,i,t,a,s,n,d;return r="D",i="UI",e=e,t=app.db.find("user")[0],d=t.serial,n=t.sessionSerial,s=app.db.find("--serial-generator")[0],a=s["user-added-institution-list-seed"],s["user-added-institution-list-seed"]+=1,app.db.update("--serial-generator",s._id,s),r+d+n+i+e+a},generateSerialForAttachmentBlob:function(){var e,r,i,t,a,s,n;return e="D",r="AttBlob",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["attachment-record-seed"],a["attachment-record-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForAttachmentSync:function(){var e,r,i,t,a,s,n;return e="D",r="AttSync",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["attachment-record-seed"],a["attachment-record-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForSettings:function(){var e,r,i,t,a,s,n;return e="D",r="STN",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["user-setting-record-seed"],a["user-setting-record-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForActivity:function(){var e,r,i,t,a,s,n;return e="D",r="Act",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["activity-seed"],a["activity-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForinvoice:function(){var e,r,i,t,a,s,n;return e="D",r="Inv",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["invoice-seed"],a["invoice-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForDiagnosis:function(){var e,r,i,t,a,s,n;return e="D",r="Dg",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["diagnosis-seed"],a["diagnosis-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForVisitedPatientLog:function(){var e,r,i,t,a,s,n;return e="D",r="VP",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["visited-patient-log"],a["visited-patient-log"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForOrgRole:function(){var e,r,i,t,a,s,n;return e="D",r="R",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["org-role-item-log"],a["org-role-item-log"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForPccRecord:function(){var e,r,i,t,a,s,n;return e="D",r="PCC",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-pcc-seed"],a["doctor-pcc-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForNdrRecord:function(){var e,r,i,t,a,s,n;return e="D",r="NDR",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,a=app.db.find("--serial-generator")[0],t=a["doctor-ndr-seed"],a["doctor-ndr-seed"]+=1,app.db.update("--serial-generator",a._id,a),e+n+s+r+t},generateSerialForEmployeeLeaveData:function(){var e,r,i,t,a;return e="U",r="EL",i=app.db.find("user")[0],a=i.serial,t=i.sessionSerial,e+a+r}}}).call(this);
+//# sourceMappingURL=common-computes.coffee-compiled.js.map</script><script type="text/javascript">(function(){app.behaviors.dbUsing={_locateItem:function(e,r){var i,a,t,s,n,d;if(0===e.length)return r;if(a=e.shift(),a!==r.forKey)return null;if(0===e.length)return r;if(i=e[0],"childMap"in r&&i in r.childMap)return s=r.childMap[i],this._locateItem(e,s);if("virtualChildMap"in r){s=null;for(n in r.virtualChildMap)if(d=n,d=d.split("_"),d.pop(),d.shift(),d=d.join("_"),t=r.virtualChildMap[n],this._locateItem(e,t)){s=t;break}return null!==s&&this._locateItem(e,s)}return!1},locateItem:function(e,r){var i,a,t,s;return null==r&&(r=null),null===r&&(r=this.record),s=e.split("//"),a=s.shift(),"preopAssessment"===a||"opAnaesthesia"===a||"opSurgery"===a||"postopAnalysis"===a||"postopAssessment"===a||"progressNote"===a?(s.unshift("systemRoot"),t=function(){try{return r.data}catch(e){return i=e,null}}(),t?this._locateItem(s,t):null):void 0},safeExtractItem:function(e,r){var i;return null==r&&(r=null),i=this.locateItem(e,r),i?i:null},safeExtractInput:function(e,r,i){var a;return null==i&&(i=null),a=this.locateItem(e,i),a?a.value:r},isUserLoggedIn:function(){var e;if(e=app.db.find("user"),0===e.length)return!1;if(1===e.length)return!0;throw new Error("More than one active user")},removeAllUserInfo:function(){var e,r,i,a,t,s,n,d,o,p,l;for(d=app.db.find("user"),e=0,t=d.length;e<t;e++)r=d[e],app.db.remove("user",r._id);for(o=app.db.find("--persistent-session"),i=0,s=o.length;i<s;i++)r=o[i],app.db.remove("--persistent-session",r._id);for(p=app.db.find("--serial-generator"),l=[],a=0,n=p.length;a<n;a++)r=p[a],l.push(app.db.remove("--serial-generator",r._id));return l},removeUserUnlessSessionIsPersistent:function(){var e,r,i;if(i=app.db.find("user"),r=app.db.find("--persistent-session"),1===i.length&&1===r.length&&r[0].shouldRememberUser!==!0){if(e=lib.tabStorage.getItem("is-tab-authenticated"),!e)return this.removeAllUserInfo();if(lib.json.parse(e)===!1)return this.removeAllUserInfo()}},loginDbAction:function(e,r){var i,a,t;return a=app.db.find("user")[0],this.removeAllUserInfo(),a&&e.serial!==a.serial&&app.db.initializeDatabase({removeExisting:!0}),app.db.insert("user",e),i={shouldRememberUser:r},app.db.insert("--persistent-session",i),t={"patient-seed":0,"doctor-visit-seed":0,"doctor-pcc-seed":1,"doctor-ndr-seed":1,"doctor-visit-prescription-seed":0,"doctor-visit-note-seed":0,"doctor-patient-stay-seed":0,"doctor-visit-next-visit-seed":0,"doctor-visit-test-advise-seed":0,"doctor-advised-test-seed":0,"doctor-visit-examination-seed":0,"doctor-visit-identified-symptoms-seed":1,"doctor-visit-custom-symptoms-seed":1,"doctor-visit-custom-examination-seed":1,"anaesmon-record-seed":0,"history-physical-record-seed":1,"medication-record-seed":0,"favorite-medicine-seed":0,"favorite-investigation-seed":0,"vital-record-seed":0,"vital-comment-thread-seed":0,"vital-comment-message-seed":0,"custom-investigation-name-seed":0,"user-added-institution-list-seed":0,"attachment-record-seed":0,"user-setting-record-seed":0,"activity-seed":0,"invoice-seed":1,"diagnosis-seed":1,"visited-patient-log":0,"diag-patient-log":0,"org-role-item-log":1,"referral-seed":1},app.db.insert("--serial-generator",t),lib.tabStorage.setItem("is-tab-authenticated",lib.json.stringify(!0))},skipWelcomePage:function(){var e;return e=lib.localStorage.getItem("welcomePageViewed"),!!e},getDashboardMetrics:function(){var e,r,i,a;return r={},a=app.db.find("user")[0],e=new Date(a.accountExpiresOnDate),i=new Date(lib.datetime.mkDate(lib.datetime.now())),r.daysLeft=Math.floor(lib.datetime.diff(e,i)/1e3/60/60/24),r},getCurrentUser:function(){return app.db.find("user")[0]},getCurrentUserSerial:function(){return app.db.find("user")[0].serial},getCurrentOrganization:function(){return app.db.find("organization")[0]},generateSerialForPatient:function(){var e,r,i,a,t,s,n;return e="D",r="P",a=app.db.find("user")[0],n=a.serial,s=a.sessionSerial,t=app.db.find("--serial-generator")[0],i=t["patient-seed"],t["patient-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+i},generateSerialForVisit:function(){var e,r,i,a,t,s,n;return e="D",r="V",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-seed"],t["doctor-visit-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForRecord:function(){var e,r,i,a,t,s,n;return e="A",r="R",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["anaesmon-record-seed"],t["anaesmon-record-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForHistoryAndPhysical:function(){var e,r,i,a,t,s,n;return e="A",r="R",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["history-physical-record-seed"],t["history-physical-record-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForPrescription:function(){var e,r,i,a,t,s,n;return e="D",r="PR",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-prescription-seed"],t["doctor-visit-prescription-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForNote:function(){var e,r,i,a,t,s,n;return e="D",r="NT",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-note-seed"],t["doctor-visit-note-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForPatientStay:function(){var e,r,i,a,t,s,n;return e="D",r="PS",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-patient-stay-seed"],t["doctor-patient-stay-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForNextVisit:function(){var e,r,i,a,t,s,n;return e="D",r="NV",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-next-visit-seed"],t["doctor-visit-next-visit-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForTestAdvised:function(){var e,r,i,a,t,s,n;return e="D",r="TA",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-test-advise-seed"],t["doctor-visit-test-advise-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForIdentifiedSymptoms:function(){var e,r,i,a,t,s,n;return e="D",r="SYMP",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-identified-symptoms-seed"],t["doctor-visit-identified-symptoms-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForExamination:function(){var e,r,i,a,t,s,n;return e="D",r="EXM",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-examination-seed"],t["doctor-visit-examination-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForCustomSymptoms:function(){var e,r,i,a,t,s,n;return e="D",r="CSYMP",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-custom-symptoms-seed"],t["doctor-visit-custom-symptoms-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForCustomExamination:function(){var e,r,i,a,t,s,n;return e="D",r="CEXM",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-custom-examination-seed"],t["doctor-visit-custom-examination-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForTestAdvisedInvestigation:function(){var e,r,i,a,t,s,n;return e="D",r="TST",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-test-advise-seed"],t["doctor-visit-test-advise-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForCustomInvestigation:function(){var e,r,i,a,t,s,n;return e="D",r="TA",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-visit-test-advise-seed"],t["doctor-visit-test-advise-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForMedication:function(){var e,r,i,a,t,s,n;return e="D",r="M",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["medication-record-seed"],t["medication-record-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForFavoriteMedicine:function(){var e,r,i,a,t,s,n;return e="D",r="FM",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["favorite-medicine-seed"],t["favorite-medicine-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForFavoriteInvestigation:function(){var e,r,i,a,t,s,n;return e="D",r="FI",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["favorite-investigation-seed"],t["favorite-investigation-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForVitals:function(e){var r,i,a,t,s,n,d;return r="D",i="V",e=e,a=app.db.find("user")[0],d=a.serial,n=a.sessionSerial,s=app.db.find("--serial-generator")[0],t=s["vital-record-seed"],s["vital-record-seed"]+=1,app.db.update("--serial-generator",s._id,s),r+d+n+i+e+t},generateSerialForCommentMessage:function(e){var r,i,a,t,s,n,d;return r="D",i="C",e=e,a=app.db.find("user")[0],d=a.serial,n=a.sessionSerial,s=app.db.find("--serial-generator")[0],t=s["vital-comment-message-seed"],s["vital-comment-message-seed"]+=1,app.db.update("--serial-generator",s._id,s),r+d+n+i+e+t},generateSerialForUserAddedInstituion:function(e){var r,i,a,t,s,n,d;return r="D",i="UI",e=e,a=app.db.find("user")[0],d=a.serial,n=a.sessionSerial,s=app.db.find("--serial-generator")[0],t=s["user-added-institution-list-seed"],s["user-added-institution-list-seed"]+=1,app.db.update("--serial-generator",s._id,s),r+d+n+i+e+t},generateSerialForAttachmentBlob:function(){var e,r,i,a,t,s,n;return e="D",r="AttBlob",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["attachment-record-seed"],t["attachment-record-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForAttachmentSync:function(){var e,r,i,a,t,s,n;return e="D",r="AttSync",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["attachment-record-seed"],t["attachment-record-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForSettings:function(){var e,r,i,a,t,s,n;return e="D",r="STN",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["user-setting-record-seed"],t["user-setting-record-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForActivity:function(){var e,r,i,a,t,s,n;return e="D",r="Act",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["activity-seed"],t["activity-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForinvoice:function(){var e,r,i,a,t,s,n;return e="D",r="Inv",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["invoice-seed"],t["invoice-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForDiagnosis:function(){var e,r,i,a,t,s,n;return e="D",r="Dg",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["diagnosis-seed"],t["diagnosis-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForVisitedPatientLog:function(){var e,r,i,a,t,s,n;return e="D",r="VP",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["visited-patient-log"],t["visited-patient-log"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForOrgRole:function(){var e,r,i,a,t,s,n;return e="D",r="R",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["org-role-item-log"],t["org-role-item-log"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForPccRecord:function(){var e,r,i,a,t,s,n;return e="D",r="PCC",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-pcc-seed"],t["doctor-pcc-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForNdrRecord:function(){var e,r,i,a,t,s,n;return e="D",r="NDR",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["doctor-ndr-seed"],t["doctor-ndr-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a},generateSerialForEmployeeLeaveData:function(){var e,r,i,a,t;return e="U",r="EL",i=app.db.find("user")[0],t=i.serial,a=i.sessionSerial,e+t+r},generateSerialForReferral:function(){var e,r,i,a,t,s,n;return e="D",r="ref",i=app.db.find("user")[0],n=i.serial,s=i.sessionSerial,t=app.db.find("--serial-generator")[0],a=t["referral-seed"],t["referral-seed"]+=1,app.db.update("--serial-generator",t._id,t),e+n+s+r+a}}}).call(this);
 //# sourceMappingURL=db-using.coffee-compiled.js.map</script><script type="text/javascript">(function(){var e=[].slice;app.behaviors.debug={debugInfo:function(){var l,n;return l=1<=arguments.length?e.call(arguments,0):[],n=("🏻 "+this.nodeName).toLowerCase(),l.unshift(n),lib.debug.apply(null,l)},debug:function(){var l,n;return l=1<=arguments.length?e.call(arguments,0):[],n=("🏿 "+this.nodeName).toLowerCase(),l.unshift(n),lib.debug.apply(null,l)}}}).call(this);
 //# sourceMappingURL=debug.coffee-compiled.js.map</script><script type="text/javascript">(function(){var a=[].indexOf||function(a){for(var t=0,n=this.length;t<n;t++)if(t in this&&this[t]===a)return t;return-1};app.behaviors.translating={properties:{LANG:{type:String,notify:!0,value:app.lang.defaultLanguage},supportedLanguageList:{type:Array,value:[]}},created:function(){return this.supportedLanguageList=app.lang.supportedLanguageList},setActiveLanguage:function(t){if(!(a.call(this.supportedLanguageList,t)<0))return this.LANG!==t?(this.set("LANG",t),app.lang.defaultLanguage=t,app.lang.saveDefaultLanguage(),window.location.reload()):void 0},$TRANSLATE_NUMBER:function(a,t){return app.lang.translateNumeral(a,t)},$TRANSLATE:function(a,t){return app.lang.translatePhrase(a,t)}}}).call(this);
 //# sourceMappingURL=translating.coffee-compiled.js.map</script><!--
@@ -40201,14 +40201,944 @@ Custom property | Description | Default
 
 </script>
 <!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+  `paper-autocomplete-suggestions`
+  Allows to add autocomplete capabilities to any input field. This is desirable when you have an input field with custom
+  logic and you just want to add the feature to help users with the selection. If you want to use it in combination with
+  a regular `<paper-input>`, you can use `<paper-autocomplete>`.
+
+  Example:
+  ```
+  <div class="autocomplete-wrapper">
+    <paper-input id="myInput" label="Select State"></paper-input>
+
+    <paper-autocomplete-suggestions
+      for="myInput"
+      source="[[accounts]]"></paper-autocomplete-suggestions>
+  </div>
+  ```
+
+  It is **important to provide both `textProperty` and `valueProperty` when working with a custom search function and
+  or custom templates.** They are needed to keep the component accessible and for the events (e.g. onSelect) to keep
+  working.
+
+  ### About Polymer 1.x and 2.x Compatibility
+  The latest version released (`v2.6.1`) is **not** compatible with Polymer 2.x. At this moment there is a work in
+  progress version that works with Polymer 2.x in the branch **2.0-preview**. It is functional but it contains a few
+  known issues:
+
+  - When using custom templates, you must implement the methods `_onTap` and `_getSuggestionId`.
+  - It does not work on IE11/Edge when used in combination with Polymer 1.x.
+
+  Using the version from the preview branch should allow you to migrate to Polymer 2.x as soon as possible while we
+  work in a fully stable and compatible version of `paper-autocomplete`.
+
+  ### Custom search
+  This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
+  all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
+  component search for items that start with the recent query (case insensitive).
+  You can override this behavior providing your own query function, as long as these two requirements are fulfill:
+
+  - The query function is synchronous.
+  - The API is respected and the method always return an Array.
+
+
+  The template use to render each suggestion depends on the structure of each object that this method returns. For the
+  default template, each suggestion should follow this object structure:
+
+  ```
+    {
+      text: objText,
+      value: objValue
+    }
+  ```
+
+  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible of
+  doing the search and specify suggestions manually.
+
+  ### Custom templates
+  A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
+  the template. Please read the the following sections carefully.
+  In order to set your own template, you need to add a `<template>` tag with the attribute
+  `autocomplete-custom-template` and the following structure:
+
+  ```
+  <paper-autocomplete-suggestions
+      for="myInput"
+      source="[[accounts]]"
+      text-property="accountNumber"
+      value-property="id">
+
+      <template autocomplete-custom-template>
+        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          YOUR CUSTOM TEMPLATE
+          <paper-ripple></paper-ripple>
+        </paper-item>
+      </template>
+  </paper-autocomplete-suggestions>
+  ```
+
+  You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
+  why you need to maintain it:
+
+  - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
+  If you don't add this option, when user clicks in one of the items, nothing will happen.
+  - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
+  will continue working but it will not be accessible for user with disabilities.
+
+
+  It is important to clarify that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are
+  part of the logic of `paper-autocomplete-suggestions`.
+
+  When providing your own custom template, you might also need to provide your own custom search function. The reason
+  for that is that the default search function only exposes text and value in the results. If each item in your data
+  source contains more information, then you won't be able to access it. See the code of `<address-autocomplete>`
+  element in the demo folder for a complete example.
+
+  Another important thing to point out is related to the height of each suggestion item in the results. The height of
+  the suggestion template changes dynamically depending on the height of a suggestion item. However, the following
+  assumptions were made:
+  - All suggestions items have the same height
+  - The height of each item is fixed and can be determined at any time. For example, if you want to use images in the
+  results, make sure they have a placeholder or a fixed height.
+
+
+  ### Styling
+
+  `<paper-autocomplete-suggestions>` provides the following custom properties and mixins
+  for styling:
+
+  Custom property | Description | Default
+  ----------------|-------------|----------
+  `--paper-item-min-height` | paper item min height | `36px`
+  `--suggestions-wrapper` | mixin to apply to the suggestions container | `{}`
+
+  ### Accessibility
+  This component exposes certain necessary values in order to make your component accessible. When checking the ARIA
+  specs, it is said that you need to inform users of the following changes:
+  - Whether the popup with suggestions is open or not.
+  - Id of the currently highlighted element
+
+ You can access these values using the following properties: `isOpen` and `highlightedSuggestion`. The id of each
+ element in highlightedSuggestion a random and unique id.
+
+ In addition, as long as developers follow the general structure of each suggestion template, the following A11Y
+ features are set in each suggestion:
+ - `role="option"`
+ - `aria-selected="true|false"`. This value will be false for all suggestion except in the one which is currently
+ highlighted.
+
+  @demo demo/paper-autocomplete-suggestions-demo.html
 -->
+
+<dom-module id="paper-autocomplete-suggestions" assetpath="../../bower-assets/paper-autocomplete/">
+  <template>
+    <style>
+      paper-material {
+        display: none;
+        position: absolute;
+        width: 100%;
+        z-index: 1000;
+        background-color: white;
+        max-height: 252px;
+        overflow-y: auto;
+
+        @apply(--suggestions-wrapper);
+      }
+
+      paper-item {
+        min-height: var(--paper-item-min-height, 36px);
+      }
+
+      paper-item,
+      :host ::content paper-item {
+        position: relative;
+        line-height: 18px;
+      }
+
+      paper-item:hover,
+      :host ::content paper-item:hover {
+        background: #eee;
+        color: #333;
+        cursor: pointer;
+      }
+
+      paper-item.active,
+      :host ::content paper-item.active {
+        background: #eee;
+        color: #333;
+      }
+
+    </style>
+
+    <div>
+      <!-- unselectable is needed to fix an issue related to the focus being taken away when clicking in the
+       results scrollbar -->
+      <paper-material elevation="1" id="suggestionsWrapper" unselectable="on"></paper-material>
+
+      <!-- Default suggestion template -->
+      <template id="defaultTemplate">
+        <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false" on-tap="_onSelect">
+          <div>[[_getItemText(item)]]</div>
+          <paper-ripple></paper-ripple>
+        </paper-item>
+      </template>
+
+      <!-- Custom template -->
+      <content id="templates" select="[autocomplete-custom-template]"></content>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  (function () {
+
+    var DIRECTION = {
+      UP: 'up',
+      DOWN: 'down'
+    };
+
+    var KEY_CODES = {
+      LEFT_ARROW: 37,
+      RIGHT_ARROW: 39,
+      UP_ARROW: 38,
+      DOWN_ARROW: 40,
+      ENTER: 13,
+      ESCAPE: 27
+    };
+
+    Polymer({
+      is: 'paper-autocomplete-suggestions',
+
+      behaviors: [
+        Polymer.Templatizer
+      ],
+
+      properties: {
+        /**
+         * Id of input
+         */
+        'for': {
+          type: String
+        },
+
+        /**
+         * `true` if the suggestions list is open, `false otherwise`
+         */
+        isOpen: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+
+        /**
+         * Minimum length to trigger suggestions
+         */
+        minLength: {
+          type: Number,
+          value: 1
+        },
+
+        /**
+         * Max number of suggestions to be displayed without scrolling
+         */
+        maxViewableItems: {
+          type: Number,
+          value: 7
+        },
+
+        /**
+         * Property of local datasource to as the text property
+         */
+        textProperty: {
+          type: String,
+          value: 'text'
+        },
+
+        /**
+         * Property of local datasource to as the value property
+         */
+        valueProperty: {
+          type: String,
+          value: 'value'
+        },
+
+        /**
+         * `source` Array of objects with the options to execute the autocomplete feature
+         */
+        source: {
+          type: Array
+        },
+
+        /**
+         *  Object containing information about the current selected option. The structure of the object depends on the
+         *  structure of each element in the data source.
+         */
+        selectedOption: {
+          type: Object,
+          notify: true
+        },
+
+        /**
+         * Binds to a remote data source
+         */
+        remoteSource: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Event type separator
+         */
+        eventNamespace: {
+          type: String,
+          value: '-'
+        },
+
+        /**
+         * Current highlighted suggestion. The structure of the object is:
+         * ```
+         * {
+         *    elementId: ID // id of the highlighted DOM element
+         *    option: // highlighted option data
+         * }
+         * ```
+         */
+        highlightedSuggestion: {
+          type: Object,
+          value: {},
+          notify: true
+        },
+
+        /**
+         * Reference to the current suggestion template
+         */
+        _suggestionTemplate: {
+          type: Object,
+          value: function () {
+            var customTemplate = this.getEffectiveChildren();
+
+            return customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
+          }
+        },
+
+        /**
+         * `_suggestions` Array with the actual suggestions to display
+         */
+        _suggestions: {
+          type: Array,
+          observer: '_onSuggestionsChanged'
+        },
+
+        /**
+         * Indicates the position in the suggestions popup of the currently highlighted element, being `0` the first one,
+         * and `this._suggestions.length - 1` the position of the last one.
+         */
+        _currentIndex: {
+          type: Number,
+          value: -1
+        },
+
+        /**
+         * Indicates the current position of the scroll. Then the `scrollTop` position is calculated multiplying the
+         * `_itemHeight` with the current index.
+         */
+        _scrollIndex: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * Height of each suggestion element in pixels
+         */
+        _itemHeight: {
+          type: Number,
+          value: 36,
+          observer: '_itemHeightChanged'
+        },
+
+        // TODO: check if we need _value and _text properties. It seems they can be removed
+        _value: {
+          value: undefined
+        },
+
+        _text: {
+          value: undefined
+        },
+
+        /**
+         * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
+         * accessibility reasons.
+         */
+        _idItemSeed: {
+          type: String,
+          value: 'aria-' + new Date().getTime() + '-' + (Math.floor(Math.random() * 1000)),
+          readOnly: true
+        },
+
+        /**
+         * Reference to binded functions so we can call removeEventListener on element detached
+         */
+        _bindedFunctions: {
+          type: Object,
+          value: function () {
+            return {
+              _onKeypress: null,
+              _onFocus: null,
+              _onBlur: null
+            };
+          }
+        },
+
+        /**
+         * Indicates if the the height of each suggestion item has been already calculated.
+         * The assumption is that item height is fixed and it will not change.
+         */
+        _hasItemHighBeenCalculated: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      // Element Lifecycle
+
+      ready: function () {
+        this._value = this.value;
+
+        // This is important to be able to access component methods inside the templates used with Templatizer
+        this.dataHost = this;
+
+        // templatize must be called once before stamp is called
+        this.templatize(this._suggestionTemplate);
+
+        // Need to capture mousedown to prevent the focus to switch from input field when user clicks in the scrollbar
+        // and the autosuggest is a child of an element with tabindex.
+        this.$.suggestionsWrapper.addEventListener('mousedown', function (event) {
+          event.preventDefault();
+        });
+      },
+
+      attached: function () {
+        this._input = this.parentNode.querySelector('#' + this.for);
+
+        if (this._input === null) {
+          throw new Error('Cannot find input field with id: ' + this.for);
+        }
+
+        this._bindedFunctions._onKeypress = this._onKeypress.bind(this);
+        this._bindedFunctions._onFocus = this._onFocus.bind(this);
+        this._bindedFunctions._onBlur = this._onBlur.bind(this);
+
+        this._input.addEventListener('keyup', this._bindedFunctions._onKeypress);
+        this._input.addEventListener('focus', this._bindedFunctions._onFocus);
+        this._input.addEventListener('blur', this._bindedFunctions._onBlur);
+      },
+
+      detached: function () {
+        this.cancelDebouncer('_onSuggestionChanged');
+
+        this._input.removeEventListener('keyup', this._bindedFunctions._onKeypress);
+        this._input.removeEventListener('focus', this._bindedFunctions._onFocus);
+        this._input.removeEventListener('blur', this._bindedFunctions._onBlur);
+
+        this._input = null;
+      },
+
+      // Element Behavior
+
+      /**
+       * Get the text property from the suggestion
+       * @param {Object} suggestion The suggestion item
+       * @return {String}
+       */
+      _getItemText: function (suggestion) {
+        return suggestion[this.textProperty];
+      },
+
+      /**
+       * Show the suggestions wrapper
+       */
+      _showSuggestionsWrapper: function () {
+        var suggestionsWrapper = this.$.suggestionsWrapper;
+
+        suggestionsWrapper.style.display = 'block';
+        suggestionsWrapper.setAttribute('role', 'listbox');
+
+        this.isOpen = true;
+      },
+
+      /**
+       * Hide the suggestions wrapper
+       */
+      _hideSuggestionsWrapper: function () {
+        var suggestionsWrapper = this.$.suggestionsWrapper;
+
+        suggestionsWrapper.style.display = 'none';
+        suggestionsWrapper.removeAttribute('role');
+
+        this.isOpen = false;
+        this.highlightedSuggestion = {};
+
+        this._clearSuggestions();
+      },
+
+      _handleSuggestions: function (event) {
+        if (!this.remoteSource) this._createSuggestions(event);
+        else this._remoteSuggestions();
+      },
+
+      _remoteSuggestions: function () {
+        var value = this._input.value;
+
+        var option = {
+          text: value,
+          value: value
+        };
+
+        if (value && value.length >= this.minLength) {
+          this._fireEvent(option, 'change');
+        } else {
+          this._suggestions = [];
+        }
+      },
+
+      _bindSuggestions: function (arr) {
+        if (arr.length && arr.length > 0) {
+          this._suggestions = arr;
+          this._currentIndex = -1;
+          this._scrollIndex = 0;
+        } else {
+          this._suggestions = [];
+        }
+      },
+
+      _createSuggestions: function (event) {
+        this._currentIndex = -1;
+        this._scrollIndex = 0;
+
+        var value = event.target.value;
+
+        if (value && value.length >= this.minLength) {
+          value = value.toLowerCase();
+
+          // Search for the word in the source properties.
+          if (this.source && this.source.length > 0) {
+            // Call queryFn. User can override queryFn() to provide custom search functionality
+            this._suggestions = this.queryFn(this.source, value);
+          }
+        } else {
+          this._suggestions = [];
+        }
+      },
+
+      /**
+       * Render suggestions in the suggestionsWrapper container
+       * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
+       *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
+       */
+      _renderSuggestions: function (suggestions) {
+        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
+
+        this._clearSuggestions();
+
+        suggestions.forEach(function (result, index) {
+          // clone the template and bind with the model
+          var clone = this.stamp({
+            item: result,
+            index: index
+          });
+
+          suggestionsContainer.appendChild(clone.root);
+        }.bind(this));
+      },
+
+      _clearSuggestions: function () {
+        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
+
+        suggestionsContainer.children.forEach(function (child) {
+          suggestionsContainer.removeChild(child);
+        });
+      },
+
+      /**
+       * Listener to changes to _suggestions state
+       */
+      _onSuggestionsChanged: function () {
+        this.debounce('_onSuggestionChanged', function () {
+          this._renderSuggestions(this._suggestions);
+
+          if (this._suggestions.length > 0) {
+            this._showSuggestionsWrapper();
+          } else {
+            this._hideSuggestionsWrapper();
+          }
+
+          Polymer.dom.flush();
+
+          this._resetScroll();
+
+          if (!this._hasItemHighBeenCalculated) {
+            var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
+
+            if (firstSuggestionElement !== null) {
+              // Update maxHeight of suggestions wrapper depending on the height of each item result
+              this._itemHeight = firstSuggestionElement.offsetHeight;
+
+              this._hasItemHighBeenCalculated = true;
+            }
+          }
+        }, 100);
+      },
+
+      _selection: function (index) {
+        var selectedOption = this._suggestions[index];
+
+        this._input.value = selectedOption[this.textProperty];
+        this.selectedOption = selectedOption;
+
+        this._value = this.value;
+        this._text = this.text;
+        this._emptyItems();
+
+        this._fireEvent(selectedOption, 'selected');
+
+        this.hideSuggestions();
+      },
+
+      /**
+       * Get all suggestion elements
+       * @return {Array} a list of all suggestion elements
+       */
+      _getItems: function () {
+        return this.$.suggestionsWrapper.querySelectorAll('paper-item');
+      },
+
+      /**
+       * Empty the list of current suggestions being displayed
+       */
+      _emptyItems: function () {
+        this._suggestions = [];
+      },
+
+      _getId: function () {
+        var id = this.getAttribute('id');
+        if (!id) id = this.dataset.id;
+        return id;
+      },
+
+      /**
+       * Remove the the active state from all suggestion items
+       */
+      _removeActive: function (items) {
+        [].slice.call(items).forEach(function (item) {
+          item.classList.remove('active');
+          item.setAttribute('aria-selected', 'false');
+        });
+      },
+
+      /**
+       * Key press event handler
+       */
+      _onKeypress: function (event) {
+        var keyCode = event.which || event.keyCode;
+
+        switch (keyCode) {
+          case KEY_CODES.DOWN_ARROW:
+            this._moveHighlighted(DIRECTION.DOWN);
+            break;
+          case KEY_CODES.UP_ARROW:
+            this._moveHighlighted(DIRECTION.UP);
+            break;
+          case KEY_CODES.ENTER:
+            this._keyenter();
+            break;
+          case KEY_CODES.ESCAPE:
+            this._hideSuggestionsWrapper();
+            break;
+          // For left and right arrow, component should do nothing
+          case KEY_CODES.LEFT_ARROW:
+          // fall through
+          case KEY_CODES.RIGHT_ARROW:
+            break;
+          default:
+            this._handleSuggestions(event);
+        }
+      },
+
+      /**
+       * Event handler for the key ENTER press event
+       */
+      _keyenter: function () {
+        if (this.$.suggestionsWrapper.style.display === 'block' && this._currentIndex > -1) {
+          var index = this._currentIndex;
+          this._selection(index);
+        }
+      },
+
+      /**
+       *  Move the current highlighted suggestion up or down
+       *  @param {string} direction Possible values are DIRECTION.UP or DIRECTION.DOWN
+       */
+      _moveHighlighted: function (direction) {
+        var items = this._getItems();
+
+        if (items.length === 0) {
+            return;
+        }
+
+        var numberOfItems = items.length - 1;
+
+        var isFirstItem = this._currentIndex === 0;
+        var isLastItem = this._currentIndex === numberOfItems;
+        var isNoItemHighlighted = this._currentIndex === -1;
+
+        if ((isNoItemHighlighted || isFirstItem) && direction === DIRECTION.UP) {
+          this._currentIndex = numberOfItems;
+        } else if (isLastItem && direction === DIRECTION.DOWN) {
+          this._currentIndex = 0;
+        } else {
+          var modifier = direction === DIRECTION.DOWN ? 1 : -1;
+          this._currentIndex = this._currentIndex + modifier;
+        }
+
+        var highlightedOption = this._suggestions[this._currentIndex];
+        var highlightedItem = items[this._currentIndex];
+
+        this._removeActive(items);
+
+        highlightedItem.classList.add('active');
+        highlightedItem.setAttribute('aria-selected', 'true');
+
+        this._setHighlightedSuggestion(highlightedOption, highlightedItem.id);
+
+        this._scroll(direction);
+      },
+
+      /**
+       * Move scroll (if needed) to display the active element in the suggestions list.
+       * @param {string} direction Direction to scroll. Possible values are `DIRECTION.UP` and `DIRECTION.DOWN`.
+       */
+      _scroll: function (direction) {
+        var newScrollValue, isSelectedOutOfView;
+
+        var viewIndex = this._currentIndex - this._scrollIndex;
+
+        // This happens only when user switch from last item to first one
+        var isFirstItemAndOutOfView = this._currentIndex === 0 && viewIndex < 0;
+
+        // This happens only when user switch from first or no item to last one
+        var isLastItemAndOutOfView =
+          this._currentIndex === this._suggestions.length - 1 && viewIndex >= this.maxViewableItems;
+
+        if (isFirstItemAndOutOfView && direction === DIRECTION.DOWN) {
+          newScrollValue = 0;
+          isSelectedOutOfView = true;
+        } else if (isLastItemAndOutOfView && direction === DIRECTION.UP) {
+          newScrollValue = this._suggestions.length - this.maxViewableItems;
+          isSelectedOutOfView = true;
+        } else if (direction === DIRECTION.UP) {
+          newScrollValue = this._scrollIndex - 1;
+          isSelectedOutOfView = viewIndex < 0;
+        } else {
+          newScrollValue = this._scrollIndex + 1;
+          isSelectedOutOfView = viewIndex >= this.maxViewableItems;
+        }
+
+        // Only when the current active element is out of view, we need to move the position of the scroll
+        if (isSelectedOutOfView) {
+          this._scrollIndex = newScrollValue;
+          this.$.suggestionsWrapper.scrollTop = this._scrollIndex * this._itemHeight;
+        }
+      },
+
+      /**
+       * Reset scroll back to zero
+       */
+      _resetScroll: function () {
+        this.$.suggestionsWrapper.scrollTop = 0;
+      },
+
+      /**
+       * Set the current highlighted suggestion
+       * @param {Object} option Data of the highlighted option
+       * @param {string} elementId id of the highlighted dom element.
+       */
+      _setHighlightedSuggestion: function (option, elementId) {
+        this.highlightedSuggestion = {
+          option: option,
+          elementId: elementId,
+          textValue: option[this.textProperty],
+          value: option[this.valueProperty]
+        };
+      },
+
+      _fireEvent: function (option, evt) {
+        var id = this._getId();
+        var event = 'autocomplete' + this.eventNamespace + evt;
+
+        this.fire(event, {
+          id: id,
+          value: option[this.valueProperty] || option.value,
+          text: option[this.textProperty] || option.text,
+          target: this,
+          option: option
+        });
+      },
+
+      _onSelect: function (event) {
+        var index = event.model.index;
+        this._selection(index);
+      },
+
+      /**
+       * Event handler for the onBlur event
+       */
+      _onBlur: function () {
+        var option = {
+          text: this.text,
+          value: this.value
+        };
+
+        this._fireEvent(option, 'blur');
+
+        this.hideSuggestions();
+      },
+
+      /**
+       * Event handler for the onFocus event
+       */
+      _onFocus: function () {
+        var option = {
+          text: this.text,
+          value: this.value
+        };
+
+        this._fireEvent(option, 'focus');
+      },
+
+      /**
+       * Generate a suggestion id for a certain index
+       * @param {number} index Position of the element in the suggestions list
+       * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
+       * @private
+       */
+      _getSuggestionId: function (index) {
+        return this._idItemSeed + '-' + index;
+      },
+
+      /**
+       * When item height is changed, the maxHeight of the suggestionWrapper need to be updated
+       */
+      _itemHeightChanged: function () {
+        this.$.suggestionsWrapper.style.maxHeight = this._itemHeight * this.maxViewableItems + 'px';
+      },
+
+      /****************************
+       * PUBLIC
+       ****************************/
+
+      /**
+       * Sets the component's current suggestions
+       * @param {Array} arr
+       */
+      suggestions: function (arr) {
+        this._bindSuggestions(arr);
+      },
+
+      /**
+       * Hides the suggestions popup
+       */
+      hideSuggestions: function () {
+        setTimeout(function () {
+          this._hideSuggestionsWrapper();
+        }.bind(this), 300);
+      },
+
+      /**
+       * Query function is called on each keystroke to query the data source and returns the suggestions that matches
+       * with the filtering logic included.
+       * @param {Array} datasource An array containing all items before filtering
+       * @param {string} query Current value in the input field
+       * @returns {Array} an array containing only those items in the data source that matches the filtering logic.
+       */
+      queryFn: function (datasource, query) {
+        var queryResult = [];
+
+        datasource.forEach(function (item) {
+          var objText, objValue;
+
+          if (typeof item === 'object') {
+            objText = item[this.textProperty];
+            objValue = item[this.valueProperty];
+          } else {
+            objText = item.toString();
+            objValue = objText;
+          }
+
+          if (objText.toLowerCase().indexOf(query) === 0) {
+            // NOTE: the structure of the result object matches with the current template. For custom templates, you
+            // might need to return more data
+            queryResult.push({
+              text: objText,
+              value: objValue
+            });
+          }
+        }.bind(this));
+
+        return queryResult;
+      }
+
+      /**
+       * Fired when a selection is made
+       *
+       * @event autocomplete-selected
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+
+      /**
+       * Fired on input change
+       *
+       * @event autocomplete-change
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+
+      /**
+       * Fired on input focus
+       *
+       * @event autocomplete-focus
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+
+      /**
+       * Fired on input blur
+       *
+       * @event autocomplete-blur
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+
+      /**
+       * Fired on input reset/clear
+       *
+       * @event autocomplete-reset-blur
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+    });
+  }());
+</script>
 <!--
   `paper-autocomplete`
 
@@ -40217,6 +41147,83 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   paper-autocomplete extends earlier efforts such as this (https://github.com/rodo1111/paper-input-autocomplete)
   to provide keyboard support, remote binding and results scrolling.
 
+  It is **important to provide both `textProperty` and `valueProperty` when working with a custom search function and
+  or custom templates.** They are needed to keep the component accessible and for the events (e.g. onSelect) to keep
+  working.
+
+  To integrate with `iron-input`, you must set the `name` option. The selected `value` will be exposed, **not** the
+  `text` value,
+
+  ### About Polymer 1.x and 2.x Compatibility
+  The latest version released (`v2.6.1`) is **not** compatible with Polymer 2.x. At this moment there is a work in
+  progress version that works with Polymer 2.x in the branch **2.0-preview**. It is functional but it contains a few
+  known issues:
+
+  - When using custom templates, you must implement the methods `_onTap` and `_getSuggestionId`.
+  - It does not work on IE11/Edge when used in combination with Polymer 1.x.
+
+  Using the version from the preview branch should allow you to migrate to Polymer 2.x as soon as possible while we
+  work in a fully stable and compatible version of `paper-autocomplete`.
+
+  ### Custom search
+  This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
+  all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
+  component searches for items that start with the recent query (case insensitive).
+  You can override this behavior providing your own query function, as long as these two requirements are fulfilled:
+  - The query function is synchronous.
+  - The API is respected and the method always returns an Array.
+  The template used to render each suggestion depends on the structure of each object that this method returns. For the
+  default template, each suggestion should follow this object structure:
+  ```
+    {
+      text: objText,
+      value: objValue
+    }
+  ```
+
+  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible for
+  doing the search and specify suggestions manually.
+
+  ### Custom templates
+  A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
+  the template. Please, read this section carefully to know them.
+  In order to set your own template, you need to add a `<template>` tag with the attribute
+  `autocomplete-custom-template` and the following structure:
+
+  ```
+  <paper-autocomplete>
+    <template autocomplete-custom-template>
+      <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+        YOUR CUSTOM TEMPLATE
+        <paper-ripple></paper-ripple>
+      </paper-item>
+    </template>
+  </paper-autocomplete>
+  ```
+
+  You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
+  why you need to maintain it:
+
+  - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
+  If you don't add this option, when user clicks in one of the items, nothing will happen.
+  - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
+  will continue working but it will not be accessible for users with disabilities.
+
+  It is important to clarify that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are
+  part of the logic of `paper-autocomplete`.
+
+  When providing your own custom template, you might also need to provide your own custom search function. The reason
+  for that is that the default search function only exposes text and value in the results. If each item in your data
+  source contains more information, then you won't be able to access it. See the code of the `<address-autocomplete>`
+  element in the demo folder for a complete example.
+
+  Another important thing to point out is related to the height of each suggestion item in the results. The height of
+  the suggestion template changes dynamically depending on the height of a suggestion item. However, the following
+  assumptions were made:
+  - All suggestions items have the same height
+  - The height of each item is fixed and can be determined at any time. For example, if you want to use images in the
+  results, make sure they have a placeholder or a fixed height.
+
   ### Styling
 
   `<paper-autocomplete>` provides the following custom properties and mixins
@@ -40224,747 +41231,546 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   Custom property | Description | Default
   ----------------|-------------|----------
-  `--paper-input-container-focus-color` | sets the components input container focus color | #2196f3
-  `--paper-item-min-height` | paper item min height | `{}`
+  `--paper-input-container-focus-color` | sets the components input container focus color | `var(--primary-color)`
+  `--paper-autocomplete-suggestions-item-min-height` | min height of each suggestion item | `36px`
+  `--paper-autocomplete-suggestions-wrapper` | mixin to apply to the suggestions container | `{}`
+
+  ### Accessibility
+
+  This component is friendly with screen readers (tested only with VoiceOver and NVDA in Windows): current selection
+  and active suggestion are announced.
 
   @demo demo/index.html
 -->
-
 <dom-module id="paper-autocomplete" assetpath="../../bower-assets/paper-autocomplete/">
-  <style>
-    :host {
-      display: block;
-      box-sizing: border-box;
-      position: relative;
-    }
-
-    .input-wrapper {
-      @apply(--layout-horizontal);
-    }
-
-    .input-wrapper paper-input {
-      @apply(--layout-flex);
-    }
-
-    #suggestionsWrapper {
-      display: none;
-      background-color: white;
-      max-height: 252px;
-      overflow-y: scroll;
-      width: 100%;
-      position: absolute;
-      z-index: 1000;
-    }
-
-    :host[suggestions-in-overlay="true"] #suggestionsWrapper {
-    }
-
-    paper-item {
-      position: relative;
-      line-height: 18px;
-    }
-
-    paper-item:hover {
-      background: #eee;
-      color: #333;
-      cursor: pointer;
-    }
-
-    paper-item.active {
-      background: #eee;
-      color: #333;
-    }
-
-    #clear {
-      display: none;
-      margin-top: auto;
-    }
-
-    :host {
-      --paper-input-container-focus-color: #2196f3;
-      --paper-item-min-height: 36px;
-    }
-
-    .sr-only {
-      position: absolute;
-      clip: rect(1px, 1px, 1px, 1px);
-    }
-  </style>
-
   <template>
-    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper autocompleteStatus" aria-expanded$="[[_isSuggestionsOpened]]">
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        position: relative;
+        --paper-input-container-focus-color: var(--primary-color);
+      }
 
+      .input-wrapper {
+        @apply(--layout-horizontal);
+      }
+
+      .input-wrapper paper-input {
+        @apply(--layout-flex);
+      }
+
+      paper-input ::content input::-ms-clear {
+        display: none;
+      }
+
+      #clear {
+        display: none;
+        margin-top: auto;
+        line-height: 8px;
+
+        --paper-icon-button: {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+        };
+      }
+
+      .sr-only {
+        position: absolute;
+        clip: rect(1px, 1px, 1px, 1px);
+      }
+
+      paper-autocomplete-suggestions {
+        --suggestions-wrapper: {
+          @apply(--paper-autocomplete-suggestions-wrapper);
+        };
+
+        --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
+      }
+    </style>
+
+    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
-      <label for="input" class="sr-only">[[label]]</label>
+      <label for="autocompleteInput" class="sr-only">[[label]]</label>
 
-      <paper-input id="input" label="[[label]]" no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]" always-float-label="[[alwaysFloatLabel]]" char-counter$="[[charCounter]]" maxlength$="[[maxlength]]" role="textbox" aria-autocomplete="list" aria-multiline="false" aria-activedescendant$="[[_idElementHighlighted]]" aria-disabled$="[[disabled]]" aria-controls="autocompleteStatus suggestionsWrapper"></paper-input>
+      <!-- Adding a hidden input to integrate with iron-form, if required -->
+      <input type="hidden" name$="[[name]]" value$="[[value]]">
 
-      <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+      <paper-input id="autocompleteInput" label="[[label]]" no-label-float="[[noLabelFloat]]" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]" always-float-label="[[alwaysFloatLabel]]" char-counter$="[[charCounter]]" maxlength$="[[maxlength]]" placeholder="[[placeholder]]" role="textbox" aria-autocomplete="list" aria-multiline="false" aria-activedescendant$="[[_highlightedSuggestion.elementId]]" aria-disabled$="[[disabled]]" aria-controls="autocompleteStatus suggestionsWrapper">
 
+                  <paper-icon-button suffix="" id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+        </paper-input>
       <!-- to announce current selection to screen reader -->
-      <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
+      <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
     </div>
-    <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
-      <iron-list items="{{_suggestions}}">
-        <template>
-        <paper-item on-click="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>{{_getItemText(item)}}</div>
-          <paper-ripple></paper-ripple>
-        </paper-item>
-        </template>
-      </iron-list>
-    </paper-material>
+
+    <paper-autocomplete-suggestions for="autocompleteInput" id="paperAutocompleteSuggestions" min-length="[[minLength]]" text-property="[[textProperty]]" value-property="[[valueProperty]]" selected-option="{{_selectedOption}}" remote-source="[[remoteSource]]" event-namespace="[[eventNamespace]]" highlighted-suggestion="{{_highlightedSuggestion}}" is-open="{{_isSuggestionsOpened}}">
+      <content id="templates" select="[autocomplete-custom-template]"></content>
+    </paper-autocomplete-suggestions>
   </template>
 </dom-module>
-
 <script>
-  Polymer({
-    is: 'paper-autocomplete',
-    properties: {
-      /**
-       * `autoValidate` Set to true to auto-validate the input value.
-       */
-      autoValidate: {
-        type: Boolean,
-        value: false
-      },
+  (function () {
+    Polymer({
+      is: 'paper-autocomplete',
 
-      /**
-       * `errorMessage` The error message to display when the input is invalid.
-       */
-      errorMessage: {
-        type: String
-      },
+      properties: {
+        /**
+         * `autoValidate` Set to true to auto-validate the input value.
+         */
+        autoValidate: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * `label` Text to display as the input label
-       */
-      label: String,
+        /**
+         * `errorMessage` The error message to display when the input is invalid.
+         */
+        errorMessage: {
+          type: String
+        },
 
-      /**
-       * `noLabelFloat` Set to true to disable the floating label.
-       */
-      noLabelFloat: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * `label` Text to display as the input label
+         */
+        label: String,
 
-      /**
-       * `alwaysFloatLabel` Set to true to always float label
-       */
-      alwaysFloatLabel: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * `noLabelFloat` Set to true to disable the floating label.
+         */
+        noLabelFloat: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * `required` Set to true to mark the input as required.
-       */
-      required: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * `alwaysFloatLabel` Set to true to always float label
+         */
+        alwaysFloatLabel: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * `source` Array of objects with the options to execute the autocomplete feature
-       */
-      source: Array,
+        /**
+         * The placeholder text
+         */
+        placeholder: String,
 
-      /**
-       * Property of local datasource to as the text property
-       */
-      textProperty: {
-        type: String,
-        value: 'text'
-      },
+        /**
+         * `required` Set to true to mark the input as required.
+         */
+        required: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * Property of local datasource to as the value property
-       */
-      valueProperty: {
-        type: String,
-        value: 'value'
-      },
+        /**
+         * `source` Array of objects with the options to execute the autocomplete feature
+         */
+        source: {
+          type: Array,
+          observer: '_onSourceChanged'
+        },
 
-      /**
-       * `value` Selected object from the suggestions
-       */
-      value: {
-        type: Object,
-        notify: true
-      },
+        /**
+         * Property of local datasource to as the text property
+         */
+        textProperty: {
+          type: String,
+          value: 'text'
+        },
 
-      /**
-       * The current/selected text of the input
-       */
-      text: {
-        type: String,
-        notify: true,
-        value: ''
-      },
+        /**
+         * Property of local datasource to as the value property
+         */
+        valueProperty: {
+          type: String,
+          value: 'value'
+        },
 
-      /**
-       * Disable showing the clear X button
-       */
-      disableShowClear: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * `value` Selected object from the suggestions
+         */
+        value: {
+          type: Object,
+          notify: true
+        },
 
-      /**
-       * Binds to a remote data source
-       */
-      remoteSource: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * The current/selected text of the input
+         */
+        text: {
+          type: String,
+          notify: true,
+          value: ''
+        },
 
-      /**
-       * Event type separator
-       */
-      eventNamespace: {
-        type: String,
-        value: '-'
-      },
+        /**
+         * Disable showing the clear X button
+         */
+        disableShowClear: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * Minimum length to trigger suggestions
-       */
-      minLength: {
-        value: 1
-      },
+        /**
+         * Binds to a remote data source
+         */
+        remoteSource: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * Indicates if shadow dom is used
-       */
-      useShadowDom: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * Event type separator
+         */
+        eventNamespace: {
+          type: String,
+          value: '-'
+        },
 
-      /**
-       * `pattern` Pattern to validate input field
-       */
-      pattern: String,
+        /**
+         * Minimum length to trigger suggestions
+         */
+        minLength: {
+          type: Number,
+          value: 1
+        },
 
-      /**
-       * allowedPattern` allowedPattern to validate input field
-       */
-      allowedPattern: String,
+        /**
+         * `pattern` Pattern to validate input field
+         */
+        pattern: String,
 
-      /**
-       * Set to `true` to show a character counter.
-       */
-      charCounter: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * allowedPattern` allowedPattern to validate input field
+         */
+        allowedPattern: String,
 
-      /**
-       * The maximum length of the input value.
-       */
-      maxlength: {
-        type: Number
-      },
+        /**
+         * Set to `true` to show a character counter.
+         */
+        charCounter: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * `_suggestions` Array with the actual suggestions to display
-       */
-      _suggestions: Array,
+        /**
+         * The maximum length of the input value.
+         */
+        maxlength: {
+          type: Number
+        },
 
-      _currentIndex: {
-        value: -1
-      },
+        /**
+         * Name to be used by the autocomplete input. This is necessary if wanted to be integrated with iron-form.
+         */
+        name: String,
 
-      _scrollIndex: {
-        value: 0
-      },
+        /**
+         * Function used to filter available items. This function is actually used by paper-autocomplete-suggestions,
+         * it is also exposed here so it is possible to provide a custom queryFn.
+         */
+        queryFn: {
+          type: Function
+        },
 
-      _maxViewableItems: {
-        value: 7
-      },
+        /*************
+         * PRIVATE
+         *************/
+        // TODO: check if we need _value and _text properties. It seems they can be removed
+        _value: {
+          value: undefined
+        },
 
-      _itemHeight: {
-        value: 36
-      },
+        _text: {
+          value: undefined
+        },
 
-      // TODO: check if we need _value and _text properties. It seems they can be removed
-      _value: {
-        value: undefined
-      },
+        /**
+         * Indicates whether the clear button is visible or not
+         */
+        _isClearButtonVisible: {
+          type: Boolean,
+          value: false
+        },
 
-      _text: {
-        value: undefined
-      },
+        /**
+         * Indicates whether the suggestion popup is visible or not.
+         */
+        _isSuggestionsOpened: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
-       * accessibility reasons.
-       */
-      _idItemSeed: {
-        type: String,
-        value: 'aria-' + new Date().getTime() + '-' + (Math.floor(Math.random() * 1000)),
-        readOnly: true
-      },
-
-      /**
-       * Id of the DOM element currently highlighted
-       */
-      _idElementHighlighted: {
-        type: String,
-        value: ''
-      },
-
-      /**
-       * Text value of the current highlighted value to be announce to the screen reader
-       */
-      _textOfHighlightedElement: {
-        type: String
-      },
-
-      /**
-       * `true` if the suggestions list is opened, `false otherwise`
-       */
-      _isSuggestionsOpened: {
-        type: Boolean,
-        value: false
-      }
-    },
-    // Element Lifecycle
-    ready: function () {
-      this._value = this.value;
-    },
-
-    listeners: {
-      'input.focus': '_onFocus',
-      'input.blur': '_onBlur'
-    },
-
-    // Element Behavior
-
-    /**
-     * Clears the input text
-     */
-    _clear: function () {
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-
-      this.value = null;
-      this._value = null;
-      this.text = '';
-      this._text = '';
-
-      this.$.clear.style.display = 'none';
-
-      this._hideSuggestionsWrapper();
-      this._emptyItems();
-
-      this._fireEvent(option, 'reset');
-    },
-
-    /**
-     * Get the text property from the suggestion
-     * @param {Object} suggestion The suggestion item
-     * @return {String}
-     */
-    _getItemText: function (suggestion) {
-      return suggestion[this.textProperty];
-    },
-
-    /**
-     * Show the suggestions wrapper
-     */
-    _showSuggestionsWrapper: function () {
-      this.$.suggestionsWrapper.style.display = 'block';
-      this._isSuggestionsOpened = true;
-    },
-
-    /**
-     * Hide the suggestions wrapper
-     */
-    _hideSuggestionsWrapper: function () {
-      this.$.suggestionsWrapper.style.display = 'none';
-      this._isSuggestionsOpened = false;
-      this._idElementHighlighted = '';
-      this._textOfHighlightedElement = '';
-    },
-
-    _handleSuggestions: function (event) {
-      if (!this.remoteSource) this._createSuggestions(event);
-      else this._remoteSuggestions(event);
-    },
-
-    _remoteSuggestions: function (event) {
-      var value = event.target.value;
-      var minLength = this.minLength;
-      var option = {
-        text: this.text,
-        value: value
-      };
-
-      if (value && value.length >= minLength) {
-        this._fireEvent(option, 'change');
-      } else {
-        this.$.clear.style.display = 'none';
-        this._suggestions = [];
-      }
-    },
-
-    _bindSuggestions: function (arr) {
-      if (arr.length && arr.length > 0) {
-        this._suggestions = arr;
-        this._currentIndex = -1;
-        this._scrollIndex = 0;
-        if (!this.disableShowClear) this.$.clear.style.display = 'block';
-        this._showSuggestionsWrapper();
-      } else {
-        this.$.clear.style.display = 'none';
-        this._suggestions = [];
-      }
-    },
-
-    _createSuggestions: function (event) {
-      this._currentIndex = -1;
-      this._scrollIndex = 0;
-      var value = event.target.value;
-      var minLength = this.minLength;
-      if (value && value.length >= minLength) {
-        value = value.toLowerCase();
-        // Shows the clear button.
-        if (!this.disableShowClear) this.$.clear.style.display = 'block';
-        // Search for the word in the source properties.
-        if (this.source && this.source.length > 0) {
-          this._suggestions = [];
-          var length = this.source.length;
-          var objText, objValue;
-          for (var i = 0; i < length; i++) {
-            var item = this.source[i];
-            if (typeof item === 'object') {
-              objText = item[this.textProperty];
-              objValue = item[this.valueProperty]
-            } else {
-              objText = item.toString();
-              objValue = objText;
-            }
-            if (objText.toLowerCase().indexOf(value) === 0) {
-              // Adds the item to the suggestions list.
-              this.push('_suggestions', {text: objText, value: objValue});
-            }
-          }
-
-          if (this._suggestions.length > 0) {
-            this._showSuggestionsWrapper();
-          } else {
-            this._hideSuggestionsWrapper();
-          }
+        /**
+         * Object containing the information of the currently selected option
+         */
+        _selectedOption: {
+          type: Object
         }
-      } else {
+      },
+
+      observers: [
+        '_onQueryFnChanged(queryFn)'
+      ],
+
+      listeners: {
+        'autocompleteInput.input': '_onInput'
+      },
+
+      // Element Lifecycle
+      ready: function () {
+        this._value = this.value;
+
+        this.addEventListener(
+          'autocomplete' + this.eventNamespace + 'selected',
+          this._onAutocompleteSelected.bind(this)
+        );
+      },
+
+      /**
+       * Clears the input text
+       */
+      _clear: function () {
+        var option = {
+          text: this.text,
+          value: this.value
+        };
+
+        this.value = null;
+        this._value = null;
+        this.text = '';
+        this._text = '';
+
+        this._fireEvent(option, 'reset-blur');
+
+        this._hideClearButton();
+        this.$.autocompleteInput.focus();
+      },
+
+      _fireEvent: function (option, evt) {
+        var id = this._getId();
+        var event = 'autocomplete' + this.eventNamespace + evt;
+
+        // TODO: this might not be needed
+        this.fire(event, {
+          id: id,
+          value: option[this.valueProperty] || option.value,
+          text: option[this.textProperty] || option.text,
+          target: this,
+          option: option
+        });
+      },
+
+      /**
+       * Callback called when source property changes
+       */
+      _onSourceChanged: function () {
+        this.$.paperAutocompleteSuggestions.source = this.source;
+      },
+
+      _onQueryFnChanged: function () {
+        this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
+      },
+
+      /**
+       * On input event handler
+       */
+      _onInput: function () {
+        if (this.$.autocompleteInput.value) {
+          this._showClearButton();
+        } else {
+          this._hideClearButton();
+        }
+      },
+
+      /**
+       * On autocomplete selection
+       */
+      _onAutocompleteSelected: function (event) {
+        var selection = event.detail;
+
+        this.value = selection.value;
+        this.text = selection.text;
+      },
+
+      /**
+       * Show the clear button (X)
+       */
+      _showClearButton: function () {
+        if (this.disableShowClear) {
+          return;
+        }
+
+        if (this._isClearButtonVisible) {
+          return;
+        }
+
+        this.$.clear.style.display = 'block';
+        this._isClearButtonVisible = true;
+      },
+
+      /**
+       * Hide the clear button (X)
+       */
+      _hideClearButton: function () {
+        if (!this._isClearButtonVisible) {
+          return;
+        }
+
         this.$.clear.style.display = 'none';
-        this._suggestions = [];
+        this._isClearButtonVisible = false;
+      },
+
+      _getId: function () {
+        var id = this.getAttribute('id');
+        if (!id) id = this.dataset.id;
+        return id;
+      },
+
+      /****************************
+       * PUBLIC
+       ****************************/
+
+      /**
+       * Gets the current value of the input
+       * @returns {String}
+       */
+      getValue: function () {
+        return this.value;
+      },
+
+      /**
+       * Gets the current text/value option of the input
+       * @returns {Object}
+       */
+      getOption: function () {
+        return {
+          text: this.text,
+          value: this.value
+        };
+      },
+
+      /**
+       * Sets the current text/value option of the input
+       * @param {Object} option
+       */
+      setOption: function (option) {
+        this.text = option[this.textProperty] || option.text;
+        this.value = option[this.valueProperty] || option.value;
+
+        this._showClearButton();
+      },
+
+      /**
+       * Disables the input
+       */
+      disable: function () {
+        this.disabled = true;
+        this.$.autocompleteInput.disabled = true;
+      },
+
+      /**
+       * Enables the input
+       */
+      enable: function () {
+        this.disabled = false;
+        this.$.autocompleteInput.disabled = false;
+      },
+
+      /**
+       * Sets the component's current suggestions
+       * @param {Array} arr
+       */
+      suggestions: function (arr) {
+        this.$.paperAutocompleteSuggestions.suggestions(arr);
+      },
+
+      /**
+       * Validates the input
+       * @returns {Boolean}
+       */
+      validate: function () {
+        return this.$.autocompleteInput.validate();
+      },
+
+      /**
+       * Clears the current input
+       */
+      clear: function () {
+        this._value = '';
+        this._text = '';
+        this._clear();
+      },
+
+      /**
+       * Resets the current input (DEPRECATED: please use clear)
+       */
+      reset: function () {
+        this._clear();
+      },
+
+      /**
+       * Hides the suggestions popup
+       */
+      hideSuggestions: function () {
+        this._hideClearButton();
+        this.$.paperAutocompleteSuggestions.hideSuggestions();
       }
-    },
 
-    _selection: function (index) {
-      var selectedOption = this._suggestions[index];
-      var self = this;
-      this.text = selectedOption[this.textProperty];
-      this.value = selectedOption[this.valueProperty];
-      this._value = this.value;
-      this._text = this.text;
-      this.$.clear.style.display = 'none';
-      this._emptyItems();
-      this._fireEvent(selectedOption, 'selected');
+      /**
+       * Fired when a selection is made
+       *
+       * @event autocomplete-selected
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
 
-      setTimeout(function () {
-        self._hideSuggestionsWrapper();
-      }, 300);
-    },
+      /**
+       * Fired on input change
+       *
+       * @event autocomplete-change
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
 
-    _getItems: function () {
-      var supportsShadow = Boolean(Element.prototype.createShadowRoot);
-      var useShadow = this.useShadowDom;
-      if (useShadow && supportsShadow) return this.shadowRoot.querySelectorAll('paper-item');
-      else return this.querySelectorAll('paper-item');
-    },
+      /**
+       * Fired on input focus
+       *
+       * @event autocomplete-focus
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
 
-    _emptyItems: function () {
-      this._suggestions = [];
-    },
+      /**
+       * Fired on input blur
+       *
+       * @event autocomplete-blur
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
 
-    _getId: function () {
-      var id = this.getAttribute('id');
-      if (!id) id = this.dataset.id;
-      return id;
-    },
-
-    _removeActive: function (items) {
-      for (var i = 0; i < items.length; i++) {
-        items[i].classList.remove('active');
-        items[i].setAttribute('aria-selected', "false");
-      }
-    },
-
-    _keydown: function () {
-      var items = this._getItems();
-      var length = items.length;
-      length--;
-      if (this._currentIndex < length) {
-        this._removeActive(items);
-        this._currentIndex++;
-        items[this._currentIndex].classList.add('active');
-        items[this._currentIndex].setAttribute('aria-selected', "true");
-        this._idElementHighlighted = items[this._currentIndex].id;
-        this._textOfHighlightedElement = this._suggestions[this._currentIndex].text;
-        this._scrollDown();
-      }
-    },
-
-    _keyup: function () {
-      var items = this._getItems();
-      if (this._currentIndex > 0) {
-        this._removeActive(items);
-        this._currentIndex--;
-        items[this._currentIndex].classList.add('active');
-        items[this._currentIndex].setAttribute('aria-selected', "true");
-        this._idElementHighlighted = items[this._currentIndex].id;
-        this._textOfHighlightedElement = this._suggestions[this._currentIndex].text;
-        this._scrollUp();
-      }
-    },
-
-    _keyenter: function () {
-      if (this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1) {
-        var index = this._currentIndex;
-        this._selection(index);
-      }
-    },
-
-    _scrollDown: function () {
-      var viewIndex = this._currentIndex - this._scrollIndex;
-      if (viewIndex >= this._maxViewableItems) {
-        this._scrollIndex++;
-        var scrollTop = (this._scrollIndex * this._itemHeight);
-        var paperMaterial = this.querySelector('paper-material');
-        paperMaterial.scrollTop = scrollTop;
-      }
-    },
-
-    _scrollUp: function () {
-      var viewIndex = this._currentIndex - this._scrollIndex;
-      if (viewIndex < 0) {
-        this._scrollIndex--;
-        var scrollTop = (this._scrollIndex * this._itemHeight);
-        var paperMaterial = this.querySelector('paper-material');
-        paperMaterial.scrollTop = scrollTop;
-      }
-    },
-    _fireEvent: function (option, evt) {
-      var id = this._getId();
-      var event = 'autocomplete' + this.eventNamespace + evt;
-
-      this.fire(event, {
-        id: id,
-        value: option[this.valueProperty] || option.value,
-        text: option[this.textProperty] || option.text,
-        target: this,
-        option: option
-      });
-    },
-
-    _onKeypress: function (event) {
-      var which = event.which;
-
-      if (which === 40) {
-        this._keydown();
-      } else if (which === 38) {
-        this._keyup(event);
-      } else if (which === 13) {
-        this._keyenter();
-      } else {
-        this._handleSuggestions(event);
-      }
-    },
-
-    _onSelect: function (event) {
-      var index = event.model.index;
-      this._selection(index);
-    },
-
-    _onBlur: function () {
-      var self = this;
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-
-      this._fireEvent(option, 'blur');
-
-      setTimeout(function () {
-        self.$.clear.style.display = 'none';
-        self._hideSuggestionsWrapper();
-      }, 300);
-    },
-
-    _onFocus: function () {
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-
-      this._fireEvent(option, 'focus');
-    },
-
-    /* public */
-    /**
-     * Gets the current value of the input
-     * @returns {String}
-     */
-    getValue: function () {
-      return this.value;
-    },
-
-    /**
-     * Gets the current text/value option of the input
-     * @returns {Object}
-     */
-    getOption: function () {
-      return {
-        text: this.text,
-        value: this.value
-      };
-    },
-
-    /**
-     * Sets the current text/value option of the input
-     * @param {Object} option
-     */
-    setOption: function (option) {
-      this.text = option.text;
-      this.value = option.value;
-    },
-
-    /**
-     * Disables the input
-     */
-    disable: function () {
-      this.disabled = true;
-      this.$.input.disabled = true;
-    },
-
-    /**
-     * Enables the input
-     */
-    enable: function () {
-      this.disabled = false;
-      this.$.input.disabled = false;
-    },
-
-    /**
-     * Sets the component's current suggestions
-     * @param {Array} arr
-     */
-    suggestions: function (arr) {
-      this._bindSuggestions(arr);
-    },
-
-    /**
-     * Validates the input
-     * @returns {Boolean}
-     */
-    validate: function () {
-      return this.$.input.validate();
-    },
-
-    /**
-     * Clears the current input
-     */
-    clear: function () {
-      this._value = '';
-      this._text = '';
-      this._clear();
-    },
-
-    /**
-     * Resets the current input
-     */
-    reset: function () {
-      this._clear();
-    },
-
-    /**
-     * Hides the suggestions popup
-     */
-    hideSuggestions: function () {
-      var self = this;
-
-      setTimeout(function () {
-        self.$.clear.style.display = 'none';
-        self._hideSuggestionsWrapper();
-      }, 300);
-    },
-
-    /**
-     * Generate a suggestion id for a certain index
-     * @param {number} index Position of the element in the suggestions list
-     * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
-     * @private
-     */
-    _getSuggestionId: function (index) {
-      return this._idItemSeed + '-' + index;
-    }
-
-    /**
-     * Fired when a selection is made
-     *
-     * @event autocomplete-selected
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
-
-    /**
-     * Fired on input change
-     *
-     * @event autocomplete-change
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
-
-    /**
-     * Fired on input focus
-     *
-     * @event autocomplete-focus
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
-
-    /**
-     * Fired on input blur
-     *
-     * @event autocomplete-blur
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
-
-    /**
-     * Fired on input reset/clear
-     *
-     * @event autocomplete-reset-blur
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
-  });
+      /**
+       * Fired on input reset/clear
+       *
+       * @event autocomplete-reset-blur
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+    });
+  }());
 </script>
 <!--
 @license

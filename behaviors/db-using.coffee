@@ -140,6 +140,7 @@ app.behaviors.dbUsing =
       'visited-patient-log': 0
       'diag-patient-log': 0
       'org-role-item-log': 1
+      'referral-seed': 1
     app.db.insert '--serial-generator', serialGenerator
 
     lib.tabStorage.setItem 'is-tab-authenticated', (lib.json.stringify true)
@@ -513,4 +514,14 @@ app.behaviors.dbUsing =
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     return (appIdentifier + userSerial + itemType )
 
+
+  generateSerialForReferral: ->
+    appIdentifier = 'D'
+    itemType = 'ref'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    serialGenerator = (app.db.find '--serial-generator')[0]
+    seed = serialGenerator['referral-seed']
+    serialGenerator['referral-seed'] += 1
+    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
+    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
