@@ -27,7 +27,7 @@ Polymer {
           title: 'Create'
           subTitle: 'New Patient'
           info: ''
-          imagePath: 'assets/img/partners/badas_logo.png'
+          imagePath: 'assets/img/partners/uhcp.jpg'
           urlPath: '#/patient-signup'
           accessId: ''
         }
@@ -35,7 +35,7 @@ Polymer {
           title: 'FOLLOW UP'
           subTitle: 'Patient'
           info: ''
-          imagePath: 'assets/img/partners/badas_logo.png'
+          imagePath: 'assets/img/partners/uhcp.jpg'
           urlPath: '#/patient-manager/selected:0'
           accessId: ''
         }
