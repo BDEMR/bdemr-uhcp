@@ -902,7 +902,7 @@ Polymer {
   _sync: (navigateToAfterSyncing = null)->
     @_syncTemporaryOfflinePccPatients =>
 
-      collector1 = new lib.util.Collector 37
+      collector1 = new lib.util.Collector 39
 
       @_syncUser @syncDoctorFavoriteMedicationConfig, ()=> collector1.collect 'A1', null
       @_syncUser @syncSettings, ()=> collector1.collect 'A1', null
@@ -931,7 +931,8 @@ Polymer {
       @_syncPatients @syncPatientStayConfig, ()=> collector1.collect 'A1', null
       @_syncPatients @syncHistoryAndPhysicalConfig, ()=> collector1.collect 'A1', null
       @_syncPatients @syncDiagnosisConfig, ()=> collector1.collect 'A1', null
-
+      @_syncPatients @syncReferral, ()=> collector1.collect 'A1', null
+      @_syncPatients @syncEmployeeLeaveData, ()=> collector1.collect 'A1', null
       @_syncPatients @syncVitalBloodPressureConfig, ()=> collector1.collect 'A1', null
       @_syncPatients @syncVitalBMIConfig, ()=> collector1.collect 'A1', null
       @_syncPatients @syncVitalPulseRateConfig, ()=> collector1.collect 'A1', null

@@ -208,6 +208,12 @@ app.behaviors.local['root-element'].patientsDataSyncConfig =
     headerApi: '/bdemr-doctor-app--sync--visit-diagnosis--exchange-headers'
     dataApi: '/bdemr-doctor-app--sync--visit-diagnosis--exchange-data'
 
+  syncReferral:
+    collectionName: 'referral-record'
+    deletedCollectionName: 'referral-record--deleted'
+    headerApi: '/bdemr-doctor-app--sync--referral-record--exchange-headers'
+    dataApi: '/bdemr-doctor-app--sync--referral-record--exchange-data'
+
   syncPccRecords:
     collectionName: 'pcc-records'
     deletedCollectionName: 'pcc-records--deleted'
@@ -219,5 +225,11 @@ app.behaviors.local['root-element'].patientsDataSyncConfig =
     deletedCollectionName: 'ndr-records--deleted'
     headerApi: '/bdemr-doctor-app--sync--ndr-records--exchange-headers'
     dataApi: '/bdemr-doctor-app--sync--ndr-records--exchange-data'
+
+  syncEmployeeLeaveData:
+    collectionName: 'employee-leave-data'
+    deletedCollectionName: 'employee-leave-data--deleted'
+    headerApi: '/bdemr-doctor-app--sync--employee-leave-data--exchange-headers'
+    dataApi: '/bdemr-doctor-app--sync--employee-leave-data--exchange-data'
 
   
