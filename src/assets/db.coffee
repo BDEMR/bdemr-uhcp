@@ -1088,3 +1088,6 @@ app.db.defineCollection {
 app.db.defineCollection { name: 'employee-leave-data' }
 app.db.defineCollection { name: 'employee-leave-data--deleted' }
 
+app.db.defineCollection { name: 'referral-record' }
+app.db.defineCollection { name: 'referral-record--deleted' }
+
