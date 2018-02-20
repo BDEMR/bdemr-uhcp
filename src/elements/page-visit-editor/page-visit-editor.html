@@ -56,6 +56,11 @@
   <template>
 
     <style is="custom-style" include="common-style">
+      .fixed-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+      }
       .limiting-container {
         margin-top: 8px;
       }
@@ -311,6 +316,7 @@
         margin: 8px 4px;
         border: 2px solid #eee;
         background-color: #fff;
+        position: relative;
       }
 
       .card-item {
@@ -844,6 +850,7 @@
                   </div>
                 </div>
               </div>
+              <paper-button raised class="fixed-btn btn-add colored" on-tap="editPatientBtnPressed">Edit Patient</paper-button>
             </div>
             <!-- visit details - start -->
             <div class="card-item-2 horizontal layout wrap center p-8">
