@@ -40,14 +40,14 @@ Polymer {
           accessId: ''
         }
 
-        {
-          title: 'Create '
-          subTitle: 'New Patient'
-          info: ''
-          imagePath: 'assets/img/partners/badas.jpg'
-          urlPath: '#/patient-signup'
-          accessId: ''
-        }
+        # {
+        #   title: 'Create '
+        #   subTitle: 'New Patient'
+        #   info: ''
+        #   imagePath: 'assets/img/partners/badas.jpg'
+        #   urlPath: '#/patient-signup'
+        #   accessId: ''
+        # }
         
         {
           title: 'Patients Log'
