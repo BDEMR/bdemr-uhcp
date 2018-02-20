@@ -254,7 +254,7 @@ Polymer {
   _searchOnline: ->
     @matchingPatientList = []
     # console.log @searchFieldMainInput
-    @callApi '/bdemr-patient-search', {searchQuery: @searchFieldMainInput}, (err, response)=>
+    @callApi '/bdemr-patient-search', {apiKey: @user.apiKey, searchQuery: @searchFieldMainInput}, (err, response)=>
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -494,8 +494,9 @@ Polymer {
   goPatientViewPage: (patient)->
     @domHost.setCurrentPatientsDetails patient
     @createdPatientVisitedLog patient
-    @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
-    @domHost.selectedPatientPageIndex = 5
+    # @domHost.navigateToPage '#/visit-editor/patient:' + patient.serial + '/selected:5'
+    @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
+    @domHost.selectedPatientPageIndex = 0
 
 
 
@@ -564,9 +565,9 @@ Polymer {
 
     @domHost.setCurrentPatientsDetails patient
 
-    # @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
-    @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
-    @domHost.selectedPatientPageIndex = 5
+    @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
+    # @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
+    @domHost.selectedPatientPageIndex = 0
 
   # editPatientPreconceptionRecord: (e)->
   #   el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
@@ -641,9 +642,9 @@ Polymer {
     
     @domHost.setCurrentPatientsDetails patient
     @createdPatientVisitedLog patient
-    # @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
-    @domHost.selectedPatientPageIndex = 5
-    @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
+    @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
+    @domHost.selectedPatientPageIndex = 0
+    # @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
 
 
   # Visted Patient Log

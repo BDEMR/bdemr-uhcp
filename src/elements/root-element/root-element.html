@@ -154,7 +154,7 @@
 
       /*Ad Area Related Styles*/
 
-      .ad-area {
+      .ad-area-1 {
         width: 100%;
         height: 100px;
         margin: 0 auto;
@@ -339,8 +339,8 @@
       }*/
 
       .custom-img {
-        height: 70px !important;
-        width: 70px !important;
+        height: 80px !important;
+        width: 80px !important;
       }
 
       #langSwitch {
@@ -626,7 +626,9 @@
                     <paper-tab>[[$TRANSLATE('Doctor Patient Notes',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Patient Gallery',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Activity Log',LANG)]]</paper-tab>
-                    <paper-tab>[[$TRANSLATE('Leave Info',LANG)]]</paper-tab>
+                    <template is="dom-if" if="[[_checkUserAccess('D022')]]">
+                      <paper-tab>[[$TRANSLATE('Leave Info',LANG)]]</paper-tab>
+                    </template>
                   </paper-tabs>
                 </div>
               </div>
@@ -646,38 +648,15 @@
         <!-- Page switcher - End -->
 
         <!-- Advertisement Area -->
-        <div id="adArea" class="ad-area layout vertical" hidden$="[[hideAd]]">
+        <div class="ad-area-1">
 
-          <template is="dom-if" if="[[$equals(page.name, 'preconception-record')]]">
-            <div class="ad layout p-16">
-              <div class="horizontal layout center">
-                <img src="../../assets/img/preconception/gov-logo.png" alt="" class="p-horizontal-8 custom-img">
-                <img src="../../assets/img/preconception/badas-logo-tab.png" alt="" class="p-horizontal-8 custom-img">
-                <img src="../../assets/img/preconception/endocrine_socity_tab_logo.png" alt="" class="p-horizontal-8 custom-img">
-                <img src="../../assets/img/preconception/safe-pregnancy.png" alt="" class="p-horizontal-8 custom-img">
-                <div class="type caption-2 secondary p-horizontal-8">A joint community awareness program of Diabetic Association of safe-pregnancyBangladesh and Law and Justice
-                  Division, Ministry of Law, Justice and Parliamentary Affairs, Government of People's Republic of Bangladesh,
-                  funded by World Diabetes Foundation for strengthening preconception care.</div>
-              </div>
+          <div class="ad layout p-16">
+            <div class="horizontal layout center center-justified">
+              <img src="../../assets/img/partners/uhcp.jpg" alt="" class="p-horizontal-8 custom-img">
+              <img src="../../assets/img/partners/wof.jpg" alt="" class="p-horizontal-8 custom-img">
+              <img src="../../assets/img/partners/badas.jpg" alt="" class="p-horizontal-8 custom-img">
             </div>
-          </template>
-
-          <template is="dom-if" if="[[!$equals(page.name, 'preconception-record')]]">
-            <div class="ad layout horizontal">
-              <img src$="[[currentAd.image]]" alt="">
-              <div class="text">
-                <template is="dom-if" if="[[currentAd.hasAudio]]">
-                  <audio src$="[[currentAd.audio]]" controls id="audioPlayer">
-                    <p>Your browser does not support the
-                      <code>audio</code> element </p>
-                  </audio>
-                </template>
-                <h3>[[currentAd.title]]</h3>
-                <p>[[currentAd.text]]</p>
-              </div>
-            </div>
-          </template>
-
+          </div>
 
         </div>
         <!-- Advertisement Area End-->

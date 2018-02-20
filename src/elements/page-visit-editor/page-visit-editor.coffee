@@ -4610,6 +4610,10 @@ Polymer {
   onVitalIndexChange: ()->
     console.log @selectedVitalIndex
   # psedo lifecycle callback
+
+  editPatientBtnPressed: ()->
+    @domHost.navigateToPage "#/patient-editor/patient:" + @patient.serial
+    
   navigatedIn: ->
 
     @domHost.selectedPatientPageIndex = 0
