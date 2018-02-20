@@ -48,6 +48,11 @@
     <!-- style -->
 
     <style is="custom-style" include="common-style">
+      .fixed-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+      }
       .sub-header {
         background-color: #f7f7f7;
         padding: 4px 16px;
@@ -641,6 +646,8 @@
                   </div>
                 </div>
               </div>
+
+              <paper-button raised class="fixed-btn btn-add colored" on-tap="editPatientBtnPressed">Edit Patient</paper-button>
             </div>
           </paper-card>
 
@@ -2108,69 +2115,71 @@
             </section>
 
             <!-- Leave Info -->
-            <section>
-              <paper-card heading="Employee Leave Info">
-                <div class="card-content">
-                  <div class="m-vertical-16 layout horizontal wrap start">
-                    <vaadin-date-picker class="m-left-8" label="From Date" value="{{leaveFromDate}}"></vaadin-date-picker>
-                    <vaadin-date-picker class="m-left-8" label="End Date" value="{{leaveToDate}}"></vaadin-date-picker>
-                    <paper-dropdown-menu class="m-left-8" label="Reason" class="">
-                      <paper-listbox class="dropdown-content" selected="{{sickReasonSelectedIndex}}">
-                        <template is="dom-repeat" items="[[sickReasonList]]">
-                          <paper-item>{{item}}</paper-item>
-                        </template>
-                      </paper-listbox>
-                    </paper-dropdown-menu>
-                    <paper-button class="btn btn-primary" on-tap="leaveInfoAddedButtonClicked">Add</paper-button>
-                  </div>
-                  <div class="m-vertical-16">
-                    <paper-tabs selected="{{selectedLeaveView}}">
-                      <paper-tab>Month View</paper-tab>
-                      <paper-tab>Year View</paper-tab>
-                      <paper-tab>View All</paper-tab>
-                    </paper-tabs>
-                    <iron-pages selected="{{selectedLeaveView}}">
-                      <section>
-                        <paper-listbox>
-                          <template is="dom-repeat" items="[[employeeLeaveCountByMonth]]">
-                            <paper-item>
-                              <div class="flex">[[getMonthYearString(item.monthYear)]]</div>
-                              <div class="flex">[[item.leaveCount]] Days</div>
-                            </paper-item>
+            <template is="dom-if" if="[[$checkUserAccess('D022')]]">
+              <section>
+                <paper-card heading="Employee Leave Info">
+                  <div class="card-content">
+                    <div class="m-vertical-16 layout horizontal wrap start">
+                      <vaadin-date-picker class="m-left-8" label="From Date" value="{{leaveFromDate}}"></vaadin-date-picker>
+                      <vaadin-date-picker class="m-left-8" label="End Date" value="{{leaveToDate}}"></vaadin-date-picker>
+                      <paper-dropdown-menu class="m-left-8" label="Reason" class="">
+                        <paper-listbox class="dropdown-content" selected="{{sickReasonSelectedIndex}}">
+                          <template is="dom-repeat" items="[[sickReasonList]]">
+                            <paper-item>{{item}}</paper-item>
                           </template>
                         </paper-listbox>
-                      </section>
-
-                      <section>
+                      </paper-dropdown-menu>
+                      <paper-button class="btn btn-primary" on-tap="leaveInfoAddedButtonClicked">Add</paper-button>
+                    </div>
+                    <div class="m-vertical-16">
+                      <paper-tabs selected="{{selectedLeaveView}}">
+                        <paper-tab>Month View</paper-tab>
+                        <paper-tab>Year View</paper-tab>
+                        <paper-tab>View All</paper-tab>
+                      </paper-tabs>
+                      <iron-pages selected="{{selectedLeaveView}}">
+                        <section>
                           <paper-listbox>
-                            <template is="dom-repeat" items="[[employeeLeaveCountByYear]]">
+                            <template is="dom-repeat" items="[[employeeLeaveCountByMonth]]">
                               <paper-item>
-                                <div class="flex">[[item.year]]</div>
+                                <div class="flex">[[getMonthYearString(item.monthYear)]]</div>
                                 <div class="flex">[[item.leaveCount]] Days</div>
                               </paper-item>
                             </template>
                           </paper-listbox>
                         </section>
-                      
-                      <section>
-                        <paper-listbox>
-                          <template is="dom-repeat" items="[[leaveData.data]]">
-                            <paper-item>
-                              <div class="flex">From: [[_formatDateTime(item.startDate)]]</div>
-                              <div class="flex">To: [[_formatDateTime(item.endDate)]]</div>
-                              <div class="flex">Reason [[item.reason]]</div>
-                              <paper-icon-button icon="delete" on-tap="deleteLeaveInfoClicked"></paper-icon-button>
-                            </paper-item>
-                          </template>
-                        </paper-listbox>
-                      </section>
-                    </iron-pages>
 
+                        <section>
+                            <paper-listbox>
+                              <template is="dom-repeat" items="[[employeeLeaveCountByYear]]">
+                                <paper-item>
+                                  <div class="flex">[[item.year]]</div>
+                                  <div class="flex">[[item.leaveCount]] Days</div>
+                                </paper-item>
+                              </template>
+                            </paper-listbox>
+                          </section>
+                        
+                        <section>
+                          <paper-listbox>
+                            <template is="dom-repeat" items="[[leaveData.data]]">
+                              <paper-item>
+                                <div class="flex">From: [[_formatDateTime(item.startDate)]]</div>
+                                <div class="flex">To: [[_formatDateTime(item.endDate)]]</div>
+                                <div class="flex">Reason [[item.reason]]</div>
+                                <paper-icon-button icon="delete" on-tap="deleteLeaveInfoClicked"></paper-icon-button>
+                              </paper-item>
+                            </template>
+                          </paper-listbox>
+                        </section>
+                      </iron-pages>
+
+                    </div>
                   </div>
-                </div>
 
-              </paper-card>
-            </section>
+                </paper-card>
+              </section>
+            </template>
           </iron-pages>
 
           </paper-card>

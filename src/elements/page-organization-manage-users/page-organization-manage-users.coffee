@@ -466,6 +466,19 @@ Polymer {
         isSelected: false
       }
 
+      {
+        serial: 'D022'
+        name: 'Patient Leave Info'
+        type: 'pharmacy-manager'
+        isSelected: false
+      }
+      {
+        serial: 'D023'
+        name: 'Patient Policy Info'
+        type: 'billing-report'
+        isSelected: false
+      }
+
     ]
 
   _makeNewRole: ()->

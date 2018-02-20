@@ -594,6 +594,9 @@ Polymer {
     @checkForRecordSpecificPatientId 'NR', =>
       @domHost.navigateToPage "#/ndr/record:new" + "/patient:" + @patient.serial
 
+  editPatientBtnPressed: ()->
+    @domHost.navigateToPage "#/patient-editor/patient:" + @patient.serial
+
   navigatedIn: ->
     console.log @generatedRecordSpecificRandomPatientId 'BH'
     currentOrganization = @getCurrentOrganization()

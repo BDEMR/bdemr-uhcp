@@ -626,7 +626,9 @@
                     <paper-tab>[[$TRANSLATE('Doctor Patient Notes',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Patient Gallery',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Activity Log',LANG)]]</paper-tab>
-                    <paper-tab>[[$TRANSLATE('Leave Info',LANG)]]</paper-tab>
+                    <template is="dom-if" if="[[_checkUserAccess('D022')]]">
+                      <paper-tab>[[$TRANSLATE('Leave Info',LANG)]]</paper-tab>
+                    </template>
                   </paper-tabs>
                 </div>
               </div>
