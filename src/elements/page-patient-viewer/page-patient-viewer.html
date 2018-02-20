@@ -53,6 +53,7 @@
         top: 8px;
         right: 8px;
       }
+
       .sub-header {
         background-color: #f7f7f7;
         padding: 4px 16px;
@@ -2121,7 +2122,7 @@
                   <div class="card-content">
                     <div class="m-vertical-16 layout horizontal wrap start">
                       <vaadin-date-picker class="m-left-8" label="From Date" value="{{leaveFromDate}}"></vaadin-date-picker>
-                      <vaadin-date-picker class="m-left-8" label="End Date" value="{{leaveToDate}}"></vaadin-date-picker>
+                      <vaadin-date-picker class="m-left-8" label="End Date" value="{{leaveToDate}}" min="{{leaveFromDate}}"></vaadin-date-picker>
                       <paper-dropdown-menu class="m-left-8" label="Reason" class="">
                         <paper-listbox class="dropdown-content" selected="{{sickReasonSelectedIndex}}">
                           <template is="dom-repeat" items="[[sickReasonList]]">
@@ -2133,33 +2134,12 @@
                     </div>
                     <div class="m-vertical-16">
                       <paper-tabs selected="{{selectedLeaveView}}">
+                        <paper-tab>View All</paper-tab>
                         <paper-tab>Month View</paper-tab>
                         <paper-tab>Year View</paper-tab>
-                        <paper-tab>View All</paper-tab>
                       </paper-tabs>
                       <iron-pages selected="{{selectedLeaveView}}">
-                        <section>
-                          <paper-listbox>
-                            <template is="dom-repeat" items="[[employeeLeaveCountByMonth]]">
-                              <paper-item>
-                                <div class="flex">[[getMonthYearString(item.monthYear)]]</div>
-                                <div class="flex">[[item.leaveCount]] Days</div>
-                              </paper-item>
-                            </template>
-                          </paper-listbox>
-                        </section>
-
-                        <section>
-                            <paper-listbox>
-                              <template is="dom-repeat" items="[[employeeLeaveCountByYear]]">
-                                <paper-item>
-                                  <div class="flex">[[item.year]]</div>
-                                  <div class="flex">[[item.leaveCount]] Days</div>
-                                </paper-item>
-                              </template>
-                            </paper-listbox>
-                          </section>
-                        
+                        <!-- all view -->
                         <section>
                           <paper-listbox>
                             <template is="dom-repeat" items="[[leaveData.data]]">
@@ -2172,6 +2152,32 @@
                             </template>
                           </paper-listbox>
                         </section>
+                        
+                        <!-- by month view -->
+                        <section>
+                          <paper-listbox>
+                            <template is="dom-repeat" items="[[getLeaveCountByMonthYear(leaveData.data)]]">
+                              <paper-item>
+                                <div class="flex">[[getMonthYearString(item.monthYear)]]</div>
+                                <div class="flex">[[item.leaveCount]] Days</div>
+                              </paper-item>
+                            </template>
+                          </paper-listbox>
+                        </section>
+
+                        <!-- by year view -->
+                        <section>
+                          <paper-listbox>
+                            <template is="dom-repeat" items="[[getLeaveCountByYear(leaveData.data)]]">
+                              <paper-item>
+                                <div class="flex">[[item.year]]</div>
+                                <div class="flex">[[item.leaveCount]] Days</div>
+                              </paper-item>
+                            </template>
+                          </paper-listbox>
+                        </section>
+
+                        
                       </iron-pages>
 
                     </div>

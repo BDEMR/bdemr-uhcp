@@ -4564,7 +4564,7 @@ Polymer {
     return ""
 
   loadMedicineList: ()->
-    @domHost.getStaticData 'medicineList', (medicineCompositionList)=>
+    @domHost.getStaticData 'pccMedicineList', (medicineCompositionList)=>
       @medicineCompositionList = medicineCompositionList
       @_loadDefaultMedicineCompositionList()
 

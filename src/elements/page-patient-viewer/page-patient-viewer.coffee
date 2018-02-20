@@ -243,14 +243,6 @@ Polymer {
         'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
       ]
 
-    employeeLeaveCountByMonth:
-      type: Array
-      computed: '_getLeaveCountByMonthYear(leaveData.data)'
-
-    employeeLeaveCountByYear:
-      type: Array
-      computed: '_getLeaveCountByYear(leaveData.data)'
-
     selectedLeaveView:
       type: Number
       value: -> 0
@@ -2651,7 +2643,7 @@ Polymer {
     month = (new Date fromDate).getMonth() + 1
     return "#{year}-#{month}-01"
   
-  _getLeaveCountByMonthYear: (data)->
+  getLeaveCountByMonthYear: (data)->
     map = {}
     for item in data
       leaveLength = @calculateLeaveLength(item.startDate, item.endDate)
@@ -2667,7 +2659,7 @@ Polymer {
 
     return counter
 
-  _getLeaveCountByYear: (data)->
+  getLeaveCountByYear: (data)->
     map = {}
     for item in data
       leaveLength = @calculateLeaveLength(item.startDate, item.endDate)

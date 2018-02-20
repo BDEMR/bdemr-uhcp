@@ -53,6 +53,11 @@ app.behaviors.local['root-element'].dataLoader =
         name: 'medicineList'
         url: 'static-data/medicine-list.json'
       }
+
+      {
+        name: 'pccMedicineList'
+        url: 'static-data/pcc-medicine-list.json'
+      }
       # {
       #   name: 'doseGuidelineList'
       #   url: 'static-data/dose-guideline-list.json'
@@ -131,6 +136,10 @@ app.behaviors.local['root-element'].dataLoader =
       {
         name: 'dynamicElementDefinitionPreoperativeAssessment'
         url: 'https://bdemr.b-cdn.net/de-def-doctor-app-history-and-physical-examination-10-12-2017.json'
+      }
+      {
+        name: 'pccMedicineList'
+        url: 'https://bdemr.b-cdn.net/pcc-medicine-list-19-02-2018.json'
       }
     ]
 
