@@ -108,4 +108,32 @@ app.behaviors.commonComputes =
       return data
     else
       return 'images/avatar.png'
+
+  $checkUserAccess: (accessId)->
+    currentOrganization = @getCurrentOrganization()
+
+    if accessId is 'none'
+      return true
+    else
+      if currentOrganization
+
+        if currentOrganization.isCurrentUserAnAdmin
+          return true
+        else if currentOrganization.isCurrentUserAMember
+          if currentOrganization.userActiveRole
+            privilegeList = currentOrganization.userActiveRole.privilegeList
+            unless privilegeList.length is 0
+              for privilege in privilegeList
+                if privilege.serial is accessId
+                  return true
+          else
+            return true
+
+          return false
+        else
+          return false
+
+      else
+        # @navigateToPage "#/select-organization"
+        return true
       
