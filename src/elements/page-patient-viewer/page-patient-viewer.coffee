@@ -220,6 +220,10 @@ Polymer {
       notify: true
       value: -> []
 
+    sickReasonSelectedIndex:
+      type: Number
+      value: -> 0
+    
     leaveData:
       type: Object
       value: -> {}
@@ -2628,7 +2632,8 @@ Polymer {
 
     @leaveFromDate = ""
     @leaveToDate = ""
-    @sickReasonSelectedIndex = ""
+    @sickReasonSelectedIndex = 0
+
   
   calculateLeaveLength: (from, to)->
     return (to - from)/(24*60*60*1000)
