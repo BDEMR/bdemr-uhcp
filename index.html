@@ -1,134 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!--Basic Page Needs-->
-    <meta charset="utf-8">
-    <title>UHCP App - Home</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!--Mobile Specific Metas-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--FONT-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,600" rel="stylesheet" type="text/css">
-    <!--CSS-->
-    <link rel="stylesheet" href="css/normalize.css?sha1=ece571f38180febaf02ace8187ead8318a300ea7">
-    <link rel="stylesheet" href="css/main.css?sha1=75fca7ffc1d75835cda028f9bdd44d9709756c9c">
-    <!--Favicon-->
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico?sha1=c8ffcab85e2fce40aa5c4570f52eceb10bd21684">
-    <style>
-      .logo {
-        font-size: 24px;
-        color: white;
-        font-weight: bold;
-      }
-      .toolbar {
-        height: auto;
-      }
-      .toolbar .bottom-bar {
-        height: 100px;
-      }
-      .bottom-bar img {
-        max-height: 100px;
-        width: auto;
-        vertical-align: middle;
-      }
-    </style>
-  </head>
-  <body id="body" onload="bodyOnload()">
-    <div id="toolBar" class="toolbar">
-      <div class="top-bar"><a href="https://doctor.bdemr.com" class="logo">UHCP APP</a>
-        <div class="topbar-action">
-          <a href="https://bdemr.com/signup" class="btn transparent toggleTopBarBtn">signup</a>
-          <a href="https://uhcp.bdemr.com/app/" class="btn shadow danger">App Login</a>
-        </div>
-        <button id="toggleMenuBar" onclick="toggleMenu()">&#x2630;</button>
-        <ul id="toggleMenu">
-          <li class="toogleMenuItem"><a href="https://bdemr.com/doctor-finder">Doctor Finder</a></li>
-          <li class="toogleMenuItem"><a href="https://bdemr.com/signup">signup</a></li>
-          <li class="toogleMenuItem"><a href="https://bdemr.com/faq">faq</a></li>
-          <li class="toogleMenuItem"><a href="https://bdemr.com/help">Help</a></li>
-      </div>
-      <div class="bottom-bar">
-        <img src="images/uhcp.jpg" alt="">
-        <img src="images/wof.jpg" alt="">
-        <img src="images/badas.jpg" alt="">
-        <img src="images/logo_big.png" alt="">
-      </div>
-    </div>
-    <div class="type center">
-      <img src="images/WOF Leaflet AI .jpg" alt="">
-    </div>
-    <div id="about" class="section">
-      <div class="section-header">
-        <div class="type headline">About</div>
-      </div>
-      <div class="container">
-        <div class="type body-lead center">Diabetic Association of Bangladesh (BADAS) and Weave Our Future (WOF), a foundation of Auchan International, is launching Universal Health Coverage Plan (UHCP), for Garment Workers. Through UHCP BADAS and WOF plans to provide healthcare service and health education to the garment workers.</div>
-      </div>
 
-      <br>
-      <div class="section-header">
-        <div class="type headline">Service Deliver Points:</div>
+<head>
+  <!--Basic Page Needs-->
+  <meta charset="utf-8">
+  <title>UHCP App - Home</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--Mobile Specific Metas-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--FONT-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,600" rel="stylesheet" type="text/css">
+  <!--CSS-->
+  <link rel="stylesheet" href="css/normalize.css?sha1=ece571f38180febaf02ace8187ead8318a300ea7">
+  <link rel="stylesheet" href="css/main.css?sha1=75fca7ffc1d75835cda028f9bdd44d9709756c9c">
+  <!--Favicon-->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico?sha1=c8ffcab85e2fce40aa5c4570f52eceb10bd21684">
+
+</head>
+
+<body id="body" onload="bodyOnload()">
+  <div id="toolBar" class="toolbar">
+    <div class="top-bar">
+      <a href="https://doctor.bdemr.com" class="logo">UHCP APP</a>
+      <div class="topbar-action">
+        <a href="https://bdemr.com/signup" class="btn transparent toggleTopBarBtn">signup</a>
+        <a href="https://uhcp.bdemr.com/app/" class="btn shadow danger">App Login</a>
       </div>
-      <div class="container">
-        <ul class="type center">
-          <li>Garment Workers may obtain services from a qualified doctor through Call Center, Ibrahim
-            Healthline, 24 hours, seven days a week,</li>
+      <button id="toggleMenuBar" onclick="toggleMenu()">&#x2630;</button>
+      <ul id="toggleMenu">
+        <li class="toogleMenuItem">
+          <a href="https://bdemr.com/doctor-finder">Doctor Finder</a>
+        </li>
+        <li class="toogleMenuItem">
+          <a href="https://bdemr.com/signup">signup</a>
+        </li>
+        <li class="toogleMenuItem">
+          <a href="https://bdemr.com/faq">faq</a>
+        </li>
+        <li class="toogleMenuItem">
+          <a href="https://bdemr.com/help">Help</a>
+        </li>
+    </div>
+    <div class="bottom-bar">
+      <img src="images/uhcp.jpg" alt="">
+      <img src="images/wof.jpg" alt="">
+      <img src="images/badas.jpg" alt="">
+      <img src="images/nhn.jpg" alt="">
+      <img src="images/logo_big.png" alt="">
+    </div>
+  </div>
+  <div class="type center">
+    <img src="images/WOF Leaflet AI  (2).jpg" alt="">
+  </div>
+  <div id="about" class="section">
+    <div class="section-header">
+      <div class="type headline">About</div>
+    </div>
+    <div class="container">
+      <div class="type body-lead center">Diabetic Association of Bangladesh (BADAS) and Weave Our Future (WOF), a foundation of Auchan International, is launching
+        Universal Health Coverage Plan (UHCP), for Garment Workers. Through UHCP BADAS and WOF plans to provide healthcare
+        service and health education to the garment workers.</div>
+    </div>
+  </div>
+
+  <div class="uhcp-service">
+    <div class="col-6 m-top-8">
+      <div class="">
+        <h1 class="type headline">Service Deliver Points:</h1>
+      </div>
+      <div class="">
+        <ul class="type">
+          <li>Garment Workers may obtain services from a qualified doctor through Call Center, Ibrahim Healthline, 24 hours,
+            seven days a week,</li>
           <li>Inside the Factory</li>
           <li>Naryangonj City Centre/Diabetic Association, Salimullah Road, Chashara, Naryangonj</li>
           <li>Narayanganj Diabetic Hospital, Deobagh, Nagbari, Naryanganj</li>
         </ul>
       </div>
-
-      <br>
-      <div class="section-header">
-        <div class="type headline">In case of Referrals for highly specialized service or highly specialized doctors:</div>
+    </div>
+    <div class="col-6 m-top-8">
+      <div class="">
+        <h1 class="type headline">In case of Referrals for highly specialized service or highly specialized doctors:</h1>
       </div>
-      <div class="container">
-        <ul class="type center">
+      <div class="">
+        <ul class="type">
           <li>BIRDEM General Hospital, Shahbagh and Segun Bagicha Dhaka</li>
           <li>National Healthcare Network (NHN) hospitals</li>
           <li>Ibarhim Cardiac Hospital and Research Institute (ICHRI)</li>
           <li>Bangladesh Institute of Health Sciences (BIHS) hospitals</li>
         </ul>
       </div>
-
-      <hr>
-      <p class="type headline center">UHCP, a joint collaboration of BADAS and WOF.</p>
-
-      <p class="type headline center">CTHealth and BDEMR are technological partners of UHCP.</p>
-
     </div>
-    <footer>
-      <div class="footer-top">
-        <div class="row">
-          <div class="one-half column">
-            <div id="subscribe-box">
-              <div class="paper-input__wrapper m-0">
-                <input id="inputSubscribedEmailId" type="text" class="paper-input paper-input--floating">
-                <label>Your Email</label><span id="subscribeInfoMessage" class="type body text-success"></span><span id="subscribeErrorMessage" class="paper-input__error"></span>
-              </div>
-              <button onclick="_onSubscribeUsBtnPressed()" class="btn shadow success m-0 no-radius no-width fixed-height"><img src="images/ico_send.png?sha1=8dc8a6cc089868666d319f15e97c249d4253b1df" alt=""></button>
+    <div class="clearfloat"></div>
+  </div>
+  
+  <div class="uhcp-credit">
+    <div class="type headline center">UHCP, a joint collaboration of BADAS and WOF.</div>
+    <div class="type headline center">CTHealth and BDEMR are technological partners of UHCP.</div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="row">
+        <div class="one-half column">
+          <div id="subscribe-box">
+            <div class="paper-input__wrapper m-0">
+              <input id="inputSubscribedEmailId" type="text" class="paper-input paper-input--floating">
+              <label>Your Email</label>
+              <span id="subscribeInfoMessage" class="type body text-success"></span>
+              <span id="subscribeErrorMessage" class="paper-input__error"></span>
             </div>
+            <button onclick="_onSubscribeUsBtnPressed()" class="btn shadow success m-0 no-radius no-width fixed-height">
+              <img src="images/ico_send.png?sha1=8dc8a6cc089868666d319f15e97c249d4253b1df" alt="">
+            </button>
           </div>
-          <div class="one-half column">
-            <div id="social-links"><a href="http://facebook.com/BangladeshEMR" target="_blank" tabindex="-1" class="social-item"><img src="images/ico_facebook.png?sha1=28ed1327d9755cc821d8359a27f48dee761bd71c"></a><a href="https://twitter.com/BDEMRSolutions" target="_blank" tabindex="-1" class="social-item"><img src="images/ico_twitter.png?sha1=90ff1eff8ae4e54cd3c11819f616c653ea2cc68b"></a><a href="https://plus.google.com/u/0/113386496880005887426" target="_blank" tabindex="-1" class="social-item"><img src="images/ico_gplus.png?sha1=e700aa3bfb1b1e67fc6004addcd04e854f350e69"></a><a href="https://www.youtube.com/channel/UCqgVPVPxbhVOyV_ddkRC6oA" target="_blank" tabindex="-1" class="social-item"><img src="images/ico_youtube.png?sha1=fb0224f5b21861f3496cf3a4b3367dd512c34980"></a>
-            </div>
+        </div>
+        <div class="one-half column">
+          <div id="social-links">
+            <a href="http://facebook.com/BangladeshEMR" target="_blank" tabindex="-1" class="social-item">
+              <img src="images/ico_facebook.png?sha1=28ed1327d9755cc821d8359a27f48dee761bd71c">
+            </a>
+            <a href="https://twitter.com/BDEMRSolutions" target="_blank" tabindex="-1" class="social-item">
+              <img src="images/ico_twitter.png?sha1=90ff1eff8ae4e54cd3c11819f616c653ea2cc68b">
+            </a>
+            <a href="https://plus.google.com/u/0/113386496880005887426" target="_blank" tabindex="-1" class="social-item">
+              <img src="images/ico_gplus.png?sha1=e700aa3bfb1b1e67fc6004addcd04e854f350e69">
+            </a>
+            <a href="https://www.youtube.com/channel/UCqgVPVPxbhVOyV_ddkRC6oA" target="_blank" tabindex="-1" class="social-item">
+              <img src="images/ico_youtube.png?sha1=fb0224f5b21861f3496cf3a4b3367dd512c34980">
+            </a>
           </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <div class="copyrght">All rights reserved. 2018 &#xA9; BDEMR Solutions. Corp.</div><a href="#body" onclick="scrollToTop();return false" class="btn transparent black">back to top<img src="images/up-arrow.png?sha1=dcbf3db092c42ccb57f102fb2e031f7b7d1748e2" alt="" class="ico tiny m-left-16"></a>
-      </div>
-    </footer>
-    <script type="text/javascript" src="js/sjcl.js?sha1=2bad7e804fc95f022eab0a5a1cb706a7cf97c411"></script>
-    <script type="text/javascript" src="js/system-configs.js?sha1=bf499f52a3153579e9ae3cc9d43a7f4263ec0405"></script>
-    <script type="text/javascript" src="js/client-libraries.js?sha1=05e95816ba3ef4b44b653c39652ec88fc0d11ef9"></script>
-    <script type="text/javascript" src="js/jquery.js?sha1=f16bd01623fd56d1372ea2eb55cd52a28cd883f8"></script>
-    <script type="text/javascript" src="js/sequencejs/hammer.min.js?sha1=acf211b20a4932fc5798a0d8605c6a2a319a5159"></script>
-    <script type="text/javascript" src="js/sequencejs/imagesloaded.pkgd.min.js?sha1=3ee7b31e9645444844371bbc586ba1f17e6a07d5"></script>
-    <script type="text/javascript" src="js/sequencejs/sequence.min.js?sha1=60d8ee6b650145f521737c3db6640ada40d4cffe"></script>
-    <script type="text/javascript" src="js/custom.js?sha1=8cf0f7462c53436ca2b7577b4977c0443f5b4f2d"></script>
-    <script type="text/javascript" src="js/toolbar.js?sha1=d0a2bf3e372b9c4cb78b5a6804efcb3ada80bc39"></script>
-  </body>
+    </div>
+    <div class="footer-bottom">
+      <div class="copyrght">All rights reserved. 2018 &#xA9; BDEMR Solutions. Corp.</div>
+      <a href="#body" onclick="scrollToTop();return false" class="btn transparent black">back to top
+        <img src="images/up-arrow.png?sha1=dcbf3db092c42ccb57f102fb2e031f7b7d1748e2" alt="" class="ico tiny m-left-16">
+      </a>
+    </div>
+  </footer>
+  <script type="text/javascript" src="js/sjcl.js?sha1=2bad7e804fc95f022eab0a5a1cb706a7cf97c411"></script>
+  <script type="text/javascript" src="js/system-configs.js?sha1=bf499f52a3153579e9ae3cc9d43a7f4263ec0405"></script>
+  <script type="text/javascript" src="js/client-libraries.js?sha1=05e95816ba3ef4b44b653c39652ec88fc0d11ef9"></script>
+  <script type="text/javascript" src="js/jquery.js?sha1=f16bd01623fd56d1372ea2eb55cd52a28cd883f8"></script>
+  <script type="text/javascript" src="js/sequencejs/hammer.min.js?sha1=acf211b20a4932fc5798a0d8605c6a2a319a5159"></script>
+  <script type="text/javascript" src="js/sequencejs/imagesloaded.pkgd.min.js?sha1=3ee7b31e9645444844371bbc586ba1f17e6a07d5"></script>
+  <script type="text/javascript" src="js/sequencejs/sequence.min.js?sha1=60d8ee6b650145f521737c3db6640ada40d4cffe"></script>
+  <script type="text/javascript" src="js/custom.js?sha1=8cf0f7462c53436ca2b7577b4977c0443f5b4f2d"></script>
+  <script type="text/javascript" src="js/toolbar.js?sha1=d0a2bf3e372b9c4cb78b5a6804efcb3ada80bc39"></script>
+</body>
+
 </html>
