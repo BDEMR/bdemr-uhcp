@@ -1,0 +1,109 @@
+<link rel="import" href="../../bower-assets/polymer/polymer.html">
+
+<!-- iron-* -->
+<link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
+
+<!-- paper-* -->
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-progress/paper-progress.html">
+<link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
+<link rel="import" href="../../bower-assets/vaadin-date-picker/vaadin-date-picker.html">
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<!-- behavior -->
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/page-like.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+<link rel="import" href="../../behaviors/db-using.html">
+
+<!-- custom-elements -->
+
+<!-- element -->
+<dom-module id="page-pharmacy-manager">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      paper-item {
+        border-bottom: 1px solid #eee;
+      }
+
+      paper-progress {
+        width: 100%;
+      }
+
+      .m-right-5 {
+        margin-right: 5px;
+      }
+      
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+        
+        <paper-card heading="Add Pharmacy Item : [[organization.name]]">
+          <div class="card-content">
+            <template is="dom-if" if="[[isLoading]]">
+              <paper-progress indeterminate></paper-progress>
+            </template>
+            <template is="dom-if" if="[[!isLoading]]">
+              <div class="layout horizontal">
+                <paper-autocomplete text="{{inventory.data.name}}"
+                source="[[brandNameSourceDataList]]" class="flex-2 m-right-5" label="Item Name" ></paper-autocomplete>
+                <paper-input class="flex m-right-5" label="Buying Price/Unit" value="{{inventory.data.buyingPrice}}" type="number"></paper-input>
+                <paper-input class="flex m-right-5" label="Selling Price/Unit" value="{{inventory.data.sellingPrice}}" type="number"></paper-input>
+                <paper-input class="flex m-right-5" label="Qty" value="{{inventory.data.qty}}" type="number"></paper-input>
+                <vaadin-date-picker label="Expiry Date" value="{{inventory.data.expiryDate}}"></vaadin-date-picker>
+              </div>
+            </template>
+          </div>
+          <div class="card-actions">
+            <paper-button class="btn btn-success" on-tap="_addToInventoryButtonClicked">Add Item</paper-button>
+          </div>
+        </paper-card>
+        <br>
+        <paper-card heading="Inventory">
+          <div class="card-content">
+            <paper-item class="layout horizontal">
+              <div class="flex-2"><strong>Item</strong></div>
+              <div class="flex"><strong>Qty</strong></div>
+              <div class="flex"><strong>Buying Price</strong></div>
+              <div class="flex"><strong>Selling Price</strong></div>
+              <div class="flex"><strong>Expiry</strong></div>
+              <div class="flex">Actions</div>
+            </paper-item>
+            <template is="dom-repeat" items="[[inventoryList]]">
+              <paper-item class="layout horizontal center">
+                <div class="flex-2">[[item.data.name]]</div>
+                <div class="flex">[[item.data.qty]]</div>
+                <div class="flex">[[item.data.buyingPrice]]</div>
+                <div class="flex">[[item.data.sellingPrice]]</div>
+                <div class="flex">[[_formatDate(item.data.expiryDate)]]</div>
+                <div class="flex">
+                  <paper-icon-button icon="create" on-tap="editInventoryItemButtonClicked"></paper-icon-button>
+                </div>
+              </paper-item>
+            </template>
+          </div>
+        </paper-card>
+
+      </div>
+
+    </div>
+
+  </template>
+  <script src="page-pharmacy-manager.coffee-compiled.js"></script>
+</dom-module>

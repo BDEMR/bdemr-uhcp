@@ -988,6 +988,23 @@ app.pages.pageList = [
   }
 
   {
+    name: 'create-invoice'
+    element: 'page-create-invoice'
+    windowTitlePostfix: 'Visit Invoice'
+    headerTitle: 'Invoice'
+    preload: true
+    hrefList: [ 'create-invoice' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: false
+    showSaveButton: false
+    showPatientsDetails: false
+    showToolbar: false
+    hideHeaderTitle: false
+    accessId: 'none'
+  }
+
+  {
     name: 'invoice-manager'
     element: 'page-invoice-manager'
     windowTitlePostfix: 'Invoice Manager'

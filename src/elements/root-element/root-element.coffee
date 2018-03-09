@@ -16,6 +16,8 @@ Polymer {
     app.behaviors.local['root-element'].patientsDataSync
     app.behaviors.local['root-element'].userDataSyncConfig
     app.behaviors.local['root-element'].userDataSync
+    app.behaviors.local['root-element'].organizationDataSyncConfig
+    app.behaviors.local['root-element'].organizationDataSync
   ]
   properties:
 
@@ -902,7 +904,7 @@ Polymer {
   _sync: (navigateToAfterSyncing = null)->
     @_syncTemporaryOfflinePccPatients =>
 
-      collector1 = new lib.util.Collector 39
+      collector1 = new lib.util.Collector 50
 
       @_syncUser @syncDoctorFavoriteMedicationConfig, ()=> collector1.collect 'A1', null
       @_syncUser @syncSettings, ()=> collector1.collect 'A1', null
@@ -956,6 +958,19 @@ Polymer {
 
       @_syncPatients @syncPccRecords, ()=> collector1.collect 'A1', null
       @_syncPatients @syncNdrRecords, ()=> collector1.collect 'A1', null
+
+      # Invoice Related data
+      @_syncOrganizationData @syncInvestigationPriceList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncDoctorFeesPriceList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncServicesPriceList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncPharmacyPriceList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncSupplyPriceList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncAmbulancePriceList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncPackageList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncOtherPriceList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncInventoryList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncThirdPartyUserList, ()=> collector1.collect 'A1', null
+      @_syncOrganizationData @syncInvoiceCategoryList, ()=> collector1.collect 'A1', null
 
       collector1.finally =>
         console.log 'time to reload'

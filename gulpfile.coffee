@@ -22,7 +22,7 @@ changed = require('gulp-changed')
 cache = require('gulp-cached')
 os = require('os')
 fs = require('fs')
-
+plumber = require('gulp-plumber')
 PolymerProject = require('polymer-build').PolymerProject
 addServiceWorker = require('polymer-build').addServiceWorker
 mergeStream = require('merge-stream')
@@ -68,6 +68,7 @@ gulp.task 'copy-debug-watch', ->
 
 gulp.task 'build-debug-coffee', ->
   return gulp.src paths.debug.coffee
+  .pipe(plumber())
   .pipe cache 'copy'
   .pipe(sourcemaps.init())
   .pipe(coffee({bare: false}).on('error', gutil.log))

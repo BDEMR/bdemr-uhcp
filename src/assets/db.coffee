@@ -1091,3 +1091,94 @@ app.db.defineCollection { name: 'employee-leave-data--deleted' }
 app.db.defineCollection { name: 'referral-record' }
 app.db.defineCollection { name: 'referral-record--deleted' }
 
+# INVOICE RELATED DB
+# ======================
+
+app.db.defineCollection {
+  name: 'investigation-price-list'
+}
+
+app.db.defineCollection {
+  name: 'investigation-price-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'doctor-fees-price-list'
+}
+
+app.db.defineCollection {
+  name: 'doctor-fees-price-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'service-price-list'
+}
+
+app.db.defineCollection {
+  name: 'service-price-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'pharmacy-price-list'
+}
+
+app.db.defineCollection {
+  name: 'pharmacy-price-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'supply-price-list'
+}
+
+app.db.defineCollection {
+  name: 'supply-price-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'ambulance-price-list'
+}
+
+app.db.defineCollection {
+  name: 'ambulance-price-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'package-price-list'
+}
+
+app.db.defineCollection {
+  name: 'package-price-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'other-price-list'
+}
+
+app.db.defineCollection {
+  name: 'other-price-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'organization-inventory'
+}
+
+app.db.defineCollection {
+  name: 'organization-inventory--deleted'
+}
+
+app.db.defineCollection {
+  name: 'third-party-user-list'
+}
+
+app.db.defineCollection {
+  name: 'third-party-user-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'invoice-category-list'
+}
+
+app.db.defineCollection {
+  name: 'invoice-category-list--deleted'
+}
+

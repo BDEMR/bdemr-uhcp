@@ -1,0 +1,334 @@
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/page-like.html">
+
+<!-- custom-elements -->
+
+<!-- element -->
+<dom-module id="page-print-invoice">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      .external-card-title {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #777777;
+      }
+
+      .info-card {
+        @apply(--layout-vertical);
+        /*@apply(--layout-center);*/
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 20px;
+      }
+
+      .info-card .row {
+        margin-left: 10px;
+        /*margin-right: 10px;*/
+        margin-top: 10px;
+      }
+
+      .info-card .hr {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: 1px;
+        /*width: 100px;*/
+        background: #dddddd;
+      }
+
+      .info-card .row .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .info-card .row .modifier.online {
+        background: #757575;
+      }
+
+      .info-card .row .modifier.local-only {
+        background: #039BE5;
+      }
+
+      .info-card .row .modifier.locally-updated {
+        background: #009688;
+      }
+
+      .info-card .row .modifier.imported {
+        background: #4CAF50;
+      }
+
+      .info-row {
+        margin-top: 10px;
+      }
+
+      .top-info-row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .serial-number {
+        background: #37474F;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+        display: inline-block;
+        font-size: 14px;
+      }
+
+      .address1 {
+        margin-right: 10px;
+      }
+
+      .name {
+        margin-left: 5px;
+        font-size: 24px;
+      }
+
+      .email {
+        margin-left: 5px;
+        font-size: 14px;
+      }
+
+      .phone {
+        margin-left: 5px;
+      }
+
+      .val {
+        text-decoration: underline;
+      }
+
+      .account-box {
+        --iron-icon-width: 96px;
+        --iron-icon-height: 96px;
+      }
+
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      .document {
+        font-family: 'Arial,';
+        background: white;
+        width: 100%;
+        overflow-x: hidden;
+      }
+
+      .document-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .collection {
+        color: red;
+        background: grey;
+      }
+
+      .document-header {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .document-header .logo {
+        max-width: 128px;
+        max-height: 128px;
+      }
+
+      .horiline {
+        width: 100%;
+        height: 0px;
+        /*background: black;*/
+        border: 1px solid black;
+        margin-bottom: 6px;
+      }
+
+      .leftSide {
+        margin-left: 6px;
+      }
+
+      .rightSide {
+        text-align: right;
+      }
+
+      .leftSideLine1 {
+        font-size: 24px;
+      }
+
+      .rightSideLine1 {
+        font-size: 22px;
+      }
+
+      .item {
+        padding: 10px;
+        border: 1px solid grey;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        padding: 5px 0;
+      }
+
+      :host([has-scrolling-region]) #wrapper #contentContainer {
+        overflow-y: visible;
+        overflow-x: hidden;
+      }
+
+      @media print {
+        :host([has-scrolling-region]) #wrapper #contentContainer {
+          overflow-y: visible;
+          overflow-x: hidden;
+        }
+      }
+
+    </style>
+
+    <!-- local DOM -->
+
+
+      <div class="document">
+
+        <template is="dom-if" if="{{!isPatientValid}}">
+          Patient invalid
+        </template>
+
+        <!-- editing visit - start -->
+
+        <div class="document-header horizontal layout center">
+
+          <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
+            <img class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+          </template>
+
+          <div class="leftSide vertical layout">
+            <div class="leftSideLine1">[[settings.printDecoration.leftSideLine1]]</div>
+            <div class="leftSideLine2">[[settings.printDecoration.leftSideLine2]]</div>
+            <div class="leftSideLine3">[[settings.printDecoration.leftSideLine3]]</div>
+          </div>
+          <div class="flex"></div>
+          <div class="rightSide vertical layout end">
+            <div class="rightSideLine1">[[settings.printDecoration.rightSideLine1]]</div>
+            <div class="rightSideLine2">[[settings.printDecoration.rightSideLine2]]</div>
+            <div class="rightSideLine3">[[settings.printDecoration.rightSideLine3]]</div>
+          </div>
+        </div>
+
+
+
+        <div class="horiline"></div>
+
+        <div class="document-header horizontal layout justified">
+
+          <div class="leftSide vertical layout">
+            <span>Patient's Name: [[$getFullName(patient.name)]]</span>
+            <span>Age :[[_computeAge(patient.dateOfBirth)]] years</span>
+            <span>Allergy : [[patient.allergy]]</span>
+            <span>Blood Group : [[patient.bloodGroup]]</span>
+          </div>
+
+          <div class="rightSide vertical layout end">
+            <strong>Invoice#: [[invoice.referenceNumber]]</strong>
+            <span>Date :[[_formatDateTime(invoice.createdDatetimeStamp)]]</span>
+            <span>Created By : [[user.name]]</span>
+          </div>
+
+        </div>
+
+        <div class="horiline"></div>
+
+        <!--Invoice Starts -->
+        <div class="invoice document-header">
+
+          <div class="p-16">
+            <paper-item class="layout horizontal center invoice-item">
+              <div class="flex-7">
+                <strong>Items</strong>
+              </div>
+              <div class="flex-2">
+                <strong>Unit Price</strong>
+              </div>
+              <div class="flex-1">
+                <strong>Qty</strong>
+              </div>
+              <div class="flex-2">
+                <strong>Price</strong>
+              </div>
+            </paper-item>
+            <template is="dom-repeat" items="[[invoice.data]]">
+              <paper-listbox>
+                <paper-item class="invoice-item">
+                  <div>[[_returnSerial(index)]]</div>
+                  <div class="flex-7 layout vertical m-left-8">
+                    <div>
+                      <strong>[[item.name]]</strong> &nbsp;
+                      <template is="dom-if" if="[[item.type]]">
+                        <span class="type secondary">[[item.type]]</span>
+                      </template>
+                    </div>
+                    <div>
+                      <template is="dom-repeat" items="[[item.itemList]]" as="packageItem">
+                        <div> - [[packageItem.name]]</div>
+                      </template>
+                    </div>
+                  </div>
+                  <div class="flex-2">[[item.price]]</div>
+                  <div class="flex-1">[[item.qty]]</div>
+                  <div class="flex-2">[[item.totalPrice]]
+                    <span class="text-mute">BDT</span>
+                  </div>
+                </paper-item>
+              </paper-listbox>
+            </template>
+            <div class="horiline"></div>
+            <div class="layout vertical end">
+              <div class="text-mute">Discount -[[invoice.discount]]</div>
+              <h3>Total
+                <strong>[[invoice.totalBilled]]</strong> BDT</h3>
+            </div>
+            <div class="layout vertical end">
+              <h4>Paid [[invoice.paid]]</h4>
+              <h4>Due
+                <strong>[[$calculateRemaining(invoice.paid, invoice.totalBilled)]]</strong>
+              </h4>
+            </div>
+          </div class="p-16">
+
+        </div>
+
+      </div>
+
+  </template>
+  <script src="page-print-invoice.coffee-compiled.js"></script>
+</dom-module>

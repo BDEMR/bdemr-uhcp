@@ -5322,10 +5322,10 @@ Polymer {
       @visit.lastModifiedDatetimeStamp = lib.datetime.now()
       app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
 
-    @domHost.navigateToPage  '#/visit-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
+    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
 
   editInvoicePressed: (e)->
-    @domHost.navigateToPage  '#/visit-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
+    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
 
   printInvoicePressed: ()->
     params = @domHost.getPageParams()
