@@ -44,6 +44,28 @@ Polymer {
 
   ## SETTINGS ======================================================================================
 
+  navigatedIn: ->
+
+    @_loadUser()
+
+    params = @domHost.getPageParams()
+
+    unless params['invoice']
+      @_notifyInvalidVisit()
+      return
+
+    unless params['patient']
+      @_notifyInvalidPatient()
+      return
+    else
+      @_loadPatient(params['patient'])
+
+    @_loadVisit(params['visit'])
+
+    @_loadInvoice(params['invoice'])
+
+    @set 'settings', @_getSettings()
+  
   _makeSettings: ->
     settings = 
       serial: 'only'
@@ -68,9 +90,6 @@ Polymer {
     else
       settings = list[0]
     return settings
-
-
-  
   
   _loadUser:()->
     userList = app.db.find 'user'
@@ -109,6 +128,27 @@ Polymer {
       a[b] = null
     return a[b]
 
+  _loadVisit: (visitIdentifier)->
+    list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
+    if list.length is 1
+      @isVisitValid = true
+      @visit = list[0]
+    else
+      @_notifyInvalidVisit()
+      return false
+
+  _loadInvoice: (invoiceIdentifier)->
+    list = app.db.find 'visit-invoice', ({serial})-> serial is invoiceIdentifier
+    if list.length is 1
+      @set 'invoice', list[0]
+      return true
+    else
+      @_notifyInvalidInvoice()
+      return false
+
+  _notifyInvalidInvoice: ->
+    @domHost.showModalDialog 'Invalid Invoice Provided'
+
 
   printButtonPressed: (e)->
     window.print()
@@ -124,18 +164,6 @@ Polymer {
     @isVisitValid = false
     @domHost.showModalDialog 'Invalid Visit Provided'
 
-
-  _loadInvoice: (invoiceIdentifier)->
-    list = app.db.find 'patient-invoice', ({serial})-> serial is invoiceIdentifier
-    if list.length is 1
-      @invoice = list[0]
-      return true
-    else
-      @_notifyInvalidInvoice()
-      return false
-
-  _notifyInvalidInvoice: ->
-    @domHost.showModalDialog 'Invalid Invoice Provided'
 
   _isEmpty: (data)->
     if data is 0
@@ -177,26 +205,6 @@ Polymer {
 
   _formatDateTime: (dateTime)->
     lib.datetime.format((new Date dateTime), 'mmm d, yyyy')
-
-  navigatedIn: ->
-
-    @_loadUser()
-
-    params = @domHost.getPageParams()
-
-    unless params['invoice']
-      @_notifyInvalidVisit()
-      return
-
-    unless params['patient']
-      @_notifyInvalidPatient()
-      return
-    else
-      @_loadPatient(params['patient'])
-
-    @_loadInvoice(params['invoice'])
-
-    @settings = @_getSettings()
 
   navigatedOut: ->
     @patient = {}

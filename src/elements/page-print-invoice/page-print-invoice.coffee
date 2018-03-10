@@ -32,11 +32,6 @@ Polymer {
       notify: true
       value: null
 
-    visit:
-      type: Object
-      notify: true
-      value: null
-
     invoice:
       type: Object
       notify: true
@@ -46,20 +41,31 @@ Polymer {
       type: Object
       notify: true
 
-    feePaidByOptionList:
-      type: Array
-      value: ->  [ 'Hospital/Clinic' , 'Surgeon', 'Patient', 'Insurance', 'Custom' ]
-
-    serviceRenderedOptionList: 
-      type: Array
-      value: -> [ 'Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom' ]
-
-    sourceOfPatientOptionList: 
-      type: Array
-      value: -> [ 'Hospital/Clinic', 'Surgeon', 'Insurance', 'Custom' ]
 
   ## SETTINGS ======================================================================================
 
+  navigatedIn: ->
+
+    @_loadUser()
+
+    params = @domHost.getPageParams()
+
+    unless params['invoice']
+      @_notifyInvalidVisit()
+      return
+
+    unless params['patient']
+      @_notifyInvalidPatient()
+      return
+    else
+      @_loadPatient(params['patient'])
+
+    @_loadVisit(params['visit'])
+
+    @_loadInvoice(params['invoice'])
+
+    @set 'settings', @_getSettings()
+  
   _makeSettings: ->
     settings = 
       serial: 'only'
@@ -78,15 +84,12 @@ Polymer {
       monetaryUnit: 'BDT'
 
   _getSettings: ->
-    list = app.db.find 'settings'
+    list = app.db.find 'settings', ({serial})-> serial is 'only'
     if list.length is 0
       settings = @_makeSettings()
     else
       settings = list[0]
     return settings
-
-
-  
   
   _loadUser:()->
     userList = app.db.find 'user'
@@ -94,12 +97,23 @@ Polymer {
     if userList.length is 1
       @user = userList[0]
 
-      # for employmentDetails in userList[0].employmentDetailsList
-      #   @push 'doctorInstitutionList', employmentDetails.institutionName
 
-      # for specializationDetails in userList[0].specializationList
-      #   @push 'doctorSpecialityList', specializationDetails.specializationTitle
+  getFullName:(data)->
+    honorifics = ''
+    first = ''
+    last = ''
+    middle = ''
 
+    if data.honorifics  
+      honorifics = data.honorifics + ". "
+    if data.first
+      first = data.first
+    if data.middle
+      middle = " " + data.middle
+    if data.last
+      last = " " + data.last
+      
+    return honorifics + first + middle + last 
 
   _loadPatient: (patientIdentifier)->
     list = app.db.find 'patient-list', ({serial})-> serial is patientIdentifier
@@ -113,6 +127,27 @@ Polymer {
     unless b of a
       a[b] = null
     return a[b]
+
+  _loadVisit: (visitIdentifier)->
+    list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
+    if list.length is 1
+      @isVisitValid = true
+      @visit = list[0]
+    else
+      @_notifyInvalidVisit()
+      return false
+
+  _loadInvoice: (invoiceIdentifier)->
+    list = app.db.find 'visit-invoice', ({serial})-> serial is invoiceIdentifier
+    if list.length is 1
+      @set 'invoice', list[0]
+      return true
+    else
+      @_notifyInvalidInvoice()
+      return false
+
+  _notifyInvalidInvoice: ->
+    @domHost.showModalDialog 'Invalid Invoice Provided'
 
 
   printButtonPressed: (e)->
@@ -129,26 +164,6 @@ Polymer {
     @isVisitValid = false
     @domHost.showModalDialog 'Invalid Visit Provided'
 
-  _loadVisit: (visitIdentifier)->
-    list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
-    if list.length is 1
-      @isVisitValid = true
-      @visit = list[0]
-    else
-      @_notifyInvalidVisit()
-      return false
-
-  _loadInvoice: (invoiceIdentifier)->
-    list = app.db.find 'visit-invoice', ({serial})-> serial is invoiceIdentifier
-    if list.length is 1
-      @invoice = list[0]
-      return true
-    else
-      @_notifyInvalidInvoice()
-      return false
-
-  _notifyInvalidInvoice: ->
-    @domHost.showModalDialog 'Invalid Invoice Provided'
 
   _isEmpty: (data)->
     if data is 0
@@ -177,6 +192,7 @@ Polymer {
     index+1
 
   _computeAge: (dateString)->
+    return "" unless dateString
     today = new Date()
     birthDate = new Date dateString
     age = today.getFullYear() - birthDate.getFullYear()
@@ -187,30 +203,10 @@ Polymer {
     
     return age
 
-  navigatedIn: ->
-
-    @_loadUser()
-
-    params = @domHost.getPageParams()
-
-    unless params['visit']
-      @_notifyInvalidVisit()
-      return
-
-    unless params['patient']
-      @_notifyInvalidPatient()
-      return
-    else
-      @_loadPatient(params['patient'])
-
-    @_loadVisit(params['visit'])
-
-    @_loadInvoice(params['invoice'])
-
-    @settings = @_getSettings()
+  _formatDateTime: (dateTime)->
+    lib.datetime.format((new Date dateTime), 'mmm d, yyyy')
 
   navigatedOut: ->
-    @visit = {}
     @patient = {}
     @invoice = {}
     @isVisitValid = false
@@ -237,8 +233,8 @@ Polymer {
 
   $toReadbleStatus: (status)-> @possiblePaymentStatusses[status]
 
-  $calculateRemaining: (feePaidAmount, feeBilledAmount, isCleared)->
-    return if isCleared
+  $calculateRemaining: (feePaidAmount, feeBilledAmount)->
     return (parseInt feeBilledAmount) - (parseInt feePaidAmount)
+
 
 }

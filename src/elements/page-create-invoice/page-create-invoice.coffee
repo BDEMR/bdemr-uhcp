@@ -612,7 +612,11 @@ Polymer {
     @invoice.modificationHistory.push modificationHistory
     @invoice.lastModifiedDatetimeStamp = lib.datetime.now()
   
-  
+  _updateVisit: (invoiceSerial)->
+    if @visit.invoiceSerial is null
+      @visit.invoiceSerial = invoiceSerial
+    @visit.lastModifiedDatetimeStamp = lib.datetime.now()
+    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
   _saveInvoice: (markAsCompleted)->
     
@@ -638,7 +642,7 @@ Polymer {
       app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
       @domHost.showToast 'Invoice Saved Successfully'
       @_updateVisit @invoice.serial
-      @domHost.navigateToPreviousPage()
+      @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:g"
      
 
   # =====================================================================
@@ -685,12 +689,6 @@ Polymer {
     unless @user.specializationList.length is 0
       return @user.specializationList[0].specializationTitle
     return 'not provided yet'
-  
-  _updateVisit: (invoiceSerial)->
-    if @visit.invoiceSerial is null
-      @visit.invoiceSerial = invoiceSerial
-    @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
   
   arrowBackButtonPressed: ->

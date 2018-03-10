@@ -33,8 +33,7 @@ Polymer {
 
   _saveSettings: ->
     @settings.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.remove 'settings', item._id for item in app.db.find 'settings'
-    app.db.insert 'settings', @settings
+    app.db.upsert 'settings', @settings, ({serial})=> @settings.serial is 'only'
 
   arrowBackButtonPressed: (e)->
     @domHost.navigateToPreviousPage()
@@ -56,7 +55,7 @@ Polymer {
       lastModifiedDatetimeStamp: 0
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: null
-      serial: @user.serial
+      serial: 'only'
       printDecoration:
         headerLine: ''
         leftSideLine1: ''
@@ -90,10 +89,9 @@ Polymer {
   navigatedIn: ->
     @_loadUser()
 
-    list = app.db.find 'settings', ({serial})=> @user.serial is serial
-
+    list = app.db.find 'settings', ({serial})-> serial is 'only'
     if list.length is 1
-      @settings = list[0]
+      @set 'settings', list[0]
     else
       @_makeSettings()
 
