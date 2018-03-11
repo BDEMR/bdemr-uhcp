@@ -1116,7 +1116,50 @@ app.pages.pageList = [
 
   }
 
-  
+  {
+    name: 'set-unit-price'
+    element: 'page-set-unit-price'
+    windowTitlePostfix: 'set-unit-price'
+    headerTitle: 'Set Price for Unit'
+    preload: true
+    hrefList: [ 'set-unit-price' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: false
+    showSaveButton: true
+    showPatientsDetails: false
+    accessId: 'none'
+  }
+
+  {
+    name: 'set-package'
+    element: 'page-set-package'
+    windowTitlePostfix: 'set-package'
+    headerTitle: 'Create Package'
+    preload: true
+    hrefList: [ 'set-package' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: false
+    showSaveButton: false
+    showPatientsDetails: false
+    accessId: 'none'
+  }
+
+  {
+    name: 'pharmacy-manager'
+    element: 'page-pharmacy-manager'
+    windowTitlePostfix: 'Pharmacy Manager'
+    headerTitle: 'Pharmacy Manager'
+    preload: true
+    hrefList: [ 'pharmacy-manager' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showSaveButton: false
+    showOrganizationsName: true
+    accessId: 'D020'
+  }
 
   {
     name: 'print-symptoms'

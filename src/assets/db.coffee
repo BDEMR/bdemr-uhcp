@@ -1182,3 +1182,11 @@ app.db.defineCollection {
   name: 'invoice-category-list--deleted'
 }
 
+app.db.defineCollection {
+  name: 'custom-inventory-category-list'
+}
+
+app.db.defineCollection {
+  name: 'custom-inventory-category-list--deleted'
+}
+
