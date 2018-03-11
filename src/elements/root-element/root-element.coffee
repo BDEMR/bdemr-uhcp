@@ -472,6 +472,20 @@ Polymer {
   genericToastTapped: (e)->
     @$$('#toast1').close()
 
+  showSuccessToast: (content)->
+    @genericToastContents = content
+    @$$('#successToast').open()
+
+  successToastTapped: (e)->
+    @$$('#successToast').close()
+
+  showWarningToast: (content)->
+    @genericToastContents = content
+    @$$('#warningToast').open()
+
+  warningToastTapped: (e)->
+    @$$('#warningToast').close()
+
   # === NOTE - These events are manually delegated to pages ===
 
   saveButtonPressed: (e)->

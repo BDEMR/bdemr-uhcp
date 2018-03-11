@@ -334,6 +334,14 @@
         background-color: #43A047;
       }
 
+      #successToast {
+        --paper-toast-background-color: var(--paper-green-800);
+      }
+
+      #warningToast {
+        --paper-toast-background-color: var(--paper-red-900);
+      }
+
       /*paper-tab {
         text-transform: uppercase;
       }*/
@@ -702,6 +710,9 @@
     <!-- generic-modal-dialog - end -->
 
     <paper-toast id="toast1" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <paper-toast id="successToast" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <!-- Warning Toast -->
+    <paper-toast id="warningToast" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
 
   </template>
   <script src="behavior-data-loader.coffee-compiled.js"></script>
