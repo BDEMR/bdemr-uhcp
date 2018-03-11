@@ -608,3 +608,9 @@ app.behaviors.dbUsing =
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     return (appIdentifier + userSerial + itemType + orgnizationId)
 
+  generateSerialCustomCategory: ()->
+    appIdentifier = 'C'
+    itemType = 'UC'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + 'only')
+
