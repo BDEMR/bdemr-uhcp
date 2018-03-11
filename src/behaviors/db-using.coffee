@@ -99,7 +99,8 @@ app.behaviors.dbUsing =
     
     if previousUser 
       unless user.serial is previousUser.serial
-        app.db.initializeDatabase { removeExisting: true }
+        app.db.removeExistingDatabase()
+        app.db.initializeDatabase()
     
     app.db.insert 'user', user
 
