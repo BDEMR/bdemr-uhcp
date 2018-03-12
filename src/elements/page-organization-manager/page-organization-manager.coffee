@@ -107,7 +107,7 @@ Polymer {
 
   manageUnitPricePressed: (e)->
     { organization } = e.model
-    @domHost.navigateToPage '#/set-unit-price/organization:' + organization.idOnServer
+    @domHost.navigateToPage '#/manage-price-list/organization:' + organization.idOnServer
 
   managePharmacyPressed: (e)->
     { organization } = e.model

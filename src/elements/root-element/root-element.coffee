@@ -385,9 +385,9 @@ Polymer {
 
   _hideAd: (pageName)->
     if @isMobileView
-      hideOnPage = ['login', 'patient-manager']
+      hideOnPage = ['login', 'patient-manager', 'manage-price-list']
     else
-      hideOnPage = ['login']
+      hideOnPage = ['login', 'manage-price-list']
 
     if pageName in hideOnPage
       @set 'hideAd', true

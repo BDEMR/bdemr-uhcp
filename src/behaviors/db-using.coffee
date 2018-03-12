@@ -144,12 +144,13 @@ app.behaviors.dbUsing =
       'referral-seed': 1
       'inventory-seed': 1
       'third-party-user-seed': 1
-      'investigation-price-list-seed': 1
-      'service-price-list-seed': 1
-      'supply-price-list-seed': 1
-      'ambulance-price-list-seed': 1
-      'package-price-list-seed': 1
-      'other-price-list-seed': 1
+      # 'investigation-price-list-seed': 1
+      # 'service-price-list-seed': 1
+      # 'supply-price-list-seed': 1
+      # 'ambulance-price-list-seed': 1
+      # 'package-price-list-seed': 1
+      # 'other-price-list-seed': 1
+      'price-list-seed': 1
     app.db.insert '--serial-generator', serialGenerator
 
     lib.tabStorage.setItem 'is-tab-authenticated', (lib.json.stringify true)
@@ -560,6 +561,16 @@ app.behaviors.dbUsing =
     app.db.update '--serial-generator', serialGenerator._id, serialGenerator
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
+  generateSerialForPriceListItem: ()->
+    appIdentifier = 'U'
+    itemType = 'PL'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    serialGenerator = (app.db.find '--serial-generator')[0]
+    seed = serialGenerator['price-list-seed']
+    serialGenerator['price-list-seed'] += 1
+    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
+    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+  
   generateSerialForInvestigationPriceList: (orgnizationId)->
     appIdentifier = 'U'
     itemType = 'InvP'

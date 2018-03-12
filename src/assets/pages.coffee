@@ -1132,6 +1132,21 @@ app.pages.pageList = [
   }
 
   {
+    name: 'manage-price-list'
+    element: 'page-manage-price-list'
+    windowTitlePostfix: 'manage-price-list'
+    headerTitle: 'Manage Price List'
+    preload: true
+    hrefList: [ 'manage-price-list' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showSaveButton: true
+    showPatientsDetails: false
+    accessId: 'none'
+  }
+
+  {
     name: 'set-package'
     element: 'page-set-package'
     windowTitlePostfix: 'set-package'

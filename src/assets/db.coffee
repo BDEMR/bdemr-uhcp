@@ -1095,70 +1095,6 @@ app.db.defineCollection { name: 'referral-record--deleted' }
 # ======================
 
 app.db.defineCollection {
-  name: 'investigation-price-list'
-}
-
-app.db.defineCollection {
-  name: 'investigation-price-list--deleted'
-}
-
-app.db.defineCollection {
-  name: 'doctor-fees-price-list'
-}
-
-app.db.defineCollection {
-  name: 'doctor-fees-price-list--deleted'
-}
-
-app.db.defineCollection {
-  name: 'service-price-list'
-}
-
-app.db.defineCollection {
-  name: 'service-price-list--deleted'
-}
-
-app.db.defineCollection {
-  name: 'pharmacy-price-list'
-}
-
-app.db.defineCollection {
-  name: 'pharmacy-price-list--deleted'
-}
-
-app.db.defineCollection {
-  name: 'supply-price-list'
-}
-
-app.db.defineCollection {
-  name: 'supply-price-list--deleted'
-}
-
-app.db.defineCollection {
-  name: 'ambulance-price-list'
-}
-
-app.db.defineCollection {
-  name: 'ambulance-price-list--deleted'
-}
-
-app.db.defineCollection {
-  name: 'package-price-list'
-}
-
-app.db.defineCollection {
-  name: 'package-price-list--deleted'
-}
-
-app.db.defineCollection {
-  name: 'other-price-list'
-}
-
-app.db.defineCollection {
-  name: 'other-price-list--deleted'
-}
-
-app.db.defineCollection {
   name: 'organization-inventory'
 }
 
@@ -1188,5 +1124,13 @@ app.db.defineCollection {
 
 app.db.defineCollection {
   name: 'custom-inventory-category-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'organization-price-list'
+}
+
+app.db.defineCollection {
+  name: 'organization-price-list--deleted'
 }
 

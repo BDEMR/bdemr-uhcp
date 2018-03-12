@@ -1,0 +1,174 @@
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower-assets/paper-dialog/paper-dialog.html">
+
+<!-- Custom AutoComplete -->
+<link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
+
+<!-- vaadin elements -->
+<link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-column.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-filter.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<!-- behavior -->
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/page-like.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<dom-module id="page-manage-price-list">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+        width: 95%;
+      }
+
+      .item>* {
+        margin-right: 16px;
+      }
+
+      .item:nth-child(even) {
+        background-color: var(--paper-grey-100);
+      }
+
+      .text-mute {
+        color: var(--paper-grey-400);
+      }
+
+      .pharmacy-item {
+        border: 1px solid var(--paper-grey-200);
+        border-radius: 3px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .centered-header {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+      }
+    </style>
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <paper-card hidden="[[!loading]]">
+          <div class="card-custom-header">
+            <div class="title flex centered-header">LOADING...</div>
+          </div>
+        </paper-card>
+
+        <template is="dom-if" if="[[!loading]]">
+
+          <paper-card heading="[[organization.name]]"></paper-card>
+
+          <paper-tabs id="categoryTabs" on-iron-activate="categorySelected" scrollable>
+            <template is="dom-repeat" items="[[priceListCategories]]">
+              <paper-tab>[[item]]</paper-tab>
+            </template>
+          </paper-tabs>
+
+          <template is="dom-if" if="[[priceListForSelectedCategory.length]]">
+
+            <paper-card>
+              <div class="card-custom-header">
+                <div class="title flex">Set Price</div>
+                <paper-button class="btn btn-success" raised on-tap="addNewItemPressed">
+                  <iron-icon icon="add"></iron-icon>&nbsp;Add New Item
+                </paper-button>
+              </div>
+              <div class="card-content">
+                <vaadin-grid items="[[priceListForSelectedCategory]]">
+                  <vaadin-grid-column width="100px" flex-grow="0">
+                    <template class="header">Actual Cost</template>
+                    <template>
+                      <input is="iron-input" bind-value="{{item.actualCost}}" placeholder="Actual Cost" on-change="actualCostChanged">
+                    </template>
+                  </vaadin-grid-column>
+                  <vaadin-grid-column width="100px" flex-grow="0">
+                    <template class="header">Price</template>
+                    <template>
+                      <input is="iron-input" bind-value="{{item.price}}" placeholder="Price" on-change="priceChanged">
+                    </template>
+                  </vaadin-grid-column>
+                  <vaadin-grid-column flex-grow="1">
+                    <template class="header">
+                      <vaadin-grid-filter aria-label="Name" path="name" value="[[searchString]]">
+                        <paper-input label="Search By Name" value="{{searchString}}" no-label-float></paper-input>
+                      </vaadin-grid-filter>
+                    </template>
+                    <template>
+                      <div>[[item.name]]</div>
+                    </template>
+                  </vaadin-grid-column>
+                  <vaadin-grid-column>
+                    <template>
+                      <span class="type secondary text-right">[[item.subCategory]]</span>
+                    </template>
+                  </vaadin-grid-column>
+                  <vaadin-grid-column width="80px" flex-grow="0">
+                    <template class="header">Action</template>
+                    <template>
+                      <paper-icon-button icon="delete" on-tap="deleteItemPressed"></paper-icon-button>
+                    </template>
+                  </vaadin-grid-column>
+                </vaadin-grid>
+              </div>
+            </paper-card>
+
+          </template>
+
+        </template>
+
+      </div>
+
+    </div>
+
+    <!--Modal for Custom Unit and Price-->
+    <paper-dialog id="customItemModal" on-iron-overlay-closed="modalClosedEvent" no-cancel-on-esc-key no-cancel-on-outside-click>
+      <h2>Add Custom Item</h2>
+      <paper-dialog-scrollable>
+        <paper-item class="layout vertical">
+          <paper-input autofocus label="Unit Name" value="{{customItem.name}}"></paper-input>
+          <paper-input label="Actual Cost" type="number" value="{{customItem.actualCost}}"></paper-input>
+          <paper-input label="Unit Price" type="number" value="{{customItem.price}}"></paper-input>
+          <vaadin-combo-box label="Category" items="[[priceListCategories]]" allow-custom-value value="{{customItem.category}}" selected-item="{{customItem.category}}">
+          </vaadin-combo-box>
+          <paper-input label="Subcategory" value="{{customItem.subCategory}}"></paper-input>
+        </paper-item>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button raised dialog-confirm>Add</paper-button>
+      </div>
+    </paper-dialog>
+
+  </template>
+  <script src="page-manage-price-list.coffee-compiled.js"></script>
+</dom-module>

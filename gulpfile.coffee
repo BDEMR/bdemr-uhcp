@@ -71,7 +71,7 @@ gulp.task 'build-debug-coffee', ->
   .pipe(plumber())
   .pipe cache 'copy'
   .pipe(sourcemaps.init())
-  .pipe(coffee({bare: false}).on('error', gutil.log))
+  .pipe(coffee({bare: false}))
   .pipe(uglify())
   .pipe(sourcemaps.write('.'))
   .pipe rename (path)->
