@@ -1,0 +1,5414 @@
+[
+ {
+   "name": "Naryangonj to Narayanganj",
+   "subCategory": "",
+   "category": "Ambulance",
+   "price": null
+ },
+ {
+   "name": "Narayanganj to Dhaka",
+   "subCategory": "",
+   "category": "Ambulance",
+   "price": null
+ },
+ {
+   "name": "Dhaka to Dhaka",
+   "subCategory": "Dhaka to Dhaka",
+   "category": "Ambulance",
+   "price": null
+ },
+ {
+   "name": "Blood Transfusion Charge (Indoor)",
+   "subCategory": "Blood Bank Unit",
+   "category": "Investigation",
+   "price": 300
+ },
+ {
+   "name": "Blood Transfusion Charge (Outdoor)",
+   "subCategory": "Blood Bank Unit",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Cross matching",
+   "subCategory": "Blood Bank Unit",
+   "category": "Investigation",
+   "price": 1800
+ },
+ {
+   "name": "Service per unit whole blood screening",
+   "subCategory": "Blood Bank Unit",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Ascitic Fluid for Biochemistry",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "B.Flim /PBF",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "BT (Bleeding Time)",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "Bile Pigment",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "Bile Salt",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 150
+ },
+ {
+   "name": "C/E count",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "CBC",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "CP",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "CT (Clotting Time)",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Complete Urine Count (CUC)",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "DC",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "ESR",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "FNAC",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "HCT/PCV",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "Hb% (Haemoglobin)",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 1100
+ },
+ {
+   "name": "Hb-Electro phoresis",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "L. E. Cell",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "MCH",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "MCHC",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "MCV",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "MP (Malirial Parasite)",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "PCV",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Paps Smear",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Platelet",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 1200
+ },
+ {
+   "name": "Protein Electrophoresis",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "RBC (T)",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "RC (Reticulocyte Count)",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Semen Analysis",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Sputum M/E",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Stool OBT",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 150
+ },
+ {
+   "name": "Stool R/M/E",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "Stool R/S",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 120
+ },
+ {
+   "name": "TC",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 150
+ },
+ {
+   "name": "Urine RME (CUC)",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine for Bence Jones Protein",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Urine for Cannabinoids",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Urine for Opiates",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 110
+ },
+ {
+   "name": "Urobilinogen",
+   "subCategory": "Clinical Path & Hematology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "B-hcG",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "ACTH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "Cortisol",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "DHEA",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "DHEA-S",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "ABF & CUS",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "ABF (2 hrs. after breakfast)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "ACR (Urine -Alb. Creatine Ratio)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "AD ((2 hrs. after Dinner)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "AG & CUS",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "AG (2 hrs. after 75 gm. glucose)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "AL (2 hrs. after lunch)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Acid Phos (Prost)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 450
+ },
+ {
+   "name": "Acid Phos (Total)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Alb:Glob (A:G)/AG Ratio",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Albumin (Alb)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Alkaline Phosphatase (ALP) /Alk.Phos.",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "BD (Before Dinner)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "BL ( Before Lunch)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 230
+ },
+ {
+   "name": "Bili (Direct)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "Bili (Direct+Indirect)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Bili (Indirect)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 230
+ },
+ {
+   "name": "Bili (Total)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Bun",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 360
+ },
+ {
+   "name": "CCR",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "CK. MB",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "CPK/CK",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "CUS (Corresponding Urine Sugar)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 300
+ },
+ {
+   "name": "Calcium (Ca++)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "Chloride (Cl-)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 230
+ },
+ {
+   "name": "Cholesterol (Total)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Creatinine",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Cytology",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Electrolyte",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "FBS & CUS",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "FBS (Fasting blood sugar)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Folate",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "GGT (Gamma GT)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Globulin (Glob)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 270
+ },
+ {
+   "name": "HDL -Cholestrol",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "HbA1c (Glycated Haemoglobin)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Iron Profile (S.TIBC, Feritin, Iron)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "LDH",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 270
+ },
+ {
+   "name": "LDL-Cholestrol",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "LFT ( Bili + SGPT + SGOT+Alk. Phos",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Lipase",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 950
+ },
+ {
+   "name": "Lipid Profile",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Magnesium(Mg++)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "OGTT (3 Sample)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "OGTT (3 Sample) and CUS ( 3 Sample)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 240
+ },
+ {
+   "name": "Osmolality",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "P. Amylase",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "Potasium (K++)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "RBS & CUS",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "RBS (Random blood sugar)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "S. Amylase",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "S. Ferritin",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "S. Iron",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "S. Lithium (Li+)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 300
+ },
+ {
+   "name": "S. Phosphorus/Inorganic Phosphorus",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "SGOT (S. AST )",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "SGPT (S. ALT)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "Sodium (Na+)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "T. CO2",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "TIBC (Total Iron Binding Capacity)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Total Protein",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 240
+ },
+ {
+   "name": "Triglyceride (TG)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Troponin I",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 240
+ },
+ {
+   "name": "UTP",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 240
+ },
+ {
+   "name": "UTV",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Urea",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Uric Acid",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Urine Amylase",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Urine Cal",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Urine Creatinine",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Urine Electrolytes",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "Urine Glucose",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Urine Magnisium",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine Phosphate",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "Urine Pottasium",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine Sodium",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Urine Uric Acid",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Urine for Micro Albumin",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine sodium",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 1200
+ },
+ {
+   "name": "Vit B12",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Vitamin A",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Vitamin C",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Vitamin E",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "e GFR",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 2000
+ },
+ {
+   "name": "Endoscopy",
+   "subCategory": "Endo & Metabolism",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Endoscopy 960",
+   "subCategory": "Endo & Metabolism",
+   "category": "Surgical",
+   "price": 650
+ },
+ {
+   "name": "FSH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "Free T3 (FT3)",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "Free T4 (FT4)",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "GH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "GH (Growth Hormone)",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Glucagon",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "HGH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "HGH (Human Growth Hormone) Basal",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "HGH (Human Growth Hormone) Post-",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Insulin",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "LH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Oestrogen",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Parathoromome Level",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Parathyroid Hormone (P.T.H )",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Progesterone",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "Prolactin",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "SHBG",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 550
+ },
+ {
+   "name": "T3",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 550
+ },
+ {
+   "name": "T4",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "TSH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Testosterone",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Testosterone Free",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "VMA",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "ABF & CUS",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "ABF (2 hrs. after breakfast)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "ACR (Urine -Alb. Creatine Ratio)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "AD ((2 hrs. after Dinner)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "AG & CUS",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "AG (2 hrs. after 75 gm. glucose)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "AL (2 hrs. after lunch)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Acid Phos (Prost)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 450
+ },
+ {
+   "name": "Acid Phos (Total)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Alb:Glob (A:G)/AG Ratio",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Albumin (Alb)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Alkaline Phosphatase (ALP) /Alk.Phos.",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "BD (Before Dinner)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "BL ( Before Lunch)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 230
+ },
+ {
+   "name": "Bili (Direct)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "Bili (Direct+Indirect)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Bili (Indirect)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 230
+ },
+ {
+   "name": "Bili (Total)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Bun",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 360
+ },
+ {
+   "name": "CCR",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "CK. MB",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "CPK/CK",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "CUS (Corresponding Urine Sugar)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 300
+ },
+ {
+   "name": "Calcium (Ca++)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "Chloride (Cl-)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 230
+ },
+ {
+   "name": "Cholesterol (Total)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Creatinine",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Cytology",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Electrolyte",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "FBS & CUS",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "FBS (Fasting blood sugar)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Folate",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "GGT (Gamma GT)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Globulin (Glob)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 270
+ },
+ {
+   "name": "HDL -Cholestrol",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "HbA1c (Glycated Haemoglobin)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Iron Profile (S.TIBC, Feritin, Iron)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "LDH",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 270
+ },
+ {
+   "name": "LDL-Cholestrol",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "LFT ( Bili + SGPT + SGOT+Alk. Phos",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Lipase",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 950
+ },
+ {
+   "name": "Lipid Profile",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Magnesium(Mg++)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "OGTT (3 Sample)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "OGTT (3 Sample) and CUS ( 3 Sample)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 240
+ },
+ {
+   "name": "Osmolality",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "P. Amylase",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "Potasium (K++)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "RBS & CUS",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "RBS (Random blood sugar)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "S. Amylase",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "S. Ferritin",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "S. Iron",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "S. Lithium (Li+)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 300
+ },
+ {
+   "name": "S. Phosphorus/Inorganic Phosphorus",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "SGOT (S. AST )",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "SGPT (S. ALT)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "Sodium (Na+)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "T. CO2",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "TIBC (Total Iron Binding Capacity)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Total Protein",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 240
+ },
+ {
+   "name": "Triglyceride (TG)",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Troponin I",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 240
+ },
+ {
+   "name": "UTP",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 240
+ },
+ {
+   "name": "UTV",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Urea",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Uric Acid",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Urine Amylase",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Urine Cal",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Urine Creatinine",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Urine Electrolytes",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 100
+ },
+ {
+   "name": "Urine Glucose",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Urine Magnisium",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine Phosphate",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 220
+ },
+ {
+   "name": "Urine Pottasium",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine Sodium",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 250
+ },
+ {
+   "name": "Urine Uric Acid",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Urine for Micro Albumin",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine sodium",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 1200
+ },
+ {
+   "name": "Vit B12",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Vitamin A",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Vitamin C",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Vitamin E",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "e GFR",
+   "subCategory": "Clinical Biochemistry",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "FSH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "Free T3 (FT3)",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "Free T4 (FT4)",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "GH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "GH (Growth Hormone)",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Glucagon",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "HGH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "HGH (Human Growth Hormone) Basal",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "HGH (Human Growth Hormone) Post-",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Insulin",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "LH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Oestrogen",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Parathoromome Level",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Parathyroid Hormone (P.T.H )",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Progesterone",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "Prolactin",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "SHBG",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 550
+ },
+ {
+   "name": "T3",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 550
+ },
+ {
+   "name": "T4",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "TSH",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Testosterone",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Testosterone Free",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "VMA",
+   "subCategory": "Endo & Metabolism",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "ALPHA-FETOPROTEIN(AFP)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 5500
+ },
+ {
+   "name": "ANA- Profile (Western Blot)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 5500
+ },
+ {
+   "name": "ANA- Profile (ANA,DNA & ENA PROFILE)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "ANA-Screening/ANF",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "APTT(Activated partial thromboplastin time)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "APTT(Activated partial thromboplastin time)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "ASO titre",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1200
+ },
+ {
+   "name": "Anti -Dengue (igG+igM)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti Hbe",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1200
+ },
+ {
+   "name": "Anti Phospholipid IgG",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1200
+ },
+ {
+   "name": "Anti Phospholipid IgM",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti Toxoplasma IgG",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti Toxoplasma IgM",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1600
+ },
+ {
+   "name": "Anti CCP Ab",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Anti -Dengue igG Screening",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Anti -Dengue igM Screening",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Anti -Dengue( igG) Elisa",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "Anti -Dengue (igM) Elisa",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti Ds DNA",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti-H-Pylori,IgG",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti-HAV IgM",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti- HBC (Total)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti- HBC, IgM",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti- HBs (Qn)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti-HCV",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1800
+ },
+ {
+   "name": "Anti-HCV(Western Blot)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti- HEV, IgM",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti- HEV, IgG",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti-HIV (1+2+0)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti-HIV (1+2+0)ElISA",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "Anti- Mucobact TB Complex IgA",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "Anti- Mucobact TB Complex IgG",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "Anti- Mucobact TB Complex IgM",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1200
+ },
+ {
+   "name": "Anti RNP ",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti-Rubella IgG",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Anti-Rubella IgM",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1600
+ },
+ {
+   "name": "Anti- Thyroid Antibody ",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "Anti -TB Complex IgA",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "Anti -TB Complex IgG",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "Anti -TB Complex IgM",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "Anti Thyroglobulin Antibody",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1600
+ },
+ {
+   "name": "Anti Thyroid Microsmal Antibody",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 300
+ },
+ {
+   "name": "Blood Group & Rh Factor",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "C3",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 750
+ },
+ {
+   "name": "C4",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "CA-15.3",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "CA-19.9 (Colon)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "CA-125(Ovary)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "CEA (CARCINO-EMBRYONIC ANTI)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "CRP(C-Reactive protein)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Combs test (D)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Combs test (D+ Ind)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Cortisol (with ACTH)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Combs test (Ind)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1200
+ },
+ {
+   "name": "D.Dimer",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "Dengue NSI",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "Digoxin level",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 6000
+ },
+ {
+   "name": "ENA-profile",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "FDP(Fibrinogen degradation product)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "Febrile Antigens",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "HBeAg",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 550
+ },
+ {
+   "name": "HBsAg",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 5000
+ },
+ {
+   "name": "HBV-DNA (Qn)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "HCV genotyping",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 6000
+ },
+ {
+   "name": "HCV-RNA (Qualitative)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "INR (P.Time)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 6000
+ },
+ {
+   "name": "HCV-RNA (Quantitative)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "ICT For Dengu",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "ICT For Maliria",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 600
+ },
+ {
+   "name": "ICT For Filaria",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 850
+ },
+ {
+   "name": "ICT For Chikungunia",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "IgA(IT)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "IgG(IT)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "IgM(IT)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 3600
+ },
+ {
+   "name": "Immunogobulin Electrophoresis (IEF)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "P.Time(Prothombin Time)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1300
+ },
+ {
+   "name": "PSA (Total + free))",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "RPR(VDRL)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 1000
+ },
+ {
+   "name": "Rh-Antibody titre",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "RA/RF",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Rose Waaler",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 550
+ },
+ {
+   "name": "S.Fibrinogen",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 800
+ },
+ {
+   "name": "S.IgE",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "TPHA",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 650
+ },
+ {
+   "name": "Triple Antigens",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine for Pregnancy test",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 5000
+ },
+ {
+   "name": "Vitamin D3 (total)",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "Weil -Felix",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 350
+ },
+ {
+   "name": "Widal Test",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 900
+ },
+ {
+   "name": "p-ANCA",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 900
+ },
+ {
+   "name": "c-ANCA",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 9000
+ },
+ {
+   "name": "Torch",
+   "subCategory": "Immunology",
+   "category": "Investigation",
+   "price": 700
+ },
+ {
+   "name": "Blood C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "AFB Stain",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "CSF C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Cervical Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Conjunctival Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Ear Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Fungus C/S of Skin ,Nail,Sputum,HV)",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Gram stain",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "High Vaginal Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "PUS c/s",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Prostatic Gram Stain",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Pleural Fluid C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Prostatic Smear",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Skin/Nail Scraping for M/E",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Sputam C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Sputam for Fungal C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "Sputam for malignant Cell",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Stool C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "stool C/S vibrio cholerae",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Throat Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Tongue Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Urine C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 200
+ },
+ {
+   "name": "Urine for AFB",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 500
+ },
+ {
+   "name": "Uroflowmetry (700)",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Vaginal Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Wound Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 400
+ },
+ {
+   "name": "Nasal Swab C/S",
+   "subCategory": "Micro Biology",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (ABF)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (AD)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (AG)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (AL)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (BD)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (BL)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (FBS)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (RBS)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (ABF)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (AD)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (AG)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (AL)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (BD)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (BL)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (FBS)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": 50
+ },
+ {
+   "name": "Reflow (RBS)",
+   "subCategory": "Reflow",
+   "category": "Investigation",
+   "price": null
+ },
+ {
+   "name": "CPM",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": 200
+ },
+ {
+   "name": "IFT",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "IRR",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "MANUAL THERAPY",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "MWD",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "NM STIMULATION",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "PARAFFIN WAX BATH",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "RE-EDUCATION EXS.",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "SWD",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "TENS",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "THERAPEUTIC EXS.",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "TRACTION",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "TREATMENT EXERCISE",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "VIBRATOR",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "UST",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "WAX PACK",
+   "subCategory": "Physiotherapy",
+   "category": "Therapy",
+   "price": null
+ },
+ {
+   "name": "DRESSING Major- ENT",
+   "subCategory": "E. N.T",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "DRESSING Inter-ENT",
+   "subCategory": "E. N.T",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "DRESSING Minor- ENT",
+   "subCategory": "E. N.T",
+   "category": "Medical Items",
+   "price": 100
+ },
+ {
+   "name": "Nebulizer",
+   "subCategory": "Nebulizer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "DRESSING & OTHERS 500",
+   "subCategory": "OTHERS SALE",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "3% Sodium Cloride Saline",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Abscess drain",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Acne commedone Extruction",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Air Matress",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Arrear",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": 2500
+ },
+ {
+   "name": "Biopsy (skin)",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Cannula Pushing Charge",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": 200
+ },
+ {
+   "name": "Catheterization",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Chamical Peels",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "ESR Tube 25",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Enema",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Histopath Jar",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Incision & Drainage ",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Incision & Drain",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Injection Pushing",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Intralesional Injection",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Ketone Bodies",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "MT Test ",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Nail avulsion",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "NG tube ",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Reject goods sale",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Sample Collection Charge",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Stiching 100",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Stiching 200",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": 700
+ },
+ {
+   "name": "Stomach Wash",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Suction",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Syringe (1 sample)",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Syringe (2 sample)",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Syringe (3  sample)",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Syringe pump",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Tissue Box",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Toilet Tissue",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": 50
+ },
+ {
+   "name": "Urine For Aceton",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Visitor Gown",
+   "subCategory": "Others Sale",
+   "category": "Medical Items",
+   "price": 11
+ },
+ {
+   "name": "Needle 1",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": 22
+ },
+ {
+   "name": "Needle 2",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": 33
+ },
+ {
+   "name": "Needle 3",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer 1- Red/blue/black/Green",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer 2",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer 3",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer 4",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer 5",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer 6",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer Glucose 1",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer Glucose 2",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer Glucose 3",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer Lavender 1",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer Lavender 2",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": null
+ },
+ {
+   "name": "Vacutainer Lavender 3",
+   "subCategory": "Vacutainer",
+   "category": "Medical Items",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY BOTH SCAPULA B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY BOTH SHOULDER JOINT B",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY BOTH T,M JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH WRIST JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY CERVICLE SPINE A/P VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY CERVICLE SPINE B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY CERVICLE SPINE BOTH OE",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY CERVICLE SPINE L.T OBLI",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY CERVICLE SPINE LT.LAT.",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY CERVICLE SPINE RT.LAT.",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY CERVICLE SPINE RT.OBLI",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY CHEST  P/A VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY COCCYX B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY CXR A/P & BOTH LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY CXR A/P VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY CXR APICAL VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-RAY CXR LT.LAT VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY CXR P/A & BOTH LAT .VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY CXR P/A & BOTH OBLIQUE ",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY CXR P/A & Lt OBLIQUE VII",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY CXR P/A VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "X-RAY CXR P/A VIEW 100%",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY CXR A/P & LT.LAT VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-RAY CXR A/P & RT.LAT VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY CXR  RT.LAT VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY CXR RT. OBLIQUE VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY DORSAL SPINE A/P VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY DORSAL SPINE B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  DORSAL SPINE LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  DORSAL SPINE LT.LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  DORSAL SPINE RT.LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY  DORSO-LUMBER A/P VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY  DORSO-LUMBER SPINE B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY  DORSO-LUMBER SPINE LA",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1500
+ },
+ {
+   "name": "X-RAY  DOUBLE CONTRAST EXAM",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1500
+ },
+ {
+   "name": "X-RAY  FISTULOGRAM",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 750
+ },
+ {
+   "name": "X-RAY  FOR BONE AGE",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1250
+ },
+ {
+   "name": "X-RAY  FOR SKELETAL SURVY ",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1800
+ },
+ {
+   "name": "X-RAY  I .V.U",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1800
+ },
+ {
+   "name": "X-RAY  I .V.U",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY  I .V.C",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1800
+ },
+ {
+   "name": "X-RAY  IVU WITH MCU",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY  KUB 100%",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 750
+ },
+ {
+   "name": "X-RAY  L/S SPINE B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 600
+ },
+ {
+   "name": "X-RAY  L/S SPINE BOTH OBLIQUE",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1500
+ },
+ {
+   "name": "X-RAY  LARGE BOWELENEMA ",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LORDOTIC VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.ACROMIO-CLAVICULAF",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LT.ANKLE JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LT ARM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LT. CALCANIUM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LT. CALCANIUM LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LT. CLAVICLE A/P",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LT.DECUBITUS VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LT.ELBOW&ARM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  LT.ELBOW& FOREARM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY  LT. ELBOW JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY  LT. FEMUR B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY  LT. FOOT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY  LT. FOOT & ANKLE JT.B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.FOREARM&WRIST BV",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.FOREARM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.FOREARM WITH WRIST1",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT. HAND B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT. HEEL B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY LT. HIP JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.HUMERUS B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.INDEX FINGER B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY LT.KNEE JIONT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY LT. LEG B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT. LITTLE FINGER B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.MANDIBLE B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.MIDDLE FINGER B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY LT.OBLIQUE VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.PATTELA SKYLINE VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.RADIUS ULNA B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.RING FINGER B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY LT. S.I JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.SCAPULA A/P VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.SCAPULA B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT. SHOUDER JOINT A/P ",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY LT. SHOUDER JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT. SHOUDER JOINT AXIL",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT. SHOUDER JOINT SWII",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT. SHOUDER JT.30 ABDL",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT. STERNOCLAVICULAR",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY LT.T.M JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY LT. THIGH B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.THUMB B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.TIBIA FIBULA B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.WRIST JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 520
+ },
+ {
+   "name": "X-RAY LUMBO-SACRAL SPINE A/P",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 600
+ },
+ {
+   "name": "X-RAY LUMBO-SACRAL SPINE B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LUMBO-SACRAL SPINE LA",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LUMBO-SACRAL SPINE LT",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LUMBO-SACRAL SPINE RT",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1500
+ },
+ {
+   "name": "X-RAY MAMOGRAM(BOTH BREAST)",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-RAY MAMOGRAM LT. BREAST",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-RAY MAMOGRAM RT.BREAST",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY MANDIBLE P/A VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY MASTOID TOWNS VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY NASAL BONE LAT .VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  NASOPHARYNX LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY NECK B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 700
+ },
+ {
+   "name": "X-RAY OCG",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY P.N.S B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY P.N.S O/M VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY P/A RT+LT LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "X-RAY PELVIS A/P 100%",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY PELVIS A/P VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY PELVIS B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY PELVIS BOTH HIP A/P",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY PER-OPERATIVE CHOLANO",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.ACROMIO-CLAVICULAN",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.ANKLE JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.ARM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. CALCANIUM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. CALCANIUM LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  RT. CLAVICLE A/P",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY  RT.DECUBITUS VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.ELBOW&ARM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.ELBOW& FOREARM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY RT. ELBOW JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY  RT. FEMUR B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY  RT. FEMUR B/V 100%",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT. FOOT&ANKLE JOINT I",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY  RT. FOOT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.FOREARM&WRIST BV",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.FOREARM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.FOREARM&WRIST ",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.GREAT TOE",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. HAND B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. HEEL B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT. HIP JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.HUMERUS B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.INDEX FINGER B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY RT.KNEE JIONT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY RT. LEG B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. LITTLE FINGER B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.MANDIBLE B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.MIDDLE FINGER B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.PATTELA SKYLINE VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.RADIUS ULNA B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.RING FINGER B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 700
+ },
+ {
+   "name": "X-RAY RT. S.I JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT.SCAPULA A/P VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT.SCAPULA B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. SHOUDER JOINT A/P ",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. SHOUDER JOINT AXII",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT. SHOUDER JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. SHOUDER JOINT SWI",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT. STERNOCLAVICLE JOI",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT.T.M JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT. THIGH B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT. THIGH B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT. THIGH B/V 100%",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT. THIGH B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY RT.TIBIA FIBULA B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY RT.WRIST JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "X-RAY SACRAM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY SAILOGRAM (SINGLE GLAW)",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY SELLA TURCICA LAT.VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY SKULL B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY SKULL  LATERAL VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY SKULL TOWNES VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY SMALL BOWEL ENEMA",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY SOFT TISSUE NECK B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY SOFT TISSUE NECK LAT.V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY STERNUM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY STERNUM LAT. VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY STERNUM OBLIQUE & LAT",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY STYLOID PROCESS",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1100
+ },
+ {
+   "name": "X-RAY T-TUBE CHOLANGIOGRAM",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY THORACIC SPINE AP&LA",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY THORACIC SPINE AP VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY THORACIC SPINE AP,LAT",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY THORACIC SPINE B-V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY THORACIC SPINE LAT VIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY THORACO-LUBMER SPINE",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY THORACO-LUBMER SPINE",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 2000
+ },
+ {
+   "name": "X-RAY RT. HYSTEROSALPHINGOGRAM(HSG)",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY KUB",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "X-RAY RETROGRADE PYELOGRAI",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1500
+ },
+ {
+   "name": "X-RAY RETROGRADE URETHROGRAM(R.G)",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "X-RAY (DENTAL) 1FLIM",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "X-RAY (DENTAL) 2FLIM",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 350
+ },
+ {
+   "name": "X-RAY OPG",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 400
+ },
+ {
+   "name": "X-RAY CXR P/A & RT.OBLIQUEVI",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY ORBIT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-AY ABDOMEN A/P (SUPINE)",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 300
+ },
+ {
+   "name": "X-RAY LT.GREAT TOE B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY THORACIC SPINE BOTH C",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 350
+ },
+ {
+   "name": "X-RAY ABDOMEN A/PVIEW",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY ABDOMEN E/P",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-AY ABDOMEN ERRECT POST",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY ABDOMEN E/P (100%)",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-RAY BA-MEAL STOMACH&DU",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1500
+ },
+ {
+   "name": "X-RAY BA-ENEMA DOUBLE CONT",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 1200
+ },
+ {
+   "name": "X-RAY BA-MEAL FOLLOW OF G.I",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-RAY BA-SWALLOW OESOPHAG",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-RAY BARIUM CLEARANCE OF T",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "X-RAY BARIUM MEAL IN T-POSIT",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH ANKLE JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "X-RAY BOTH CANIUM B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH FOOT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH HAND B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH HEEL B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH HIP & S.I JOINT A/P",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 700
+ },
+ {
+   "name": "X-RAY BOTH HIP JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH KNEE JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH LEG B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 500
+ },
+ {
+   "name": "X-RAY BOTH PATTELA B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": 700
+ },
+ {
+   "name": "X-RAY BOTH  S.I JOINT B/V",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "Memography (Both Breast)",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "Memography (Single Breast)",
+   "subCategory": "Radiology & Imaging",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "CT Abdominal Angiogram",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 10000
+ },
+ {
+   "name": "CT Angiogram Of Cerebal",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 12000
+ },
+ {
+   "name": "CT Aortagram",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5000
+ },
+ {
+   "name": "CT Calcium Screning",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 12000
+ },
+ {
+   "name": "CT Coronary Angiogram",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 7500
+ },
+ {
+   "name": "CT Guided FNAC",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5000
+ },
+ {
+   "name": "CT Myelogram",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 10000
+ },
+ {
+   "name": "CT Periphnral Angiogram",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 12000
+ },
+ {
+   "name": "CT Pulmonary Angiogram",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 10000
+ },
+ {
+   "name": "CT Renal Angiogram",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of any joint",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of any part of spine",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of Chest /HRCT",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "CT Scan of Kidney",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 4500
+ },
+ {
+   "name": "CT Scan of Lambo Sacral Spine",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of Neck",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 10500
+ },
+ {
+   "name": "CT Scan of Whole Abdomen /KUB",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of Brain ",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of Brain + orbit",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of Lower Abdomen  ",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of orbit",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of PNS",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 4500
+ },
+ {
+   "name": "CT Scan of Rt. Shoulder jt",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "CT Scan of Liver & FNSC",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of Pelvis",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of Petrmastoids Region",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "CT Scan of temporal Lobe, lAC Mas",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5500
+ },
+ {
+   "name": "CT Scan of upper Abdomen /HBS",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 7000
+ },
+ {
+   "name": "CT Scan screening two ",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Screening two or more part",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 5000
+ },
+ {
+   "name": "MRI Ankle joint R/l",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Brain",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Breast R/l",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI cervical spine",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Dorsal/ Thoracis spine",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Hip Joint",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Knee joint R/L",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Lower Abdomen",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Lumbo Sacral Spine",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI MRCP",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Neck/Nasopharynx",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Of Brain & MRA of Brain",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI of Brain & orbits",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI MRA of Brain",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI MRV of Brain",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI MRA Brain/Carotid/Others",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI of Brain + MRV",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI of face",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI of L/S Spine with Screening ",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI orbits",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI P.N.S",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Pelvis",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Shoulder jt R/L",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI TM jt",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Upper Abdomen./HBS",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI urogram",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Whole Abdomen /KUB",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Whole Body ",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI Whole Spine",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "MRI screening of each part of spine",
+   "subCategory": "Radiology (MRI & CT SCAN)",
+   "category": "Imaging",
+   "price": 30
+ },
+ {
+   "name": "DGB/Diabetic Guide Book",
+   "subCategory": "Sales of Guide Book (DGB)",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG Breasts (B & W)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG Breasts (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG Breasts (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG Lower Abdomen (B & W)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG Lower Abdomen (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG Lower Abdomen (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG Thyroid (B&W)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG Thyroid (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG Thyroid (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG Whole Abdomen (B & W)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG Whole Abdomen (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG Whole Abdomen (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Double Breast (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 800
+ },
+ {
+   "name": "USG of HBS & Pancreas (B & W)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of HBS & Pancreas (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of HBS & Pancreas (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of HBs (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of KUB & Prostate (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG of KUB (B & W)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Lower Abdomen (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Pelvic Organs (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG KUB & Pelvic Organ (2D) ",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG KUB & Pelvic Organ (4D) ",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "USG of Pregnancy Profile (B & W)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Pregnancy Profile (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Pregnancy Profile (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Pregnancy Profile (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG of Scrotum testes",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Scrotum testes (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Scrotum testes (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG of Single Breast (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 1000
+ },
+ {
+   "name": "USG of TVS",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of TVS (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of TVS (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG of Testis (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG of Thyroid (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Thyroid (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Thyroid (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 700
+ },
+ {
+   "name": "USG of Upper Abdomen (B & W)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Upper Abdomen (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Upper Abdomen (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 900
+ },
+ {
+   "name": "USG of Whole Abdomen (Colour)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Whole Abdomen (2D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "USG of Whole Abdomen (4D)",
+   "subCategory": "Ultrasonography",
+   "category": "Imaging",
+   "price": 3000
+ },
+ {
+   "name": "Color Dopler of Both Leg",
+   "subCategory": "Colour Dopler",
+   "category": "Imaging",
+   "price": 2500
+ },
+ {
+   "name": "Color Dopler of Carotid Vessel both",
+   "subCategory": "Colour Dopler",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "Color Dopler of Single Leg",
+   "subCategory": "Colour Dopler",
+   "category": "Imaging",
+   "price": 3000
+ },
+ {
+   "name": "Color Dopler study of both Lower Limb",
+   "subCategory": "Colour Dopler",
+   "category": "Imaging",
+   "price": 3000
+ },
+ {
+   "name": "Color Dopler of Both Leg",
+   "subCategory": "Colour Dopler",
+   "category": "Imaging",
+   "price": 2500
+ },
+ {
+   "name": "Color Dopler of Carotid Vessel both",
+   "subCategory": "Colour Dopler",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "Color Dopler of Single Leg",
+   "subCategory": "Colour Dopler",
+   "category": "Imaging",
+   "price": 3000
+ },
+ {
+   "name": "Color Dopler study of both Lower Limb",
+   "subCategory": "Colour Dopler",
+   "category": "Imaging",
+   "price": 200
+ },
+ {
+   "name": "ECG",
+   "subCategory": "Cardiology",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "ECHO(2D ,Black & White)",
+   "subCategory": "Cardiology",
+   "category": "Imaging",
+   "price": 2200
+ },
+ {
+   "name": "ECHO(colour)",
+   "subCategory": "Cardiology",
+   "category": "Imaging",
+   "price": null
+ },
+ {
+   "name": "Factory Physician",
+   "subCategory": "UHCP",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "UHCP Physician",
+   "subCategory": "UHCP",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy only for Medicine",
+   "subCategory": "UHCP",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Medical Officer ",
+   "subCategory": "Consultation fee",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Medical Officer Follow-Up",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Senior Medical Officer",
+   "subCategory": "Consultation fee",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Senior Medical Officer Follow-Up",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultant Grade 1",
+   "subCategory": "Consultation fee",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultant Grade 1 Follow-Up",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy Grade 2",
+   "subCategory": "Consultation fee",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy Grade 2 Follow-Up",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy Grade 3",
+   "subCategory": "Consultation fee",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy Grade 3 Follow-Up",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Associaite Professor",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Associaite Professor Follow-Up",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Professor",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Professor Follow-Up",
+   "subCategory": "",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy (Dental) Reg.",
+   "subCategory": "Dental",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy (Dental)  Non Reg.",
+   "subCategory": "Dental",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy (Dental)  Non Reg.2nd",
+   "subCategory": "Dental",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy (Dental) Reg.",
+   "subCategory": "Dental",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy (Eye 1)",
+   "subCategory": "Opthalmology",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy (Eye 2)",
+   "subCategory": "Opthalmology",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy Eye 400",
+   "subCategory": "Opthalmology",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "Consultancy (Phisiotherapy)",
+   "subCategory": "Physiotherapy",
+   "category": "Consultancy",
+   "price": null
+ },
+ {
+   "name": "DRESSING Major- Gynae",
+   "subCategory": "GYNAE&OBS SERVICE CHARGE",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING Inter-Gynae",
+   "subCategory": "GYNAE&OBS SERVICE CHARGE",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING Minor-Gynae",
+   "subCategory": "GYNAE&OBS SERVICE CHARGE",
+   "category": "Surgical",
+   "price": 50
+ },
+ {
+   "name": "Oxygen (0.5 hr)",
+   "subCategory": "Oxygen Gas",
+   "category": "Surgical",
+   "price": 100
+ },
+ {
+   "name": "Oxygen (1 hr)",
+   "subCategory": "Oxygen Gas",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING Major- Eye",
+   "subCategory": "OPHTHALMOLOGY",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING Inter-Eye",
+   "subCategory": "OPHTHALMOLOGY",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING Minor- Eye",
+   "subCategory": "OPHTHALMOLOGY",
+   "category": "Surgical",
+   "price": 3500
+ },
+ {
+   "name": "Apisectomy",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 1500
+ },
+ {
+   "name": "Biopsy (Dental)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Bridge (per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Complete denture/unit",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 800
+ },
+ {
+   "name": "Curratage (per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Drainage of Abscass (Dental)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Dry socket management (per dressing)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction Decidous (child)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction Impction 1",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction Impction 2",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction Impction 3",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction permanent 1 (Adult) ",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction permanent 2 (Adult) ",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction Surgical 1",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction Surgical 2",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction Surgical 3",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 300
+ },
+ {
+   "name": "Filling (Temporary)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 800
+ },
+ {
+   "name": "Filling glass lonomer",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Filling Light Cure Glass lonomer ",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 2000
+ },
+ {
+   "name": "Filling Light Cure composite ",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Filling Light Cure composite staff ",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 300
+ },
+ {
+   "name": "Filling Miracle Mix",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 1000
+ },
+ {
+   "name": "Filling Permanent(Amalgan)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 800
+ },
+ {
+   "name": "Grinding (per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Metallic Crown",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Metallic Crown staff",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 100
+ },
+ {
+   "name": "Minor Dressing",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 1500
+ },
+ {
+   "name": "Minor Surgery",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Operculectomy",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Permanent(Amalgun) staff",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture (1 per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture (12 per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture (2 per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture (3 per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture (4 per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture (5 per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture (6 per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture (9 per tooth)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Partial Denture staff ",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Porceline Bonded Crown (PBC)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 2000
+ },
+ {
+   "name": "Pulpectomy",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 1500
+ },
+ {
+   "name": "Pulpotomy",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 4000
+ },
+ {
+   "name": "Root Canal Treatment (Multi Root)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 4000
+ },
+ {
+   "name": "Root Canal Treatment (Multi Root)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Root Canal Treatment (Re- Root canal)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Root Canal Treatment (single Root)",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 1500
+ },
+ {
+   "name": "Scaling",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Extraction Surgical ",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": 120
+ },
+ {
+   "name": "Stich off/cut",
+   "subCategory": "Dental",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRY SOCKET MANADEMENT(PER DRESSING)",
+   "subCategory": "DENTAL",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING OF ADSCESS(DENTAL)",
+   "subCategory": "DENTAL",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING (MAJOR) 1000",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Saline Pushing",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING (MAJOR) 1500",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING (MAJOR) 800",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING 100",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING 200",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING 300",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Plaster 1000",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Plaster 1500",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Plaster 2000",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING 500",
+   "subCategory": "DRESSING ",
+   "category": "Surgical",
+   "price": 2000
+ },
+ {
+   "name": "Endoscopy",
+   "subCategory": "Endo & Metabolism",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "Endoscopy 960",
+   "subCategory": "Endo & Metabolism",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING Major- Gynae",
+   "subCategory": "GYNAE&OBS SERVICE CHARGE",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING Inter-Gynae",
+   "subCategory": "GYNAE&OBS SERVICE CHARGE",
+   "category": "Surgical",
+   "price": null
+ },
+ {
+   "name": "DRESSING Minor-Gynae",
+   "subCategory": "GYNAE&OBS SERVICE CHARGE",
+   "category": "Surgical",
+   "price": null
+ }
+]
