@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
 <link rel="import" href="../../bower-assets/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower-assets/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower-assets/paper-progress/paper-progress.html">
 
 <!-- Custom AutoComplete -->
 <link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
@@ -14,6 +15,7 @@
 <link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-column.html">
 <link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-filter.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-sorter.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -73,16 +75,27 @@
         @apply(--layout-vertical);
         @apply(--layout-center);
       }
+
+      #customItemModal {
+        width: 360px;
+      }
+
+      #customItemModal h2 {
+        margin: 0;
+        padding: 15px;
+        background-color: #eee;
+      }
+
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+
     </style>
     <div class="master-container">
+      <paper-progress indeterminate hidden="[[!loading]]"></paper-progress>
 
       <div class="limiting-container">
-
-        <paper-card hidden="[[!loading]]">
-          <div class="card-custom-header">
-            <div class="title flex centered-header">LOADING...</div>
-          </div>
-        </paper-card>
 
         <template is="dom-if" if="[[!loading]]">
 
@@ -99,14 +112,14 @@
             <paper-card>
               <div class="card-custom-header">
                 <div class="title flex">Set Price</div>
-                <paper-button class="btn btn-success" raised on-tap="addNewItemPressed">
+                <paper-button class="btn btn-success" raised on-tap="addNewItemModalOpen">
                   <iron-icon icon="add"></iron-icon>&nbsp;Add New Item
                 </paper-button>
               </div>
               <div class="card-content">
                 <vaadin-grid items="[[priceListForSelectedCategory]]">
                   <vaadin-grid-column width="100px" flex-grow="0">
-                    <template class="header">Actual Cost</template>
+                    <template class="header">Cost</template>
                     <template>
                       <input is="iron-input" bind-value="{{item.actualCost}}" placeholder="Actual Cost" on-change="actualCostChanged">
                     </template>
@@ -118,10 +131,12 @@
                     </template>
                   </vaadin-grid-column>
                   <vaadin-grid-column flex-grow="1">
-                    <template class="header">
+                    <template class="header layout horizontal">
+                      <vaadin-grid-sorter path="name" direction="asc">
                       <vaadin-grid-filter aria-label="Name" path="name" value="[[searchString]]">
                         <paper-input label="Search By Name" value="{{searchString}}" no-label-float></paper-input>
                       </vaadin-grid-filter>
+                    </vaadin-grid-sorter>
                     </template>
                     <template>
                       <div>[[item.name]]</div>
@@ -151,21 +166,22 @@
     </div>
 
     <!--Modal for Custom Unit and Price-->
-    <paper-dialog id="customItemModal" on-iron-overlay-closed="modalClosedEvent" no-cancel-on-esc-key no-cancel-on-outside-click>
-      <h2>Add Custom Item</h2>
+    <paper-dialog id="customItemModal" no-cancel-on-esc-key no-cancel-on-outside-click>
+      <h2>Add New Item</h2>
       <paper-dialog-scrollable>
-        <paper-item class="layout vertical">
-          <paper-input autofocus label="Unit Name" value="{{customItem.name}}"></paper-input>
+        <div class="layout vertical p-horizontal-16">
+          <paper-input autofocus label="Unit Name" value="{{customItem.name}}" required auto-validate></paper-input>
           <paper-input label="Actual Cost" type="number" value="{{customItem.actualCost}}"></paper-input>
-          <paper-input label="Unit Price" type="number" value="{{customItem.price}}"></paper-input>
-          <vaadin-combo-box label="Category" items="[[priceListCategories]]" allow-custom-value value="{{customItem.category}}" selected-item="{{customItem.category}}">
+          <paper-input label="Unit Price" type="number" value="{{customItem.price}}" required auto-validate></paper-input>
+          <vaadin-combo-box class="category-combo-box" label="Category" items="[[priceListCategories]]" allow-custom-value value="{{customItem.category}}" selected-item="{{customItem.category}}" required auto-validate>
           </vaadin-combo-box>
           <paper-input label="Subcategory" value="{{customItem.subCategory}}"></paper-input>
-        </paper-item>
+        </div>
       </paper-dialog-scrollable>
       <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button raised dialog-confirm>Add</paper-button>
+        <paper-button class="btn btn-default" dialog-dismiss>Cancel</paper-button>
+        <paper-button class="btn btn-primary" raised on-tap="addNextItemPressed">Add Next</paper-button>
+        <paper-button class="btn btn-success" raised on-tap="addNewItemAndClosePressed">Add &amp; Close</paper-button>
       </div>
     </paper-dialog>
 

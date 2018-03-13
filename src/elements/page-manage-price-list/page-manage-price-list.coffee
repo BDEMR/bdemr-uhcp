@@ -43,6 +43,10 @@ Polymer {
       type: Boolean
       value: -> false
 
+  observers: [
+    'updatePriceList(priceListForSelectedCategory.splices)'
+  ]
+
   
   # attached: ()->
   #   # HACK - vaadin-grid element stops the navigatedIn call somehow
@@ -59,6 +63,7 @@ Polymer {
       return
     
     @loading = true
+    
     @_loadOrganization params['organization'], (organization)=>
       @set 'organization', organization
       @_checkUserAccess @user.idOnServer, organization.userList, (hasAccess)=>
@@ -110,17 +115,20 @@ Polymer {
 
   _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
 
+  _prepareNewItemForDB: (data)->
+    return Object.assign data, {
+      serial: @generateSerialForPriceListItem()
+      organizationId: @organization.idOnServer
+      createdDatetimeStamp: lib.datetime.now()
+      lastModifiedDatetimeStamp: lib.datetime.now()
+      createdByUserSerial: @user.serial
+    }
   
-  _preparePriceListData: (priceList)->
-    return priceList.map (item)=>
-      return Object.assign item, {
-        serial: @generateSerialForPriceListItem()
-        organizationId: @organization.idOnServer
-        createdDatetimeStamp: lib.datetime.now()
-        lastModifiedDatetimeStamp: lib.datetime.now()
-        createdByUserSerial: @user.serial
-        actualCost: item.actualCost or item.price
-      }
+  _preparePriceListData: (priceList)-> 
+    priceList.map (item)=> 
+      newItem = @_prepareNewItemForDB item
+      newItem.actualCost = newItem.actualCost or item.price
+      return newItem
   
   _getPriceListFromFile: (fileName, cbfn)->
     @domHost.getStaticData fileName, (priceList)=>
@@ -194,9 +202,59 @@ Polymer {
       }
     app.db.insert 'custom-investigation-list', customInvestigationObject
 
+  
+  addNewItemToPriceList: (newItem)->
+    @push 'priceList', newItem
+    if (@priceListCategories.indexOf newItem.category) is -1
+      @_loadCategories @priceList
+      selectedCategoryIndex = @priceListCategories.length-1
+      @async => @$$("#categoryTabs").selectIndex selectedCategoryIndex
+    @async => @showPriceListForSelectedCategory (@$$("#categoryTabs").selected)
+    if newItem.category is 'Investigation'
+      @_addToCustomInvestigation data
+    app.db.insert 'organization-price-list', newItem
 
+  removeItemFromPriceList: (removedItem)->
+    indexOnPriceList = @priceList.findIndex (priceItem)=> priceItem.serial is removedItem.serial
+    @splice "priceList", indexOnPriceList, 1
+    app.db.remove 'organization-price-list', removedItem._id
+    app.db.insert 'organization-price-list--deleted', {serial: removedItem.serial}
+    unless @priceListForSelectedCategory.length
+      @_loadCategories @priceList
+      @async => @$$("#categoryTabs").selectIndex(0)
+      @async => @showPriceListForSelectedCategory 0
+    
+
+  _validateCustomItem: (data)->
+    return unless typeof data is 'object'
+    unless data.name
+      @domHost.showWarningToast 'Name is required'
+      return false
+    unless data.price
+      @domHost.showWarningToast 'Price is required'
+      return false
+    unless data.category
+      @domHost.showWarningToast 'Category is required'
+      return false
+    return true
+
+
+  
   # Events
   # =================================
+  updatePriceList: (changeRecord)->
+    if changeRecord
+      changeRecord.indexSplices.forEach (change)=>
+        # removing items
+        change.removed.forEach (removedItem)=> 
+          @removeItemFromPriceList removedItem
+        # adding new items
+        for i in [0...change.addedCount]
+          index = change.index + i
+          newItem = change.object[index]
+          @addNewItemToPriceList newItem
+
+
   actualCostChanged: (e)->
     item = e.model.item
     app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
@@ -215,46 +273,37 @@ Polymer {
       if answer
         {item, index} = e.model
         @splice 'priceListForSelectedCategory', index, 1
-        indexOnPriceList = @priceList.findIndex (priceItem)=> item.serial is priceItem.serial
-        @splice "priceList", indexOnPriceList, 1
-        app.db.remove 'organization-price-list', item._id
-        app.db.insert 'organization-price-list--deleted', {serial: item.serial}
+        # indexOnPriceList = @priceList.findIndex (priceItem)=> item.serial is priceItem.serial
+        # @splice "priceList", indexOnPriceList, 1
+        # app.db.remove 'organization-price-list', item._id
+        # app.db.insert 'organization-price-list--deleted', {serial: item.serial}
 
-  saveButtonPressed: ->
-    @domHost.showSuccessToast 'Data Saved'
+  saveButtonPressed: -> @domHost.showSuccessToast 'Data Saved'
 
-  addNewItemPressed: (e)->
-    @_invokeCustomModal (data)->
-      if data
-        newItem = Object.assign {
-          serial: @generateSerialForPriceListItem()
-          organizationId: @organization.idOnServer
-          createdDatetimeStamp: lib.datetime.now()
-          lastModifiedDatetimeStamp: lib.datetime.now()
-          createdByUserSerial: @user.serial
-        }, data
-        app.db.insert 'organization-price-list', newItem
-        @push 'priceList', newItem
-        if (@priceListCategories.indexOf newItem.category) is -1
-          @_loadCategories @priceList
-        if data.category is 'Investigation'
-          @_addToCustomInvestigation data
+  addNewItemModalOpen: -> @.$.customItemModal.toggle()
   
-
-  # Add Custom Item Modal Code
-  # ==========================
-
-  _invokeCustomModal: (cbfn)->
-    @.$.customItemModal.toggle()
-    @modalSuccessCallBack = cbfn
-
-  modalClosedEvent: (e)->
-    if e.detail.confirmed
-      @modalSuccessCallBack @customItem
-    else
-      @modalSuccessCallBack false
-    @modalSuccessCallBack = null
-    @customItem = {}
+  addNewItemAndClosePressed: ->
+    data = @get 'customItem'
+    valid = @_validateCustomItem data
+    if valid
+      newItem = @_prepareNewItemForDB data
+      @unshift 'priceListForSelectedCategory', newItem
+      @$$("#customItemModal").toggle()
+      @set 'customItem', {}
+      @domHost.showSuccessToast 'Item Added and Saved'
+        
+  addNextItemPressed: ()->
+    data = @get 'customItem'
+    valid = @_validateCustomItem data
+    if valid
+      newItem = @_prepareNewItemForDB data
+      @addNewItemToPriceList newItem
+      @set 'customItem', {
+        category: data.category
+        subCategory: data.subCategory
+      }
+      @domHost.showSuccessToast 'Item Added and Saved'
+      
 
     
   
