@@ -37,7 +37,7 @@ Polymer {
 
     customItem:
       type: Object
-      value: -> {}
+      value: -> @_makeCustomItem()
 
     loading:
       type: Boolean
@@ -115,6 +115,9 @@ Polymer {
 
   _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
 
+  # Prepare Price List Data
+  # ======================================
+  
   _prepareNewItemForDB: (data)->
     return Object.assign data, {
       serial: @generateSerialForPriceListItem()
@@ -128,18 +131,12 @@ Polymer {
     priceList.map (item)=> 
       newItem = @_prepareNewItemForDB item
       newItem.actualCost = newItem.actualCost or item.price
+      newItem.qty = newItem.qty or null
       return newItem
   
   _getPriceListFromFile: (fileName, cbfn)->
     @domHost.getStaticData fileName, (priceList)=>
       cbfn priceList
-
-  _getCategoriesFromPriceListData: (priceListData)->
-    categoryMap = priceListData.reduce ((obj, item)=>
-      obj[item.category] = null
-      return obj
-    ), {}
-    return Object.keys categoryMap
 
   _createNewPriceList: (organizationIdentifier, cbfn)->
     @_getPriceListFromFile 'uhcpInvoicePriceList', (priceList)=>
@@ -150,7 +147,17 @@ Polymer {
     for item in priceList
       app.db.insert 'organization-price-list', item
 
+  # Prepare Price List Data End
+  # ======================================
 
+
+  _getCategoriesFromPriceListData: (priceListData)->
+    categoryMap = priceListData.reduce ((obj, item)=>
+      obj[item.category] = null
+      return obj
+    ), {}
+    return Object.keys categoryMap
+  
   _loadPriceList: (organizationIdentifier, cbfn)->
     lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
     
@@ -238,7 +245,15 @@ Polymer {
       return false
     return true
 
-
+  _makeCustomItem: (obj = {})->
+    return Object.assign {
+      name: ''
+      price: null
+      actualCost: null
+      qty: null
+      category: ''
+      subCategory: ''
+    }, obj 
   
   # Events
   # =================================
@@ -298,7 +313,7 @@ Polymer {
     if valid
       newItem = @_prepareNewItemForDB data
       @addNewItemToPriceList newItem
-      @set 'customItem', {
+      @set 'customItem', @_makeCustomItem {
         category: data.category
         subCategory: data.subCategory
       }

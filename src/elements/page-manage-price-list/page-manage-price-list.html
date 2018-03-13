@@ -13,7 +13,6 @@
 <!-- vaadin elements -->
 <link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
 <link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
-<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-column.html">
 <link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-filter.html">
 <link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-sorter.html">
 
@@ -171,8 +170,9 @@
       <paper-dialog-scrollable>
         <div class="layout vertical p-horizontal-16">
           <paper-input autofocus label="Unit Name" value="{{customItem.name}}" required auto-validate></paper-input>
-          <paper-input label="Actual Cost" type="number" value="{{customItem.actualCost}}"></paper-input>
-          <paper-input label="Unit Price" type="number" value="{{customItem.price}}" required auto-validate></paper-input>
+          <paper-input label="Retail Price" type="number" value="{{customItem.price}}" required auto-validate></paper-input>
+          <paper-input label="Cost" type="number" value="{{customItem.actualCost}}"></paper-input>
+          <paper-input label="Quantity" type="number" value="{{customItem.qty}}"></paper-input>
           <vaadin-combo-box class="category-combo-box" label="Category" items="[[priceListCategories]]" allow-custom-value value="{{customItem.category}}" selected-item="{{customItem.category}}" required auto-validate>
           </vaadin-combo-box>
           <paper-input label="Subcategory" value="{{customItem.subCategory}}"></paper-input>

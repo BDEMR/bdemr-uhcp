@@ -15,6 +15,7 @@
 <link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
 
 <link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -227,12 +228,12 @@
 
           <paper-card heading="Invoice">
             <div class="card-content">
-              <div class="p-16">
+              <!-- <div class="p-16">
                 <vaadin-combo-box class="flex" label="Type of Invoice" id="invoiceType" items="[[invoiceCategoryList.data]]" allow-custom-value="true"
                   on-custom-value-set="invoiceTypeCustomValueSet" selected-item="{{invoice.category}}">
                 </vaadin-combo-box>
                 <span class="type caption secondary">Press Enter after typing Custom Category</span>
-              </div>
+              </div> -->
 
               <div class="layout horizontal start invoice-item">
                 <div class="flex-1">
@@ -283,7 +284,7 @@
               </template>
 
               <div class="layout vertical calculation p-16 m-vertical-16">
-                <div class="layout horizontal end">
+                <!-- <div class="layout horizontal end">
                   <paper-dropdown-menu>
                     <paper-menu selected="{{discountType}}" id="discountType" class="dropdown-content" on-iron-select="discountTypeChanged">
                       <paper-item>Percentage</paper-item>
@@ -293,9 +294,10 @@
                   <paper-input label="Discount" type="number" value="{{invoice.discount}}" max="99" maxlength="2" no-label-float>
                     <div suffix>Discount</div>
                   </paper-input>
-                </div>
-                <div class="layout horizontal type body-lead">Gross - [[invoiceGrossPrice]] BDT</div>
-                <div class="text-mute layout horizontal">Discount [[invoiceDiscountAmt]]</div>
+                </div> -->
+
+                <!-- <div class="layout horizontal type body-lead">Gross - [[invoiceGrossPrice]] BDT</div> -->
+                <!-- <div class="text-mute layout horizontal">Discount [[invoiceDiscountAmt]]</div> -->
                 <div class="layout horizontal type title-2">
                   <strong>Total [[invoice.totalBilled]] BDT</strong>
                 </div>
@@ -306,17 +308,17 @@
                   </paper-input>
                 </div>
                 <div class="layout horizontal text-warning type body-lead">Due [[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</div>
-                <div class="layout horizontal">
+                <!-- <div class="layout horizontal">
                   <paper-input class="big-text-input" label="Last Payment" type="number" value="{{invoice.lastPaid}}" min="0" on-change="lastPaymentChanged"
                     allowed-pattern="[0-9]" disabled$="[[!invoice.paid]]" no-label-float error-message="Last Payment Can not be more than the Due Amount">
                     <div prefix>Last Payment</div>
                   </paper-input>
-                </div>
+                </div> -->
                 <div class="layout horizontal text-success type body-lead bold">Total Amount Received: [[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</div>
 
               </div>
 
-              <div class="m-left-10 type subhead bold">Third Party Commission: </div>
+              <!-- <div class="m-left-10 type subhead bold">Third Party Commission: </div>
               <div class="layout horizontal justified center">
                 <div class="layout horizontal">
                   <paper-autocomplete class="m-left-10" label="Name" text="{{invoice.commission.name}}" no-label-float source="[[thirdPartyUserListSourceMap]]"
@@ -328,7 +330,7 @@
                   </paper-input>
                   <paper-input class="m-left-10" label="Commission" value="{{invoice.commission.amount}}" no-label-float></paper-input>
                 </div>
-              </div>
+              </div> -->
 
             </div>
             <div class="card-actions vertical layout">

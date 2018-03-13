@@ -309,22 +309,6 @@ Polymer {
     item.price = item.price?= 0
     item.totalPrice = item.price?= 0
     @push 'invoice.data', item
-    console.log item
-
-  addInventoryItemToListButtonClicked: (e)->
-    doc = e.model.item.data
-    item = {}
-    
-    if 'serial' of e.model.item
-      item.inventorySerial = e.model.item.serial
-    
-    item.name = doc.name
-    item.qty = 1
-    item.actualCost = doc.buyingPrice?=0
-    item.price = doc.sellingPrice?=0
-    item.totalPrice = doc.sellingPrice?=0
-    item.category = 'pharmacy'
-    @push 'invoice.data', item
 
   deleteInvoiceItem: (e)->
     @splice 'invoice.data', e.model.index, 1
@@ -450,25 +434,12 @@ Polymer {
       return false
     return true
   
-  
-  _saveThirdPartyCommissionUser: (invoice)->
-    thirdPartyUserName = invoice.commission.name
-    thirdPartyUserMobile = invoice.commission.mobile
-    thirdPartyUserFound = false
-    for item in @thirdPartyUserList
-      if item.name is thirdPartyUserName or item.mobile is thirdPartyUserMobile
-        thirdPartyUserFound = true
-        break
-    unless thirdPartyUserFound
-      app.db.insert 'third-party-user-list', @_makeNewThirdPartyUser(thirdPartyUserName, thirdPartyUserMobile)
-  
   _reduceInventoryItems: (invoice)->
     for item in invoice.data
-      if 'inventorySerial' of item
-        doc = (app.db.find 'organization-inventory', ({serial})=> serial is item.inventorySerial)[0]
-        console.log doc
-        doc.data.qty -= item.qty
-        app.db.update 'organization-inventory', doc._id, doc
+      doc = (app.db.find 'organization-price-list', ({serial})=> serial is item.serial)[0]
+      if doc.qty
+        doc.qty -= item.qty
+        app.db.update 'organization-price-list', doc._id, doc
 
   _assignInvoiceRef: (referenceNumber, cbfn)->
     if referenceNumber
