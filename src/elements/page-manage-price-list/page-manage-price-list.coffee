@@ -47,7 +47,6 @@ Polymer {
   # attached: ()->
   #   # HACK - vaadin-grid element stops the navigatedIn call somehow
   #   @navigatedIn()
-
   
   navigatedIn: ->
     
@@ -65,10 +64,13 @@ Polymer {
       @_checkUserAccess @user.idOnServer, organization.userList, (hasAccess)=>
         if hasAccess 
           @_loadPriceList organization.idOnServer, (priceListData)=>
-            @_loadCategories priceListData
-            @$$("#categoryTabs").selectIndex(0)
-            @showPriceListForSelectedCategory 0
             @loading = false
+            @_loadCategories priceListData
+            @showPriceListForSelectedCategory 0
+            # hack otherwise can't find the element
+            @async =>
+              @$$("#categoryTabs").selectIndex(0)
+            
         else 
           @_notifyInvalidAccess()
           @loading = false
@@ -155,14 +157,11 @@ Polymer {
           @set 'priceList', priceListFromFile
           cbfn priceListFromFile
     else
-      @domHost.showToast 'Need to sync'
-      @loading = false
-      return
+      @domHost._sync()
 
   _loadCategories: (priceListData)->
     priceListCategories = @_getCategoriesFromPriceListData priceListData
     @set 'priceListCategories', priceListCategories
-
 
   
   showPriceListForSelectedCategory: (selectedIndex)->
@@ -171,7 +170,33 @@ Polymer {
     @set 'priceListForSelectedCategory', priceListForSelectedCategory
 
 
+  # Add Investigation to Custom List for use in other place
+  _addToCustomInvestigation: (data)->
+    serial = @generateSerialForCustomInvestigation()
+    customInvestigationObject = {
+      serial: serial
+      lastModifiedDatetimeStamp: lib.datetime.now()
+      createdDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
+      createdByUserSerial: @user.serial
+      visitSerial: null
+      patientSerial: null
+      data:
+        name: data.name
+        investigationId: serial
+        investigationList: [
+          {
+            name: data.name
+            referenceRange: ''
+            unitList: []
+          }
+        ]
+      }
+    app.db.insert 'custom-investigation-list', customInvestigationObject
+
+
   # Events
+  # =================================
   actualCostChanged: (e)->
     item = e.model.item
     app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
@@ -193,6 +218,7 @@ Polymer {
         indexOnPriceList = @priceList.findIndex (priceItem)=> item.serial is priceItem.serial
         @splice "priceList", indexOnPriceList, 1
         app.db.remove 'organization-price-list', item._id
+        app.db.insert 'organization-price-list--deleted', {serial: item.serial}
 
   saveButtonPressed: ->
     @domHost.showSuccessToast 'Data Saved'
@@ -200,20 +226,20 @@ Polymer {
   addNewItemPressed: (e)->
     @_invokeCustomModal (data)->
       if data
-        newItem = Object.assign data, {
+        newItem = Object.assign {
           serial: @generateSerialForPriceListItem()
           organizationId: @organization.idOnServer
           createdDatetimeStamp: lib.datetime.now()
           lastModifiedDatetimeStamp: lib.datetime.now()
           createdByUserSerial: @user.serial
-        }
+        }, data
         app.db.insert 'organization-price-list', newItem
         @push 'priceList', newItem
         if (@priceListCategories.indexOf newItem.category) is -1
           @_loadCategories @priceList
-
-        
-
+        if data.category is 'Investigation'
+          @_addToCustomInvestigation data
+  
 
   # Add Custom Item Modal Code
   # ==========================

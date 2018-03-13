@@ -709,6 +709,16 @@
     </paper-dialog>
     <!-- generic-modal-dialog - end -->
 
+    <!-- sync - start -->
+    <paper-dialog id="sync-dialog" modal>
+      <p>SYNC is in progress, please wait...</p>
+      <div class="layout vertical center">
+        <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
+        <span>[[syncCompleted]]/43</span>
+      </div>
+    </paper-dialog>
+    <!-- sync - end -->
+
     <paper-toast id="toast1" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
     <paper-toast id="successToast" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
     <!-- Warning Toast -->
@@ -722,5 +732,6 @@
   <script src="behavior-patients-data-sync-config.coffee-compiled.js"></script>
   <script src="behavior-organization-data-sync.coffee-compiled.js"></script>
   <script src="behavior-organization-data-sync-config.coffee-compiled.js"></script>
+  <script src="mixin-call-sync.coffee-compiled.js"></script>
   <script src="root-element.coffee-compiled.js"></script>
 </dom-module>
