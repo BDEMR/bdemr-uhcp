@@ -16,6 +16,9 @@ Polymer {
     app.behaviors.local['root-element'].patientsDataSync
     app.behaviors.local['root-element'].userDataSyncConfig
     app.behaviors.local['root-element'].userDataSync
+    app.behaviors.local['root-element'].organizationDataSyncConfig
+    app.behaviors.local['root-element'].organizationDataSync
+    app.behaviors.local['root-element'].syncCall
   ]
   properties:
 
@@ -115,6 +118,10 @@ Polymer {
     orgSmsBalance:
       type: Number
       value: 0
+
+    syncCompleted:
+      type: Number
+      value: -> 0
 
 
   observers: [ 
@@ -383,9 +390,9 @@ Polymer {
 
   _hideAd: (pageName)->
     if @isMobileView
-      hideOnPage = ['login', 'patient-manager']
+      hideOnPage = ['login', 'patient-manager', 'manage-price-list']
     else
-      hideOnPage = ['login']
+      hideOnPage = ['login', 'manage-price-list']
 
     if pageName in hideOnPage
       @set 'hideAd', true
@@ -469,6 +476,20 @@ Polymer {
 
   genericToastTapped: (e)->
     @$$('#toast1').close()
+
+  showSuccessToast: (content)->
+    @genericToastContents = content
+    @$$('#successToast').open()
+
+  successToastTapped: (e)->
+    @$$('#successToast').close()
+
+  showWarningToast: (content)->
+    @genericToastContents = content
+    @$$('#warningToast').open()
+
+  warningToastTapped: (e)->
+    @$$('#warningToast').close()
 
   # === NOTE - These events are manually delegated to pages ===
 
@@ -879,89 +900,10 @@ Polymer {
   
   # = REGION ======================================
 
-  _syncOnlyPatientTestResults: (cbfn)->
-    @_syncPatients @syncPatientTestResultsConfig, ()->
-      cbfn()
-
-  _syncOnlyPatientGallery: (cbfn)->
-    @_syncPatients @syncPatientGalleryAttachmentConfig, ()->
-      cbfn()
-
-  _syncUserSettings: (cbfn)->
-    @_syncUser @syncSettings, ()->
-      cbfn()
-
-  _syncOnlyInvoice: (cbfn)->
-    @_syncPatients @syncVisitInvoice, ()->
-      cbfn()
-  
-
   syncButtonPressed: (e)->
     @_sync()
-
-  _sync: (navigateToAfterSyncing = null)->
-    @_syncTemporaryOfflinePccPatients =>
-
-      collector1 = new lib.util.Collector 39
-
-      @_syncUser @syncDoctorFavoriteMedicationConfig, ()=> collector1.collect 'A1', null
-      @_syncUser @syncSettings, ()=> collector1.collect 'A1', null
-      @_syncUser @syncFavoriteAdvisedTestConfig, ()=> collector1.collect 'A1', null
-      @_syncUser @syncUserAddedInstitutionConfig, ()=> collector1.collect 'A1', null
-      @_syncUser @syncVisitedPatientLogConfig, ()=> collector1.collect 'A1', null
-      @_syncUser @syncUserAddedCustomSymptomsConfig, ()=> collector1.collect 'A1', null
-      @_syncUser @syncUserAddedCustomExaminationConfig, ()=> collector1.collect 'A1', null
-
-      # @_syncPatients @syncPatientListConfig, ()=> collector1.collect 'A1', null
-
-      @_syncPatients @syncVisitConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncPrescriptionConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncPatientMedicationConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncDoctorNotesConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncNextVisitConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncTestAdvisedConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncExaminationConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncIdentifiedSymptomsConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncCustomInvestigationConfig, ()=> collector1.collect 'A1', null
-
-      @_syncPatients @syncAnaesmonRecordConfig, ()=> collector1.collect 'A1', null
-
-      
-      @_syncPatients @syncPatientTestResultsConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncPatientStayConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncHistoryAndPhysicalConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncDiagnosisConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncReferral, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncEmployeeLeaveData, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncVitalBloodPressureConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncVitalBMIConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncVitalPulseRateConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncVitalRespiratoryRateConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncVitalSpO2Config, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncVitalTemperatureConfig, ()=> collector1.collect 'A1', null
-
-      @_syncPatients @syncTestBloodSugarConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncOtherTestConfig, ()=> collector1.collect 'A1', null
-      
-      @_syncPatients @syncCommentPatientConfig, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncCommentDoctorConfig, ()=> collector1.collect 'A1', null
-
-      @_syncPatients @syncPatientGalleryAttachmentConfig, ()=> collector1.collect 'A1', null
-
-      @_syncPatients @syncActivityLog, ()=> collector1.collect 'A1', null
-
-      @_syncPatients @syncVisitInvoice, ()=> collector1.collect 'A1', null
-
-      @_syncPatients @syncVisitDiagnosis, ()=> collector1.collect 'A1', null
-
-      @_syncPatients @syncPccRecords, ()=> collector1.collect 'A1', null
-      @_syncPatients @syncNdrRecords, ()=> collector1.collect 'A1', null
-
-      collector1.finally =>
-        console.log 'time to reload'
-        if navigateToAfterSyncing
-          @navigateToPage(navigateToAfterSyncing)
-        @reloadPage()
+    
+  # sync code moved to 'mixin-call-sync.coffee' file
 
 
 

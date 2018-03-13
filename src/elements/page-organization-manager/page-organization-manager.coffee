@@ -105,6 +105,14 @@ Polymer {
     { organization } = e.model
     @domHost.navigateToPage '#/organization-manage-waitlist/organization:' + organization.idOnServer
 
+  manageUnitPricePressed: (e)->
+    { organization } = e.model
+    @domHost.navigateToPage '#/manage-price-list/organization:' + organization.idOnServer
+
+  managePharmacyPressed: (e)->
+    { organization } = e.model
+    @domHost.navigateToPage '#/pharmacy-manager/organization:' + organization.idOnServer
+
   joinOrganizationTapped: (e)->
     { organization } = e.model
     

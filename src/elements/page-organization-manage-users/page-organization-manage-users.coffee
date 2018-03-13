@@ -256,8 +256,6 @@ Polymer {
         @set 'isOrganizationValid', true
         @_loadRoleList response.data.matchingOrganizationList[0]
         @_loadMemberList()
-        @_loadPatientList()
-
 
   _loadMemberList: ->
     data = { 

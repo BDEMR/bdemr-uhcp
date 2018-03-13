@@ -988,6 +988,23 @@ app.pages.pageList = [
   }
 
   {
+    name: 'create-invoice'
+    element: 'page-create-invoice'
+    windowTitlePostfix: 'Visit Invoice'
+    headerTitle: 'Invoice'
+    preload: true
+    hrefList: [ 'create-invoice' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: false
+    showSaveButton: false
+    showPatientsDetails: false
+    showToolbar: false
+    hideHeaderTitle: false
+    accessId: 'none'
+  }
+
+  {
     name: 'invoice-manager'
     element: 'page-invoice-manager'
     windowTitlePostfix: 'Invoice Manager'
@@ -1099,7 +1116,65 @@ app.pages.pageList = [
 
   }
 
-  
+  {
+    name: 'set-unit-price'
+    element: 'page-set-unit-price'
+    windowTitlePostfix: 'set-unit-price'
+    headerTitle: 'Set Price for Unit'
+    preload: true
+    hrefList: [ 'set-unit-price' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: false
+    showSaveButton: true
+    showPatientsDetails: false
+    accessId: 'none'
+  }
+
+  {
+    name: 'manage-price-list'
+    element: 'page-manage-price-list'
+    windowTitlePostfix: 'manage-price-list'
+    headerTitle: 'Manage Price List'
+    preload: true
+    hrefList: [ 'manage-price-list' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showSaveButton: true
+    showPatientsDetails: false
+    accessId: 'none'
+  }
+
+  {
+    name: 'set-package'
+    element: 'page-set-package'
+    windowTitlePostfix: 'set-package'
+    headerTitle: 'Create Package'
+    preload: true
+    hrefList: [ 'set-package' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: false
+    showSaveButton: false
+    showPatientsDetails: false
+    accessId: 'none'
+  }
+
+  {
+    name: 'pharmacy-manager'
+    element: 'page-pharmacy-manager'
+    windowTitlePostfix: 'Pharmacy Manager'
+    headerTitle: 'Pharmacy Manager'
+    preload: true
+    hrefList: [ 'pharmacy-manager' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showSaveButton: false
+    showOrganizationsName: true
+    accessId: 'D020'
+  }
 
   {
     name: 'print-symptoms'

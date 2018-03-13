@@ -94,6 +94,11 @@ app.behaviors.local['root-element'].dataLoader =
         name: 'dynamicElementDefinitionPreoperativeAssessment'
         url: 'static-data/de-def-doctor-app-history-and-physical-examination.json'
       }
+
+      {
+        name: 'uhcpInvoicePriceList'
+        url: 'static-data/uhcp-invoice-price.json'
+      }
     ]
 
     staticDataListProduction = [

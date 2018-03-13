@@ -802,23 +802,31 @@ Polymer {
 
   viewVisitRecord: (e)->
 
-    index = e.model.index
+    el = @locateParentNode e.target, 'PAPER-ITEM'
+    el.opened = false
+    repeater = @$$ '#visit-list-repeater'
+
+    index = repeater.indexForElement el
+    visit = @matchingVisitList[index]
 
     visit = @matchingVisitList[index]
 
-    # console.log "selected Visit Record:", visit
+    console.log "selected Visit Record:", visit
 
-    if visit.testResults.serial
-      @domHost.navigateToPage '#/print-test-result/visit:' + visit.serial + '/patient:' + @patient.serial + '/test-results:' + visit.testResults.serial
-      return
+    if visit.recordTypeName is 'Test Results'
+      if visit.testResults.serial
+        @domHost.navigateToPage '#/print-test-result/visit:' + visit.serial + '/patient:' + @patient.serial + '/test-results:' + visit.testResults.serial
+        return
       
     else if visit.recordTypeName is 'Invoice'
       @domHost.navigateToPage '#/print-invoice/visit:' + visit.serial + '/patient:' + @patient.serial + '/invoice:' + visit.recordTypeSerial
+      return
 
     else
       @domHost.setSelectedVisitSerial visit.serial
       @domHost.selectedPatientPageIndex = 0
       @domHost.navigateToPage '#/visit-editor/visit:' + visit.serial + '/patient:' + @patient.serial
+      return
 
   
 
