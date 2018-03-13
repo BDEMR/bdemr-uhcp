@@ -191,50 +191,24 @@
           </paper-card>
 
 
-          <paper-card>
-            <div class="card-custom-header" on-tap="toggleInvestigation">
-              <div class="layout horizontal justified center">
-                <div class="title flex">
-                  <iron-icon icon="expand-more"></iron-icon> Investigation</div>
-              </div>
-            </div>
-            <div class="card-content">
-              <iron-collapse id="investigation">
-                <div class="collapse-content">
-                  <div hidden$="{{isEmpty(investigationPriceList.data)}}" class="layout vertical center item">No Data...</div>
-                  <iron-list items="[[investigationPriceList.data]]">
-                    <template>
-                      <div class="item layout horizontal center">
-                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
-                        <div class="flex">[[item.name]]</div>
-                        <div>[[item.price]] BDT</div>
-                      </div>
-                    </template>
-                  </iron-list>
-                </div>
-              </iron-collapse>
-            </div>
-          </paper-card>
+          <template is="dom-repeat" items="[[priceListCategories]]" as="categoryName">
 
-
-          <paper-card>
-              <div class="card-custom-header" on-tap="toggleDoctorFees">
+            <paper-card>
+              <div class="card-custom-header" on-tap="toggleCollapseClicked">
                 <div class="layout horizontal justified center">
                   <div class="title flex">
-                    <iron-icon icon="expand-more"></iron-icon> Doctor Fees</div>
+                    <iron-icon icon="expand-more"></iron-icon> [[categoryName]]</div>
                 </div>
               </div>
               <div class="card-content">
-                <iron-collapse id="doctorFees">
+                <iron-collapse id="[[convertCategoryNameToId(categoryName)]]">
                   <div class="collapse-content">
-                    <div hidden$="{{isEmpty(doctorFeesPriceList.data)}}" class="layout vertical center item">No Data...</div>
-                    <iron-list items="[[doctorFeesPriceList.data]]">
+                    <iron-list items="[[getDataForCategory(categoryName)]]">
                       <template>
                         <div class="item layout horizontal center">
                           <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
                           <div class="flex">[[item.name]]</div>
-                          <div class="type secondary">[[item.type]]</div>
-                          <div class="m-left-8">[[item.price]] BDT</div>
+                          <div>[[item.price]] BDT</div>
                         </div>
                       </template>
                     </iron-list>
@@ -243,162 +217,8 @@
               </div>
             </paper-card>
 
+          </template>
 
-          <paper-card>
-            <div class="card-custom-header" on-tap="toggleServcie">
-              <div class="layout horizontal justified center">
-                <div class="title flex">
-                  <iron-icon icon="expand-more"></iron-icon> Service</div>
-              </div>
-            </div>
-            <div class="card-content">
-              <iron-collapse id="service">
-                <div class="collapse-content">
-                  <div hidden$="{{isEmpty(servicePriceList.data)}}" class="layout vertical center item">No Data...</div>
-                  <iron-list items="[[servicePriceList.data]]">
-                    <template>
-                      <div class="item layout horizontal center">
-                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
-                        <div class="flex">[[item.name]]</div>
-                        <template is="dom-if" if="[[item.type]]">
-                          <div class="type secondary">[[item.type]]</div>
-                        </template>
-                        <div class="m-left-8">[[item.price]] BDT</div>
-                      </div>
-                    </template>
-                  </iron-list>
-                </div>
-              </iron-collapse>
-            </div>
-          </paper-card>
-
-          
-          <paper-card>
-            <div class="card-custom-header" on-tap="togglePharmacy">
-              <div class="layout horizontal justified center">
-                <div class="title flex">
-                  <iron-icon icon="expand-more"></iron-icon> Pharmacy</div>
-              </div>
-            </div>
-            <div class="card-content">
-              <iron-collapse id="pharmacy">
-                <div class="collapse-content">
-                  <div hidden$="{{isEmpty(medicineInventory)}}" class="layout vertical center item">No Data...</div>
-                  <iron-list items="[[medicineInventory]]">
-                    <template>
-                      <div class="item layout horizontal center">
-                        <paper-icon-button class="add" icon="add-circle" on-tap="addInventoryItemToListButtonClicked"></paper-icon-button>
-                        <div class="flex-2">[[item.data.name]]</div>
-                        <div class="flex">[[item.data.sellingPrice]] BDT</div>
-                        <div class="flex">[[item.data.qty]] Units</div>
-                      </div>
-                    </template>
-                  </iron-list>
-                </div>
-              </iron-collapse>
-            </div>
-          </paper-card>
-
-          <paper-card>
-            <div class="card-custom-header" on-tap="toggleSupply">
-              <div class="layout horizontal justified center">
-                <div class="title flex">
-                  <iron-icon icon="expand-more"></iron-icon> Supply</div>
-              </div>
-            </div>
-            <div class="card-content">
-              <iron-collapse id="supply">
-                <div class="collapse-content">
-                  <div hidden$="{{isEmpty(supplyPriceList.data)}}" class="layout vertical center item">No Data...</div>
-                  <iron-list items="[[supplyPriceList.data]]">
-                    <template>
-                      <div class="item layout horizontal center">
-                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
-                        <div class="flex">[[item.name]]</div>
-                        <div>[[item.price]] BDT</div>
-                      </div>
-                    </template>
-                  </iron-list>
-                </div>
-              </iron-collapse>
-            </div>
-          </paper-card>
-
-          <paper-card>
-            <div class="card-custom-header" on-tap="toggleAmbulance">
-              <div class="layout horizontal justified center">
-                <div class="title flex">
-                  <iron-icon icon="expand-more"></iron-icon> Ambulance</div>
-              </div>
-            </div>
-            <div class="card-content">
-              <iron-collapse id="ambulance">
-                <div class="collapse-content">
-                  <div hidden$="{{isEmpty(ambulancePriceList.data)}}" class="layout vertical center item">No Data...</div>
-                  <iron-list items="[[ambulancePriceList.data]]">
-                    <template>
-                      <div class="item layout horizontal center">
-                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
-                        <div class="flex">[[item.name]]</div>
-                        <div>[[item.price]] BDT</div>
-                      </div>
-                    </template>
-                  </iron-list>
-                </div>
-              </iron-collapse>
-            </div>
-          </paper-card>
-
-          <paper-card>
-            <div class="card-custom-header" on-tap="togglePackage">
-              <div class="layout horizontal justified center">
-                <div class="title flex">
-                  <iron-icon icon="expand-more"></iron-icon> Package</div>
-              </div>
-            </div>
-            <div class="card-content">
-              <iron-collapse id="package">
-                <div class="collapse-content">
-                  <div hidden$="{{isEmpty(packagePriceList.data)}}" class="layout vertical center item">No Data...</div>
-                  <iron-list items="[[packagePriceList.data]]">
-                    <template>
-                      <div class="item layout horizontal center">
-                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
-                        <div class="flex">[[item.name]]</div>
-                        <div>[[item.price]] BDT</div>
-                      </div>
-                    </template>
-                  </iron-list>
-                </div>
-              </iron-collapse>
-            </div>
-          </paper-card>
-
-          <paper-card>
-            <div class="card-custom-header" on-tap="toggleOther">
-              <div class="layout horizontal justified center">
-                <div class="title flex">
-                  <iron-icon icon="expand-more"></iron-icon> Other</div>
-              </div>
-            </div>
-            <div class="card-content">
-              <iron-collapse id="other">
-                <div class="collapse-content">
-                  <div hidden$="{{isEmpty(otherPriceList.data)}}" class="layout vertical center item">No Data...</div>
-                  <iron-list items="[[otherPriceList.data]]">
-                    <template>
-                      <div class="item layout horizontal center">
-                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
-                        <div class="flex">[[item.name]]</div>
-                        <div>[[item.category]]</div>
-                        <div class="m-left-8">[[item.price]] BDT</div>
-                      </div>
-                    </template>
-                  </iron-list>
-                </div>
-              </iron-collapse>
-            </div>
-          </paper-card>
 
         </section>
 
@@ -443,7 +263,9 @@
                   <div class="flex-7 layout vertical">
                     <div>
                       <strong>[[item.name]]</strong>
-                      <template is="dom-if" if="[[item.type]]"><span class="type secondary">[[item.type]]</span></template>
+                      <template is="dom-if" if="[[item.type]]">
+                        <span class="type secondary">[[item.type]]</span>
+                      </template>
                     </div>
                     <template is="dom-if" if="[[item.itemList]]">
                       <ul>
@@ -485,8 +307,8 @@
                 </div>
                 <div class="layout horizontal text-warning type body-lead">Due [[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</div>
                 <div class="layout horizontal">
-                  <paper-input class="big-text-input" label="Last Payment" type="number" value="{{invoice.lastPaid}}" min="0" on-change="lastPaymentChanged" allowed-pattern="[0-9]"
-                    disabled$="[[!invoice.paid]]" no-label-float error-message="Last Payment Can not be more than the Due Amount">
+                  <paper-input class="big-text-input" label="Last Payment" type="number" value="{{invoice.lastPaid}}" min="0" on-change="lastPaymentChanged"
+                    allowed-pattern="[0-9]" disabled$="[[!invoice.paid]]" no-label-float error-message="Last Payment Can not be more than the Due Amount">
                     <div prefix>Last Payment</div>
                   </paper-input>
                 </div>

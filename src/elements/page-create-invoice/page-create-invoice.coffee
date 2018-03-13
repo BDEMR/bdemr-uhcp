@@ -34,59 +34,6 @@ Polymer {
       type: Number
       value: -> 1
 
-    investigationPriceList:
-      type: Object
-      notify: true
-      value: -> {
-        serial: null
-        lastModifiedDatetimeStamp: null
-        data: []
-      }
-
-    servicePriceList:
-      type: Object
-      notify: true
-      value: -> {
-        serial: null
-        lastModifiedDatetimeStamp: null
-        data: []
-      }
-
-    supplyPriceList:
-      type: Object
-      notify: true
-      value: -> {
-        serial: null
-        lastModifiedDatetimeStamp: null
-        data: []
-      }
-
-    ambulancePriceList:
-      type: Object
-      notify: true
-      value: -> {
-        serial: null
-        lastModifiedDatetimeStamp: null
-        data: []
-      }
-
-    packagePriceList:
-      type: Object
-      value: -> {
-        serial: null
-        lastModifiedDatetimeStamp: null
-        data: [] 
-      }
-    
-    otherPriceList:
-      type: Object
-      notify: true
-      value: -> {
-        serial: null
-        lastModifiedDatetimeStamp: null
-        data: []
-      }
-
     inventoryList:
       type: Object
       value: -> {
@@ -102,14 +49,6 @@ Polymer {
     thirdPartyUserList:
       type: Array
       value: -> []
-
-    fluidTypeList:
-      type: Array
-      value: -> ['NS','RL','Plasmalyte','D5','D5 NS','NS with 20 mmol KCL']
-    
-    transfusionTypeList:
-      type: Array
-      value: -> ['Albumin','Voluven','Volulyte','Pentastarch','Dextran','RCC','Platelet','FFP','Cryo(Bottle)','Cryo(Unit)']
 
     invoiceCategoryList:
       type: Object
@@ -127,9 +66,17 @@ Polymer {
       type: Object
       value: {}
 
+    priceList:
+      type: Object
+      value: -> {}
+
+    priceListCategories:
+      type: Array
+      value: -> []
+
   observers: [
     'calculateTotalPrice(invoice.data.splices, invoice.discount)'
-    '_calculateCommission(invoice.commission.billed, invoice.commission.percentage)'
+    # '_calculateCommission(invoice.commission.billed, invoice.commission.percentage)'
   ]
 
   # UTIL
@@ -166,23 +113,12 @@ Polymer {
     else
       @_loadInvoice params['invoice']
 
-
-    @_loadInvestigationPriceList @organization.idOnServer
-    @_loadDoctorFeesPriceList @organization.idOnServer
-    @_loadServicePriceList @organization.idOnServer
-    @_loadMedicineInventory @organization.idOnServer
-    @_loadSupplyPriceList @organization.idOnServer
-    @_loadAmbulancePriceList @organization.idOnServer
-    @_loadPackagePriceList @organization.idOnServer
-    @_loadOtherPriceList @organization.idOnServer
-    @_loadThirdPartyUserAutocompleteList @organization.idOnServer
     @_loadInvoiceCategoryList @organization.idOnServer
-    @_loadItemSearchAutoComplete()
-    
-  navigatedOut: ->
-    @set 'invoice', {}
-    @set "invoiceGrossPrice", 0
-    @set "invoiceDiscountAmt",  0
+
+    # @_loadItemSearchAutoComplete()
+
+    @_loadPriceList @organization.idOnServer, (priceListData)=>
+      @_loadCategories priceListData
 
   _loadUser:()->
     userList = app.db.find 'user'
@@ -223,6 +159,37 @@ Polymer {
   
   _notifyInvalidVisit: ->
     @domHost.showModalDialog 'Invalid Visit Provided'
+
+  _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
+  
+  _loadPriceList: (organizationIdentifier, cbfn)->
+    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
+    
+    if lastSyncedDatetimeStamp
+      priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
+      if priceListFromLocalStorage.length
+        @set 'priceList', priceListFromLocalStorage
+        cbfn priceListFromLocalStorage
+      else 
+        @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
+          @_insertItemIntoDatabase priceListFromFile
+          @set 'priceList', priceListFromFile
+          cbfn priceListFromFile
+    else
+      @domHost._sync()
+
+  _getCategoriesFromPriceListData: (priceListData)->
+    categoryMap = priceListData.reduce ((obj, item)=>
+      obj[item.category] = null
+      return obj
+    ), {}
+    return Object.keys categoryMap
+  
+  _loadCategories: (priceListData)->
+    priceListCategories = @_getCategoriesFromPriceListData priceListData
+    @set 'priceListCategories', priceListCategories
+
+  getDataForCategory: (categoryName)-> @priceList.filter (item)-> item.category is categoryName
   
   # Modal
   # ===================================
@@ -250,15 +217,7 @@ Polymer {
   # ===========================================
   
   _loadItemSearchAutoComplete: ->
-    inventoryList = ({name: item.data.name, price: item.data.sellingPrice, actualCost: item.data.buyingPrice, category: 'medicine'} for item in @inventoryList)
-
-    @_loadMedicineCompositionList (medicineSourceDataList)=>
-      # Getting All Prices Together
-      concatList = [].concat @investigationPriceList.data,  @servicePriceList.data, @otherPriceList.data, @packagePriceList.data, @supplyPriceList.data, @ambulancePriceList.data, inventoryList, medicineSourceDataList
-
-      autocompleteList = ({text: item.name, value: item} for item in concatList)
-
-      @set 'invoiceSourceDataList', autocompleteList
+    
 
   invoiceItemAutocompleteSelected: (e)->
     item = e.detail.value
@@ -269,16 +228,6 @@ Polymer {
     @.$.invoiceSearchInput.clear()
   
   # =============================================
-  
-  _loadMedicineCompositionList: (cbfn)->
-    @domHost.getStaticData 'pccMedicineList', (medicineCompositionList)=>
-      brandNameMap = {}
-      for item in medicineCompositionList
-        brandNameMap[item.brandName] = null
-      brandNameSourceDataList = ({name: item, price: null, category: 'medicine', actualCost: null} for item in Object.keys brandNameMap)
-
-      cbfn brandNameSourceDataList
-
   
   _loadThirdPartyUserAutocompleteList: (organizationIdentifier)->
     @thirdPartyUserList = app.db.find 'third-party-user-list', ({organizationId})-> organizationId is organizationIdentifier
@@ -291,97 +240,23 @@ Polymer {
     else
       @set 'invoiceCategoryList', @_makeNewInvoiceCategoryList organizationIdentifier
 
-  
-  syncPriceListButtonClicked: ->
-    collector2 = new lib.util.Collector 7
+  # _loadMedicineInventory: (organizationIdentifier)->
+  #   @domHost.getStaticData 'pccMedicineList', (medicineCompositionList)=>
+  #     brandNameMap = {}
+  #     for item in medicineCompositionList
+  #       brandNameMap[item.brandName] = null
+  #     generatedMedicineList = ({data: {name: item, actualCost: 0, price: 0, qty: 1, category: '', subCategory: ''}} for item in Object.keys brandNameMap)
 
-    @domHost._syncOrganizationData @domHost.syncInvestigationPriceList, ()=> collector2.collect 'A1', null
-    @domHost._syncOrganizationData @domHost.syncServicesPriceList, ()=> collector2.collect 'A1', null
-    @domHost._syncOrganizationData @domHost.syncPharmacyPriceList, ()=> collector2.collect 'A1', null
-    @domHost._syncOrganizationData @domHost.syncSupplyPriceList, ()=> collector2.collect 'A1', null
-    @domHost._syncOrganizationData @domHost.syncAmbulancePriceList, ()=> collector2.collect 'A1', null
-    @domHost._syncOrganizationData @domHost.syncPackageList, ()=> collector2.collect 'A1', null
-    @domHost._syncOrganizationData @domHost.syncOtherPriceList, ()=> collector2.collect 'A1', null
-
-    collector2.finally =>
-      @domHost.reloadPage()
-  
-  _loadInvestigationPriceList: (organizationIdentifier)->
-    investigationPriceList = (app.db.find 'investigation-price-list', ({organizationId})-> organizationId is organizationIdentifier)
-
-    if investigationPriceList.length > 0
-      @investigationPriceList = investigationPriceList[0]
-
-  
-  _loadDoctorFeesPriceList: (organizationIdentifier)->
-    # Check if User already has a Price List
-    doctorFeesPriceList = app.db.find 'doctor-fees-price-list', ({organizationId})-> organizationId is organizationIdentifier
-
-    if doctorFeesPriceList.length > 0
-      @doctorFeesPriceList = doctorFeesPriceList[0]
-
-  
-  _loadServicePriceList: (organizationIdentifier)->
-    # Check if User already has a Price List
-    servicePriceList = app.db.find 'service-price-list', ({organizationId})-> organizationId is organizationIdentifier
-    
-    if servicePriceList.length > 0
-      @servicePriceList = servicePriceList[0]
-    
-
-
-  _loadMedicineInventory: (organizationIdentifier)->
-    @domHost.getStaticData 'pccMedicineList', (medicineCompositionList)=>
-      brandNameMap = {}
-      for item in medicineCompositionList
-        brandNameMap[item.brandName] = null
-      generatedMedicineList = ({data: {name: item, buyingPrice: 0, sellingPrice: 0, qty: 1}} for item in Object.keys brandNameMap)
-
-      inventory = app.db.find 'organization-inventory', ({organizationId})-> organizationId is organizationIdentifier
-      @medicineInventory = [].concat inventory, generatedMedicineList
+  #     inventory = app.db.find 'organization-inventory', ({organizationId})-> organizationId is organizationIdentifier
+  #     @medicineInventory = [].concat inventory, generatedMedicineList
       
 
-  _loadSupplyPriceList: (organizationIdentifier)->
-    # Check if User already has a Price List
-    supplyPriceList = app.db.find 'supply-price-list', ({organizationId})-> organizationId is organizationIdentifier
-    
-    if supplyPriceList.length > 0
-      @supplyPriceList = supplyPriceList[0]
-     
-
-  _loadAmbulancePriceList: (organizationIdentifier)->
-    # Check if User already has a Price List
-    ambulancePriceList = app.db.find 'ambulance-price-list', ({organizationId})-> organizationId is organizationIdentifier
-    
-    if ambulancePriceList.length > 0
-      @ambulancePriceList = ambulancePriceList[0]
-    
-
-  _loadPackagePriceList: (organizationIdentifier)->
-    # Check if User already has a Price List
-    packagePriceList = app.db.find 'package-price-list', ({organizationId})-> organizationId is organizationIdentifier
-    
-    if packagePriceList.length > 0
-      @packagePriceList = packagePriceList[0]
-    
-  
-  _loadOtherPriceList: (organizationIdentifier)->
-    # Check if User already has a Price List
-    otherPriceList = app.db.find 'other-price-list', ({organizationId})-> organizationId is organizationIdentifier
-    
-    if otherPriceList.length > 0
-      @otherPriceList = otherPriceList[0]    
-  
-  
   # TOGGLE COLLAPSE
-  toggleInvestigation: (e)-> @.$.investigation.toggle()
-  toggleDoctorFees: (e)-> @.$.doctorFees.toggle()
-  toggleServcie: (e)-> @.$.service.toggle()
-  toggleSupply: (e)-> @.$.supply.toggle()
-  togglePharmacy: (e)-> @.$.pharmacy.toggle()
-  toggleAmbulance: (e)-> @.$.ambulance.toggle()
-  togglePackage: (e)-> @.$.package.toggle()
-  toggleOther: (e)-> @.$.other.toggle()
+  convertCategoryNameToId: (categoryName)-> categoryName.toLowerCase().split(" ").join("")
+
+  toggleCollapseClicked: (e)->
+    categoryName = @convertCategoryNameToId e.model.categoryName
+    @$$("##{categoryName}").toggle()
 
   _getNextInvoiceRef: (cbfn)->
     query =
@@ -428,7 +303,6 @@ Polymer {
     @set 'invoice', invoice
   
   
-  
   addToListButtonClicked: (e)->
     item = e.model.item
     item.qty = 1
@@ -436,7 +310,6 @@ Polymer {
     item.totalPrice = item.price?= 0
     @push 'invoice.data', item
     console.log item
-
 
   addInventoryItemToListButtonClicked: (e)->
     doc = e.model.item.data
@@ -630,9 +503,6 @@ Polymer {
     # check for inventory items and reduce
     @_reduceInventoryItems @invoice
 
-    # Save Unique Third Party Commission User
-    @_saveThirdPartyCommissionUser @invoice
-
     # Saving Custom Invoice Category List
     app.db.upsert 'invoice-category-list', @invoiceCategoryList, ({serial})=> serial is @invoiceCategoryList.serial
     
@@ -693,6 +563,11 @@ Polymer {
   
   arrowBackButtonPressed: ->
     @domHost.navigateToPreviousPage()
+
+  navigatedOut: ->
+    @set 'invoice', {}
+    @set "invoiceGrossPrice", 0
+    @set "invoiceDiscountAmt",  0
 
 
 }
