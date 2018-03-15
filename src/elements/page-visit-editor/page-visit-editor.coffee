@@ -4603,14 +4603,16 @@ Polymer {
         return true
 
   _loadVariousWallets: ->
-    @_loadPatientWallet(@patient.idOnServer)
-    @_loadPatientOrganizationWallet @organization.idOnServer, @patient.idOnServer, (patientOrganizationWallet)=>
-      unless patientOrganizationWallet
-        this.domHost.set('patientOrganizationWalletIndoorBalance', 0)
-        this.domHost.set('patientOrganizationWalletOutdoorBalance', 0)
-        return
-      this.domHost.set('patientOrganizationWalletIndoorBalance', patientOrganizationWallet.indoorBalance)
-      this.domHost.set('patientOrganizationWalletOutdoorBalance', patientOrganizationWallet.outdoorBalance)
+    @_loadPatientWallet @patient.idOnServer, ()=>
+      console.log 'PATIENT-WALLET:',@patientWalletBalance
+      @_loadPatientOrganizationWallet @organization.idOnServer, @patient.idOnServer, (patientOrganizationWallet)=>
+        unless patientOrganizationWallet
+          this.domHost.set('patientOrganizationWalletIndoorBalance', 0)
+          this.domHost.set('patientOrganizationWalletOutdoorBalance', 0)
+          return
+        this.domHost.set('patientOrganizationWalletIndoorBalance', patientOrganizationWallet.indoorBalance)
+        this.domHost.set('patientOrganizationWalletOutdoorBalance', patientOrganizationWallet.outdoorBalance)
+        console.log 'PATIENT-ORGANIZATION-WALLET',@patientOrganizationWallet
 
 
   onVitalIndexChange: ()->
@@ -5487,6 +5489,10 @@ Polymer {
       @push 'invoice.data', matchedItem
     @_saveInvoice()
     console.log @invoice
+
+
+
+  
 
 
     

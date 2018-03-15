@@ -6,10 +6,10 @@ app.behaviors.local.invoiceMixin =
 
     invoice:
       type: Object
-      value: -> null
+      value: -> {}
 
   observers: [
-    'calculateTotalPrice(invoice.data.splices, invoice.discount)'
+    'calculateTotalPrice(invoice.data.splices)'
   ]
 
 
@@ -130,11 +130,9 @@ app.behaviors.local.invoiceMixin =
     
 
   calculateTotalPrice: ->
+    return unless Object.keys(@invoice).length
+    return unless @invoice.data.length
     price = @invoice.data.reduce (total, item)->
-      total + (parseInt (item.price * item.qty))
+      return total + (parseInt (item.price * (item.qty or 1)))
     , 0
-
-    @set "invoiceGrossPrice", price
-    @set "invoiceDiscountAmt", 0
-
     @set 'invoice.totalBilled', price

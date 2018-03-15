@@ -17,6 +17,7 @@
     "gulp-javascript-obfuscator": "^1.1.4",
     "gulp-jsonmin": "^1.1.0",
     "gulp-modify": "^0.1.1",
+    "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",

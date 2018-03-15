@@ -57,7 +57,7 @@ app.behaviors.pageLike = [
           this.walletBalance = -1;
         this.domHost.set('walletBalance',this.walletBalance)
 
-    _loadPatientWallet: (id)->
+    _loadPatientWallet: (id, cbfn)->
       # this._showWalletFundingDialog()
       query = {
         apiKey: (app.db.find 'user')[0].apiKey
@@ -70,6 +70,7 @@ app.behaviors.pageLike = [
         else
           this.patientWalletBalance = -1;
         this.domHost.set('patientWalletBalance',this.patientWalletBalance)
+        cbfn() if cbfn
 
     _loadPatientOrganizationWallet: (organizationId, patientId, cbfn)->   
       query = {
