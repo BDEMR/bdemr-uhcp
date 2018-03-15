@@ -1860,7 +1860,7 @@
                   </div>
                 </div>
 
-                <template is="dom-if" if="[[!_isEmptyString(visit.invoiceSerial)]]">
+                <template is="dom-if" if="[[visit.invoiceSerial]]">
                   <div class="card-content">
                     <table class="table">
                       <thead>
@@ -2752,5 +2752,7 @@
     <!-- local DOM -->
   </template>
   <script src="../mixin/mixin-patient-stay.coffee-compiled.js "></script>
+  <script src="../mixin/load-price-list-mixin.coffee-compiled.js "></script>
+  <script src="invoice-module.coffee-compiled.js"></script>
   <script src="page-visit-editor.coffee-compiled.js "></script>
 </dom-module>

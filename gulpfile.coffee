@@ -72,7 +72,6 @@ gulp.task 'build-debug-coffee', ->
   .pipe cache 'copy'
   .pipe(sourcemaps.init())
   .pipe(coffee({bare: false}))
-  .pipe(uglify())
   .pipe(sourcemaps.write('.'))
   .pipe rename (path)->
     if path.extname is '.map'

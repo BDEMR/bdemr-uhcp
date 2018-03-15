@@ -23,6 +23,8 @@ Polymer {
     app.behaviors.translating
     app.behaviors.apiCalling
     app.behaviors.local.patientStayMixin
+    app.behaviors.local.loadPriceListMixin
+    app.behaviors.local.invoiceMixin
   ]
 
   properties:
@@ -36,7 +38,7 @@ Polymer {
       type: Number
       value: -1
     
-    currentOrganization:
+    organization:
       type: Object
       notify: true
       value: null
@@ -182,11 +184,7 @@ Polymer {
       type: Object
       notify: true
       value: null
-
-    invoice:
-      type: Object
-      notify: true
-      value: null
+    
 
     matchingPrescribedMedicineList:
       type: Array
@@ -1711,8 +1709,6 @@ Polymer {
         delete medicine.data.serial
         #HACK end
 
-        
-
         medicine.createdDatetimeStamp = lib.datetime.now()
         medicine.lastSyncedDatetimeStamp = null
         medicine.createdByUserSerial = @user.serial
@@ -1729,6 +1725,9 @@ Polymer {
         app.db.insert 'patient-medications', medicine
 
         @domHost.showToast "Medicine Added!"
+
+        @_addToInvoice medicine.data.brandName, @visit.serial
+
         @_resetMedicineForm()
         @_listPrescribedMedications @prescription.serial
 
@@ -3954,8 +3953,9 @@ Polymer {
 
     if list.length is 1
       @isInvoiceValid = true
-      @invoice = list[0]
-      return true
+      @set 'invoice', list[0]
+      console.log 'Invoice:', @invoice
+      @isInvoiceValid = true
     else
       @isInvoiceValid = false
       return false
@@ -4574,13 +4574,13 @@ Polymer {
     if accessId is 'none'
       return true
     else
-      if @currentOrganization
+      if @organization
 
-        if @currentOrganization.isCurrentUserAnAdmin
+        if @organization.isCurrentUserAnAdmin
           return true
-        else if @currentOrganization.isCurrentUserAMember
-          if @currentOrganization.userActiveRole
-            privilegeList = @currentOrganization.userActiveRole.privilegeList
+        else if @organization.isCurrentUserAMember
+          if @organization.userActiveRole
+            privilegeList = @organization.userActiveRole.privilegeList
             unless privilegeList.length is 0
               for privilege in privilegeList
                 if privilege.serial is accessId
@@ -4598,7 +4598,7 @@ Polymer {
 
   _loadVariousWallets: ->
     @_loadPatientWallet(@patient.idOnServer)
-    @_loadPatientOrganizationWallet @currentOrganization.idOnServer, @patient.idOnServer, (patientOrganizationWallet)=>
+    @_loadPatientOrganizationWallet @organization.idOnServer, @patient.idOnServer, (patientOrganizationWallet)=>
       unless patientOrganizationWallet
         this.domHost.set('patientOrganizationWalletIndoorBalance', 0)
         this.domHost.set('patientOrganizationWalletOutdoorBalance', 0)
@@ -4618,8 +4618,8 @@ Polymer {
 
     @domHost.selectedPatientPageIndex = 0
 
-    @currentOrganization = @getCurrentOrganization()
-    unless @currentOrganization
+    @organization = @getCurrentOrganization()
+    unless @organization
       @domHost.navigateToPage "#/select-organization"
 
  
@@ -4703,6 +4703,8 @@ Polymer {
           unless params['visit']
             @_notifyInvalidVisit()
             return
+
+          @_loadPriceList @organization.idOnServer, ()=> console.log 'Price List Loaded'
 
           if params['visit'] is 'new'
             @_makeNewVisit =>
@@ -4939,6 +4941,8 @@ Polymer {
                 @visit.invoiceSerial = null
                 @invoice = {}
               ## Visit - Invoice - end
+
+          
 
 
   navigatedOut: ->
@@ -5450,6 +5454,20 @@ Polymer {
     @_saveReferral()
 
     @$.dialogReferral.toggle()
+
+
+  _addToInvoice: (itemName, visitSerial)->
+    console.log itemName
+    matchedItem = (item for item in @priceList when item.name is itemName)[0]
+    console.log matchedItem
+    if Object.keys(@invoice).length
+      @push 'invoice.data', matchedItem
+    else
+      @_makeNewInvoice()
+      @push 'invoice.data', matchedItem
+    @_saveInvoice()
+    console.log @invoice
+
 
     
 }
