@@ -95,7 +95,7 @@ Polymer {
       @_searchOnline @searchFieldMainInput
 
   _searchOnline: (searchQuery)->
-    @callApi '/bdemr-patient-search', {searchQuery: searchQuery}, (err, response)=>
+    @callApi '/bdemr-patient-search', {apiKey: @user.apiKey, searchQuery: searchQuery}, (err, response)=>
       if response.hasError
         @domHost.showModalDialog response.error.message
       else if response.data.length is 0
