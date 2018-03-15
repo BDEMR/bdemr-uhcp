@@ -391,6 +391,7 @@ lib.DatabaseEngine = DatabaseEngine
     data = {} unless typeof data is 'object'
     data.__meta = 
       clientIdentifier: app.config.clientIdentifier
+      clientName: app.config.clientName
       clientVersion: app.config.clientVersion
       clientPlatform: app.config.clientPlatform
     data = lib.json.stringify data

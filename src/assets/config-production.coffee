@@ -5,7 +5,9 @@ window.app =
 
   config:
 
-    clientIdentifier: 'bdemr-doctor-app'
+    clientIdentifier: 'bdemr-uhcp-app'
+
+    clientName: 'uhcp'
 
     clientVersion: '0.0.8'
 
