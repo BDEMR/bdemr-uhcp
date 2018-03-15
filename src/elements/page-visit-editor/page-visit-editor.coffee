@@ -2188,6 +2188,7 @@ Polymer {
         # Push Custom Symptoms Name on Master Symptoms List
         @push "symptomsDataList", { label: @comboBoxSymptomsInputValue, value: @comboBoxSymptomsInputValue }
 
+
         # Load Symptoms Data
 
       
@@ -2340,6 +2341,7 @@ Polymer {
         examinationValueList: []
 
     app.db.insert 'custom-examination-list', object
+    @_addToInvoice object.data.name @visit.serial
 
   removeExaminationMember: (e)->
     el = @locateParentNode e.target, 'PAPER-ICON-BUTTON'
@@ -2464,7 +2466,10 @@ Polymer {
           # console.log 'modifiedObject', modifiedObject
 
           # Push on Added Examination List
+
           @unshift 'addedExaminationList', modifiedObject
+
+          @_addToInvoice modifiedObject.name, @visit.serial
 
 
 
@@ -2866,6 +2871,7 @@ Polymer {
   addInvestigation: ()->
     unless @comboBoxInvestigationInputValue is ''
       if typeof @comboBoxInvestigationInputValue is 'object'
+        @_addToInvoice @comboBoxInvestigationInputValue.name, @visit.serial
         @push 'addedInvestigationList', @_makeNewAddedInvestigationObject @comboBoxInvestigationInputValue
 
         @addInvestigationAsFavorite @comboBoxInvestigationInputValue
@@ -5289,8 +5295,10 @@ Polymer {
 
       @push 'diagnosis.data.diagnosisList', { name: diagnosis }
       @_saveDiagnosis()
+      @_addToInvoice diagnosis, @visit.serial
       @domHost.showToast 'Diagnosis Added!'
       @comboBoxDiagnosisInputValue = ''
+       
 
 
 
@@ -5457,9 +5465,21 @@ Polymer {
 
 
   _addToInvoice: (itemName, visitSerial)->
-    console.log itemName
     matchedItem = (item for item in @priceList when item.name is itemName)[0]
-    console.log matchedItem
+    unless matchedItem
+      matchedItem = {
+        name: itemName
+        qty: 1
+        price: 0
+        actualCost: 0
+        category: "custom"
+        subCategory: ""
+        serial: null
+        organizationId: @organization.idOnServer
+        createdDatetimeStamp: lib.datetime.now()
+        lastModifiedDatetimeStamp: lib.datetime.now()
+        createdByUserSerial: @user.serial
+      }
     if Object.keys(@invoice).length
       @push 'invoice.data', matchedItem
     else

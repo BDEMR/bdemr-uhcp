@@ -45,6 +45,7 @@ app.behaviors.local.invoiceMixin =
   
   _reduceInventoryItems: (invoice)->
     for item in invoice.data
+      continue if item.category is 'custom'
       doc = (app.db.find 'organization-price-list', ({serial})=> serial is item.serial)[0]
       if doc.qty
         doc.qty -= item.qty
