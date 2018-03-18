@@ -338,6 +338,21 @@ app.pages.pageList = [
   }
 
   {
+    name: 'reports-viewer'
+    element: 'page-reports-viewer'
+    windowTitlePostfix: 'Show Various Reports'
+    headerTitle: 'Patient Reports'
+    preload: true
+    hrefList: [ 'reports-viewer' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showPatientsDetails: false
+    showToolbar: false
+    hideHeaderTitle: false
+  }
+
+  {
     name: 'review-report'
     element: 'page-review-report'
     windowTitlePostfix: 'Review Report'

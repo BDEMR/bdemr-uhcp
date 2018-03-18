@@ -2990,6 +2990,7 @@ Polymer {
         ## updated current visit object
         @visit.advisedTestSerial = @testAdvisedObject.serial
         @_saveVisit()
+        @testAdvisedObject.visitSerial = @visit.serial
      
       # Updated Advised Test List
       @testAdvisedObject.lastModifiedDatetimeStamp = lib.datetime.now()
@@ -3814,21 +3815,20 @@ Polymer {
       @isThatNewVisit = false
       @visit.serial = @generateSerialForVisit()
       @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
-
-    fn = =>
       @visit.lastModifiedDatetimeStamp = lib.datetime.now()
       app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
       @domHost.setSelectedVisitSerial @visit.serial
 
-    if @visit.isPaidUp
-      fn()
-    else
-      this._chargePatient @patient.idOnServer, 5, 'Payment BDEMR Doctor Generic', (err)=>
-        @visit.isPaidUp = true
-        if (err)
-          @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
-          return
-        fn()
+    # UHCP dont charge patient for Visit
+    # if @visit.isPaidUp
+    #   fn()
+    # else
+    #   this._chargePatient @patient.idOnServer, 5, 'Payment BDEMR Doctor Generic', (err)=>
+    #     @visit.isPaidUp = true
+    #     if (err)
+    #       @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
+    #       return
+    #     fn()
 
 
 
