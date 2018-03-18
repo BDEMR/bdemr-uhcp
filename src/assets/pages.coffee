@@ -338,6 +338,21 @@ app.pages.pageList = [
   }
 
   {
+    name: 'uhcp-report'
+    element: 'page-uhcp-report'
+    windowTitlePostfix: 'UHCP Reports'
+    headerTitle: 'UHCP Reports'
+    preload: true
+    hrefList: [ 'uhcp-report' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showPatientsDetails: false
+    showToolbar: false
+    hideHeaderTitle: false
+  }
+
+  {
     name: 'review-report'
     element: 'page-review-report'
     windowTitlePostfix: 'Review Report'

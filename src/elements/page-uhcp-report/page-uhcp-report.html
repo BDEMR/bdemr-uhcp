@@ -1,0 +1,200 @@
+<link rel="import" href="../../bower-assets/polymer/polymer.html">
+
+<!-- paper-* -->
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-progress/paper-progress.html">
+
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-filter.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-sorter.html">
+
+<link rel="import" href="../custom-vital-search/custom-vital-search.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<!-- behavior -->
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/page-like.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- element -->
+<dom-module id="page-uhcp-report">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+
+      paper-button {
+        background: white;
+      }
+
+      .invoice-card {
+        background: white;
+        /*
+        margin: 4px;
+        padding: 4px;
+        */
+      }
+
+      paper-card {
+        margin: 4px;
+      }
+
+      .row {
+        margin-bottom: 10px;
+      }
+
+      .key {
+        padding-right: 10px;
+      }
+
+      .val {
+        font-weight: bold;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table thead {
+        background-color: #fafafa;
+        border-bottom: 1px solid #eee;
+      }
+
+      .table thead th {
+        text-align: left;
+        padding: 10px;
+      }
+
+      .table tbody tr {
+        border-bottom: 1px solid #eee;
+      }
+
+      .table tbody td {
+        padding: 10px;
+
+      }
+
+      .search {
+        background-color: #fafafa;
+        border: 1px solid #dadada;
+        padding: 0px 8px 12px 8px;
+        margin: 4px;
+        margin-left: 0;
+      }
+
+      .results {
+        margin-top: 20px;
+      }
+
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container vertical layout">
+
+        <paper-card heading="Reports">
+
+          <div class="card-content">
+
+            <div class="search layout horizontal end wrap">
+
+              <paper-dropdown-menu label="Filter by Category" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="categorySelected">
+                  <template is="dom-repeat" items="[[categoryList]]">
+                    <paper-item>[[item]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-dropdown-menu label="Filter by Gender" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="genderSelected">
+                  <paper-item>Male</paper-item>
+                  <paper-item>Female</paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-dropdown-menu label="Filter by Age Group" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="ageGroupSelected">
+                  <template is="dom-repeat" items="[[ageGroupList]]">
+                    <paper-item>[[item]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-dropdown-menu label="Filter by Salary Range" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="salaryRangeSelected">
+                  <template is="dom-repeat" items="[[salaryRangeList]]">
+                    <paper-item>[[item]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-input label="Search by Name" value="{{searchString}}" class="m-right-8"></paper-input>
+
+              <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
+
+            </div>
+            <div class="layout horizontal">
+              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+            </div>
+
+            <div class="results">
+
+              <paper-progress indeterminate hidden="[[!loading]]"></paper-progress>
+              <vaadin-grid items="[[reportResults]]">
+                <vaadin-grid-column width="100px" flex-grow="0">
+                  <template class="header">
+                    <vaadin-grid-sorter path="count" direction="desc">Count</vaadin-grid-sorter>
+                  </template>
+                  <template>
+                    <span>[[item.count]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column flex-grow="1">
+                  <template class="header layout horizontal">
+                    <vaadin-grid-filter aria-label="Name" path="name" value="[[searchString]]">
+                      <paper-input label="Search By Name" value="{{searchString}}" no-label-float></paper-input>
+                    </vaadin-grid-filter>
+                  </template>
+                  <template>
+                    <div>[[item.name]]</div>
+                  </template>
+                </vaadin-grid-column>
+              </vaadin-grid>
+
+            </div>
+
+          </div>
+        </paper-card>
+
+      </div>
+      <!--Limiting Container Ends-->
+
+    </div>
+    <!--Master Container Ends-->
+
+  </template>
+  <script src="page-uhcp-report.coffee-compiled.js"></script>
+</dom-module>
