@@ -68,7 +68,7 @@ gulp.task 'copy-debug-watch', ->
 
 gulp.task 'build-debug-coffee', ->
   return gulp.src paths.debug.coffee
-  .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+  .pipe(plumber({errorHandler: notify.onError("Error: <%= error %>")}))
   .pipe cache 'copy'
   .pipe(sourcemaps.init())
   .pipe(coffee({bare: false}))
