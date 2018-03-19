@@ -1,7 +1,7 @@
 
 Polymer {
 
-  is: 'page-print-invoice'
+  is: 'page-clinic-print-invoice'
 
   behaviors: [ 
     app.behaviors.commonComputes
