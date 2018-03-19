@@ -1,0 +1,346 @@
+<!-- Custom AutoComplete --><!-- style --><!-- behavior --><dom-module id="page-create-invoice">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      paper-card {
+        --paper-card-content: {
+          padding: 0;
+        }
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .item {
+        padding: 10px;
+      }
+
+      .item:nth-child(even) {
+        background-color: var(--paper-grey-100);
+      }
+
+      .text-mute {
+        color: var(--paper-grey-700);
+      }
+
+      .text-warning {
+        color: var(--paper-orange-600);
+      }
+
+      .choice-list,
+      .invoice-list {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .choice-list {
+        height: 100vh;
+        overflow: auto;
+      }
+
+      .invoice-list {
+        margin-left: 10px;
+        height: 100vh;
+        overflow: auto;
+      }
+
+      .invoice-list .invoice-item {
+        padding: 10px 0;
+        margin-left: 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .invoice-item :first-child {
+        padding-right: 15px;
+      }
+
+      .add {
+        color: var(--paper-green-500);
+      }
+
+      .page-invoice {
+        @apply(--layout-horizontal);
+        width: 100%;
+      }
+
+      .calculation {
+        background-color: var(--paper-blue-grey-50);
+      }
+
+      .calculation>* {
+        padding: 5px 0;
+        border-bottom: 1px solid #f5f5f5;
+      }
+
+      .calculation>div:last-child {
+        border-bottom: 0;
+      }
+
+      .calculation paper-input {
+        --paper-input-prefix: {
+          margin-right: 10px;
+          color: #999;
+        }
+      }
+
+      .text-success {
+        color: var(--paper-green-400);
+      }
+
+      iron-list {
+        height: 400px;
+      }
+
+      #invoiceSearchInput {
+        padding: 0 15px;
+      }
+
+      .big-text-input {
+        width: 300px;
+        --paper-input-container-input: {
+          font-size: 21px;
+        }
+        --paper-input-prefix: {
+          font-size: 21px;
+        }
+      }
+
+      @media only screen and (max-width: 1024px) {
+        .page-invoice {
+          @apply(--layout-vertical);
+        }
+
+        .choice-list,
+        .invoice-list {
+          height: 100%;
+        }
+
+        .invoice-list {
+          margin-left: 0;
+        }
+      }
+    </style>
+
+    <div class="master-container">
+
+      <div class="page-invoice">
+
+        <section class="choice-list flex-5">
+
+          <paper-card>
+            <div class="card-custom-header">
+              <div class="layout horizontal center">
+                <div class="title flex">Invoice [[invoice.referenceNumber]]</div>
+                <paper-button class="btn btn-sm btn-default" on-tap="syncPriceListButtonClicked">
+                  <iron-icon icon="autorenew"></iron-icon>
+                  Update Price List
+                </paper-button>
+                <paper-button class="btn btn-sm btn-primary" on-tap="addCustomItemToInvoiceButtonPressed">
+                  <iron-icon icon="add"></iron-icon>
+                  Add Custom Item
+                </paper-button>
+              </div>
+            </div>
+            <div class="card-content">
+              <paper-autocomplete id="invoiceSearchInput" label="Search Item" source="[[invoiceSourceDataList]]" on-autocomplete-selected="invoiceItemAutocompleteSelected">
+              </paper-autocomplete>
+            </div>
+          </paper-card>
+
+
+          <template is="dom-repeat" items="[[priceListCategories]]" as="categoryName">
+
+            <paper-card>
+              <div class="card-custom-header" on-tap="toggleCollapseClicked">
+                <div class="layout horizontal justified center">
+                  <div class="title flex">
+                    <iron-icon icon="expand-more"></iron-icon> [[categoryName]]</div>
+                </div>
+              </div>
+              <div class="card-content">
+                <iron-collapse id="[[convertCategoryNameToId(categoryName)]]">
+                  <div class="collapse-content">
+                    <iron-list items="[[getDataForCategory(categoryName)]]">
+                      <template>
+                        <div class="item layout horizontal center">
+                          <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
+                          <div class="flex">[[item.name]]</div>
+                          <div>[[item.price]] BDT</div>
+                        </div>
+                      </template>
+                    </iron-list>
+                  </div>
+                </iron-collapse>
+              </div>
+            </paper-card>
+
+          </template>
+
+
+        </section>
+
+        <!--INVOICE SECTION-->
+        <section class="invoice-list flex-7">
+
+          <paper-card heading="Invoice">
+            <div class="card-content">
+              <!-- <div class="p-16">
+                <vaadin-combo-box class="flex" label="Type of Invoice" id="invoiceType" items="[[invoiceCategoryList.data]]" allow-custom-value="true"
+                  on-custom-value-set="invoiceTypeCustomValueSet" selected-item="{{invoice.category}}">
+                </vaadin-combo-box>
+                <span class="type caption secondary">Press Enter after typing Custom Category</span>
+              </div> -->
+
+              <div class="layout horizontal start invoice-item">
+                <div class="flex-1">
+                  <strong>Unit Price</strong>
+                </div>
+                <div class="flex-1">
+                  <strong>Qty</strong>
+                </div>
+                <div class="flex-7">
+                  <strong>Items</strong>
+                </div>
+                <div class="flex-2">
+                  <strong>Price</strong>
+                </div>
+              </div>
+              <template is="dom-if" if="[[!invoice.data.length]]">
+                <div class="layout horizontal center center-justified">Add Item</div>
+              </template>
+              <template id="invoice-item-repeater" is="dom-repeat" items="{{invoice.data}}">
+                <paper-item class="invoice-item">
+                  <template is="dom-if" if="[[item.price]]">
+                    <div class="flex-1">[[item.price]]</div>
+                  </template>
+                  <template is="dom-if" if="[[!item.price]]">
+                    <paper-input class="flex-1" type="number" on-change="itemUnitPriceChanged" no-label-float="" style="padding-right:10px;"></paper-input>
+                  </template>
+                  <paper-input class="flex-1" label="Qty" type="number" value="1" on-input="quantityChanged" no-label-float="" style="padding-right:10px;"></paper-input>
+                  <div class="flex-7 layout vertical">
+                    <div>
+                      <strong>[[item.name]]</strong>
+                      <template is="dom-if" if="[[item.type]]">
+                        <span class="type secondary">[[item.type]]</span>
+                      </template>
+                    </div>
+                    <template is="dom-if" if="[[item.itemList]]">
+                      <ul>
+                        <template is="dom-repeat" items="[[item.itemList]]" as="packageItem">
+                          <li>[[packageItem.name]]</li>
+                        </template>
+                      </ul>
+                    </template>
+                  </div>
+                  <div class="flex-2">[[item.totalPrice]]
+                    <span class="text-mute">BDT</span>
+                  </div>
+                  <paper-icon-button class="flex-1" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                </paper-item>
+              </template>
+
+              <div class="layout vertical calculation p-16 m-vertical-16">
+                <!-- <div class="layout horizontal end">
+                  <paper-dropdown-menu>
+                    <paper-menu selected="{{discountType}}" id="discountType" class="dropdown-content" on-iron-select="discountTypeChanged">
+                      <paper-item>Percentage</paper-item>
+                      <paper-item>Amount</paper-item>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                  <paper-input label="Discount" type="number" value="{{invoice.discount}}" max="99" maxlength="2" no-label-float>
+                    <div suffix>Discount</div>
+                  </paper-input>
+                </div> -->
+
+                <!-- <div class="layout horizontal type body-lead">Gross - [[invoiceGrossPrice]] BDT</div> -->
+                <!-- <div class="text-mute layout horizontal">Discount [[invoiceDiscountAmt]]</div> -->
+                <div class="layout horizontal type title-2">
+                  <strong>Total [[invoice.totalBilled]] BDT</strong>
+                </div>
+                <div class="layout horizontal">
+                  <paper-input class="big-text-input" label="Paid Amount" value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]" allowed-pattern="[0-9]" auto-validate="" no-label-float="" error-message="Amount can't be more than Total">
+                    <div prefix="">Paid Amount</div>
+                  </paper-input>
+                </div>
+                <div class="layout horizontal text-warning type body-lead">Due [[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</div>
+                <!-- <div class="layout horizontal">
+                  <paper-input class="big-text-input" label="Last Payment" type="number" value="{{invoice.lastPaid}}" min="0" on-change="lastPaymentChanged"
+                    allowed-pattern="[0-9]" disabled$="[[!invoice.paid]]" no-label-float error-message="Last Payment Can not be more than the Due Amount">
+                    <div prefix>Last Payment</div>
+                  </paper-input>
+                </div> -->
+                <div class="layout horizontal text-success type body-lead bold">Total Amount Received: [[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</div>
+
+              </div>
+
+              <!-- <div class="m-left-10 type subhead bold">Third Party Commission: </div>
+              <div class="layout horizontal justified center">
+                <div class="layout horizontal">
+                  <paper-autocomplete class="m-left-10" label="Name" text="{{invoice.commission.name}}" no-label-float source="[[thirdPartyUserListSourceMap]]"
+                    on-autocomplete-selected="thirdPartyUserSelected" disable-show-clear></paper-autocomplete>
+                  <paper-input class="m-left-10" label="Mobile" type="tel" value="{{invoice.commission.mobile}}" no-label-float></paper-input>
+                  <paper-input class="m-left-10" label="Total Billed" value="{{invoice.commission.billed}}" no-label-float></paper-input>
+                  <paper-input class="m-left-10" label="Percentage" value="{{invoice.commission.percentage}}" no-label-float>
+                    <div suffix>%</div>
+                  </paper-input>
+                  <paper-input class="m-left-10" label="Commission" value="{{invoice.commission.amount}}" no-label-float></paper-input>
+                </div>
+              </div> -->
+
+            </div>
+            <div class="card-actions vertical layout">
+              <div>
+                <paper-button class="btn btn-primary btn-sm" on-tap="chargeIndoorWalletButtonPressed">Charge Indoor Wallet</paper-button>
+                <paper-button class="btn btn-primary btn-sm" on-tap="chargeOutdoorWalletButtonPressed">Charge Outdoor Wallet</paper-button>
+              </div>
+
+              <div class="m-top-16">
+                <paper-checkbox checked="{{invoice.availableToPatient}}">Send To Patient</paper-checkbox>
+                <paper-button raised="" class="btn btn-success" on-tap="saveAndCompleteInvoiceButtonClicked">Save + Complete Invoice</paper-button>
+                <paper-button class="btn btn-success" on-tap="saveInvoiceButtonClicked">Save Invoice</paper-button>
+              </div>
+            </div>
+          </paper-card>
+        </section>
+
+
+      </div>
+    </div>
+
+    <!--Modal for Custom Unit and Price-->
+    <paper-dialog id="customItemModal" on-iron-overlay-closed="modalClosedEvent" no-cancel-on-esc-key="" no-cancel-on-outside-click="">
+      <h2>Add Item</h2>
+      <paper-dialog-scrollable>
+        <paper-item class="layout vertical">
+          <paper-input autofocus="" label="Item Name" value="{{customUnit.name}}"></paper-input>
+          <paper-input label="Actual Cost" type="number" value="{{customUnit.actualCost}}"></paper-input>
+          <paper-input label="Unit Price" type="number" value="{{customUnit.price}}"></paper-input>
+        </paper-item>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss="">Cancel</paper-button>
+        <paper-button raised="" dialog-confirm="">Add</paper-button>
+      </div>
+    </paper-dialog>
+
+  </template>
+
+  <script>(function(){Polymer({is:"page-create-invoice",behaviors:[app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling,app.behaviors.commonComputes],properties:{user:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},organization:{type:Object,notify:!0,value:null},invoice:{type:Object,notify:!0,value:function(){return{}}},discountType:{type:Number,value:function(){return 1}},inventoryList:{type:Object,value:function(){return{serial:null,lastModifiedDatetimeStamp:null,data:[]}}},invoiceSourceDataList:{type:Array,value:[]},thirdPartyUserList:{type:Array,value:function(){return[]}},invoiceCategoryList:{type:Object,value:function(){return{}}},invoiceGrossPrice:{type:Number,value:function(){return 0}},invoiceDiscountAmt:{type:Number,value:function(){return 0}},customUnit:{type:Object,value:{}},priceList:{type:Object,value:function(){return{}}},priceListCategories:{type:Array,value:function(){return[]}}},observers:["calculateTotalPrice(invoice.data.splices, invoice.discount)"],isEmpty:function(t){return void 0!==t&&null!==t&&!!t.length},navigatedIn:function(){var t;return t=this.domHost.getPageParams(),this._loadUser(),this._loadOrganization(),t.patient?(this._loadPatient(t.patient),t.visit?(this._loadVisit(t.visit),t.invoice?("new"===t.invoice?this._makeNewInvoice(this.organization.idOnServer):this._loadInvoice(t.invoice),this._loadInvoiceCategoryList(this.organization.idOnServer),this._loadPriceList(this.organization.idOnServer,function(t){return function(i){return t._loadCategories(i)}}(this))):void this.domHost.showModalDialog("No Invoice Found")):void this._notifyInvalidVisit()):void this.domHost.showModalDialog("No Patient Found for this Invoice")},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},_loadPatient:function(t){var i;return i=app.db.find("patient-list",function(i){var e;return e=i.serial,e===t}),1===i.length?(this.isPatientValid=!0,this.patient=i[0]):this._notifyInvalidPatient()},_loadOrganization:function(){var t;return t=app.db.find("organization"),1===t.length?this.set("organization",t[0]):this._notifyInvalidOrganization()},_loadInvoice:function(t){var i;return i=app.db.find("visit-invoice",function(i){var e;return e=i.serial,e===t}),i.length>0?(this.set("invoice",i[0]),this.calculateTotalPrice()):this.domHost.showModalDialog("No Invoice Found")},_loadVisit:function(t){var i;return i=app.db.find("doctor-visit",function(i){var e;return e=i.serial,e===t}),1===i.length?(this.visit=i[0],!0):(this._notifyInvalidVisit(),!1)},_notifyInvalidVisit:function(){return this.domHost.showModalDialog("Invalid Visit Provided")},_getLastSyncedDatetime:function(){return parseInt(window.localStorage.getItem("lastSyncedDatetimeStamp"))},_loadPriceList:function(t,i){var e,n;return e=this._getLastSyncedDatetime(),e?(n=app.db.find("organization-price-list",function(i){var e;return e=i.organizationId,e===t}),n.length?(this.set("priceList",n),i(n)):this._createNewPriceList(t,function(t){return function(e){return t._insertItemIntoDatabase(e),t.set("priceList",e),i(e)}}(this))):this.domHost._sync()},_getCategoriesFromPriceListData:function(t){var i;return i=t.reduce(function(t){return function(t,i){return t[i.category]=null,t}}(this),{}),Object.keys(i)},_loadCategories:function(t){var i;return i=this._getCategoriesFromPriceListData(t),this.set("priceListCategories",i)},getDataForCategory:function(t){return this.priceList.filter(function(i){return i.category===t})},modalClosedEvent:function(t){return t.detail.confirmed?this.modalSuccessCallBack(this.customUnit):this.modalSuccessCallBack(!1),this.modalSuccessCallBack=null,this.customUnit={}},_invokeCustomModal:function(t){return this.$.customItemModal.toggle(),this.modalSuccessCallBack=t},addCustomItemToInvoiceButtonPressed:function(){return this._invokeCustomModal(function(t){if(t)return t.qty=1,t.totalPrice=t.price,this.push("invoice.data",t)})},_loadItemSearchAutoComplete:function(){},invoiceItemAutocompleteSelected:function(t){var i;return i=t.detail.value,i.qty=1,i.totalPrice=i.price,this.push("invoice.data",i),this.$.invoiceSearchInput.clear()},_loadThirdPartyUserAutocompleteList:function(t){var i;return this.thirdPartyUserList=app.db.find("third-party-user-list",function(i){var e;return e=i.organizationId,e===t}),this.thirdPartyUserListSourceMap=function(){var t,e,n,a;for(n=this.thirdPartyUserList,a=[],t=0,e=n.length;t<e;t++)i=n[t],a.push({text:i.name,value:i.mobile});return a}.call(this)},_loadInvoiceCategoryList:function(t){var i;return i=app.db.find("invoice-category-list",function(i){var e;return e=i.organizationId,e===t}),i.length?this.set("invoiceCategoryList",i[0]):this.set("invoiceCategoryList",this._makeNewInvoiceCategoryList(t))},convertCategoryNameToId:function(t){return t.toLowerCase().split(" ").join("")},toggleCollapseClicked:function(t){var i;return i=this.convertCategoryNameToId(t.model.categoryName),this.$$("#"+i).toggle()},_getNextInvoiceRef:function(t){var i;return i={apiKey:this.user.apiKey,organizationId:this.organization.idOnServer},this.callApi("/bdemr-clinic-app--organization-invoice--get-next-ref-number",i,function(i){return function(i,e){return t(e.data.ref)}}(this))},_makeInvoiceRef:function(t){var i,e,n,a,o;for(a=this.organization.name.trim().split(" "),o="",i=0,n=a.length;i<n;i++)e=a[i],o+=e.split("")[0];return o+"-"+t},_makeNewInvoice:function(){var t;return t={serial:this.generateSerialForinvoice(),referenceNumber:null,createdDatetimeStamp:lib.datetime.now(),createdByUserSerial:this.user.serial,patientSerial:this.patient.serial,patientName:this.patient.name,patientPhone:this.patient.phone,patientEmail:this.patient.email,organizationId:this.organization.idOnServer,organizationName:this.organization.name,modificationHistory:[],lastModifiedDatetimeStamp:null,category:"",totalBilled:0,paid:null,lastPaid:null,discount:null,totalAmountReceieved:null,flags:{flagAsError:!1,markAsCompleted:!1},data:[],commission:{},availableToPatient:!0},this.set("invoice",t)},addToListButtonClicked:function(t){var i;return i=t.model.item,i.qty=1,i.price=null!=i.price?i.price:i.price=0,i.totalPrice=null!=i.price?i.price:i.price=0,this.push("invoice.data",i)},deleteInvoiceItem:function(t){return this.splice("invoice.data",t.model.index,1)},discountTypeChanged:function(){return this.calculateTotalPrice()},lastPaymentChanged:function(t){var i,e;if(e=t.target,i=this._calculateDue(this.invoice.totalBilled,this.invoice.paid,0),e.value>i)return e.invalid=!0},itemUnitPriceChanged:function(t){var i,e,n,a,o,r;return r=parseInt(t.target.value),i=this.locateParentNode(t.target,"PAPER-ITEM"),o=this.$$("#invoice-item-repeater"),e=o.indexForElement(i),a=o.modelForElement(i),n=this.invoice.data[e],n.price=r,n.totalPrice=r*n.qty,a.set("item.totalPrice",r*a.item.qty),this.splice("invoice.data",e,1,n)},quantityChanged:function(t){var i,e;return i=t.model,e=parseInt(t.target.value),e>1?(i.set("item.qty",e),i.set("item.totalPrice",parseInt(i.item.price*parseInt(e))),this.calculateTotalPrice()):(i.set("item.qty",1),i.set("item.totalPrice",i.item.price))},calculateTotalPrice:function(){var t,i,e,n,a,o,r,s,c;for(r=0,i=parseInt(null!=(t=this.invoice).discount?t.discount:t.discount=0),c=this.invoice.data,n=0,o=c.length;n<o;n++)a=c[n],r+=parseInt(a.price*a.qty);return i?0===this.discountType?(e=r*i/100,s=r-e):(e=i,s=r-i):s=r,this.set("invoiceGrossPrice",r),this.set("invoiceDiscountAmt",e),this.set("invoice.totalBilled",s)},_calculateDue:function(t,i,e){if(null==t&&(t=0),null==i&&(i=0),null==e&&(e=0),t>0)return t-(parseInt(i)+parseInt(e))},_calculateTotalAmtReceived:function(t,i){var e;return null==t&&(t=0),null==i&&(i=0),e=parseInt(t)+parseInt(i),this.set("invoice.totalAmountReceieved",e),e},_calculateCommission:function(t,i){var e;return e=t*i/100,this.set("invoice.commission.amount",e)},_makeNewThirdPartyUser:function(t,i){return{serial:this.generateSerialForThirdPartyUser(),createdDatetimeStamp:lib.datetime.now(),lastModifiedDatetimeStamp:lib.datetime.now(),createdByUserSerial:this.user.serial,organizationId:this.organization.idOnServer,name:t,mobile:i}},thirdPartyUserSelected:function(t){return this.set("invoice.commission.mobile",t.detail.value)},_makeNewInvoiceCategoryList:function(t){return{serial:this.generateSerialForInvoiceCategory(),createdDatetimeStamp:lib.datetime.now(),lastModifiedDatetimeStamp:lib.datetime.now(),createdByUserSerial:this.user.serial,organizationId:t,data:[]}},invoiceTypeCustomValueSet:function(t){var i;return t.preventDefault(),i=t.detail,this.push("invoiceCategoryList.data",i),this.invoiceCategoryList.lastModifiedDatetimeStamp=lib.datetime.now(),this.set("invoice.category",i)},_validateInvoice:function(t){return t.data.length?!!t.totalAmountReceieved||(this.domHost.showToast("Please Add some amount in Paid Amount"),!1):(this.domHost.showToast("Add some item into invoice"),!1)},_reduceInventoryItems:function(t){var i,e,n,a,o,r;for(o=t.data,r=[],e=0,a=o.length;e<a;e++)n=o[e],i=app.db.find("organization-price-list",function(t){return function(t){var i;return i=t.serial,i===n.serial}}(this))[0],i.qty?(i.qty-=n.qty,r.push(app.db.update("organization-price-list",i._id,i))):r.push(void 0);return r},_assignInvoiceRef:function(t,i){return t?i(null):this._getNextInvoiceRef(function(e){return function(n){return t=e._makeInvoiceRef(n),i(t)}}(this))},_addModificationHistory:function(){var t;return t={userSerial:this.user.serial,lastModifiedDatetimeStamp:lib.datetime.now()},this.invoice.modificationHistory.push(t),this.invoice.lastModifiedDatetimeStamp=lib.datetime.now()},_updateVisit:function(t){return null===this.visit.invoiceSerial&&(this.visit.invoiceSerial=t),this.visit.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.upsert("doctor-visit",this.visit,function(t){return function(i){var e;return e=i.serial,t.visit.serial===e}}(this))},_saveInvoice:function(t){if(this._validateInvoice(this.invoice))return t&&(this.invoice.flags.markAsCompleted=!0),this._addModificationHistory(),this._reduceInventoryItems(this.invoice),app.db.upsert("invoice-category-list",this.invoiceCategoryList,function(t){return function(i){var e;return e=i.serial,e===t.invoiceCategoryList.serial}}(this)),this._assignInvoiceRef(this.invoice.referenceNumber,function(t){return function(i){return i&&(t.invoice.referenceNumber=i),app.db.upsert("visit-invoice",t.invoice,function(i){var e;return e=i.serial,e===t.invoice.serial}),t.domHost.showToast("Invoice Saved Successfully"),t._updateVisit(t.invoice.serial),t.domHost.navigateToPage("#/visit-editor/visit:"+t.visit.serial+"/patient:g")}}(this))},_notifyInvalidPatient:function(){return this.showModal("Invalid Patient Provided")},_notifyInvalidOrganization:function(){return this.showModal("No Organization is Present. Please Select an Organization first.")},saveButtonPressed:function(){return this._saveInvoice()},saveAndCompleteInvoiceButtonClicked:function(){var t;return this._saveInvoice(t=!0)},saveInvoiceButtonClicked:function(){return this._saveInvoice()},_chargeWalletContextual:function(t){var i;return i={patientId:this.patient.idOnServer,amount:this.invoice.totalAmountReceieved,purpose:"Invoice Bill",organizationId:this.organization.idOnServer,context:t},this._chargePatientContextual(i,function(t){return function(i){return i?t.domHost.showModalDialog("Unable to charge the patient. "+i.message):t.domHost.showModalDialog("Successfully Charged")}}(this))},chargeIndoorWalletButtonPressed:function(){return this._chargeWalletContextual("indoor")},chargeOutdoorWalletButtonPressed:function(){return this._chargeWalletContextual("outdoor")},getDoctorSpeciality:function(){return 0!==this.user.specializationList.length?this.user.specializationList[0].specializationTitle:"not provided yet"},arrowBackButtonPressed:function(){return this.domHost.navigateToPreviousPage()},navigatedOut:function(){return this.set("invoice",{}),this.set("invoiceGrossPrice",0),this.set("invoiceDiscountAmt",0)}})}).call(this);
+//# sourceMappingURL=page-create-invoice.coffee-compiled.js.map</script>
+</dom-module>

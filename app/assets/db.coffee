@@ -1091,3 +1091,46 @@ app.db.defineCollection { name: 'employee-leave-data--deleted' }
 app.db.defineCollection { name: 'referral-record' }
 app.db.defineCollection { name: 'referral-record--deleted' }
 
+# INVOICE RELATED DB
+# ======================
+
+app.db.defineCollection {
+  name: 'organization-inventory'
+}
+
+app.db.defineCollection {
+  name: 'organization-inventory--deleted'
+}
+
+app.db.defineCollection {
+  name: 'third-party-user-list'
+}
+
+app.db.defineCollection {
+  name: 'third-party-user-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'invoice-category-list'
+}
+
+app.db.defineCollection {
+  name: 'invoice-category-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'custom-inventory-category-list'
+}
+
+app.db.defineCollection {
+  name: 'custom-inventory-category-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'organization-price-list'
+}
+
+app.db.defineCollection {
+  name: 'organization-price-list--deleted'
+}
+

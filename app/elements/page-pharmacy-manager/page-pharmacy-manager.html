@@ -1,0 +1,83 @@
+<!-- iron-* --><!-- paper-* --><!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-pharmacy-manager">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      paper-item {
+        border-bottom: 1px solid #eee;
+      }
+
+      paper-progress {
+        width: 100%;
+      }
+
+      .m-right-5 {
+        margin-right: 5px;
+      }
+      
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+        
+        <paper-card heading="Add Pharmacy Item : [[organization.name]]">
+          <div class="card-content">
+            <template is="dom-if" if="[[isLoading]]">
+              <paper-progress indeterminate=""></paper-progress>
+            </template>
+            <template is="dom-if" if="[[!isLoading]]">
+              <div class="layout horizontal">
+                <paper-autocomplete text="{{inventory.data.name}}" source="[[brandNameSourceDataList]]" class="flex-2 m-right-5" label="Item Name"></paper-autocomplete>
+                <paper-input class="flex m-right-5" label="Buying Price/Unit" value="{{inventory.data.buyingPrice}}" type="number"></paper-input>
+                <paper-input class="flex m-right-5" label="Selling Price/Unit" value="{{inventory.data.sellingPrice}}" type="number"></paper-input>
+                <paper-input class="flex m-right-5" label="Qty" value="{{inventory.data.qty}}" type="number"></paper-input>
+                <vaadin-date-picker label="Expiry Date" value="{{inventory.data.expiryDate}}"></vaadin-date-picker>
+              </div>
+            </template>
+          </div>
+          <div class="card-actions">
+            <paper-button class="btn btn-success" on-tap="_addToInventoryButtonClicked">Add Item</paper-button>
+          </div>
+        </paper-card>
+        <br>
+        <paper-card heading="Inventory">
+          <div class="card-content">
+            <paper-item class="layout horizontal">
+              <div class="flex-2"><strong>Item</strong></div>
+              <div class="flex"><strong>Qty</strong></div>
+              <div class="flex"><strong>Buying Price</strong></div>
+              <div class="flex"><strong>Selling Price</strong></div>
+              <div class="flex"><strong>Expiry</strong></div>
+              <div class="flex">Actions</div>
+            </paper-item>
+            <template is="dom-repeat" items="[[inventoryList]]">
+              <paper-item class="layout horizontal center">
+                <div class="flex-2">[[item.data.name]]</div>
+                <div class="flex">[[item.data.qty]]</div>
+                <div class="flex">[[item.data.buyingPrice]]</div>
+                <div class="flex">[[item.data.sellingPrice]]</div>
+                <div class="flex">[[_formatDate(item.data.expiryDate)]]</div>
+                <div class="flex">
+                  <paper-icon-button icon="create" on-tap="editInventoryItemButtonClicked"></paper-icon-button>
+                </div>
+              </paper-item>
+            </template>
+          </div>
+        </paper-card>
+
+      </div>
+
+    </div>
+
+  </template>
+  <script>(function(){Polymer({is:"page-pharmacy-manager",behaviors:[app.behaviors.dbUsing,app.behaviors.apiCalling,app.behaviors.translating,app.behaviors.pageLike],properties:{user:{type:Object,value:{}},organization:{type:Object,value:{}},inventoryList:{type:Array,value:[]},inventory:{type:Object,value:{}},isLoading:{type:Boolean,value:!0}},_formatDate:function(t){return lib.datetime.format(t,"mmm d, yyyy")},navigatedIn:function(){return this._loadUser(),this._loadOrganization(this.getCurrentOrganization().idOnServer,function(t){return function(){return t.set("isLoading",!1),t._resetInventoryForm()}}(this))},_checkUserAccess:function(t,i){var n,e,a,r;for(n=!1,e=0,r=i.length;e<r;e++)if(a=i[e],a.id===t&&a.isAdmin){n=!0;break}return n?this._loadData():this._notifyInvalidAccess()},_loadData:function(){return this._loadInventoryItems(this.organization.idOnServer),this.domHost.getStaticData("pccMedicineList",function(t){return function(i){return t._loadMedicineCompositionList(i)}}(this))},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},_loadOrganization:function(t,i){var n;return n={apiKey:this.user.apiKey,idList:[t]},this.callApi("/bdemr-organization-list-organizations-by-ids",n,function(t){return function(n,e){return e.hasError?t.domHost.showModalDialog(e.error.message):1!==e.data.matchingOrganizationList.length?void t.domHost.showModalDialog("Invalid Organization"):(t.set("organization",e.data.matchingOrganizationList[0]),t._checkUserAccess(t.user.idOnServer,e.data.matchingOrganizationList[0].userList),i())}}(this))},_loadInventoryItems:function(t){return this.inventoryList=app.db.find("organization-inventory",function(i){return function(i){var n;return n=i.organizationId,n===t}}(this))},_loadMedicineCompositionList:function(t){var i,n,e,a;for(i={},n=0,a=t.length;n<a;n++)e=t[n],i[e.brandName]=null;return this.brandNameSourceDataList=function(){var t,n,a,r;for(a=Object.keys(i),r=[],t=0,n=a.length;t<n;t++)e=a[t],r.push({text:e,value:e});return r}()},_resetInventoryForm:function(){var t,i;return t=new Date,t.setFullYear(t.getFullYear()+1),i={serial:this.generateSerialForInventoryItem(),lastModifiedDatetimeStamp:null,createdByUserSerial:this.user.serial,organizationId:this.organization.idOnServer,data:{name:"",buyingPrice:null,sellingPrice:null,qty:1,category:"pharmacy",expiryDate:lib.datetime.mkDate(t)}},this.set("inventory",i)},_validateInput:function(t){return!!(t.data.name&&t.data.buyingPrice&&t.data.sellingPrice&&t.data.qty)},_addToInventoryButtonClicked:function(){if(this._validateInput(this.inventory))return this.inventory.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.upsert("organization-inventory",this.inventory,function(t){return function(i){var n;return n=i.serial,n===t.inventory.serial}}(this)),this._resetInventoryForm(),this._loadInventoryItems(this.organization.idOnServer)},editInventoryItemButtonClicked:function(t){var i,n,e,a;return a=t.model,e=a.item,i=a.index,n={serial:e.serial,lastModifiedDatetimeStamp:null,createdByUserSerial:e.createdByUserSerial,organizationId:e.organizationId,data:{name:e.data.name,buyingPrice:e.data.buyingPrice,sellingPrice:e.data.sellingPrice,qty:e.data.qty,expiryDate:e.data.expiryDate}},this.set("inventory",n)},_notifyInvalidOrganization:function(){return this.domHost.showModalDialog("No Organization is Present. Please Select an Organization first.")},_notifyInvalidAccess:function(){return this.domHost.showModalPrompt("You Do Not Have Access To This Page!",function(t){return function(){return t.domHost.navigateToPreviousPage()}}(this))},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()}})}).call(this);
+//# sourceMappingURL=page-pharmacy-manager.coffee-compiled.js.map</script>
+</dom-module>

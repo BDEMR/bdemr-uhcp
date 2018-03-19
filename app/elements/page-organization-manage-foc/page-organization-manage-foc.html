@@ -1,0 +1,249 @@
+<!-- custom-elements --><!-- element --><dom-module id="page-organization-manage-foc">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      .organization-info-card-counter {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #777777;
+      }
+
+      .organization-info-cards {
+        @apply(--layout-vertical);
+        /*@apply(--layout-center);*/
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 20px;
+      }
+
+      .organization-info-cards .row {
+        margin-left: 10px;
+        /*margin-right: 10px;*/
+        margin-top: 10px;
+      }
+
+      .organization-info-cards .hr {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: 1px;
+        /*width: 100px;*/
+        background: #dddddd;
+      }
+
+      .organization-info-cards .row .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .organization-info-cards .row .modifier.online {
+        background: #757575;
+      }
+
+      .organization-info-cards .row .modifier.local-only {
+        background: #039BE5;
+      }
+
+      .organization-info-cards .row .modifier.locally-updated {
+        background: #009688;
+      }
+
+      .organization-info-cards .row .modifier.imported {
+        background: #4CAF50;
+      }
+
+      .info-row {
+        margin-top: 10px;
+      }
+
+      .top-info-row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .serial-number {
+        background: #37474F;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .address1 {
+        margin-right: 10px;
+      }
+
+      .break-on-tablet {
+        @apply(--layout-horizontal);
+      }
+
+      @media screen and (max-width: 740px) {
+        .break-on-tablet {
+          display: block;
+        }
+      }
+
+      .val {
+        text-decoration: underline;
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .primary {
+        background: #388E3C;
+        color: white;
+      }
+
+      .type.caption-3 {
+        font-size: 14.5px;
+        font-weight: bold;
+        line-height: 18px;
+      }
+
+      .text-muted {
+        color: var(--secondary-text-color);
+      }
+
+      .log-box {
+        padding: 10px 0px;
+        border-bottom: solid 1px #eee;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <template is="dom-if" if="{{!isOrganizationValid}}">
+          Organization invalid
+        </template>
+
+        <!-- editing organization - start -->
+        <template is="dom-if" if="{{isOrganizationValid}}">
+
+          <paper-card heading="Basic Information">
+            <div class="card-content">
+              <div class="horizontal layout center top-info-row">
+                <div>ID: </div>
+                <div class="serial-number">[[organization.idOnServer]]</div>
+                <div class="flex"></div>
+              </div>
+              <div class="info-row">
+                <div>Name: [[organization.name]]</div>
+              </div>
+              <div class="info-row">
+                <div>Region: [[organization.effectiveRegion]]</div>
+              </div>
+              <div class="info-row">
+                <div>Address: [[organization.address]]</div>
+              </div>
+            </div>
+          </paper-card>
+
+          <!-- Add Patient Start -->
+          <paper-card class="m-top-8" heading="Select Patient">
+            <div class="card-content">
+              <paper-autocomplete class="flex" id="userSearch" text="{{searchFieldMainInput}}" label="Search with Patient Name, phone, Email, NID or Hospital Number" on-autocomplete-selected="userSelected" on-keyup="onlineSearchEnterKeyPressed" error-message="Input Required" required=""></paper-autocomplete>
+              <br>
+              <template is="dom-if" if="[[!matchingPatientList.length]]">
+                <div class="layout vertical center type secondary">-- No Patient Data--</div>
+              </template>
+              <template id="patient-list-repeater" is="dom-repeat" items="[[matchingPatientList]]" as="patient">
+                <paper-item class="custom layout horizontal center">
+                  <div class="type caption secondary">[[patient.serial]]</div>
+                  <div class="flex m-left-8">
+                    <div class="type body capitalize">[[$getFullName(patient.name)]]</div>
+                    <div class="type caption">[[patient.email]]</div>
+                    <div class="type caption">[[patient.phone]]</div>
+                    <div class="type caption">Indoor Balance: [[patient.indoorBalance]] BDT</div>
+                    <div class="type caption">Outdoor Balance: [[patient.outdoorBalance]] BDT</div>
+                  </div>
+                  <paper-button raised="" class="btn-add colored" on-tap="viewPatientExpenseHistoryPressed">
+                    <!-- <iron-icon icon="icons:visibility" class="m-right-8"></iron-icon> -->
+                    View Expenses</paper-button>
+                  <paper-icon-button icon="delete" on-tap="removePatientPressed"></paper-icon-button>
+                </paper-item>
+              </template>
+            </div>
+            <div class="card-actions"></div>
+          </paper-card>
+          <!-- Add Patient End -->
+
+          <paper-card class="m-top-8" heading="Available Packages">
+            <div class="card-content">
+              <template is="dom-if" if="[[selectedPatient]]">
+
+                <div class="type title-2" style="color: green;">Your Balance: [[walletBalance]] BDT</div>
+
+                <div class="type title-2">
+                  <div>Selected Patient:</div>
+                  <div class="type body capitalize">[[$getFullName(selectedPatient.name)]]</div>
+                  <div class="type caption">[[selectedPatient.email]]</div>
+                  <div class="type caption">[[selectedPatient.phone]]</div>
+                </div>
+
+                <div class="type title-2">Available Packages:</div>
+                <template is="dom-repeat" items="[[packageList]]" as="package">
+                  <div class="horizontal layout center">
+                    <div class="type body">[[package.displayName]]([[package.name]]) - After paying [[package.needsToPay]] BDT the patient will enjoy [[package.freeForDays]] days of free time. (excepts SMS)</div>
+                    <paper-button raised="" class="primary" on-tap="chargeMeTapped">Charge me</paper-button>
+                    <paper-button raised="" class="primary" on-tap="chargePatientTapped">Charge Patient</paper-button>
+                  </div>
+                </template>
+
+              </template>
+            </div>
+          </paper-card>
+
+          <paper-card class="m-top-8" heading="Previous Activations">
+            <div class="card-content">
+              <template is="dom-repeat" items="[[packageActivationList]]" as="packageActivation">
+                <div class="horizontal layout center">
+                  <div class="type body">
+                    [[$getFullName(packageActivation.patient.name)]] - [[packageActivation.packageName]] - [[_formatDateTime(packageActivation.fromDatetimeStamp)]] to [[_formatDateTime(packageActivation.toDatetimeStamp)]]
+                  </div>
+                </div>
+              </template>
+            </div>
+          </paper-card>
+
+        </template>
+      </div>
+    </div>
+  </template>
+  <script>(function(){Polymer({is:"page-organization-manage-foc",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{user:{type:Object,notify:!0,value:null},isOrganizationValid:{type:Boolean,notify:!0,value:!1},organization:{type:Object,notify:!0,value:null},packageList:{type:Array,value:function(){return[]}}},$add:function(a,t){return parseInt(a)+parseInt(t)},_formatDateTime:function(a){return lib.datetime.format(new Date(a),"mmm d, yyyy h:MMTT")},_sortByDate:function(a,t){return t.createdDatetimeStamp-a.createdDatetimeStamp},_loadUser:function(){var a;if(a=app.db.find("user"),1===a.length)return this.user=a[0]},arrowBackButtonPressed:function(a){return this.domHost.navigateToPreviousPage()},_notifyInvalidOrganization:function(){return this.isOrganizationValid=!1,this.domHost.showModalDialog("Invalid Organization Provided")},navigatedIn:function(){var a;return this._loadUser(),this._loadWallet(),a=this.domHost.getPageParams(),a.organization?this._loadOrganization(a.organization,function(a){return function(t){return a._loadAvailablePackages(t),a._loadPackageActivations(t)}}(this)):this._notifyInvalidOrganization()},navigatedOut:function(){return this.organization=null,this.isOrganizationValid=!1},_loadOrganization:function(a,t){var e;return e={apiKey:this.user.apiKey,idList:[a]},this.callApi("/bdemr-organization-list-organizations-by-ids",e,function(a){return function(e,i){var n;return i.hasError?a.domHost.showModalDialog(i.error.message):1!==i.data.matchingOrganizationList.length?void a.domHost.showModalDialog("Invalid Organization"):(n=i.data.matchingOrganizationList[0],a.set("organization",n),a.set("isOrganizationValid",!0),t(n.idOnServer))}}(this))},addPatient:function(a){var t;return t={apiKey:this.user.apiKey,organizationId:this.organization.idOnServer,targetidOnServer:a.idOnServer,outdoorBalance:this.outdoorBalance,indoorBalance:this.indoorBalance},this.callApi("/bdemr-organization-add-patient",t,function(a){return function(t,e){return e.hasError?a.domHost.showModalDialog(e.error.message):(a.domHost.showToast("Patient Added Successfully"),a._loadWallet(),a._loadAvailablePackages(a.organization.idOnServer))}}(this))},_loadAvailablePackages:function(a){var t;return t={apiKey:this.user.apiKey,organizationId:a},this.callApi("/internal--foc--get-packages",t,function(a){return function(t,e){return e.hasError?a.domHost.showToast(e.error.message):a.set("packageList",e.data.packageList)}}(this))},_loadPackageActivations:function(a){var t;return t={apiKey:this.user.apiKey,organizationId:a},this.callApi("/bdemr-patient--foc--get-active-packages",t,function(a){return function(t,e){return e.hasError?a.domHost.showToast(e.error.message):a.set("packageActivationList",e.data.packageActivationList)}}(this))},onlineSearchEnterKeyPressed:function(a){if(13===a.keyCode){if(!this.searchFieldMainInput)return;return this._searchOnline(this.searchFieldMainInput)}},_searchOnline:function(a){return this.callApi("/bdemr-patient-search",{apiKey:this.user.apiKey,searchQuery:a},function(a){return function(t,e){var i,n,r,o,s,d,l;if(e.hasError)return a.domHost.showModalDialog(e.error.message);if(0===e.data.length)return a.domHost.showToast("No Patient Found with that Search"),a.searchFieldMainInput="";for(s=e.data,i=0,r=s.length;i<r;i++)d=s[i],d.flags={isImported:!1,isLocalOnly:!1,isOnlineOnly:!1},o=app.db.find("patient-list",function(a){var t;return t=a.serial,t===d.serial}),0===o.length?d.flags.isOnlineOnly=!0:(d.flags.isImported=!0,d._tempLocalDbId=o[0]._id);return l=function(){var a,t,e;for(e=[],a=0,t=s.length;a<t;a++)n=s[a],e.push({text:this.$getFullName(n.name)+"--"+n.email+"--"+n.phone,value:n});return e}.call(a),a.$$("#userSearch").suggestions(l)}}(this))},userSelected:function(a){var t;return a.stopPropagation(),t=a.detail.value,this.searchFieldMainInput="",t.organizationId=this.organization.idOnServer,this.selectPatient(t)},selectPatient:function(a){return this.selectedPatient=a},_setFoc:function(a,t){var e,i,n;return i=a.packageName,n=a.patientId,e=a.organizationId,this.callApi("/bdemr-patient--foc--activate-package",{apiKey:this.user.apiKey,packageName:i,patientId:n,organizationId:e},function(a){return function(e,i){return i.hasError?a.domHost.showModalDialog(i.error.message):(a.domHost.showModalDialog("Patient is set as Free Of Charge for the desired duration."),t())}}(this))},chargePatientTapped:function(a){var t,e;return t=a.model["package"],e=this.selectedPatient,this._chargePatient(e.idOnServer,t.needsToPay,"Payment for FOC",function(a){return function(i){var n,r,o;return i?void a.domHost.showModalDialog("Unable to charge the patient. "+i.message):(r=t.name,o=e.idOnServer,n=a.organization.idOnServer,a._setFoc({packageName:r,patientId:o,organizationId:n},function(){return a.navigatedIn()}))}}(this))},chargeMeTapped:function(a){var t,e;return t=a.model["package"],e=this.selectedPatient,this._chargePatient(this.user.idOnServer,t.needsToPay,"Payment for FOC",function(a){return function(i){var n,r,o;return i?void a.domHost.showModalDialog("Unable to charge the patient. "+i.message):(r=t.name,o=e.idOnServer,n=a.organization.idOnServer,a._setFoc({packageName:r,patientId:o,organizationId:n},function(){return a.navigatedIn()}))}}(this))}})}).call(this);
+//# sourceMappingURL=page-organization-manage-foc.coffee-compiled.js.map</script>
+</dom-module>

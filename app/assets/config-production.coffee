@@ -5,9 +5,11 @@ window.app =
 
   config:
 
-    clientIdentifier: 'bdemr-doctor-app'
+    clientIdentifier: 'bdemr-uhcp-app'
 
-    clientVersion: '0.0.8'
+    clientName: 'uhcp'
+
+    clientVersion: '0.0.13'
 
     clientPlatform: 'web' # can be - 'web', 'android', 'ios', 'windows', 'osx', 'ubuntu'
 

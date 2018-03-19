@@ -1,0 +1,316 @@
+<!-- style --><!-- behavior --><dom-module id="page-set-package">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      paper-card {
+        --paper-: {
+          padding: 0;
+          margin-left: 20px;
+        }
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .item {
+        padding: 10px;
+      }
+
+      .item:nth-child(even) {
+        background-color: var(--paper-grey-100);
+      }
+
+      .text-mute {
+        color: var(--paper-grey-400);
+      }
+
+      .choice-list,
+      .package-list {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .choice-list {
+        height: 100vh;
+        overflow: auto;
+      }
+
+      .package-list {
+        margin-left: 10px;
+        height: 100vh;
+        overflow: auto;
+      }
+
+      .package-list .package-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .package-item :first-child {
+        padding-right: 15px;
+      }
+
+      .add {
+        color: var(--paper-green-500);
+      }
+
+      .page-package {
+        width: 100%;
+        @apply(--layout-horizontal);
+      }
+
+      iron-list {
+        max-height: 400px;
+      }
+
+      @media only screen and (max-width: 1024px) {
+        .page-package {
+          @apply(--layout-vertical);
+        }
+
+        .choice-list,
+        .package-list {
+          height: 100%;
+        }
+
+        .package-list {
+          margin-left: 0;
+        }
+      }
+    </style>
+
+    <div class="master-container">
+
+      <div class="page-package">
+
+        <section class="choice-list">
+
+          <paper-card>
+            <div class="card-custom-header" on-tap="toggleInvestigation">
+              <div class="layout horizontal justified center">
+                <div class="title flex">
+                  <iron-icon icon="expand-more"></iron-icon> Investigation</div>
+              </div>
+            </div>
+            <div class="">
+              <iron-collapse id="investigation">
+                <div class="collapse-content">
+                  <iron-list items="[[investigationPriceList.data]]">
+                    <template>
+                      <div class="item layout horizontal center">
+                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
+                        <div>[[item.name]]</div>
+                      </div>
+                    </template>
+                  </iron-list>
+                </div>
+              </iron-collapse>
+            </div>
+          </paper-card>
+
+          <paper-card>
+            <div class="card-custom-header" on-tap="toggleServcie">
+              <div class="layout horizontal justified center">
+                <div class="title flex">
+                  <iron-icon icon="expand-more"></iron-icon> Service</div>
+              </div>
+            </div>
+            <div class="">
+              <iron-collapse id="service">
+                <div class="collapse-content">
+                  <div hidden$="{{isEmpty(servicePriceList.data)}}" class="layout vertical center item">No Data...</div>
+                  <iron-list items="[[servicePriceList.data]]">
+                    <template>
+                      <div class="item layout horizontal center">
+                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
+                        <div>[[item.name]]</div>
+                      </div>
+                    </template>
+                  </iron-list>
+                </div>
+              </iron-collapse>
+            </div>
+          </paper-card>
+
+          <paper-card>
+            <div class="card-custom-header" on-tap="toggleDoctorFees">
+              <div class="layout horizontal justified center">
+                <div class="title flex">
+                  <iron-icon icon="expand-more"></iron-icon> Doctor Fees</div>
+              </div>
+            </div>
+            <div class="">
+              <iron-collapse id="doctorFees">
+                <div class="collapse-content">
+                  <div hidden$="{{isEmpty(doctorFeesPriceList.data)}}" class="layout vertical center item">No Data...</div>
+                  <iron-list items="[[doctorFeesPriceList.data]]">
+                    <template>
+                      <div class="item layout horizontal center">
+                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
+                        <div class="flex">[[item.name]]</div>
+                      </div>
+                    </template>
+                  </iron-list>
+                </div>
+              </iron-collapse>
+            </div>
+          </paper-card>
+
+          <paper-card>
+            <div class="card-custom-header" on-tap="togglePharmacy">
+              <div class="layout horizontal justified center">
+                <div class="title flex">
+                  <iron-icon icon="expand-more"></iron-icon> Pharmacy</div>
+              </div>
+            </div>
+            <div class="">
+              <iron-collapse id="pharmacy">
+                <div class="collapse-content">
+                  <div hidden$="{{isEmpty(medicineInventory)}}" class="layout vertical center item">No Data...</div>
+                  <iron-list items="[[medicineInventory]]">
+                    <template>
+                      <div class="item layout horizontal center">
+                        <paper-icon-button class="add" icon="add-circle" on-tap="addInventoryItemToListButtonClicked"></paper-icon-button>
+                        <div class="flex-2">[[item.data.name]]</div>
+                      </div>
+                    </template>
+                  </iron-list>
+                </div>
+              </iron-collapse>
+            </div>
+          </paper-card>
+
+          <paper-card>
+            <div class="card-custom-header" on-tap="toggleSupply">
+              <div class="layout horizontal justified center">
+                <div class="title flex">
+                  <iron-icon icon="expand-more"></iron-icon> Supply</div>
+              </div>
+            </div>
+            <div class="">
+              <iron-collapse id="supply">
+                <div class="collapse-content">
+                  <div hidden$="{{isEmpty(supplyPriceList.data)}}" class="layout vertical center item">No Data...</div>
+                  <iron-list items="[[supplyPriceList.data]]">
+                    <template>
+                      <div class="item layout horizontal center">
+                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
+                        <div>[[item.name]]</div>
+                      </div>
+                    </template>
+                  </iron-list>
+                </div>
+              </iron-collapse>
+            </div>
+          </paper-card>
+
+          <paper-card>
+            <div class="card-custom-header" on-tap="toggleAmbulance">
+              <div class="layout horizontal justified center">
+                <div class="title flex">
+                  <iron-icon icon="expand-more"></iron-icon> Ambulance</div>
+              </div>
+            </div>
+            <div class="">
+              <iron-collapse id="ambulance">
+                <div class="collapse-content">
+                  <div hidden$="{{isEmpty(ambulancePriceList.data)}}" class="layout vertical center item">No Data...</div>
+                  <iron-list items="[[ambulancePriceList.data]]">
+                    <template>
+                      <div class="item layout horizontal center">
+                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
+                        <div>[[item.name]]</div>
+                      </div>
+                    </template>
+                  </iron-list>
+                </div>
+              </iron-collapse>
+            </div>
+          </paper-card>
+
+          <paper-card>
+            <div class="card-custom-header" on-tap="toggleOther">
+              <div class="layout horizontal justified center">
+                <div class="title flex">
+                  <iron-icon icon="expand-more"></iron-icon> Other</div>
+              </div>
+            </div>
+            <div class="">
+              <iron-collapse id="other">
+                <div class="collapse-content">
+                  <div hidden$="{{isEmpty(otherPriceList.data)}}" class="layout vertical center item">No Data...</div>
+                  <iron-list items="[[otherPriceList.data]]">
+                    <template>
+                      <div class="item layout horizontal start">
+                        <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
+                        <div>[[item.name]]</div>
+                      </div>
+                    </template>
+                  </iron-list>
+                </div>
+              </iron-collapse>
+            </div>
+          </paper-card>
+
+        </section>
+
+        <section class="package-list">
+          <paper-card heading="Package">
+            <div class="card-content">
+              <div class="layout horizontal start package-item">
+                <div class="flex-3">
+                  <strong>Add Price</strong>
+                </div>
+                <div class="flex-1">
+                  <strong>Qty</strong>
+                </div>
+                <div class="flex-8">
+                  <strong>Items</strong>
+                </div>
+              </div>
+              <template is="dom-repeat" items="[[package.itemList]]">
+                <div class="layout horizontal center package-item">
+                  <paper-checkbox class="flex-3" on-change="packageItemPriceSelected">[[item.price]]
+                    <span class="text-mute">BDT</span> -</paper-checkbox>
+                  <paper-input class="flex-1" label="Qty" type="number" on-input="qtyInput" no-label-float=""></paper-input>
+                  <div class="flex-7">[[item.name]]</div>
+                  <paper-icon-button class="flex-1" icon="delete" on-tap="deletePackageItem"></paper-icon-button>
+                </div>
+              </template>
+
+            </div>
+            <div class="card-actions">
+              <div class="layout horizontal center">
+                <paper-input id="packageCost" label="Enter Cost Price" type="number" value="{{package.actualCost}}" required="" error-message="Input Package Cost Price" on-input="validate"></paper-input>
+                <paper-input id="packagePrice" label="Enter Total Price" type="number" value="{{package.price}}" required="" error-message="Input Package Price" on-input="validate" class="m-left-8"></paper-input>
+                <paper-input id="packageName" class="flex m-left-8" label="Enter Package Name" value="{{package.name}}" required="" error-message="Input a Package Name" on-input="validate"></paper-input>
+              </div>
+              <paper-button class="btn btn-success" on-tap="createPackageButtonClicked">Create Package</paper-button>
+            </div>
+          </paper-card>
+        </section>
+
+
+      </div>
+    </div>
+
+  </template>
+  <script>(function(){Polymer({is:"page-set-package",behaviors:[app.behaviors.dbUsing,app.behaviors.pageLike,app.behaviors.translating,app.behaviors.apiCalling],properties:{user:{type:Object,notify:!0,value:{}},isOrganizationValid:{type:Boolean,notify:!0,value:!1},organization:{type:Object,notify:!0,value:{}},"package":{type:Object,value:{name:"",price:"",itemList:[]}},investigationPriceList:{type:Object,notify:!0,value:{serial:null,lastModifiedDatetimeStamp:null,data:[]}},servicePriceList:{type:Object,notify:!0,value:{serial:null,lastModifiedDatetimeStamp:null,data:[]}},pharmacyPriceList:{type:Object,notify:!0,value:{serial:null,lastModifiedDatetimeStamp:null,data:{medicinePriceList:[],fluidPriceList:[],transfusionPriceList:[],customPharmacyPriceList:[]}}},supplyPriceList:{type:Object,notify:!0,value:{serial:null,lastModifiedDatetimeStamp:null,data:[]}},ambulancePriceList:{type:Object,notify:!0,value:{serial:null,lastModifiedDatetimeStamp:null,data:[]}},packagePriceList:{type:Object,value:{serial:null,lastModifiedDatetimeStamp:null,data:[]}},otherPriceList:{type:Object,notify:!0,value:{serial:null,lastModifiedDatetimeStamp:null,data:[]}}},navigatedIn:function(){var t;return this._loadUser(),t=this.domHost.getPageParams(),t.organization?this._loadOrganization(t.organization):this._notifyInvalidOrganization()},_loadData:function(){return this._loadInvestigationPriceList(this.organization.idOnServer),this._loadServicePriceList(this.organization.idOnServer),this._loadSupplyPriceList(this.organization.idOnServer),this._loadAmbulancePriceList(this.organization.idOnServer),this._loadPackagePriceList(this.organization.idOnServer),this._loadOtherPriceList(this.organization.idOnServer),this._loadDoctorFeesPriceList(this.organization.idOnServer),this._loadMedicineInventory(this.organization.idOnServer)},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},_checkUserAccess:function(t,i){var e,a,n,r;for(e=!1,a=0,r=i.length;a<r;a++)if(n=i[a],n.id===t&&n.isAdmin){e=!0;break}return e?this._loadData():this._notifyInvalidAccess()},_loadOrganization:function(t){var i;return i={apiKey:this.user.apiKey,idList:[t]},this.callApi("/bdemr-organization-list-organizations-by-ids",i,function(t){return function(i,e){return e.hasError?t.domHost.showModalDialog(e.error.message):1!==e.data.matchingOrganizationList.length?void t.domHost.showModalDialog("Invalid Organization"):(t.set("organization",e.data.matchingOrganizationList[0]),t.set("isOrganizationValid",!0),t._checkUserAccess(t.user.idOnServer,e.data.matchingOrganizationList[0].userList))}}(this))},_notifyInvalidOrganization:function(){return this.isOrganizationValid=!1,this.domHost.showModalDialog("Invalid Organization Provided")},_notifyInvalidAccess:function(){return this.domHost.showModalPrompt("You Do Not Have Access To This Page!",function(t){return function(){return t.domHost.navigateToPreviousPage()}}(this))},_makePackage:function(){return this.set("package",{name:"",price:null,actualCost:null,category:"package",itemList:[]})},_loadInvestigationPriceList:function(t){var i;if(i=app.db.find("investigation-price-list",function(i){var e;return e=i.organizationId,e===t}),i.length>0)return this.investigationPriceList=i[0]},_loadServicePriceList:function(t){var i;if(i=app.db.find("service-price-list",function(i){var e;return e=i.organizationId,e===t}),i.length>0)return this.servicePriceList=i[0]},_loadDoctorFeesPriceList:function(t){var i;if(i=app.db.find("doctor-fees-price-list",function(i){var e;return e=i.organizationId,e===t}),i.length>0)return this.doctorFeesPriceList=i[0]},_loadMedicineInventory:function(t){return this.domHost.getStaticData("medicineCompositionList",function(i){return function(e){var a,n,r,o,s,c;for(a={},r=0,c=e.length;r<c;r++)s=e[r],a[s.brandName]=null;return n=function(){var t,i,e,n;for(e=Object.keys(a),n=[],t=0,i=e.length;t<i;t++)s=e[t],n.push({data:{name:s,buyingPrice:0,sellingPrice:0,qty:1}});return n}(),o=app.db.find("organization-inventory",function(i){var e;return e=i.organizationId,e===t}),i.medicineInventory=[].concat(o,n)}}(this))},_loadSupplyPriceList:function(t){var i;if(i=app.db.find("supply-price-list",function(i){var e;return e=i.organizationId,e===t}),i.length>0)return this.supplyPriceList=i[0]},_loadAmbulancePriceList:function(t){var i;if(i=app.db.find("ambulance-price-list",function(i){var e;return e=i.organizationId,e===t}),i.length>0)return this.ambulancePriceList=i[0]},_loadPackagePriceList:function(t){var i;return i=app.db.find("package-price-list",function(i){var e;return e=i.organizationId,e===t}),i.length>0?this.packagePriceList=i[0]:this._makePackagePriceList(function(t){return function(i){return app.db.insert("package-price-list",i),t.set("packagePriceList",i)}}(this))},_makePackagePriceList:function(t){var i;return t(i={serial:this.generateSerialForPackagePriceList(),organizationId:this.organization.idOnServer,lastModifiedDatetimeStamp:lib.datetime.now(),data:[{name:"Gall Bladder Operation Package",price:null,actualCost:null,category:"package"},{name:"Appendicitis Operation Package",price:null,actualCost:null,category:"package"},{name:"C/S Operation Package",price:null,actualCost:null,category:"package"},{name:"Hysterectomy Operation Package",price:null,actualCost:null,category:"package"},{name:"Tonsillectomy Operation Package",price:null,actualCost:null,category:"package"},{name:"Health Checkup Laboratory Package",price:null,actualCost:null,category:"package"},{name:"Endoscopy Package",price:null,actualCost:null,category:"package"}]})},_loadOtherPriceList:function(t){var i;if(i=app.db.find("other-price-list",function(i){var e;return e=i.organizationId,e===t}),i.length>0)return this.otherPriceList=i[0]},isEmpty:function(t){return void 0!==t&&null!==t&&!!t.length},toggleInvestigation:function(t){return this.$.investigation.toggle()},toggleServcie:function(t){return this.$.service.toggle()},togglePharmacy:function(t){return this.$.pharmacy.toggle()},toggleSupply:function(t){return this.$.supply.toggle()},toggleDoctorFees:function(t){return this.$.doctorFees.toggle()},toggleAmbulance:function(t){return this.$.ambulance.toggle()},toggleOther:function(t){return this.$.other.toggle()},addToListButtonClicked:function(t){return this.push("package.itemList",t.model.item)},packageItemPriceSelected:function(t){var i,e;return i=t.model.item.price*(t.model.item.qty?t.model.item.qty:1),t.target.checked?(e=parseInt(this["package"].price||0)+parseInt(i||0),this.set("package.price",e)):this.set("package.price",this["package"].price-parseInt(i))},qtyInput:function(t){var i,e;return i=t.model,e=t.target.value,e>1?i.set("item.qty",e):i.set("item.qty",1)},deletePackageItem:function(t){return this.splice("package.itemList",t.model.index,1),this.set("package.price",this["package"].price-parseInt(t.model.item.price))},_savePackage:function(){return this.push("packagePriceList.data",this["package"]),this.packagePriceList.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.upsert("package-price-list",this.packagePriceList,function(t){return function(i){var e;return e=i.serial,e===t.packagePriceList.serial}}(this)),this._makePackage(),this.domHost.showToast("Pacakge Created Successfully.")},_checkValidity:function(t,i){var e,a,n,r,o,s;for(s=[],e=0,r=t.length;e<r;e++)n=t[e],a=this.$$("#"+n).validate(),s.push(a);return o=s.every(function(t){return t}),i(o)},validate:function(t){return t.target.validate()},createPackageButtonClicked:function(){return this["package"].itemList.length?this._checkValidity(["packageName","packagePrice","packageCost"],function(t){return function(i){return i?t._savePackage():t.domHost.showToast("Enter Package Name and Price")}}(this)):this.domHost.showToast("Enter Item into Package List")},arrowBackButtonPressed:function(){return this.domHost.navigateToPreviousPage()}})}).call(this);
+//# sourceMappingURL=page-set-package.coffee-compiled.js.map</script>
+</dom-module>

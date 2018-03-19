@@ -99,7 +99,8 @@ app.behaviors.dbUsing =
     
     if previousUser 
       unless user.serial is previousUser.serial
-        app.db.initializeDatabase { removeExisting: true }
+        app.db.removeExistingDatabase()
+        app.db.initializeDatabase()
     
     app.db.insert 'user', user
 
@@ -141,6 +142,15 @@ app.behaviors.dbUsing =
       'diag-patient-log': 0
       'org-role-item-log': 1
       'referral-seed': 1
+      'inventory-seed': 1
+      'third-party-user-seed': 1
+      # 'investigation-price-list-seed': 1
+      # 'service-price-list-seed': 1
+      # 'supply-price-list-seed': 1
+      # 'ambulance-price-list-seed': 1
+      # 'package-price-list-seed': 1
+      # 'other-price-list-seed': 1
+      'price-list-seed': 1
     app.db.insert '--serial-generator', serialGenerator
 
     lib.tabStorage.setItem 'is-tab-authenticated', (lib.json.stringify true)
@@ -187,7 +197,7 @@ app.behaviors.dbUsing =
   getCurrentOrganization: -> (app.db.find 'organization')[0]
 
   generateSerialForPatient: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'P'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -197,7 +207,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + patientSeed)
 
   generateSerialForVisit: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'V'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -229,7 +239,7 @@ app.behaviors.dbUsing =
 
 
   generateSerialForPrescription: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'PR'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -239,7 +249,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForNote: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'NT'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -250,7 +260,7 @@ app.behaviors.dbUsing =
 
 
   generateSerialForPatientStay: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'PS'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -260,7 +270,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForNextVisit: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'NV'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -270,7 +280,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForTestAdvised: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'TA'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -280,7 +290,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForIdentifiedSymptoms: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'SYMP'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -290,7 +300,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForExamination: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'EXM'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -301,7 +311,7 @@ app.behaviors.dbUsing =
     
 
   generateSerialForCustomSymptoms: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'CSYMP'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -311,7 +321,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForCustomExamination: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'CEXM'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -321,7 +331,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForTestAdvisedInvestigation: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'TST'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -331,7 +341,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForCustomInvestigation: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'TA'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -341,7 +351,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForMedication: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'M'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -351,7 +361,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForFavoriteMedicine: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'FM'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -361,7 +371,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForFavoriteInvestigation: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'FI'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -371,7 +381,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForVitals: (forItem)->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'V'
     forItem = forItem
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
@@ -383,8 +393,8 @@ app.behaviors.dbUsing =
 
 
   generateSerialForCommentMessage: (forItem)->
-    appIdentifier = 'D'
-    itemType = 'C'
+    appIdentifier = 'U'
+    itemType = 'U'
     forItem = forItem
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -395,7 +405,7 @@ app.behaviors.dbUsing =
 
 
   generateSerialForUserAddedInstituion: (forItem)->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'UI'
     forItem = forItem
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
@@ -406,7 +416,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + forItem + seed)
 
   generateSerialForAttachmentBlob: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'AttBlob'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -416,7 +426,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
   
   generateSerialForAttachmentSync: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'AttSync'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -426,7 +436,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForSettings: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'STN'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -436,7 +446,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForActivity: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'Act'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -447,7 +457,7 @@ app.behaviors.dbUsing =
 
 
   generateSerialForinvoice: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'Inv'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -457,7 +467,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForDiagnosis: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'Dg'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -467,7 +477,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForVisitedPatientLog: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'VP'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -477,7 +487,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForOrgRole: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'R'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -487,7 +497,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForPccRecord: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'PCC'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -498,7 +508,7 @@ app.behaviors.dbUsing =
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
   generateSerialForNdrRecord: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'NDR'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -516,7 +526,7 @@ app.behaviors.dbUsing =
 
 
   generateSerialForReferral: ->
-    appIdentifier = 'D'
+    appIdentifier = 'U'
     itemType = 'ref'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
@@ -524,4 +534,94 @@ app.behaviors.dbUsing =
     serialGenerator['referral-seed'] += 1
     app.db.update '--serial-generator', serialGenerator._id, serialGenerator
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+
+  generateSerialForInvoiceCategory: ()->
+    appIdentifier = 'U'
+    itemType = 'IC'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + 'only')
+
+  generateSerialForThirdPartyUser: ->
+    appIdentifier = 'U'
+    itemType = 'TPU'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    serialGenerator = (app.db.find '--serial-generator')[0]
+    seed = serialGenerator['third-party-user-seed']
+    serialGenerator['third-party-user-seed'] += 1
+    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
+    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+
+  generateSerialForInventoryItem: ->
+    appIdentifier = 'U'
+    itemType = 'Inventory'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    serialGenerator = (app.db.find '--serial-generator')[0]
+    seed = serialGenerator['inventory-seed']
+    serialGenerator['inventory-seed'] += 1
+    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
+    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+
+  generateSerialForPriceListItem: ()->
+    appIdentifier = 'U'
+    itemType = 'PL'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    serialGenerator = (app.db.find '--serial-generator')[0]
+    seed = serialGenerator['price-list-seed']
+    serialGenerator['price-list-seed'] += 1
+    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
+    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+  
+  generateSerialForInvestigationPriceList: (orgnizationId)->
+    appIdentifier = 'U'
+    itemType = 'InvP'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + orgnizationId)
+
+  generateSerialDoctorFees: (orgnizationId)->
+    appIdentifier = 'U'
+    itemType = 'DocFeeP'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + orgnizationId)
+  
+  generateSerialForServicePriceList: (orgnizationId)->
+    appIdentifier = 'U'
+    itemType = 'SvcP'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + orgnizationId)
+
+  generateSerialForAmbulancePriceList: (orgnizationId)->
+    appIdentifier = 'U'
+    itemType = 'AmbP'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + orgnizationId)
+
+  generateSerialForPharmacyPriceList: (orgnizationId)->
+    appIdentifier = 'U'
+    itemType = 'PhaP'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + orgnizationId)
+
+  generateSerialForSupplyPriceList: (orgnizationId)->
+    appIdentifier = 'U'
+    itemType = 'SupP'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + orgnizationId)
+
+  generateSerialForPackagePriceList: (orgnizationId)->
+    appIdentifier = 'U'
+    itemType = 'PackP'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + orgnizationId)
+
+  generateSerialForOtherPriceList: (orgnizationId)->
+    appIdentifier = 'U'
+    itemType = 'OP'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + orgnizationId)
+
+  generateSerialCustomCategory: ()->
+    appIdentifier = 'C'
+    itemType = 'UC'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    return (appIdentifier + userSerial + itemType + 'only')
 

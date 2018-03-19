@@ -57,7 +57,7 @@ app.behaviors.pageLike = [
           this.walletBalance = -1;
         this.domHost.set('walletBalance',this.walletBalance)
 
-    _loadPatientWallet: (id)->
+    _loadPatientWallet: (id, cbfn)->
       # this._showWalletFundingDialog()
       query = {
         apiKey: (app.db.find 'user')[0].apiKey
@@ -70,6 +70,7 @@ app.behaviors.pageLike = [
         else
           this.patientWalletBalance = -1;
         this.domHost.set('patientWalletBalance',this.patientWalletBalance)
+        cbfn() if cbfn
 
     _loadPatientOrganizationWallet: (organizationId, patientId, cbfn)->   
       query = {
@@ -99,11 +100,27 @@ app.behaviors.pageLike = [
     #       return cbfn response.error
     #     return cbfn()
 
-    _chargePatient: (patientId, amount, purpose, cbfn)->
+    _chargePatient: (patientId, amount, notes, cbfn)->
       query = {
         apiKey: (app.db.find 'user')[0].apiKey
         amountInBdt: amount
-        notes: purpose
+        notes
+        userIdOverride: patientId
+      }
+      this.domHost.callApi '/bdemr-wallet-charge-user', query, (err, response)=>
+        if (err)
+          return cbfn err
+        if response.hasError
+          return cbfn response.error
+        return cbfn()
+
+    _chargeOrganizationPatient: ({patientId, amount, notes, context, organizationId, cbfn})->
+      query = {
+        apiKey: (app.db.find 'user')[0].apiKey
+        amountInBdt: amount
+        notes
+        context
+        organizationId
         userIdOverride: patientId
       }
       this.domHost.callApi '/bdemr-wallet-charge-user', query, (err, response)=>
