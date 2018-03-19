@@ -97,7 +97,7 @@ app.behaviors.local['root-element'].dataLoader =
 
       {
         name: 'uhcpInvoicePriceList'
-        url: 'static-data/uhcp-invoice-price.json'
+        url: 'static-data/uhcp-invoice-price-list.json'
       }
     ]
 
@@ -145,6 +145,10 @@ app.behaviors.local['root-element'].dataLoader =
       {
         name: 'pccMedicineList'
         url: 'https://bdemr.b-cdn.net/pcc-medicine-list-19-02-2018.json'
+      }
+      {
+        name: 'uhcpInvoicePriceList'
+        url: 'https://bdemr.b-cdn.net/uhcp-invoice-price-list-19-3-2018.json'
       }
     ]
 
