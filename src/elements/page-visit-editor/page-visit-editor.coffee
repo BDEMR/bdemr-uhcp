@@ -37,6 +37,10 @@ Polymer {
     walletBalance:
       type: Number
       value: -1
+
+    patientOrganizationWallet:
+      type: Object
+      value: null
     
     organization:
       type: Object
@@ -4604,7 +4608,7 @@ Polymer {
 
   _loadVariousWallets: ->
     @_loadPatientWallet @patient.idOnServer, ()=>
-      console.log 'PATIENT-WALLET:',@patientWalletBalance
+      # console.log 'PATIENT-WALLET:',@patientWalletBalance
       @_loadPatientOrganizationWallet @organization.idOnServer, @patient.idOnServer, (patientOrganizationWallet)=>
         unless patientOrganizationWallet
           this.domHost.set('patientOrganizationWalletIndoorBalance', 0)
@@ -4612,7 +4616,8 @@ Polymer {
           return
         this.domHost.set('patientOrganizationWalletIndoorBalance', patientOrganizationWallet.indoorBalance)
         this.domHost.set('patientOrganizationWalletOutdoorBalance', patientOrganizationWallet.outdoorBalance)
-        console.log 'PATIENT-ORGANIZATION-WALLET',@patientOrganizationWallet
+        # console.log 'PATIENT-ORGANIZATION-WALLET', patientOrganizationWallet
+        @set 'patientOrganizationWallet', patientOrganizationWallet
 
 
   onVitalIndexChange: ()->
@@ -5468,6 +5473,9 @@ Polymer {
 
   _addToInvoice: (itemName, visitSerial)->
     matchedItem = (item for item in @priceList when item.name is itemName)[0]
+    if matchedItem
+      matchedItem.qty = 1
+
     unless matchedItem
       matchedItem = {
         name: itemName
@@ -5491,9 +5499,13 @@ Polymer {
     console.log @invoice
 
 
+  calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
 
-  
-
-
+  finishButtonPressed: ->
+    @domHost.showSuccessToast 'Visit Saved Successfully'
+    @domHost.navigateToPreviousPage()
+    if @invoice?.totalBilled
+      @chargeOutdoorWalletButtonPressed()
     
+      
 }

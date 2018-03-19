@@ -212,6 +212,7 @@
       .table tbody th, .table tbody td {
         padding: 5px;
         border-bottom: 1px solid #eee;
+        vertical-align: middle;
       }
 
       .table tfoot * {
@@ -866,6 +867,10 @@
                       </div>
                     </template>
                   </div>
+                  <div class="layout horizontal m-4">
+                    <div class="type secondary caption-2">OPD: <span class="type caption bold bg-gray">[[patientOrganizationWallet.outdoorBalance]]</span></div>
+                    <div class="type secondary caption-2 m-left-8">IPD: <span class="type caption bold bg-gray">[[patientOrganizationWallet.indoorBalance]]</span></div>
+                  </div>
                 </div>
               </div>
               <paper-button raised class="fixed-btn btn-add colored" on-tap="editPatientBtnPressed">Edit Patient</paper-button>
@@ -895,7 +900,7 @@
                   <iron-icon icon="communication:email"></iron-icon>
                 </paper-button> -->
 
-                <paper-button raised class="colored btn-add m-vert" on-tap="arrowBackButtonPressed">
+                <paper-button raised class="colored btn-add m-vert" on-tap="finishButtonPressed">
                   <iron-icon icon="icons:check" class="m-right-8"></iron-icon>Finish
                 </paper-button>
 
@@ -1873,7 +1878,10 @@
                         <template is="dom-repeat" items="[[invoice.data]]">
                           <tr>
                             <td>[[item.name]]</td>
-                            <td>[[item.price]]</td>
+                            <td>
+                              [[item.price]]
+                              <paper-icon-button class="type danger" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                            </td>
                           </tr>
                         </template>
                       </tbody>
@@ -1883,13 +1891,13 @@
                           <th>[[invoice.totalBilled]]</th>
                         </tr>
                         <tr>
-                          <th>Available Outdoor Balance</th>
-                          <th></th>
+                          <td>Available Outdoor Balance</td>
+                          <td>[[patientOrganizationWallet.outdoorBalance]]</td>
                         </tr>
-                        <th>
+                        <tr>
                           <th>Balance After Deduction</th>
-                          <th>[[calculatedOutDoorBalance(opdWalletBalance, invoice.totalBilled)]]</th>
-                        </th>
+                          <th>[[calculatedOutDoorBalanceAfterDeduction(patientOrganizationWallet.outdoorBalance, invoice.totalBilled)]]</th>
+                        </tr>
                       </tfoot>
                     </table>
                   </div>

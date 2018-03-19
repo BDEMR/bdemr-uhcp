@@ -85,13 +85,13 @@ app.behaviors.local.invoiceMixin =
   _chargeWalletContextual: (context)->
     chargeDoc = {
       patientId: @patient.idOnServer
-      amount: @invoice.totalAmountReceieved
-      purpose: "Invoice Bill"
+      amount: @invoice.totalBilled
+      notes: "Invoice Bill"
       organizationId: @organization.idOnServer
       context
     }
 
-    @_chargePatientContextual chargeDoc, (err)=>
+    @_chargeOrganizationPatient chargeDoc, (err)=>
       if (err)
         @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
       else
@@ -128,10 +128,15 @@ app.behaviors.local.invoiceMixin =
       model.set 'item.qty', 1
       model.set 'item.totalPrice', model.item.price
     
+  deleteInvoiceItem: (e)-> 
+    @splice 'invoice.data', e.model.index, 1
+    @_saveInvoice()
 
   calculateTotalPrice: ->
     return unless Object.keys(@invoice).length
-    return unless @invoice.data.length
+    unless @invoice.data.length
+      @set 'invoice.totalBilled', 0
+      return
     price = @invoice.data.reduce (total, item)->
       return total + (parseInt (item.price * (item.qty or 1)))
     , 0
