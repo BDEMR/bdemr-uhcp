@@ -135,6 +135,23 @@ app.pages.pageList = [
     hideHeaderTitle: false
     accessId: 'D001'
   }
+
+  {
+    name: 'organization-manage-foc'
+    element: 'page-organization-manage-foc'
+    windowTitlePostfix: 'Free Of Charge Management'
+    headerTitle: 'Free Of Charge Management'
+    preload: true
+    hrefList: [ 'organization-manage-foc' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: true
+    showSaveButton: false
+    showOrganizationsName: true
+    showToolbar: false
+    hideHeaderTitle: false
+    accessId: 'D010'
+  }
   {
     name: 'chamber-manager'
     element: 'page-chamber-manager'

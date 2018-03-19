@@ -86,6 +86,10 @@ Polymer {
     { organization } = e.model
     @domHost.navigateToPage '#/organization-manage-users/organization:' + organization.idOnServer
 
+  manageFocPressed: (e)->
+    { organization } = e.model
+    @domHost.navigateToPage '#/organization-manage-foc/organization:' + organization.idOnServer
+
   searchOrganizationTapped: (e)->
     data = { 
       apiKey: @user.apiKey
