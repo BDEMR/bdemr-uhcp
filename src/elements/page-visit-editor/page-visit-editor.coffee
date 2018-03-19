@@ -23,6 +23,8 @@ Polymer {
     app.behaviors.translating
     app.behaviors.apiCalling
     app.behaviors.local.patientStayMixin
+    app.behaviors.local.loadPriceListMixin
+    app.behaviors.local.invoiceMixin
   ]
 
   properties:
@@ -35,8 +37,12 @@ Polymer {
     walletBalance:
       type: Number
       value: -1
+
+    patientOrganizationWallet:
+      type: Object
+      value: null
     
-    currentOrganization:
+    organization:
       type: Object
       notify: true
       value: null
@@ -182,11 +188,7 @@ Polymer {
       type: Object
       notify: true
       value: null
-
-    invoice:
-      type: Object
-      notify: true
-      value: null
+    
 
     matchingPrescribedMedicineList:
       type: Array
@@ -1711,8 +1713,6 @@ Polymer {
         delete medicine.data.serial
         #HACK end
 
-        
-
         medicine.createdDatetimeStamp = lib.datetime.now()
         medicine.lastSyncedDatetimeStamp = null
         medicine.createdByUserSerial = @user.serial
@@ -1729,6 +1729,9 @@ Polymer {
         app.db.insert 'patient-medications', medicine
 
         @domHost.showToast "Medicine Added!"
+
+        @_addToInvoice medicine.data.brandName, @visit.serial
+
         @_resetMedicineForm()
         @_listPrescribedMedications @prescription.serial
 
@@ -2189,6 +2192,7 @@ Polymer {
         # Push Custom Symptoms Name on Master Symptoms List
         @push "symptomsDataList", { label: @comboBoxSymptomsInputValue, value: @comboBoxSymptomsInputValue }
 
+
         # Load Symptoms Data
 
       
@@ -2341,6 +2345,7 @@ Polymer {
         examinationValueList: []
 
     app.db.insert 'custom-examination-list', object
+    @_addToInvoice object.data.name @visit.serial
 
   removeExaminationMember: (e)->
     el = @locateParentNode e.target, 'PAPER-ICON-BUTTON'
@@ -2465,7 +2470,10 @@ Polymer {
           # console.log 'modifiedObject', modifiedObject
 
           # Push on Added Examination List
+
           @unshift 'addedExaminationList', modifiedObject
+
+          @_addToInvoice modifiedObject.name, @visit.serial
 
 
 
@@ -2867,6 +2875,7 @@ Polymer {
   addInvestigation: ()->
     unless @comboBoxInvestigationInputValue is ''
       if typeof @comboBoxInvestigationInputValue is 'object'
+        @_addToInvoice @comboBoxInvestigationInputValue.name, @visit.serial
         @push 'addedInvestigationList', @_makeNewAddedInvestigationObject @comboBoxInvestigationInputValue
 
         @addInvestigationAsFavorite @comboBoxInvestigationInputValue
@@ -2985,6 +2994,7 @@ Polymer {
         ## updated current visit object
         @visit.advisedTestSerial = @testAdvisedObject.serial
         @_saveVisit()
+        @testAdvisedObject.visitSerial = @visit.serial
      
       # Updated Advised Test List
       @testAdvisedObject.lastModifiedDatetimeStamp = lib.datetime.now()
@@ -3809,21 +3819,20 @@ Polymer {
       @isThatNewVisit = false
       @visit.serial = @generateSerialForVisit()
       @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
-
-    fn = =>
       @visit.lastModifiedDatetimeStamp = lib.datetime.now()
       app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
       @domHost.setSelectedVisitSerial @visit.serial
 
-    if @visit.isPaidUp
-      fn()
-    else
-      this._chargePatient @patient.idOnServer, 5, 'Payment BDEMR Doctor Generic', (err)=>
-        @visit.isPaidUp = true
-        if (err)
-          @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
-          return
-        fn()
+    # UHCP dont charge patient for Visit
+    # if @visit.isPaidUp
+    #   fn()
+    # else
+    #   this._chargePatient @patient.idOnServer, 5, 'Payment BDEMR Doctor Generic', (err)=>
+    #     @visit.isPaidUp = true
+    #     if (err)
+    #       @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
+    #       return
+    #     fn()
 
 
 
@@ -3954,8 +3963,9 @@ Polymer {
 
     if list.length is 1
       @isInvoiceValid = true
-      @invoice = list[0]
-      return true
+      @set 'invoice', list[0]
+      console.log 'Invoice:', @invoice
+      @isInvoiceValid = true
     else
       @isInvoiceValid = false
       return false
@@ -4574,13 +4584,13 @@ Polymer {
     if accessId is 'none'
       return true
     else
-      if @currentOrganization
+      if @organization
 
-        if @currentOrganization.isCurrentUserAnAdmin
+        if @organization.isCurrentUserAnAdmin
           return true
-        else if @currentOrganization.isCurrentUserAMember
-          if @currentOrganization.userActiveRole
-            privilegeList = @currentOrganization.userActiveRole.privilegeList
+        else if @organization.isCurrentUserAMember
+          if @organization.userActiveRole
+            privilegeList = @organization.userActiveRole.privilegeList
             unless privilegeList.length is 0
               for privilege in privilegeList
                 if privilege.serial is accessId
@@ -4597,14 +4607,17 @@ Polymer {
         return true
 
   _loadVariousWallets: ->
-    @_loadPatientWallet(@patient.idOnServer)
-    @_loadPatientOrganizationWallet @currentOrganization.idOnServer, @patient.idOnServer, (patientOrganizationWallet)=>
-      unless patientOrganizationWallet
-        this.domHost.set('patientOrganizationWalletIndoorBalance', 0)
-        this.domHost.set('patientOrganizationWalletOutdoorBalance', 0)
-        return
-      this.domHost.set('patientOrganizationWalletIndoorBalance', patientOrganizationWallet.indoorBalance)
-      this.domHost.set('patientOrganizationWalletOutdoorBalance', patientOrganizationWallet.outdoorBalance)
+    @_loadPatientWallet @patient.idOnServer, ()=>
+      # console.log 'PATIENT-WALLET:',@patientWalletBalance
+      @_loadPatientOrganizationWallet @organization.idOnServer, @patient.idOnServer, (patientOrganizationWallet)=>
+        unless patientOrganizationWallet
+          this.domHost.set('patientOrganizationWalletIndoorBalance', 0)
+          this.domHost.set('patientOrganizationWalletOutdoorBalance', 0)
+          return
+        this.domHost.set('patientOrganizationWalletIndoorBalance', patientOrganizationWallet.indoorBalance)
+        this.domHost.set('patientOrganizationWalletOutdoorBalance', patientOrganizationWallet.outdoorBalance)
+        # console.log 'PATIENT-ORGANIZATION-WALLET', patientOrganizationWallet
+        @set 'patientOrganizationWallet', patientOrganizationWallet
 
 
   onVitalIndexChange: ()->
@@ -4618,8 +4631,8 @@ Polymer {
 
     @domHost.selectedPatientPageIndex = 0
 
-    @currentOrganization = @getCurrentOrganization()
-    unless @currentOrganization
+    @organization = @getCurrentOrganization()
+    unless @organization
       @domHost.navigateToPage "#/select-organization"
 
  
@@ -4703,6 +4716,8 @@ Polymer {
           unless params['visit']
             @_notifyInvalidVisit()
             return
+
+          @_loadPriceList @organization.idOnServer, ()=> console.log 'Price List Loaded'
 
           if params['visit'] is 'new'
             @_makeNewVisit =>
@@ -4939,6 +4954,8 @@ Polymer {
                 @visit.invoiceSerial = null
                 @invoice = {}
               ## Visit - Invoice - end
+
+          
 
 
   navigatedOut: ->
@@ -5285,8 +5302,10 @@ Polymer {
 
       @push 'diagnosis.data.diagnosisList', { name: diagnosis }
       @_saveDiagnosis()
+      @_addToInvoice diagnosis, @visit.serial
       @domHost.showToast 'Diagnosis Added!'
       @comboBoxDiagnosisInputValue = ''
+       
 
 
 
@@ -5451,5 +5470,42 @@ Polymer {
 
     @$.dialogReferral.toggle()
 
+
+  _addToInvoice: (itemName, visitSerial)->
+    matchedItem = (item for item in @priceList when item.name is itemName)[0]
+    if matchedItem
+      matchedItem.qty = 1
+
+    unless matchedItem
+      matchedItem = {
+        name: itemName
+        qty: 1
+        price: 0
+        actualCost: 0
+        category: "custom"
+        subCategory: ""
+        serial: null
+        organizationId: @organization.idOnServer
+        createdDatetimeStamp: lib.datetime.now()
+        lastModifiedDatetimeStamp: lib.datetime.now()
+        createdByUserSerial: @user.serial
+      }
+    if Object.keys(@invoice).length
+      @push 'invoice.data', matchedItem
+    else
+      @_makeNewInvoice()
+      @push 'invoice.data', matchedItem
+    @_saveInvoice()
+    console.log @invoice
+
+
+  calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
+
+  finishButtonPressed: ->
+    @domHost.showSuccessToast 'Visit Saved Successfully'
+    @domHost.navigateToPreviousPage()
+    if @invoice?.totalBilled
+      @chargeOutdoorWalletButtonPressed()
     
+      
 }

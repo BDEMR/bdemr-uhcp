@@ -359,6 +359,8 @@ Polymer {
 
     if @isUserLoggedIn()
       @_callAfterUserLogsIn()
+
+    document.title = "UHCP App " + app.config.clientVersion
         
 
   getYear: ->
@@ -767,12 +769,13 @@ Polymer {
     return unless @currentPatientsDetails
 
     if @selectedPatientPageIndex is 0
-      @selectedVisitSerial = localStorage.getItem("selectedVisitSerial")
-
-      @navigateToPage '#/visit-editor/visit:' + @selectedVisitSerial + '/patient:' + @currentPatientsDetails.serial
+      @async ()=>
+        @selectedVisitSerial = localStorage.getItem("selectedVisitSerial")
+        @navigateToPage '#/visit-editor/visit:' + @selectedVisitSerial + '/patient:' + @currentPatientsDetails.serial
     else
-      @navigateToPage '#/patient-viewer/patient:' + @currentPatientsDetails.serial + '/selected:' + @selectedPatientPageIndex
-      @pageElement.navigatedIn()
+      @async => 
+        @navigateToPage '#/patient-viewer/patient:' + @currentPatientsDetails.serial + '/selected:' + @selectedPatientPageIndex
+        @pageElement.navigatedIn()
 
   _changeToolbarClass: (showToolbar) ->
     if showToolbar is true

@@ -760,7 +760,7 @@ Polymer {
       visit.recordList = recordList
       modifiedList.push visit
 
-      console.log 'modifiedList', modifiedList
+      # console.log 'modifiedList', modifiedList
 
     @matchingVisitList = modifiedList
 
@@ -831,14 +831,14 @@ Polymer {
   
 
   _checkRecordTitle: (data)->
-    if data.testResults.serial is null
+    if data.testResults?.serial is null
       if data.recordTitle is undefined or data.recordTitle is null or data.recordTitle is ''
         return 'Complete Visit'
 
       else
         return data.recordTitle
     else
-      return data.testResults.name
+      return data.testResults?.name
 
 
 

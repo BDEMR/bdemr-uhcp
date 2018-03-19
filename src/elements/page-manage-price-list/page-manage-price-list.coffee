@@ -216,15 +216,17 @@ Polymer {
       @_loadCategories @priceList
       selectedCategoryIndex = @priceListCategories.length-1
       @async => @$$("#categoryTabs").selectIndex selectedCategoryIndex
-    @async => @showPriceListForSelectedCategory (@$$("#categoryTabs").selected)
+    currentlySelectedCategoryTabIndex = @$$("#categoryTabs").selected
+    @async => @showPriceListForSelectedCategory(currentlySelectedCategoryTabIndex)
     if newItem.category is 'Investigation'
-      @_addToCustomInvestigation data
+      @_addToCustomInvestigation newItem
     app.db.insert 'organization-price-list', newItem
 
   removeItemFromPriceList: (removedItem)->
-    indexOnPriceList = @priceList.findIndex (priceItem)=> priceItem.serial is removedItem.serial
+    indexOnPriceList = @priceList.findIndex (item)=> item.serial is removedItem.serial
     @splice "priceList", indexOnPriceList, 1
-    app.db.remove 'organization-price-list', removedItem._id
+    x = app.db.remove 'organization-price-list', removedItem._id
+    console.log x
     app.db.insert 'organization-price-list--deleted', {serial: removedItem.serial}
     unless @priceListForSelectedCategory.length
       @_loadCategories @priceList
@@ -261,7 +263,8 @@ Polymer {
     if changeRecord
       changeRecord.indexSplices.forEach (change)=>
         # removing items
-        change.removed.forEach (removedItem)=> 
+        change.removed.forEach (removedItem)=>
+          console.log removedItem
           @removeItemFromPriceList removedItem
         # adding new items
         for i in [0...change.addedCount]
@@ -286,12 +289,8 @@ Polymer {
   deleteItemPressed: (e)->
     @domHost.showModalPrompt 'Are you sure to delete this item', (answer)=>
       if answer
-        {item, index} = e.model
+        index = @priceListForSelectedCategory.findIndex (item)=> item.serial is e.model.item.serial
         @splice 'priceListForSelectedCategory', index, 1
-        # indexOnPriceList = @priceList.findIndex (priceItem)=> item.serial is priceItem.serial
-        # @splice "priceList", indexOnPriceList, 1
-        # app.db.remove 'organization-price-list', item._id
-        # app.db.insert 'organization-price-list--deleted', {serial: item.serial}
 
   saveButtonPressed: -> @domHost.showSuccessToast 'Data Saved'
 

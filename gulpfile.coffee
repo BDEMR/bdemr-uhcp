@@ -27,7 +27,7 @@ PolymerProject = require('polymer-build').PolymerProject
 addServiceWorker = require('polymer-build').addServiceWorker
 mergeStream = require('merge-stream')
 glob = require('glob')
-
+notify = require("gulp-notify")
 javascriptObfuscator = require('gulp-javascript-obfuscator')
 
 ###
@@ -68,11 +68,10 @@ gulp.task 'copy-debug-watch', ->
 
 gulp.task 'build-debug-coffee', ->
   return gulp.src paths.debug.coffee
-  .pipe(plumber())
+  .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
   .pipe cache 'copy'
   .pipe(sourcemaps.init())
   .pipe(coffee({bare: false}))
-  .pipe(uglify())
   .pipe(sourcemaps.write('.'))
   .pipe rename (path)->
     if path.extname is '.map'

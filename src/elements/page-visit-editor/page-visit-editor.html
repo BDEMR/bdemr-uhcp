@@ -64,6 +64,7 @@
 
       .limiting-container {
         margin-top: 8px;
+        width: 95%;
       }
 
       .external-card-title {
@@ -212,6 +213,7 @@
       .table tbody th, .table tbody td {
         padding: 5px;
         border-bottom: 1px solid #eee;
+        vertical-align: middle;
       }
 
       .table tfoot * {
@@ -866,6 +868,10 @@
                       </div>
                     </template>
                   </div>
+                  <div class="layout horizontal m-4">
+                    <div class="type secondary caption-2">OPD: <span class="type caption bold bg-gray">[[patientOrganizationWallet.outdoorBalance]]</span></div>
+                    <div class="type secondary caption-2 m-left-8">IPD: <span class="type caption bold bg-gray">[[patientOrganizationWallet.indoorBalance]]</span></div>
+                  </div>
                 </div>
               </div>
               <paper-button raised class="fixed-btn btn-add colored" on-tap="editPatientBtnPressed">Edit Patient</paper-button>
@@ -895,7 +901,7 @@
                   <iron-icon icon="communication:email"></iron-icon>
                 </paper-button> -->
 
-                <paper-button raised class="colored btn-add m-vert" on-tap="arrowBackButtonPressed">
+                <paper-button raised class="colored btn-add m-vert" on-tap="finishButtonPressed">
                   <iron-icon icon="icons:check" class="m-right-8"></iron-icon>Finish
                 </paper-button>
 
@@ -1415,6 +1421,68 @@
 
               </div>
               <!-- Card - Referral end -->
+              <!-- Card :: Invoice - start -->
+              <div class="card-item-2">
+
+                  <div class="preview-title layout">
+                    <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_invoice.png"></iron-icon> -->
+                    <div class="type title-2 flex">Invoice</div>
+                    <div class="action-area">
+                      <template is="dom-if" if="{{!isInvoiceValid}}">
+                        <paper-button class="btn-add m-vert" on-tap="createInvoicePressed">
+                          <iron-icon icon="icons:add"></iron-icon>
+                        </paper-button>
+                      </template>
+                      <template is="dom-if" if="{{isInvoiceValid}}">
+                        <paper-button class="btn-add m-vert" on-tap="printInvoicePressed">
+                          <iron-icon icon="icons:print"></iron-icon>
+                        </paper-button>
+                        <paper-button class="btn-add m-vert" on-tap="editInvoicePressed">
+                          <iron-icon icon="icons:create"></iron-icon>
+                        </paper-button>
+                      </template>
+                    </div>
+                  </div>
+  
+                  <template is="dom-if" if="[[visit.invoiceSerial]]">
+                    <div class="card-content">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <template is="dom-repeat" items="[[invoice.data]]">
+                            <tr>
+                              <td>[[item.name]]</td>
+                              <td>
+                                [[item.price]]
+                                <paper-icon-button class="type danger" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                              </td>
+                            </tr>
+                          </template>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th>Total</th>
+                            <th>[[invoice.totalBilled]]</th>
+                          </tr>
+                          <tr>
+                            <td>Available Outdoor Balance</td>
+                            <td>[[patientOrganizationWallet.outdoorBalance]]</td>
+                          </tr>
+                          <tr>
+                            <th>Balance After Deduction</th>
+                            <th>[[calculatedOutDoorBalanceAfterDeduction(patientOrganizationWallet.outdoorBalance, invoice.totalBilled)]]</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </template>
+                </div>
+                <!-- Card :: Invoice - end -->
             </div>
 
             <div class="content right">
@@ -1836,58 +1904,6 @@
                 </iron-pages>
               </div>
               <!-- Card :: Prescription - end -->
-
-              <!-- Card :: Invoice - start -->
-              <div class="card-item-2">
-
-                <div class="preview-title layout">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_invoice.png"></iron-icon> -->
-                  <div class="type title-2 flex">Invoice</div>
-                  <div class="action-area">
-                    <template is="dom-if" if="{{!isInvoiceValid}}">
-                      <paper-button class="btn-add m-vert" on-tap="createInvoicePressed">
-                        <iron-icon icon="icons:add"></iron-icon>
-                      </paper-button>
-                    </template>
-                    <template is="dom-if" if="{{isInvoiceValid}}">
-                      <paper-button class="btn-add m-vert" on-tap="printInvoicePressed">
-                        <iron-icon icon="icons:print"></iron-icon>
-                      </paper-button>
-                      <paper-button class="btn-add m-vert" on-tap="editInvoicePressed">
-                        <iron-icon icon="icons:create"></iron-icon>
-                      </paper-button>
-                    </template>
-                  </div>
-                </div>
-
-                <template is="dom-if" if="[[!_isEmptyString(visit.invoiceSerial)]]">
-                  <div class="card-content">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Service</th>
-                          <th>Price</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <template is="dom-repeat" items="[[invoice.data]]">
-                          <tr>
-                            <td>[[item.name]]</td>
-                            <td>[[item.price]]</td>
-                          </tr>
-                        </template>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Total</th>
-                          <th>[[invoice.totalBilled]]</th>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </template>
-              </div>
-              <!-- Card :: Invoice - end -->
 
               <!-- Card :: Patient Stay - start -->
               <template is="dom-if" if="[[_checkUserAccess('D015')]]">
@@ -2752,5 +2768,7 @@
     <!-- local DOM -->
   </template>
   <script src="../mixin/mixin-patient-stay.coffee-compiled.js "></script>
+  <script src="../mixin/load-price-list-mixin.coffee-compiled.js "></script>
+  <script src="invoice-module.coffee-compiled.js"></script>
   <script src="page-visit-editor.coffee-compiled.js "></script>
 </dom-module>
