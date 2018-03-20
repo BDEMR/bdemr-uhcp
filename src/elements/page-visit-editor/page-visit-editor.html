@@ -2023,18 +2023,7 @@
           <!-- Print - Examination - end -->
 
           <!-- Print - Vitals - start -->
-          <template is="dom-if" if="[[!_isEmpty(addedVitalList.length)]]">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body">Vitals</div>
-            </div>
-            <template is="dom-repeat" items="[[addedVitalList]]">
-              <div class="type caption-2">
-                <strong>{{item.vitalType}}: </strong>
-                <span>[[_pritifyVitalData(item)]]</span>
-              </div>
-            </template>
-            <div class="b-top m-top-8"></div>
-          </template>
+          
           <!-- Print - Vitals - end -->
 
           <!-- Print - Test Advised - start -->
