@@ -1398,97 +1398,13 @@
               <!-- Card - Next Visit - end -->
 
               <!-- Card - Referral start -->
-              <div class="card-item-2">
-                <div class="preview-title layout">
-                  <div class="type title-2 flex">Referral</div>
-                  <div class="action-area">
-                    <paper-button class="btn-add m-vert" on-tap="openReferralDialogPressed">
-                      <iron-icon icon="icons:add"></iron-icon>
-                    </paper-button>
-                  </div>
-                </div>
-
-                <div class="card-content">
-                  <div class="layout horizontal">
-                    <span class="type bold">Referred By: </span> [[referral.data.referredByDoctorName]]
-                  </div>
-                  <template is="dom-if" if="[[referral.data.doctorName]]">
-                    <div class="layout horizontal">
-                      <span class="type bold">Referred To: </span> [[referral.data.doctorName]]
-                    </div>
-                    <div class="layout horizontal">
-                      <span class="type bold">Speciality: </span> [[referral.data.speciality]]</div>
-                  </template>
-                  <template is="dom-if" if="[[referral.data.organizationName]]">
-                    <div class="layout horizontal">
-                      <span class="type bold">Organization Name: </span> [[referral.data.organizationName]]</div>
-                  </template>
-                </div>
-
-              </div>
+              <element-refferal></element-refferal>
               <!-- Card - Referral end -->
+
               <!-- Card :: Invoice - start -->
-              <div class="card-item-2">
-
-                <div class="preview-title layout">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_invoice.png"></iron-icon> -->
-                  <div class="type title-2 flex">Invoice</div>
-                  <div class="action-area">
-                    <template is="dom-if" if="{{!isInvoiceValid}}">
-                      <paper-button class="btn-add m-vert" on-tap="createInvoicePressed">
-                        <iron-icon icon="icons:add"></iron-icon>
-                      </paper-button>
-                    </template>
-                    <template is="dom-if" if="{{isInvoiceValid}}">
-                      <paper-button class="btn-add m-vert" on-tap="printInvoicePressed">
-                        <iron-icon icon="icons:print"></iron-icon>
-                      </paper-button>
-                      <paper-button class="btn-add m-vert" on-tap="editInvoicePressed">
-                        <iron-icon icon="icons:create"></iron-icon>
-                      </paper-button>
-                    </template>
-                  </div>
-                </div>
-
-                <template is="dom-if" if="[[visit.invoiceSerial]]">
-                  <div class="card-content">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Service</th>
-                          <th>Price</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <template is="dom-repeat" items="[[invoice.data]]">
-                          <tr>
-                            <td>[[item.name]]</td>
-                            <td>
-                              [[item.price]]
-                              <paper-icon-button class="type danger" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
-                            </td>
-                          </tr>
-                        </template>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Total</th>
-                          <th>[[invoice.totalBilled]]</th>
-                        </tr>
-                        <tr>
-                          <td>Available Outdoor Balance</td>
-                          <td>[[patientOrganizationWallet.outdoorBalance]]</td>
-                        </tr>
-                        <tr>
-                          <th>Balance After Deduction</th>
-                          <th>[[calculatedOutDoorBalanceAfterDeduction(patientOrganizationWallet.outdoorBalance, invoice.totalBilled)]]</th>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </template>
-              </div>
+              <element-invoice></element-invoice>
               <!-- Card :: Invoice - end -->
+
             </div>
 
             <div class="content right">

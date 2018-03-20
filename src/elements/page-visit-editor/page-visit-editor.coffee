@@ -561,32 +561,7 @@ Polymer {
       type: Boolean
       value: false
     
-    referral:
-      type: Object
-      value: -> {}
     
-    selectedReferralTypeIndex:
-      type: Number
-      value: -> 0
-    
-    referredDoctorSpecialityList:
-      type: Array
-      value: -> [
-        "Cardiology"
-        "General Surgery"
-        "Haemotology"
-        "Neuro surgery"
-        "Neuro medicine"
-        "Oncology"
-        "Oral-maxillo-facial surgery"
-        "Physical medicine"
-        "Psychiatry"
-        "Respiratory medicine"
-        "Rapid access clinic"
-        "Radiology"
-      ]
-
-
     #####################################################################
     # Full Visit Preview - end
     #####################################################################
@@ -4098,187 +4073,17 @@ Polymer {
 
   # INVOICE START 
   # ================================================================
-  _getServiceRendered: (index)->
-    optionList = [ 'Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom' ]
-    if index is 5
-      return @invoice.customServiceRendered
-    else
-      return optionList[index]
-
   
-  createInvoicePressed: ->
-    params = @domHost.getPageParams()
-
-    if params['visit'] is 'new'
-      @visit.serial = @generateSerialForVisit()
-      @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
-
-    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
-
-  editInvoicePressed: (e)->
-    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
-
-  printInvoicePressed: ()->
-    params = @domHost.getPageParams()
-    if params['visit-invoice'] != 'new'
-      @domHost.navigateToPage '#/print-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
-
-
+  # Invoice END
+  # ================================
+    
   # ===============================
   # ADD REFERRAL
   # By @taufiq
   # ===============================
 
-  _loadReferral: (referralSerialIdentifier)->
-    lib.util.delay 5, ()=>
-      list = app.db.find 'referral-record', ({serial})-> serial is referralSerialIdentifier
-      
-      if list.length is 1
-        @referral = list[0]
-        return true
-      
-
-  _makeNewReferral: ()->
-    @referral =
-      serial: null
-      lastModifiedDatetimeStamp: lib.datetime.now()
-      createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: 0
-      createdByUserSerial: @user.serial
-      visitSerial: null
-      patientSerial: @patient.serial
-      doctorName: @visit.doctorName
-      doctorSpeciality: @visit.doctorSpeciality 
-      data: {}
-        
-
-  _saveReferral: ()->
-
-    unless @visit.serial isnt null
-      @_saveVisit()
-      @referral.visitSerial = @visit.serial
-      
-    
-    unless @referral.serial isnt null
-      @referral.serial = @generateSerialForReferral()
-      @visit.referralSerial = @referral.serial
-      @referral.visitSerial = @visit.serial
-      @_saveVisit()
-        
-    console.log 'referral', @referral
-
-    @referral.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'referral-record', @referral, ({serial})=> @referral.serial is serial
-
   
-  openReferralDialogPressed: (e)->
-    @$.dialogReferral.toggle()
 
-  doctorSearchStartKeyPressed: (e)->
-    return unless e.which is 13
-    @doctorSearchButtonPressed()
-
-  doctorSearchButtonPressed: ->
-    @callApi '/bdemr-doctor-search', {searchQuery: @doctorSearchFieldInput}, (err, response)=>
-      if response.hasError
-        @domHost.showModalDialog response.error.message
-      else
-        data = response.data
-        if data.length > 0
-          doctorSuggestionArray = (item for item in data)
-          @$$("#doctorSearch").suggestions doctorSuggestionArray
-        else
-          @domHost.showToast 'No Match Found'
-
-  doctorSearchCleared: ->
-     @set 'searchFieldMainInput', ''
-
-  organizationSearchStartKeyPressed: (e)->
-    return unless e.which is 13
-    @organizationSearchButtonPressed()
-
-  organizationSearchButtonPressed: ->
-    data =
-      apiKey: @user.apiKey
-      searchString: @organizationSearchFieldInput
-
-    @callApi '/bdemr-organization-search', data, (err, response)=>
-      if response.hasError
-        @domHost.showModalDialog response.error.message
-      else
-        data = response.data.matchingOrganizationList
-        if data.length > 0
-          organizationSuggestionArray = (item for item in data)
-          @$$("#organizationSearch").suggestions organizationSuggestionArray
-        else
-          @domHost.showToast 'No Match Found'
-
-  addReferralButtonClicked: ->
-    return unless @doctorSearchFieldInput or @organizationSearchFieldInput
-
-    data = {
-      referredByDoctorName: @user.name
-      referredByDoctorId: @user.idOnServer
-      selectedReferralType: ""
-      doctorName: ""
-      doctorId: ""
-      speciality: ""
-      organizationName: ""
-      organizationId: ""
-    }
-
-    if @selectedReferralTypeIndex is 0
-      data.doctorName = @doctorSearchFieldInput
-      data.speciality = @referredDoctorSpecialityList[@referredDoctorSpecialitySelectedIndex]
-      data.doctorId = @$$("#doctorSearch").value
-      
-    if @selectedReferralTypeIndex is 1
-      data.organizationName = @organizationSearchFieldInput
-      data.organizationId = @$$("#organizationSearch").value
-
-    @set 'referral.data', data
-
-    @_saveReferral()
-
-    @$.dialogReferral.toggle()
-
-
-  _addToInvoice: (itemName, visitSerial)->
-    matchedItem = (item for item in @priceList when item.name is itemName)[0]
-    if matchedItem
-      matchedItem.qty = 1
-
-    unless matchedItem
-      matchedItem = {
-        name: itemName
-        qty: 1
-        price: 0
-        actualCost: 0
-        category: "custom"
-        subCategory: ""
-        serial: null
-        organizationId: @organization.idOnServer
-        createdDatetimeStamp: lib.datetime.now()
-        lastModifiedDatetimeStamp: lib.datetime.now()
-        createdByUserSerial: @user.serial
-      }
-    if Object.keys(@invoice).length
-      @push 'invoice.data', matchedItem
-    else
-      @_makeNewInvoice()
-      @push 'invoice.data', matchedItem
-    @_saveInvoice()
-    console.log @invoice
-
-
-  calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
-
-  finishButtonPressed: ->
-    @domHost.showSuccessToast 'Visit Saved Successfully'
-    @domHost.navigateToPreviousPage()
-    if @invoice?.totalBilled
-      @chargeOutdoorWalletButtonPressed()
-    
-      
+  # ADD REFFERAL END
+  # ==================================================
 }

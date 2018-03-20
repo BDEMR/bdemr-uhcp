@@ -1,0 +1,180 @@
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<dom-module id="element-invoice">
+  <template>
+    <style is="custom-style" include="common-style">
+    </style>
+
+    <div class="card-item-2">
+
+      <div class="preview-title layout">
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_invoice.png"></iron-icon> -->
+        <div class="type title-2 flex">Invoice</div>
+        <div class="action-area">
+          <template is="dom-if" if="{{!isInvoiceValid}}">
+            <paper-button class="btn-add m-vert" on-tap="createInvoicePressed">
+              <iron-icon icon="icons:add"></iron-icon>
+            </paper-button>
+          </template>
+          <template is="dom-if" if="{{isInvoiceValid}}">
+            <paper-button class="btn-add m-vert" on-tap="printInvoicePressed">
+              <iron-icon icon="icons:print"></iron-icon>
+            </paper-button>
+            <paper-button class="btn-add m-vert" on-tap="editInvoicePressed">
+              <iron-icon icon="icons:create"></iron-icon>
+            </paper-button>
+          </template>
+        </div>
+      </div>
+
+      <template is="dom-if" if="[[visit.invoiceSerial]]">
+        <div class="card-content">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template is="dom-repeat" items="[[invoice.data]]">
+                <tr>
+                  <td>[[item.name]]</td>
+                  <td>
+                    [[item.price]]
+                    <paper-icon-button class="type danger" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <th>[[invoice.totalBilled]]</th>
+              </tr>
+              <tr>
+                <td>Available Outdoor Balance</td>
+                <td>[[patientOrganizationWallet.outdoorBalance]]</td>
+              </tr>
+              <tr>
+                <th>Balance After Deduction</th>
+                <th>[[calculatedOutDoorBalanceAfterDeduction(patientOrganizationWallet.outdoorBalance, invoice.totalBilled)]]</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'element-invoice',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling
+      ],
+      properties: {
+        isInvoiceValid: {
+          type: Boolean,
+          notify: false,
+          value: false
+        }
+      },
+
+      // Methods
+      _getServiceRendered: function (index) {
+        var optionList;
+        optionList = ['Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom'];
+        if (index === 5) {
+          return this.invoice.customServiceRendered;
+        } else {
+          return optionList[index];
+        }
+      },
+      createInvoicePressed: function () {
+        var params;
+        params = this.domHost.getPageParams();
+        if (params['visit'] === 'new') {
+          this.visit.serial = this.generateSerialForVisit();
+          this.visit.lastModifiedDatetimeStamp = lib.datetime.now();
+          app.db.upsert('doctor-visit', this.visit, (function (_this) {
+            return function (arg) {
+              var serial;
+              serial = arg.serial;
+              return _this.visit.serial === serial;
+            };
+          })(this));
+        }
+        return this.domHost.navigateToPage('#/create-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:new');
+      },
+      editInvoicePressed: function (e) {
+        return this.domHost.navigateToPage('#/create-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:' + this.invoice.serial);
+      },
+      printInvoicePressed: function () {
+        var params;
+        params = this.domHost.getPageParams();
+        if (params['visit-invoice'] !== 'new') {
+          return this.domHost.navigateToPage('#/print-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:' + this.invoice.serial);
+        }
+      },
+      _addToInvoice: function (itemName, visitSerial) {
+        var item, matchedItem;
+        matchedItem = ((function () {
+          var i, len, ref, results;
+          ref = this.priceList;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            item = ref[i];
+            if (item.name === itemName) {
+              results.push(item);
+            }
+          }
+          return results;
+        }).call(this))[0];
+        if (matchedItem) {
+          matchedItem.qty = 1;
+        }
+        if (!matchedItem) {
+          matchedItem = {
+            name: itemName,
+            qty: 1,
+            price: 0,
+            actualCost: 0,
+            category: "custom",
+            subCategory: "",
+            serial: null,
+            organizationId: this.organization.idOnServer,
+            createdDatetimeStamp: lib.datetime.now(),
+            lastModifiedDatetimeStamp: lib.datetime.now(),
+            createdByUserSerial: this.user.serial
+          };
+        }
+        if (Object.keys(this.invoice).length) {
+          this.push('invoice.data', matchedItem);
+        } else {
+          this._makeNewInvoice();
+          this.push('invoice.data', matchedItem);
+        }
+        this._saveInvoice();
+        return console.log(this.invoice);
+      },
+      calculatedOutDoorBalanceAfterDeduction: function (opdBalance, totalBilled) {
+        return (parseInt(opdBalance)) - (parseInt(totalBilled));
+      },
+      finishButtonPressed: function () {
+        var ref;
+        this.domHost.showSuccessToast('Visit Saved Successfully');
+        this.domHost.navigateToPreviousPage();
+        if ((ref = this.invoice) != null ? ref.totalBilled : void 0) {
+          return this.chargeOutdoorWalletButtonPressed();
+        }
+      }
+    });
+  </script>
+</dom-module>

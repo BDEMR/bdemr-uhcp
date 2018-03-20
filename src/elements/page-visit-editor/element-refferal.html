@@ -1,0 +1,233 @@
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<dom-module id="element-refferal">
+  <template>
+    <style is="custom-style" include="common-style">
+    </style>
+    <div class="card-item-2">
+      <div class="preview-title layout">
+        <div class="type title-2 flex">Referral</div>
+        <div class="action-area">
+          <paper-button class="btn-add m-vert" on-tap="openReferralDialogPressed">
+            <iron-icon icon="icons:add"></iron-icon>
+          </paper-button>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div class="layout horizontal">
+          <span class="type bold">Referred By: </span> [[referral.data.referredByDoctorName]]
+        </div>
+        <template is="dom-if" if="[[referral.data.doctorName]]">
+          <div class="layout horizontal">
+            <span class="type bold">Referred To: </span> [[referral.data.doctorName]]
+          </div>
+          <div class="layout horizontal">
+            <span class="type bold">Speciality: </span> [[referral.data.speciality]]</div>
+        </template>
+        <template is="dom-if" if="[[referral.data.organizationName]]">
+          <div class="layout horizontal">
+            <span class="type bold">Organization Name: </span> [[referral.data.organizationName]]</div>
+        </template>
+      </div>
+
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'element-refferal',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling
+      ],
+      properties: {
+        
+        referral: {
+          type: Object,
+          value: function () {
+            return {};
+          }
+        },
+        selectedReferralTypeIndex: {
+          type: Number,
+          value: function () {
+            return 0;
+          }
+        },
+        referredDoctorSpecialityList: {
+          type: Array,
+          value: function () {
+            return ["Cardiology", "General Surgery", "Haemotology", "Neuro surgery", "Neuro medicine", "Oncology", "Oral-maxillo-facial surgery", "Physical medicine", "Psychiatry", "Respiratory medicine", "Rapid access clinic", "Radiology"];
+          }
+        }
+      },
+
+      // Methods
+      _loadReferral: function (referralSerialIdentifier) {
+        return lib.util.delay(5, (function (_this) {
+          return function () {
+            var list;
+            list = app.db.find('referral-record', function (arg) {
+              var serial;
+              serial = arg.serial;
+              return serial === referralSerialIdentifier;
+            });
+            if (list.length === 1) {
+              _this.referral = list[0];
+              return true;
+            }
+          };
+        })(this));
+      },
+      _makeNewReferral: function () {
+        return this.referral = {
+          serial: null,
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          visitSerial: null,
+          patientSerial: this.patient.serial,
+          doctorName: this.visit.doctorName,
+          doctorSpeciality: this.visit.doctorSpeciality,
+          data: {}
+        };
+      },
+      _saveReferral: function () {
+        if (this.visit.serial === null) {
+          this._saveVisit();
+          this.referral.visitSerial = this.visit.serial;
+        }
+        if (this.referral.serial === null) {
+          this.referral.serial = this.generateSerialForReferral();
+          this.visit.referralSerial = this.referral.serial;
+          this.referral.visitSerial = this.visit.serial;
+          this._saveVisit();
+        }
+        console.log('referral', this.referral);
+        this.referral.lastModifiedDatetimeStamp = lib.datetime.now();
+        return app.db.upsert('referral-record', this.referral, (function (_this) {
+          return function (arg) {
+            var serial;
+            serial = arg.serial;
+            return _this.referral.serial === serial;
+          };
+        })(this));
+      },
+      openReferralDialogPressed: function (e) {
+        return this.$.dialogReferral.toggle();
+      },
+      doctorSearchStartKeyPressed: function (e) {
+        if (e.which !== 13) {
+          return;
+        }
+        return this.doctorSearchButtonPressed();
+      },
+      doctorSearchButtonPressed: function () {
+        return this.callApi('/bdemr-doctor-search', {
+          searchQuery: this.doctorSearchFieldInput
+        }, (function (_this) {
+          return function (err, response) {
+            var data, doctorSuggestionArray, item;
+            if (response.hasError) {
+              return _this.domHost.showModalDialog(response.error.message);
+            } else {
+              data = response.data;
+              if (data.length > 0) {
+                doctorSuggestionArray = (function () {
+                  var i, len, results;
+                  results = [];
+                  for (i = 0, len = data.length; i < len; i++) {
+                    item = data[i];
+                    results.push(item);
+                  }
+                  return results;
+                })();
+                return _this.$$("#doctorSearch").suggestions(doctorSuggestionArray);
+              } else {
+                return _this.domHost.showToast('No Match Found');
+              }
+            }
+          };
+        })(this));
+      },
+      doctorSearchCleared: function () {
+        return this.set('searchFieldMainInput', '');
+      },
+      organizationSearchStartKeyPressed: function (e) {
+        if (e.which !== 13) {
+          return;
+        }
+        return this.organizationSearchButtonPressed();
+      },
+      organizationSearchButtonPressed: function () {
+        var data;
+        data = {
+          apiKey: this.user.apiKey,
+          searchString: this.organizationSearchFieldInput
+        };
+        return this.callApi('/bdemr-organization-search', data, (function (_this) {
+          return function (err, response) {
+            var item, organizationSuggestionArray;
+            if (response.hasError) {
+              return _this.domHost.showModalDialog(response.error.message);
+            } else {
+              data = response.data.matchingOrganizationList;
+              if (data.length > 0) {
+                organizationSuggestionArray = (function () {
+                  var i, len, results;
+                  results = [];
+                  for (i = 0, len = data.length; i < len; i++) {
+                    item = data[i];
+                    results.push(item);
+                  }
+                  return results;
+                })();
+                return _this.$$("#organizationSearch").suggestions(organizationSuggestionArray);
+              } else {
+                return _this.domHost.showToast('No Match Found');
+              }
+            }
+          };
+        })(this));
+      },
+      addReferralButtonClicked: function () {
+        var data;
+        if (!(this.doctorSearchFieldInput || this.organizationSearchFieldInput)) {
+          return;
+        }
+        data = {
+          referredByDoctorName: this.user.name,
+          referredByDoctorId: this.user.idOnServer,
+          selectedReferralType: "",
+          doctorName: "",
+          doctorId: "",
+          speciality: "",
+          organizationName: "",
+          organizationId: ""
+        };
+        if (this.selectedReferralTypeIndex === 0) {
+          data.doctorName = this.doctorSearchFieldInput;
+          data.speciality = this.referredDoctorSpecialityList[this.referredDoctorSpecialitySelectedIndex];
+          data.doctorId = this.$$("#doctorSearch").value;
+        }
+        if (this.selectedReferralTypeIndex === 1) {
+          data.organizationName = this.organizationSearchFieldInput;
+          data.organizationId = this.$$("#organizationSearch").value;
+        }
+        this.set('referral.data', data);
+        this._saveReferral();
+        return this.$.dialogReferral.toggle();
+      }
+    });
+  </script>
+</dom-module>
