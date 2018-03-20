@@ -50,6 +50,7 @@
 <link rel="import" href="../../behaviors/api-calling.html">
 
 <!-- custom-elements -->
+<link rel="import" href="./element-prescription.html">
 
 <!-- element -->
 <dom-module id="page-visit-editor">
@@ -204,13 +205,14 @@
         text-align: left;
       }
 
-      .table thead *{
+      .table thead * {
         border-bottom: 1px solid #ccc;
         background-color: #f5f5f5;
         padding: 5px;
       }
 
-      .table tbody th, .table tbody td {
+      .table tbody th,
+      .table tbody td {
         padding: 5px;
         border-bottom: 1px solid #eee;
         vertical-align: middle;
@@ -869,8 +871,12 @@
                     </template>
                   </div>
                   <div class="layout horizontal m-4">
-                    <div class="type secondary caption-2">OPD: <span class="type caption bold bg-gray">[[patientOrganizationWallet.outdoorBalance]]</span></div>
-                    <div class="type secondary caption-2 m-left-8">IPD: <span class="type caption bold bg-gray">[[patientOrganizationWallet.indoorBalance]]</span></div>
+                    <div class="type secondary caption-2">OPD:
+                      <span class="type caption bold bg-gray">[[patientOrganizationWallet.outdoorBalance]]</span>
+                    </div>
+                    <div class="type secondary caption-2 m-left-8">IPD:
+                      <span class="type caption bold bg-gray">[[patientOrganizationWallet.indoorBalance]]</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1424,65 +1430,65 @@
               <!-- Card :: Invoice - start -->
               <div class="card-item-2">
 
-                  <div class="preview-title layout">
-                    <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_invoice.png"></iron-icon> -->
-                    <div class="type title-2 flex">Invoice</div>
-                    <div class="action-area">
-                      <template is="dom-if" if="{{!isInvoiceValid}}">
-                        <paper-button class="btn-add m-vert" on-tap="createInvoicePressed">
-                          <iron-icon icon="icons:add"></iron-icon>
-                        </paper-button>
-                      </template>
-                      <template is="dom-if" if="{{isInvoiceValid}}">
-                        <paper-button class="btn-add m-vert" on-tap="printInvoicePressed">
-                          <iron-icon icon="icons:print"></iron-icon>
-                        </paper-button>
-                        <paper-button class="btn-add m-vert" on-tap="editInvoicePressed">
-                          <iron-icon icon="icons:create"></iron-icon>
-                        </paper-button>
-                      </template>
-                    </div>
+                <div class="preview-title layout">
+                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_invoice.png"></iron-icon> -->
+                  <div class="type title-2 flex">Invoice</div>
+                  <div class="action-area">
+                    <template is="dom-if" if="{{!isInvoiceValid}}">
+                      <paper-button class="btn-add m-vert" on-tap="createInvoicePressed">
+                        <iron-icon icon="icons:add"></iron-icon>
+                      </paper-button>
+                    </template>
+                    <template is="dom-if" if="{{isInvoiceValid}}">
+                      <paper-button class="btn-add m-vert" on-tap="printInvoicePressed">
+                        <iron-icon icon="icons:print"></iron-icon>
+                      </paper-button>
+                      <paper-button class="btn-add m-vert" on-tap="editInvoicePressed">
+                        <iron-icon icon="icons:create"></iron-icon>
+                      </paper-button>
+                    </template>
                   </div>
-  
-                  <template is="dom-if" if="[[visit.invoiceSerial]]">
-                    <div class="card-content">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>Service</th>
-                            <th>Price</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <template is="dom-repeat" items="[[invoice.data]]">
-                            <tr>
-                              <td>[[item.name]]</td>
-                              <td>
-                                [[item.price]]
-                                <paper-icon-button class="type danger" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
-                              </td>
-                            </tr>
-                          </template>
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <th>Total</th>
-                            <th>[[invoice.totalBilled]]</th>
-                          </tr>
-                          <tr>
-                            <td>Available Outdoor Balance</td>
-                            <td>[[patientOrganizationWallet.outdoorBalance]]</td>
-                          </tr>
-                          <tr>
-                            <th>Balance After Deduction</th>
-                            <th>[[calculatedOutDoorBalanceAfterDeduction(patientOrganizationWallet.outdoorBalance, invoice.totalBilled)]]</th>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </template>
                 </div>
-                <!-- Card :: Invoice - end -->
+
+                <template is="dom-if" if="[[visit.invoiceSerial]]">
+                  <div class="card-content">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Service</th>
+                          <th>Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <template is="dom-repeat" items="[[invoice.data]]">
+                          <tr>
+                            <td>[[item.name]]</td>
+                            <td>
+                              [[item.price]]
+                              <paper-icon-button class="type danger" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                            </td>
+                          </tr>
+                        </template>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>Total</th>
+                          <th>[[invoice.totalBilled]]</th>
+                        </tr>
+                        <tr>
+                          <td>Available Outdoor Balance</td>
+                          <td>[[patientOrganizationWallet.outdoorBalance]]</td>
+                        </tr>
+                        <tr>
+                          <th>Balance After Deduction</th>
+                          <th>[[calculatedOutDoorBalanceAfterDeduction(patientOrganizationWallet.outdoorBalance, invoice.totalBilled)]]</th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </template>
+              </div>
+              <!-- Card :: Invoice - end -->
             </div>
 
             <div class="content right">
@@ -1538,371 +1544,9 @@
               <!-- Card - History And Physical - end -->
 
               <!-- Card :: Prescription - start -->
-              <div class="card-item-2">
-                <div class="preview-title horizontal layout center">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/medical-kit.png"></iron-icon> -->
-                  <div class="type title-2"> Prescription </div>
-                </div>
 
-                <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
-                  <div class="p-0 b-radius">
-                    <paper-listbox>
+              <element-prescription></element-prescription>
 
-
-                      <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
-                        <paper-item class="custom layout horizontal center">
-                          <div class="type caption secondary">[[_returnSerial(index)]]</div>
-
-                          <div class="flex m-left-8">
-                            <div class="layout horizontal wrap center">
-
-
-                              <div class="flex">
-                                <div class="type body">{{item.data.brandName}}
-                                  <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
-                                </div>
-                                <div class="type caption italic secondary">{{item.data.genericName}} {{item.data.strength}}</div>
-                              </div>
-
-                              <div>
-                                <div class="type caption m-horizontal-4">
-                                  <!-- <span>[[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]] [[$TRANSLATE('As', LANG)]]</span> -->[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                                  <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
-                                </div>
-
-                                <div class="type caption m-horizontal-4">
-                                  <span>[[$TRANSLATE('By', LANG)]] </span>
-                                  <span class="text-cap">[[$TRANSLATE(item.data.route, LANG)]]</span>
-                                  <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
-                                </div>
-                                <div class="type caption m-horizontal-4">[[item.data.comments]]</div>
-                              </div>
-
-                            </div>
-                          </div>
-
-                          <paper-icon-button icon="delete" on-tap="deleteMedicinePressed"></paper-icon-button>
-
-                        </paper-item>
-                      </template>
-                    </paper-listbox>
-                  </div>
-                </template>
-
-                <paper-tabs class="basic-tabs" selected="{{selectedMedicinePage}}" class="flex" scrollable hide-scroll-buttons="true">
-                  <paper-tab class="p-horizontal-16">Patient Current Medicine</paper-tab>
-                  <paper-tab class="p-horizontal-16">Add New Medicine</paper-tab>
-                  <paper-tab class="p-horizontal-16">Pick From Favorite</paper-tab>
-                </paper-tabs>
-
-                <iron-pages selected="{{selectedMedicinePage}}">
-                  <!-- current medicine - start -->
-                  <section>
-                    <template is="dom-if" if="[[_isEmpty(matchingCurrentMedicineList.length)]]">
-                      <div class="card-content layout horizontal center center-justified">
-                        <div class="type body secondary">-- empty --</div>
-                      </div>
-                    </template>
-
-                    <div class="p-0 b-radius">
-                      <paper-listbox>
-                        <template id="current-medicine-list-repeater" is="dom-repeat" items="[[matchingCurrentMedicineList]]">
-                          <paper-item class="custom layout horizontal center">
-                            <div class="type caption secondary">[[_returnSerial(index)]]</div>
-                            <div class="flex m-left-8">
-                              <div class="layout horizontal wrap center">
-
-                                <div class="flex">
-                                  <div class="type body">{{item.data.brandName}} {{item.data.strength}}
-                                    <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
-                                  </div>
-                                  <div class="type caption italic secondary">{{item.data.genericName}} {{item.data.strength}}</div>
-                                </div>
-
-                                <div>
-                                  <div class="type caption m-horizontal-4">
-                                    <!-- <span>[[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]] [[$TRANSLATE('As', LANG)]]</span> -->
-                                    <span hidden="[[!item.data.doseDirection]]">
-                                      [[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]]</span>
-                                    [[$TRANSLATE('for',LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                                    <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
-                                  </div>
-
-                                  <div class="type caption m-horizontal-4">
-                                    <span>[[$TRANSLATE('By',LANG)]] </span>
-                                    <span class="text-cap">[[$TRANSLATE(item.data.route, LANG)]]</span>
-                                    <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
-                                  </div>
-                                  <div class="type caption m-horizontal-4">[[item.data.comments]]</div>
-                                </div>
-
-                              </div>
-                            </div>
-                            <paper-menu-button class="p-0 b-radius" vertical-align="bottom" horizontal-align="right">
-                              <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
-                              <paper-menu class="dropdown-content">
-                                <paper-item on-tap="continueMedicinePressed">Continue</paper-item>
-                                <paper-item on-tap="stopMedicinePressed">Stop</paper-item>
-                              </paper-menu>
-                            </paper-menu-button>
-                          </paper-item>
-                        </template>
-
-                      </paper-listbox>
-                    </div>
-                  </section>
-                  <!-- current medicine - end -->
-
-                  <!-- add medicine - start -->
-                  <section>
-                    <div class="card-content">
-                      <div class="layout horizontal justified center end">
-                        <paper-toggle-button checked="{{showDetailedForm}}">Show Advanced</paper-toggle-button>
-                      </div>
-                      <div class="form-group">
-                        <div>
-                          <paper-autocomplete id="brandName" label="[[$TRANSLATE('Brand Name',LANG)]]" text="{{medicine.brandName}}" source="[[brandNameSourceDataList]]"
-                            on-autocomplete-selected="brandNameAutocompleteSelected" on-autocomplete-reset="brandNameCleared"
-                            min-length="2" on-input="validate" error-message="Input Required" required></paper-autocomplete>
-                        </div>
-                      </div>
-
-                      <div hidden="[[!showDetailedForm]]">
-                        <div class="form-group">
-                          <div>
-                            <paper-autocomplete id="genericName" label="[[$TRANSLATE('Generic Name',LANG)]]" text="{{medicine.genericName}}" source="[[genericNameSourceDataList]]"
-                              on-autocomplete-selected="genericNameAutocompleteSelected" on-autocomplete-reset="genericNameCleared"
-                              min-length="2" error-message="Input Required" on-input="validate" required></paper-autocomplete>
-                          </div>
-                          <div>
-                            <paper-autocomplete id="manufacturer" label="[[$TRANSLATE('Manufacturer Name',LANG)]]" text="{{medicine.manufacturer}}" source="[[manufacturerSourceDataList]]"
-                              on-autocomplete-selected="manufacturerAutocompleteSelected" on-autocomplete-reset="manufacturerCleared"
-                              error-message="Input Required" min-length="2" on-input="validate" required></paper-autocomplete>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <!--Dose-->
-                        <div>
-                          <vaadin-combo-box label="Dose" items="[[doseList]]" allow-custom-value="true" on-keyup="doseSelected" value="{{medicine.doseDirection}}"></vaadin-combo-box>
-                        </div>
-                        <!--Dose-->
-                      </div>
-
-                      <div class="form-group">
-                        <!--Direction-->
-                        <div>
-                          <paper-dropdown-menu label="[[$TRANSLATE('Direction',LANG)]]">
-                            <paper-menu selected="{{directionSelectedIndex}}" class="dropdown-content" on-iron-select="_directionSelectedIndexChanged">
-                              <template is="dom-repeat" items="[[directionList]]">
-                                <paper-item>[[$TRANSLATE(item,LANG)]]</paper-item>
-                              </template>
-                            </paper-menu>
-                          </paper-dropdown-menu>
-                        </div>
-                        <!--Direction-->
-                        <!--Form-->
-                        <div>
-                          <paper-dropdown-menu id="form" error-message="Chose an option" label="[[$TRANSLATE('Form',LANG)]]" required>
-                            <paper-menu selected="{{medicineFormSelectedIndex}}" class="dropdown-content" on-iron-select="_medicineFormSelectedIndexChanged">
-                              <template is="dom-repeat" items="{{medicineFormList}}">
-                                <paper-item>{{item}}</paper-item>
-                              </template>
-                            </paper-menu>
-                          </paper-dropdown-menu>
-                        </div>
-                        <template is="dom-if" if="[[_isFormCustom(matchingMedicineList, medicineFormSelectedIndex)]]">
-                          <div>
-                            <paper-input label="Form" value="{{medicine.form}}" id="custom-form" error-message="Input Required" required></paper-input>
-                          </div>
-                        </template>
-                        <!--Form-->
-                      </div>
-
-                      <div hidden="[[!showDetailedForm]]">
-                        <div class="form-group">
-                          <!--Strength-->
-                          <template is="dom-if" if="[[_isStregnthDropdown(matchingMedicineList)]]">
-                            <div>
-                              <paper-dropdown-menu label="[[$TRANSLATE('Strength',LANG)]]" id="strength" error-message="Chose an Option">
-                                <paper-menu id="strengthDropdown" selected="{{strengthSelectedIndex}}" class="dropdown-content" on-iron-select="_strengthSelectedIndexChanged">
-                                  <template is="dom-repeat" items="{{strengthList}}">
-                                    <paper-item>{{item}}</paper-item>
-                                  </template>
-                                </paper-menu>
-                              </paper-dropdown-menu>
-                            </div>
-                          </template>
-                          <template is="dom-if" if="[[_isStregnthCustom(matchingMedicineList, strengthSelectedIndex)]]">
-                            <div>
-                              <paper-input label="[[$TRANSLATE('Strength',LANG)]]" required value="{{medicine.strength}}" id="strength" error-message="Input Required"
-                                on-input="validate"></paper-input>
-                            </div>
-                          </template>
-                          <!--Strength-->
-                          <!--Route-->
-                          <div>
-                            <paper-dropdown-menu label="[[$TRANSLATE('Route',LANG)]]">
-                              <paper-menu selected="{{routeSelectedIndex}}" class="dropdown-content" on-iron-select="_routeSelectedIndexChanged">
-                                <template is="dom-repeat" items="[[routeList]]">
-                                  <paper-item>[[$TRANSLATE(item,LANG)]]</paper-item>
-                                </template>
-                              </paper-menu>
-                            </paper-dropdown-menu>
-                          </div>
-                          <template is="dom-if" if="[[_isRouteCustom(routeSelectedIndex)]]">
-                            <div>
-                              <paper-input label="[[$TRANSLATE('Route',LANG)]]" value="{{medicine.route}}" error-message="Input Required"></paper-input>
-                            </div>
-                          </template>
-                          <!--Route-->
-                        </div>
-
-                        <div class="form-group">
-                          <!--Unit-->
-                          <div>
-                            <paper-dropdown-menu id="doseUnit" error-message="Chose an option" label="[[$TRANSLATE('Unit',LANG)]]" required>
-                              <paper-menu selected="{{doseUnitSelectedIndex}}" class="dropdown-content" on-iron-select="_doseUnitSelectedIndexChanged">
-                                <template is="dom-repeat" items="[[doseUnitList]]">
-                                  <paper-item>{{item}}</paper-item>
-                                </template>
-                              </paper-menu>
-                            </paper-dropdown-menu>
-                          </div>
-                          <template is="dom-if" if="[[_isUnitCustom(doseUnitSelectedIndex)]]">
-                            <div>
-                              <paper-input id="custom-dose-unit" label="Custom Unit" value="{{medicine.doseUnit}}" required id="doseUnit" error-message="Input Required"></paper-input>
-                            </div>
-                          </template>
-                          <!--Unit-->
-                        </div>
-                      </div>
-
-
-                      <div class="form-group layout horizontal end screen-sm">
-                        <!--Start Date-->
-                        <div>
-                          <vaadin-date-picker label="[[$TRANSLATE('Start Date',LANG)]]" value="{{medicine.startDateTimeStamp}}"></vaadin-date-picker>
-                        </div>
-                        <!--Start Date-->
-
-                        <!--End Date-->
-
-                        <div>
-                          <vaadin-date-picker id="endDate" label="[[$TRANSLATE('Ends on',LANG)]]" value="{{medicine.endDateTimeStamp}}"></vaadin-date-picker>
-                        </div>
-                        <div>
-                          <paper-checkbox checked="{{medicine.continue}}" on-change="asNeededSelected">[[$TRANSLATE('Continue As Needed',LANG)]]</paper-checkbox>
-                        </div>
-                        <!--End Date-->
-                      </div>
-
-                      <br>
-                      <br>
-
-                      <div hidden="[[!showDetailedForm]]">
-                        <div class="form-group">
-                          <div>
-                            <paper-textarea label="[[$TRANSLATE('Comments',LANG)]]" value="{{medicine.comments}}"></paper-textarea>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- <div class="layout horizontal end-justified">
-                      <paper-checkbox class="remind" checked="{{medicine.remind}}">[[$TRANSLATE('Remind Me To Take This Medicine',LANG)]]</paper-checkbox>
-                    </div> -->
-
-                    <div class="preview-title layout end-justified" style='padding-top: 4px;'>
-
-                      <paper-button class="btn-dd" on-click="cancelButtonClicked">Clear</paper-button>
-                      <paper-button class="btn-add" on-click="saveAndAddAsFavoriteMedicinePressed" raised>
-                        <iron-icon class="m-right-8" src="../../images/icons/medical-assistance-symbol.png"></iron-icon>Favorite</paper-button>
-                      <paper-button class="btn-add colored" on-click="saveMedicineButtonClicked" raised>
-                        <iron-icon class="m-right-8" icon="add"></iron-icon>Add</paper-button>
-                    </div>
-
-                  </section>
-                  <!-- add medicine - end -->
-
-                  <!-- favorite medicine - start -->
-                  <section>
-                    <template is="dom-if" if="[[_isEmpty(matchingFavoriteMedicineList.length)]]">
-                      <div class="card-content layout horizontal center center-justified">
-                        <div class="type body secondary">-- empty --</div>
-                      </div>
-                    </template>
-
-                    <div class="p-0 b-radius">
-                      <paper-listbox>
-                        <template id="favorite-medicine-list-repeater" is="dom-repeat" items="[[matchingFavoriteMedicineList]]">
-                          <paper-item class="custom" on-tap="favoriteMedicineTapped">
-
-                            <div class="custom-list-item">
-                              <div class="item-header layout horizontal center">
-                                <div class="type caption secondary">[[_returnSerial(index)]]</div>
-                                <div class="flex m-left-8">
-                                  <span class="type body capitalize">{{item.data.brandName}}</span>
-                                  <span class="m-horizontal-4 type caption secondary italic lowercase">[ {{item.data.genericName}} {{item.data.strength}} ]</span>
-                                  <span class="m-horizontal-4 type caption bg-gray">{{item.data.manufacturer}}</span>
-                                </div>
-                                <paper-icon-button class="m-left-8" icon="add" on-tap="addFavMedicineAsNewMedicineBtnPressed"></paper-icon-button>
-                                <paper-icon-button icon="delete" on-tap="deleteFavoriteMedicinePressed"></paper-icon-button>
-
-                              </div>
-
-                              <div class="item-content" hidden$="[[_isFavoriteMedicineContentHidden(index, favoriteMedicineShownIndex)]]">
-
-                                <div class="form-group screen-sm">
-                                  <div>
-                                    <paper-input label="Dose Administer Timing e.g 1+1+1" value="{{item.data.doseDirection}}"></paper-input>
-                                  </div>
-
-                                  <!--End Date-->
-                                  <div>
-                                    <paper-dropdown-menu id="duplicateMedicineEndDateTimeStamp" error-message="Chose an Date" label="Ends on">
-                                      <paper-menu selected="{{endDateTimeTypeSelectedIndex}}" class="dropdown-content" on-iron-select="_endDateTimeTypeSelectedIndexChanged">
-                                        <template is="dom-repeat" items="[[endDateTimeTypeList]]">
-                                          <paper-item>[[item]]</paper-item>
-                                        </template>
-                                      </paper-menu>
-                                    </paper-dropdown-menu>
-                                    <template is="dom-if" if="[[computedEndDate]]">
-                                      <span class="text-sm text-primary">Ends on [[computedEndDate]]</span>
-                                    </template>
-                                  </div>
-                                  <!--If chosen Weeks-->
-                                  <template is="dom-if" if="[[_isNthWeekSelectedAsEndDate(endDateTimeTypeSelectedIndex, endDateTimeTypeList)]]">
-                                    <div>
-                                      <paper-dropdown-menu label="Days">
-                                        <paper-menu selected="{{endDateTimeTypeArgument2SelectedIndex}}" class="dropdown-content" on-iron-select="_endDateTimeTypeSelectedIndexChanged">
-                                          <template is="dom-repeat" items="{{endDateTimeTypeArgument2List}}">
-                                            <paper-item>{{item}}</paper-item>
-                                          </template>
-                                        </paper-menu>
-                                      </paper-dropdown-menu>
-                                    </div>
-                                  </template>
-                                  <!--If chosen Custom-->
-                                  <template is="dom-if" if="[[_isCustomSelectedAsEndDate(endDateTimeTypeSelectedIndex, endDateTimeTypeList)]]">
-                                    <div>
-                                      <vaadin-date-picker label="Ends on" value="{{duplicateMedicineEditablePart.endDateTimeStamp}}"></vaadin-date-picker>
-                                    </div>
-                                  </template>
-                                  <!--End Date-->
-
-                                </div>
-                              </div>
-                            </div>
-                          </paper-item>
-                        </template>
-                      </paper-listbox>
-                    </div>
-                  </section>
-                  <!-- favorite medicine - start -->
-                </iron-pages>
-              </div>
               <!-- Card :: Prescription - end -->
 
               <!-- Card :: Patient Stay - start -->

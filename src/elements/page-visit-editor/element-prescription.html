@@ -1,0 +1,1751 @@
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<dom-module id="element-prescription">
+  <template>
+
+    <style is="custom-style" include="common-style">
+    </style>
+    <div class="card-item-2">
+      <div class="preview-title horizontal layout center">
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/medical-kit.png"></iron-icon> -->
+        <div class="type title-2"> Prescription </div>
+      </div>
+
+      <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
+        <div class="p-0 b-radius">
+          <paper-listbox>
+
+
+            <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
+              <paper-item class="custom layout horizontal center">
+                <div class="type caption secondary">[[_returnSerial(index)]]</div>
+
+                <div class="flex m-left-8">
+                  <div class="layout horizontal wrap center">
+
+
+                    <div class="flex">
+                      <div class="type body">{{item.data.brandName}}
+                        <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
+                      </div>
+                      <div class="type caption italic secondary">{{item.data.genericName}} {{item.data.strength}}</div>
+                    </div>
+
+                    <div>
+                      <div class="type caption m-horizontal-4">
+                        <!-- <span>[[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]] [[$TRANSLATE('As', LANG)]]</span> -->[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
+                        <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
+                      </div>
+
+                      <div class="type caption m-horizontal-4">
+                        <span>[[$TRANSLATE('By', LANG)]] </span>
+                        <span class="text-cap">[[$TRANSLATE(item.data.route, LANG)]]</span>
+                        <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
+                      </div>
+                      <div class="type caption m-horizontal-4">[[item.data.comments]]</div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <paper-icon-button icon="delete" on-tap="deleteMedicinePressed"></paper-icon-button>
+
+              </paper-item>
+            </template>
+          </paper-listbox>
+        </div>
+      </template>
+
+      <paper-tabs class="basic-tabs" selected="{{selectedMedicinePage}}" class="flex" scrollable hide-scroll-buttons="true">
+        <paper-tab class="p-horizontal-16">Patient Current Medicine</paper-tab>
+        <paper-tab class="p-horizontal-16">Add New Medicine</paper-tab>
+        <paper-tab class="p-horizontal-16">Pick From Favorite</paper-tab>
+      </paper-tabs>
+
+      <iron-pages selected="{{selectedMedicinePage}}">
+        <!-- current medicine - start -->
+        <section>
+          <template is="dom-if" if="[[_isEmpty(matchingCurrentMedicineList.length)]]">
+            <div class="card-content layout horizontal center center-justified">
+              <div class="type body secondary">-- empty --</div>
+            </div>
+          </template>
+
+          <div class="p-0 b-radius">
+            <paper-listbox>
+              <template id="current-medicine-list-repeater" is="dom-repeat" items="[[matchingCurrentMedicineList]]">
+                <paper-item class="custom layout horizontal center">
+                  <div class="type caption secondary">[[_returnSerial(index)]]</div>
+                  <div class="flex m-left-8">
+                    <div class="layout horizontal wrap center">
+
+                      <div class="flex">
+                        <div class="type body">{{item.data.brandName}} {{item.data.strength}}
+                          <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
+                        </div>
+                        <div class="type caption italic secondary">{{item.data.genericName}} {{item.data.strength}}</div>
+                      </div>
+
+                      <div>
+                        <div class="type caption m-horizontal-4">
+                          <!-- <span>[[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]] [[$TRANSLATE('As', LANG)]]</span> -->
+                          <span hidden="[[!item.data.doseDirection]]">
+                            [[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]]</span>
+                          [[$TRANSLATE('for',LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
+                          <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
+                        </div>
+
+                        <div class="type caption m-horizontal-4">
+                          <span>[[$TRANSLATE('By',LANG)]] </span>
+                          <span class="text-cap">[[$TRANSLATE(item.data.route, LANG)]]</span>
+                          <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
+                        </div>
+                        <div class="type caption m-horizontal-4">[[item.data.comments]]</div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <paper-menu-button class="p-0 b-radius" vertical-align="bottom" horizontal-align="right">
+                    <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
+                    <paper-menu class="dropdown-content">
+                      <paper-item on-tap="continueMedicinePressed">Continue</paper-item>
+                      <paper-item on-tap="stopMedicinePressed">Stop</paper-item>
+                    </paper-menu>
+                  </paper-menu-button>
+                </paper-item>
+              </template>
+
+            </paper-listbox>
+          </div>
+        </section>
+        <!-- current medicine - end -->
+
+        <!-- add medicine - start -->
+        <section>
+          <div class="card-content">
+            <div class="layout horizontal justified center end">
+              <paper-toggle-button checked="{{showDetailedForm}}">Show Advanced</paper-toggle-button>
+            </div>
+            <div class="form-group">
+              <div>
+                <paper-autocomplete id="brandName" label="[[$TRANSLATE('Brand Name',LANG)]]" text="{{medicine.brandName}}" source="[[brandNameSourceDataList]]"
+                  on-autocomplete-selected="brandNameAutocompleteSelected" on-autocomplete-reset="brandNameCleared" min-length="2"
+                  on-input="validate" error-message="Input Required" required></paper-autocomplete>
+              </div>
+            </div>
+
+            <div hidden="[[!showDetailedForm]]">
+              <div class="form-group">
+                <div>
+                  <paper-autocomplete id="genericName" label="[[$TRANSLATE('Generic Name',LANG)]]" text="{{medicine.genericName}}" source="[[genericNameSourceDataList]]"
+                    on-autocomplete-selected="genericNameAutocompleteSelected" on-autocomplete-reset="genericNameCleared" min-length="2"
+                    error-message="Input Required" on-input="validate" required></paper-autocomplete>
+                </div>
+                <div>
+                  <paper-autocomplete id="manufacturer" label="[[$TRANSLATE('Manufacturer Name',LANG)]]" text="{{medicine.manufacturer}}" source="[[manufacturerSourceDataList]]"
+                    on-autocomplete-selected="manufacturerAutocompleteSelected" on-autocomplete-reset="manufacturerCleared"
+                    error-message="Input Required" min-length="2" on-input="validate" required></paper-autocomplete>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <!--Dose-->
+              <div>
+                <vaadin-combo-box label="Dose" items="[[doseList]]" allow-custom-value="true" on-keyup="doseSelected" value="{{medicine.doseDirection}}"></vaadin-combo-box>
+              </div>
+              <!--Dose-->
+            </div>
+
+            <div class="form-group">
+              <!--Direction-->
+              <div>
+                <paper-dropdown-menu label="[[$TRANSLATE('Direction',LANG)]]">
+                  <paper-menu selected="{{directionSelectedIndex}}" class="dropdown-content" on-iron-select="_directionSelectedIndexChanged">
+                    <template is="dom-repeat" items="[[directionList]]">
+                      <paper-item>[[$TRANSLATE(item,LANG)]]</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+              <!--Direction-->
+              <!--Form-->
+              <div>
+                <paper-dropdown-menu id="form" error-message="Chose an option" label="[[$TRANSLATE('Form',LANG)]]" required>
+                  <paper-menu selected="{{medicineFormSelectedIndex}}" class="dropdown-content" on-iron-select="_medicineFormSelectedIndexChanged">
+                    <template is="dom-repeat" items="{{medicineFormList}}">
+                      <paper-item>{{item}}</paper-item>
+                    </template>
+                  </paper-menu>
+                </paper-dropdown-menu>
+              </div>
+              <template is="dom-if" if="[[_isFormCustom(matchingMedicineList, medicineFormSelectedIndex)]]">
+                <div>
+                  <paper-input label="Form" value="{{medicine.form}}" id="custom-form" error-message="Input Required" required></paper-input>
+                </div>
+              </template>
+              <!--Form-->
+            </div>
+
+            <div hidden="[[!showDetailedForm]]">
+              <div class="form-group">
+                <!--Strength-->
+                <template is="dom-if" if="[[_isStregnthDropdown(matchingMedicineList)]]">
+                  <div>
+                    <paper-dropdown-menu label="[[$TRANSLATE('Strength',LANG)]]" id="strength" error-message="Chose an Option">
+                      <paper-menu id="strengthDropdown" selected="{{strengthSelectedIndex}}" class="dropdown-content" on-iron-select="_strengthSelectedIndexChanged">
+                        <template is="dom-repeat" items="{{strengthList}}">
+                          <paper-item>{{item}}</paper-item>
+                        </template>
+                      </paper-menu>
+                    </paper-dropdown-menu>
+                  </div>
+                </template>
+                <template is="dom-if" if="[[_isStregnthCustom(matchingMedicineList, strengthSelectedIndex)]]">
+                  <div>
+                    <paper-input label="[[$TRANSLATE('Strength',LANG)]]" required value="{{medicine.strength}}" id="strength" error-message="Input Required"
+                      on-input="validate"></paper-input>
+                  </div>
+                </template>
+                <!--Strength-->
+                <!--Route-->
+                <div>
+                  <paper-dropdown-menu label="[[$TRANSLATE('Route',LANG)]]">
+                    <paper-menu selected="{{routeSelectedIndex}}" class="dropdown-content" on-iron-select="_routeSelectedIndexChanged">
+                      <template is="dom-repeat" items="[[routeList]]">
+                        <paper-item>[[$TRANSLATE(item,LANG)]]</paper-item>
+                      </template>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                </div>
+                <template is="dom-if" if="[[_isRouteCustom(routeSelectedIndex)]]">
+                  <div>
+                    <paper-input label="[[$TRANSLATE('Route',LANG)]]" value="{{medicine.route}}" error-message="Input Required"></paper-input>
+                  </div>
+                </template>
+                <!--Route-->
+              </div>
+
+              <div class="form-group">
+                <!--Unit-->
+                <div>
+                  <paper-dropdown-menu id="doseUnit" error-message="Chose an option" label="[[$TRANSLATE('Unit',LANG)]]" required>
+                    <paper-menu selected="{{doseUnitSelectedIndex}}" class="dropdown-content" on-iron-select="_doseUnitSelectedIndexChanged">
+                      <template is="dom-repeat" items="[[doseUnitList]]">
+                        <paper-item>{{item}}</paper-item>
+                      </template>
+                    </paper-menu>
+                  </paper-dropdown-menu>
+                </div>
+                <template is="dom-if" if="[[_isUnitCustom(doseUnitSelectedIndex)]]">
+                  <div>
+                    <paper-input id="custom-dose-unit" label="Custom Unit" value="{{medicine.doseUnit}}" required id="doseUnit" error-message="Input Required"></paper-input>
+                  </div>
+                </template>
+                <!--Unit-->
+              </div>
+            </div>
+
+
+            <div class="form-group layout horizontal end screen-sm">
+              <!--Start Date-->
+              <div>
+                <vaadin-date-picker label="[[$TRANSLATE('Start Date',LANG)]]" value="{{medicine.startDateTimeStamp}}"></vaadin-date-picker>
+              </div>
+              <!--Start Date-->
+
+              <!--End Date-->
+
+              <div>
+                <vaadin-date-picker id="endDate" label="[[$TRANSLATE('Ends on',LANG)]]" value="{{medicine.endDateTimeStamp}}"></vaadin-date-picker>
+              </div>
+              <div>
+                <paper-checkbox checked="{{medicine.continue}}" on-change="asNeededSelected">[[$TRANSLATE('Continue As Needed',LANG)]]</paper-checkbox>
+              </div>
+              <!--End Date-->
+            </div>
+
+            <br>
+            <br>
+
+            <div hidden="[[!showDetailedForm]]">
+              <div class="form-group">
+                <div>
+                  <paper-textarea label="[[$TRANSLATE('Comments',LANG)]]" value="{{medicine.comments}}"></paper-textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="layout horizontal end-justified">
+                          <paper-checkbox class="remind" checked="{{medicine.remind}}">[[$TRANSLATE('Remind Me To Take This Medicine',LANG)]]</paper-checkbox>
+                        </div> -->
+
+          <div class="preview-title layout end-justified" style='padding-top: 4px;'>
+
+            <paper-button class="btn-dd" on-click="cancelButtonClicked">Clear</paper-button>
+            <paper-button class="btn-add" on-click="saveAndAddAsFavoriteMedicinePressed" raised>
+              <iron-icon class="m-right-8" src="../../images/icons/medical-assistance-symbol.png"></iron-icon>Favorite</paper-button>
+            <paper-button class="btn-add colored" on-click="saveMedicineButtonClicked" raised>
+              <iron-icon class="m-right-8" icon="add"></iron-icon>Add</paper-button>
+          </div>
+
+        </section>
+        <!-- add medicine - end -->
+
+        <!-- favorite medicine - start -->
+        <section>
+          <template is="dom-if" if="[[_isEmpty(matchingFavoriteMedicineList.length)]]">
+            <div class="card-content layout horizontal center center-justified">
+              <div class="type body secondary">-- empty --</div>
+            </div>
+          </template>
+
+          <div class="p-0 b-radius">
+            <paper-listbox>
+              <template id="favorite-medicine-list-repeater" is="dom-repeat" items="[[matchingFavoriteMedicineList]]">
+                <paper-item class="custom" on-tap="favoriteMedicineTapped">
+
+                  <div class="custom-list-item">
+                    <div class="item-header layout horizontal center">
+                      <div class="type caption secondary">[[_returnSerial(index)]]</div>
+                      <div class="flex m-left-8">
+                        <span class="type body capitalize">{{item.data.brandName}}</span>
+                        <span class="m-horizontal-4 type caption secondary italic lowercase">[ {{item.data.genericName}} {{item.data.strength}} ]</span>
+                        <span class="m-horizontal-4 type caption bg-gray">{{item.data.manufacturer}}</span>
+                      </div>
+                      <paper-icon-button class="m-left-8" icon="add" on-tap="addFavMedicineAsNewMedicineBtnPressed"></paper-icon-button>
+                      <paper-icon-button icon="delete" on-tap="deleteFavoriteMedicinePressed"></paper-icon-button>
+
+                    </div>
+
+                    <div class="item-content" hidden$="[[_isFavoriteMedicineContentHidden(index, favoriteMedicineShownIndex)]]">
+
+                      <div class="form-group screen-sm">
+                        <div>
+                          <paper-input label="Dose Administer Timing e.g 1+1+1" value="{{item.data.doseDirection}}"></paper-input>
+                        </div>
+
+                        <!--End Date-->
+                        <div>
+                          <paper-dropdown-menu id="duplicateMedicineEndDateTimeStamp" error-message="Chose an Date" label="Ends on">
+                            <paper-menu selected="{{endDateTimeTypeSelectedIndex}}" class="dropdown-content" on-iron-select="_endDateTimeTypeSelectedIndexChanged">
+                              <template is="dom-repeat" items="[[endDateTimeTypeList]]">
+                                <paper-item>[[item]]</paper-item>
+                              </template>
+                            </paper-menu>
+                          </paper-dropdown-menu>
+                          <template is="dom-if" if="[[computedEndDate]]">
+                            <span class="text-sm text-primary">Ends on [[computedEndDate]]</span>
+                          </template>
+                        </div>
+                        <!--If chosen Weeks-->
+                        <template is="dom-if" if="[[_isNthWeekSelectedAsEndDate(endDateTimeTypeSelectedIndex, endDateTimeTypeList)]]">
+                          <div>
+                            <paper-dropdown-menu label="Days">
+                              <paper-menu selected="{{endDateTimeTypeArgument2SelectedIndex}}" class="dropdown-content" on-iron-select="_endDateTimeTypeSelectedIndexChanged">
+                                <template is="dom-repeat" items="{{endDateTimeTypeArgument2List}}">
+                                  <paper-item>{{item}}</paper-item>
+                                </template>
+                              </paper-menu>
+                            </paper-dropdown-menu>
+                          </div>
+                        </template>
+                        <!--If chosen Custom-->
+                        <template is="dom-if" if="[[_isCustomSelectedAsEndDate(endDateTimeTypeSelectedIndex, endDateTimeTypeList)]]">
+                          <div>
+                            <vaadin-date-picker label="Ends on" value="{{duplicateMedicineEditablePart.endDateTimeStamp}}"></vaadin-date-picker>
+                          </div>
+                        </template>
+                        <!--End Date-->
+
+                      </div>
+                    </div>
+                  </div>
+                </paper-item>
+              </template>
+            </paper-listbox>
+          </div>
+        </section>
+        <!-- favorite medicine - start -->
+      </iron-pages>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'element-prescription',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling
+      ],
+      properties: {
+        isPrescriptionValid: {
+          type: Boolean,
+          notify: false,
+          value: false
+        },
+        prescription: {
+          type: Object,
+          notify: true,
+          value: null
+        },
+        matchingPrescribedMedicineList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        matchingCurrentMedicineList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        matchingFavoriteMedicineList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        duplicateMedicineEditablePart: {
+          type: Object,
+          notify: true,
+          value: null
+        },
+        favoriteMedicineShownIndex: {
+          type: Number,
+          value: 0
+        },
+        isMedicineValid: {
+          type: Boolean,
+          notify: false,
+          value: true
+        },
+        isThatNewMedicine: {
+          type: Boolean,
+          notify: false,
+          value: true
+        },
+        medicine: {
+          type: Object,
+          notify: true,
+          value: {}
+        },
+        strengthList: {
+          type: Array,
+          value: []
+        },
+        continueMedicineEndsOnDate: {
+          type: String,
+          value: null
+        },
+        doseList: {
+          type: Array,
+          value: function () {
+            return ["1+1+1", "1+0+1", "0+0+1", "1+0+0", "1+1+1+1", "2+2+2", "2+0+2", "0+0+2", "2+0+0", "1/2+1/2+1/2", "1/2+0+1/2", "0+0+1/2", "1/2+0+0", "1/4+1/4+1/4", "1/4+0+1/4", "0+0+1/4", "1/4+0+0", "1/4+1/4+1/4+1/4"];
+          }
+        },
+        medicineFormList: {
+          type: Array,
+          value: ['Tablet', 'Injection', 'Syrup', 'Drop', 'Capsule', 'Suspension', 'I.V Injection', 'I.M injection', 'S/C Injection', 'PR (Per Rectal)', 'Suppository', 'Solution', 'Ointment', 'Cream', 'Skin Patch', 'Custom']
+        },
+        doseUnitList: {
+          type: Array,
+          value: ['Custom']
+        },
+        endDateTimeTypeList: {
+          type: Array,
+          value: ['As Needed', '0 Weeks', '1 Week', '2 Weeks', '3 Weeks', 'Custom']
+        },
+        endDateTimeTypeArgument2List: {
+          type: Array,
+          value: ['0 Day', '1 Day', '2 Days', '3 Days', '4 Days', '5 Days', '6 Days']
+        },
+        directionList: {
+          type: Array,
+          value: ['Anytime', 'Before Meal', 'After Meal', 'Full Stomach', 'Empty Stomach']
+        },
+        routeList: {
+          type: Array,
+          value: ['Oral', 'I.V injection', 'I.M injection', 'PR (Per Rectal)', 'S/L', 'S/C', 'Nebulizer', 'Inhaler', 'Topical application skin', 'Topical application ear', 'Topical application eye', 'Intravaginal', 'Transdermal', 'Custom']
+        },
+        intervalInDays: {
+          type: Number,
+          value: 1
+        },
+        medicineFormSelectedIndex: {
+          type: Number,
+          value: 0
+        },
+        doseUnitSelectedIndex: {
+          type: Number,
+          value: 0
+        },
+        directionSelectedIndex: {
+          type: Number,
+          value: 0
+        },
+        routeSelectedIndex: {
+          type: Number,
+          value: 0
+        },
+        endDateTimeTypeSelectedIndex: {
+          type: Number,
+          value: 0
+        },
+        endDateTimeTypeArgument2SelectedIndex: {
+          type: Number,
+          value: 0
+        },
+        strengthSelectedIndex: {
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        matchingMedicineList: {
+          type: Array,
+          value: []
+        },
+        doseGuidelineList: {
+          type: Array
+        },
+        activeDoseGuideline: {
+          type: Object,
+          value: null
+        },
+        guidelineIndicationSelectedIndex: {
+          type: Number,
+          value: null
+        },
+        guidelineAgeSelectedIndex: {
+          type: Number,
+          value: null
+        },
+        guidelineIndicationList: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        guidelineAgeList: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        medicineCompositionList: {
+          type: Array,
+          value: []
+        },
+        brandNameSourceDataList: {
+          type: Array,
+          value: []
+        },
+        brandNameSelectedObjectList: {
+          type: Array,
+          value: []
+        },
+        genericNameSourceDataList: {
+          type: Array,
+          value: []
+        },
+        showDetailedForm: {
+          type: Boolean,
+          value: false
+        },
+        showGuidelineDisclaimer: {
+          type: Boolean,
+          value: true,
+          notify: true
+        },
+        selectedCurrentMedicineData: {
+          type: Object,
+          value: null
+        }
+      },
+      
+      // Methods
+      doseSelected: function (e) {
+        if (e.which === 13) {
+          return this.medicine.doseDirection = e.target.value;
+        }
+      },
+      _isFavoriteMedicineContentHidden: function (index, favoriteMedicineShownIndex) {
+        return !(index === favoriteMedicineShownIndex);
+      },
+      favoriteMedicineTapped: function (e) {
+        return this.favoriteMedicineShownIndex = e.model.index;
+      },
+      _listPrescribedMedications: function (prescriptionIdentifier) {
+        var medicineList, prescribedMedicineList;
+        prescribedMedicineList = app.db.find('patient-medications', (function (_this) {
+          return function (arg) {
+            var prescriptionSerial;
+            prescriptionSerial = arg.prescriptionSerial;
+            return prescriptionIdentifier === prescriptionSerial;
+          };
+        })(this));
+        medicineList = [].concat(prescribedMedicineList);
+        medicineList.sort(function (left, right) {
+          if (left.createdDatetimeStamp < right.createdDatetimeStamp) {
+            return -1;
+          }
+          if (left.createdDatetimeStamp > right.createdDatetimeStamp) {
+            return 1;
+          }
+          return 0;
+        });
+        this.matchingPrescribedMedicineList = medicineList;
+        return console.log("MEDICINE LIST:", this.matchingPrescribedMedicineList);
+      },
+      _listCurrentMedications: function (patientIdentifier) {
+        var currentMedicineList, i, len, medicine, medicineList;
+        currentMedicineList = app.db.find('patient-medications', function (arg) {
+          var data, patientSerial;
+          patientSerial = arg.patientSerial, data = arg.data;
+          if (patientSerial === patientIdentifier && data.status === 'continue') {
+            return true;
+          }
+        });
+        medicineList = [].concat(currentMedicineList);
+        medicineList.sort(function (left, right) {
+          if (left.createdDatetimeStamp < right.createdDatetimeStamp) {
+            return -1;
+          }
+          if (left.createdDatetimeStamp > right.createdDatetimeStamp) {
+            return 1;
+          }
+          return 0;
+        });
+        for (i = 0, len = medicineList.length; i < len; i++) {
+          medicine = medicineList[i];
+          medicine.flags = {
+            isLocalOnly: true
+          };
+        }
+        return this.matchingCurrentMedicineList = medicineList;
+      },
+      _listFavoriteMedicine: function (userIdentifier) {
+        var favMedicineList, i, len, medicine, medicineList;
+        favMedicineList = app.db.find('favorite-medicine-list', function (arg) {
+          var createdByUserSerial;
+          createdByUserSerial = arg.createdByUserSerial;
+          return userIdentifier === createdByUserSerial;
+        });
+        medicineList = [].concat(favMedicineList);
+        medicineList.sort(function (left, right) {
+          if (left.data.brandName < right.data.brandName) {
+            return -1;
+          }
+          if (left.data.brandName > right.data.brandName) {
+            return 1;
+          }
+          return 0;
+        });
+        for (i = 0, len = medicineList.length; i < len; i++) {
+          medicine = medicineList[i];
+          medicine.flags = {
+            isLocalOnly: true
+          };
+        }
+        return this.matchingFavoriteMedicineList = medicineList;
+      },
+      _makeNewPrescription: function () {
+        this.prescription = {
+          serial: null,
+          lastModifiedDatetimeStamp: 0,
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          visitSerial: this.visit.serial,
+          patientSerial: this.patient.serial,
+          doctorName: this.user.name,
+          doctorSpeciality: this.getDoctorSpeciality(),
+          availableToPatient: true
+        };
+        return this.isPrescriptionValid = true;
+      },
+      _makeDuplicateMedicineEditablePart: function () {
+        this.duplicateMedicineEditablePart = {
+          startDateTimeStamp: lib.datetime.now(),
+          endDateTimeStamp: lib.datetime.now()
+        };
+        this.computedEndDate = null;
+        this.endDateTimeTypeArgument2SelectedIndex = 0;
+        return this.endDateTimeTypeSelectedIndex = 0;
+      },
+      _savePrescription: function () {
+        if (this.visit.prescriptionSerial === null) {
+          this.prescription.serial = this.generateSerialForPrescription();
+          this.visit.prescriptionSerial = this.prescription.serial;
+          this._saveVisit();
+        }
+        this.prescription.lastModifiedDatetimeStamp = lib.datetime.now();
+        app.db.upsert('visit-prescription', this.prescription, (function (_this) {
+          return function (arg) {
+            var serial;
+            serial = arg.serial;
+            return _this.prescription.serial === serial;
+          };
+        })(this));
+        return this.domHost.showToast('Prescription Saved.');
+      },
+      _notifyInvalidPrescription: function () {
+        this.isPrescriptionValid = false;
+        return this.domHost.showModalDialog('Invalid Prescription Provided');
+      },
+      _loadPrescription: function (prescriptionIdentifier) {
+        var list;
+        list = app.db.find('visit-prescription', function (arg) {
+          var serial;
+          serial = arg.serial;
+          return serial === prescriptionIdentifier;
+        });
+        if (list.length === 1) {
+          this.isPrescriptionValid = true;
+          this.prescription = list[0];
+          console.log("PRESCRIPTION: ", this.prescription);
+          this._listPrescribedMedications(this.prescription.serial);
+          return true;
+        } else {
+          this._notifyInvalidPrescription();
+          return false;
+        }
+      },
+      deleteMedicinePressed: function (e) {
+        var el, index, medicine, repeater;
+        el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#prescribed-medicine-list-repeater');
+        index = e.model.index;
+        medicine = this.matchingPrescribedMedicineList[index];
+        return this.domHost.showModalPrompt('Are you sure?', (function (_this) {
+          return function (answer) {
+            var id;
+            if (answer === true) {
+              id = (app.db.find('patient-medications', function (arg) {
+                var serial;
+                serial = arg.serial;
+                return serial === medicine.serial;
+              }))[0]._id;
+              app.db.remove('patient-medications', id);
+              app.db.insert('patient-medications--deleted', {
+                serial: medicine.serial
+              });
+              _this.splice('matchingPrescribedMedicineList', index, 1);
+              return _this.domHost.showToast('Medicine Deleted!');
+            }
+          };
+        })(this));
+      },
+      _saveMedicine: function (data) {
+        return app.db.upsert('patient-medications', data, (function (_this) {
+          return function (arg) {
+            var serial;
+            serial = arg.serial;
+            return data.serial === serial;
+          };
+        })(this));
+      },
+      _isNthWeekSelectedAsEndDate: function (index) {
+        if (index !== 0 && !(this.endDateTimeTypeList.length === index + 1)) {
+          return true;
+        }
+        return false;
+      },
+      _endDateTimeTypeSelectedIndexChanged: function () {
+        var days, endDateTimeStamp, endDateTimeTypeArgument2Value, endDateTimeTypeValue, startDate, week;
+        endDateTimeTypeValue = this.get(['endDateTimeTypeList', this.endDateTimeTypeSelectedIndex]);
+        endDateTimeTypeArgument2Value = this.get(['endDateTimeTypeArgument2List', this.endDateTimeTypeArgument2SelectedIndex]);
+        endDateTimeTypeValue += ' ' + endDateTimeTypeArgument2Value;
+        startDate = this.get('duplicateMedicineEditablePart.startDateTimeStamp');
+        week = parseInt(endDateTimeTypeValue.substr(0, 1));
+        days = parseInt(endDateTimeTypeArgument2Value.substr(0, 1));
+        if (startDate && (week || days)) {
+          endDateTimeStamp = this._makeEndDateStampfromCustom(startDate, week, days);
+          return this.set('duplicateMedicineEditablePart.endDateTimeStamp', endDateTimeStamp);
+        }
+      },
+      getClassForItem: function (item, selected) {
+        if (selected) {
+          return 'item expanded';
+        }
+        return 'item';
+      },
+      _makeDuplicatedMedicineFromFavorite: function (medicine) {
+        var duplicateMedicine;
+        duplicateMedicine = {
+          serial: this.generateSerialForMedication('DPMD'),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          patientSerial: this.patient.serial,
+          prescriptionSerial: this.prescription.serial
+        };
+        duplicateMedicine.data = medicine.data;
+        duplicateMedicine.data.endDateTimeStamp = this.duplicateMedicineEditablePart.endDateTimeStamp;
+        duplicateMedicine.data.startDateTimeStamp = this.duplicateMedicineEditablePart.startDateTimeStamp;
+        app.db.insert('patient-medications', duplicateMedicine);
+        this.domHost.showToast('Medicine Added.');
+        return this._makeDuplicateMedicineEditablePart();
+      },
+      _makeDuplicatedMedicineFromCurrent: function () {
+        var duplicateMedicine;
+        duplicateMedicine = {
+          serial: this.generateSerialForMedication('DP'),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          patientSerial: this.patient.serial,
+          prescriptionSerial: this.prescription.serial,
+          data: {
+            brandName: this.selectedCurrentMedicineData.data.brandName,
+            comments: this.selectedCurrentMedicineData.data.comments,
+            direction: this.selectedCurrentMedicineData.data.direction,
+            dose: this.selectedCurrentMedicineData.data.dose,
+            doseDirection: this.selectedCurrentMedicineData.data.doseDirection,
+            timeOfDay: this.selectedCurrentMedicineData.data.timeOfDay,
+            doseUnit: this.selectedCurrentMedicineData.data.doseUnit,
+            endDateTimeStamp: this.continueMedicineEndsOnDate,
+            form: this.selectedCurrentMedicineData.data.form,
+            genericName: this.selectedCurrentMedicineData.data.genericName,
+            intakeDateTimeStampList: this.selectedCurrentMedicineData.data.intakeDateTimeStampList,
+            intervalInHours: this.selectedCurrentMedicineData.data.intervalInHours,
+            manufacturer: this.selectedCurrentMedicineData.data.manufacturer,
+            nextDoseDateTimeStamp: this.selectedCurrentMedicineData.data.nextDoseDateTimeStamp,
+            numberOfRefill: this.selectedCurrentMedicineData.data.numberOfRefill,
+            quantityPerPrescription: this.selectedCurrentMedicineData.data.quantityPerPrescription,
+            remind: this.selectedCurrentMedicineData.data.remind,
+            route: this.selectedCurrentMedicineData.data.route,
+            startDateTimeStamp: this.selectedCurrentMedicineData.data.startDateTimeStamp,
+            status: this.selectedCurrentMedicineData.data.status,
+            strength: this.selectedCurrentMedicineData.data.strength,
+            timesPerInterval: this.selectedCurrentMedicineData.data.timesPerInterval
+          }
+        };
+        return duplicateMedicine;
+      },
+      continueMedicinePressed: function (e) {
+        var el, index, repeater;
+        el = this.locateParentNode(e.target, 'PAPER-MENU-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#current-medicine-list-repeater');
+        index = repeater.indexForElement(el);
+        this.selectedCurrentMedicineData = this.matchingCurrentMedicineList[index];
+        this.continueMedicineEndsOnDate = lib.datetime.now();
+        return this.$$('#dialogContinueCurrentMedication').toggle();
+      },
+      addSelectedCurrentMedicine: function () {
+        var medicine;
+        medicine = this._makeDuplicatedMedicineFromCurrent();
+        if (this.visit.prescriptionSerial === null) {
+          this._savePrescription();
+          medicine.prescriptionSerial = this.prescription.serial;
+        } else {
+          medicine.prescriptionSerial = this.prescription.serial;
+        }
+        app.db.insert('patient-medications', medicine);
+        this.domHost.showToast('Medicine Added.');
+        this.selectedCurrentMedicineData.data.status = 'stopped';
+        this._saveMedicine(this.selectedCurrentMedicineData);
+        this.selectedCurrentMedicineData = {};
+        this._listPrescribedMedications(this.prescription.serial);
+        this.continueMedicineEndsOnDate = lib.datetime.now();
+        return this.$$('#dialogContinueCurrentMedication').close();
+      },
+      stopMedicinePressed: function (e) {
+        var el, index, medicine, repeater;
+        el = this.locateParentNode(e.target, 'PAPER-MENU-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#current-medicine-list-repeater');
+        index = repeater.indexForElement(el);
+        medicine = this.matchingCurrentMedicineList[index];
+        medicine.data.status = 'stopped';
+        medicine.lastModifiedDatetimeStamp = lib.datetime.now();
+        this._saveMedicine(medicine);
+        this.domHost.showToast('Medicine Stopped!');
+        return this._listCurrentMedications(this.patient.serial);
+      },
+      addFavMedicineAsNewMedicineBtnPressed: function (e) {
+        var el, favMedicine, index, params, repeater;
+        el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
+        repeater = this.$$('#favorite-medicine-list-repeater');
+        index = repeater.indexForElement(el);
+        favMedicine = this.matchingFavoriteMedicineList[index];
+        params = this.domHost.getPageParams();
+        this._savePrescription();
+        this._makeDuplicatedMedicineFromFavorite(favMedicine);
+        return this._listPrescribedMedications(this.prescription.serial);
+      },
+      deleteFavoriteMedicinePressed: function (e) {
+        var el, index, medicine, repeater;
+        el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
+        repeater = this.$$('#favorite-medicine-list-repeater');
+        index = repeater.indexForElement(el);
+        medicine = this.matchingFavoriteMedicineList[index];
+        return this.domHost.showModalPrompt('Are you sure?', (function (_this) {
+          return function (answer) {
+            var id;
+            if (answer === true) {
+              id = (app.db.find('favorite-medicine-list', function (arg) {
+                var serial;
+                serial = arg.serial;
+                return serial === medicine.serial;
+              }))[0]._id;
+              app.db.remove('favorite-medicine-list', id);
+              app.db.insert('favorite-medicine-list--deleted', {
+                serial: medicine.serial
+              });
+              _this.domHost.showToast('Favorite Medicine Deleted!');
+              return _this._listFavoriteMedicine(_this.user.serial);
+            }
+          };
+        })(this));
+      },
+      _resetMedicineForm: function () {
+        this.medicine = {
+          serial: this.generateSerialForMedication(),
+          genericName: '',
+          strength: '',
+          brandName: '',
+          manufacturer: '',
+          dose: 1,
+          doseDirection: '',
+          timeOfDay: {
+            morning: 0,
+            noon: 0,
+            night: 0
+          },
+          doseUnit: '',
+          form: '',
+          startDateTimeStamp: lib.datetime.mkDate(new Date),
+          endDateTimeStamp: null,
+          route: function () {
+            return this.routeList[this.routeSelectedIndex];
+          },
+          direction: function () {
+            return this.directionList[this.directionSelectedIndex];
+          },
+          quantityPerPrescription: 1,
+          numberOfRefill: 1,
+          comments: '',
+          intakeDateTimeStampList: [],
+          nextDoseDateTimeStamp: null,
+          timesPerInterval: 1,
+          intervalInHours: 24,
+          remind: false,
+          status: 'continue'
+        };
+        this.strengthSelectedIndex = 0;
+        this.medicineFormSelectedIndex = 0;
+        this.doseUnitSelectedIndex = 0;
+        this.routeSelectedIndex = 0;
+        this.endDateTimeTypeSelectedIndex = 0;
+        this.endDateTimeTypeArgument2SelectedIndex = 0;
+        this.showCustomDoseDropdown = false;
+        return this.directionSelectedIndex = 0;
+      },
+      _checkValidity: function (inputsToValidate, cbfn) {
+        var i, isValid, item, len, status, validationStatusList;
+        validationStatusList = [];
+        for (i = 0, len = inputsToValidate.length; i < len; i++) {
+          item = inputsToValidate[i];
+          if (!this.medicine.item) {
+            isValid = this.$$("#" + item).validate();
+            validationStatusList.push(isValid);
+          }
+        }
+        status = validationStatusList.every(function (value) {
+          return value;
+        });
+        return cbfn(status);
+      },
+      validate: function (e) {
+        return e.target.validate();
+      },
+      cancelButtonClicked: function (e) {
+        return this._resetMedicineForm();
+      },
+      arrowBackButtonPressed: function (e) {
+        this.domHost.setSelectedVisitSerial('new');
+        return this.domHost.navigateToPage('#/patient-manager');
+      },
+      makeNewVisitButtonPressed: function (e) {
+        this.domHost.setSelectedVisitSerial('new');
+        this.domHost.selectedPatientPageIndex = 1;
+        return this.domHost.selectedPatientPageIndex = 0;
+      },
+      toggleGuideline: function (e) {
+        return this.$.guidelineContainer.toggle();
+      },
+      _loadDefaultMedicineCompositionList: function () {
+        var brandNameMap, comp, genericNameMap, i, item, j, len, len1, manufacturerMap, ref, ref1, ref2, ref3, results;
+        brandNameMap = {};
+        manufacturerMap = {};
+        genericNameMap = {};
+        ref = this.medicineCompositionList;
+        for (i = 0, len = ref.length; i < len; i++) {
+          item = ref[i];
+          brandNameMap[item.brandName] = null;
+          manufacturerMap[item.manufacturer] = null;
+          if (item.composition) {
+            genericNameMap[item.composition[0].genericName] = null;
+          }
+        }
+        this.manufacturerSourceDataList = (function () {
+          var j, len1, ref1, results;
+          ref1 = Object.keys(manufacturerMap);
+          results = [];
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            item = ref1[j];
+            results.push({
+              text: item,
+              value: item
+            });
+          }
+          return results;
+        })();
+        this.genericNameSourceDataList = (function () {
+          var j, len1, ref1, results;
+          ref1 = Object.keys(genericNameMap);
+          results = [];
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            item = ref1[j];
+            results.push({
+              text: item,
+              value: item
+            });
+          }
+          return results;
+        })();
+        ref1 = this.medicineCompositionList;
+        results = [];
+        for (j = 0, len1 = ref1.length; j < len1; j++) {
+          item = ref1[j];
+          if (((ref2 = item.composition) != null ? ref2.length : void 0) > 1) {
+            results.push((function () {
+              var k, len2, ref3, results1;
+              ref3 = item.composition;
+              results1 = [];
+              for (k = 0, len2 = ref3.length; k < len2; k++) {
+                comp = ref3[k];
+                results1.push(this.brandNameSourceDataList.push({
+                  text: item.brandName + " [" + comp.strength + "] " + item.type,
+                  value: item.brandName
+                }));
+              }
+              return results1;
+            }).call(this));
+          } else {
+            results.push(this.brandNameSourceDataList.push({
+              text: item.brandName + " [" + ((ref3 = item.composition) != null ? ref3[0].strength : void 0) + "] " + item.type,
+              value: item.brandName
+            }));
+          }
+        }
+        return results;
+      },
+      brandNameAutocompleteSelected: function (e) {
+        var brandName, inputsToValidate, item, selectedMedicineFormList;
+        brandName = e.detail.value;
+        this.matchingMedicineList = (function () {
+          var i, len, ref, results;
+          ref = this.medicineCompositionList;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            item = ref[i];
+            if (item.brandName === brandName) {
+              results.push(item);
+            }
+          }
+          return results;
+        }).call(this);
+        if (this.matchingMedicineList.length !== 0) {
+          this.set('medicine.manufacturer', this.matchingMedicineList[0].manufacturer);
+          this.set('medicine.genericName', this.matchingMedicineList[0].composition[0].genericName);
+          selectedMedicineFormList = lib.array.unique((function () {
+            var i, len, ref, results;
+            ref = this.matchingMedicineList;
+            results = [];
+            for (i = 0, len = ref.length; i < len; i++) {
+              item = ref[i];
+              results.push(item.type);
+            }
+            return results;
+          }).call(this));
+          this.medicineFormList = [];
+          this.medicineFormList = selectedMedicineFormList;
+          this.push('medicineFormList', 'Custom');
+          this.set('medicineFormSelectedIndex', null);
+          lib.util.delay(5, (function (_this) {
+            return function () {
+              return _this.set('medicineFormSelectedIndex', 0);
+            };
+          })(this));
+        }
+        inputsToValidate = ['genericName', 'brandName', 'manufacturer'];
+        this._checkValidity(inputsToValidate, (function (_this) {
+          return function () { };
+        })(this));
+        this.$.form.invalid = false;
+        return this.$.doseUnit.invalid = false;
+      },
+      genericNameAutocompleteSelected: function (e) {
+        var brandNameMap, genericName, i, item, j, len, len1, manufacturerMap, ref, ref1;
+        genericName = e.detail.text;
+        ref = this.medicineCompositionList;
+        for (i = 0, len = ref.length; i < len; i++) {
+          item = ref[i];
+          if (item.composition) {
+            if (item.composition[0].genericName === genericName) {
+              this.matchingMedicineList.push(item);
+            }
+          }
+        }
+        brandNameMap = {};
+        manufacturerMap = {};
+        ref1 = this.matchingMedicineList;
+        for (j = 0, len1 = ref1.length; j < len1; j++) {
+          item = ref1[j];
+          brandNameMap[item.brandName] = null;
+          manufacturerMap[item.manufacturer] = null;
+        }
+        this.brandNameSourceDataList = (function () {
+          var k, len2, ref2, results;
+          ref2 = Object.keys(brandNameMap);
+          results = [];
+          for (k = 0, len2 = ref2.length; k < len2; k++) {
+            item = ref2[k];
+            results.push({
+              text: item,
+              value: item
+            });
+          }
+          return results;
+        })();
+        return this.manufacturerSourceDataList = (function () {
+          var k, len2, ref2, results;
+          ref2 = Object.keys(manufacturerMap);
+          results = [];
+          for (k = 0, len2 = ref2.length; k < len2; k++) {
+            item = ref2[k];
+            results.push({
+              text: item,
+              value: item
+            });
+          }
+          return results;
+        })();
+      },
+      manufacturerAutocompleteSelected: function (e) {
+        var brandNameMap, genericNameMap, i, item, len, manufacturer, matchingMedicineList;
+        manufacturer = e.detail.text;
+        matchingMedicineList = (function () {
+          var i, len, ref, results;
+          ref = this.medicineCompositionList;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            item = ref[i];
+            if (item.manufacturer === manufacturer) {
+              results.push(item);
+            }
+          }
+          return results;
+        }).call(this);
+        if (matchingMedicineList.length !== 0) {
+          genericNameMap = {};
+          brandNameMap = {};
+          for (i = 0, len = matchingMedicineList.length; i < len; i++) {
+            item = matchingMedicineList[i];
+            brandNameMap[item.brandName] = null;
+            if (item.composition) {
+              genericNameMap[item.composition[0].genericName] = null;
+            }
+          }
+          this.genericNameSourceDataList = (function () {
+            var j, len1, ref, results;
+            ref = Object.keys(genericNameMap);
+            results = [];
+            for (j = 0, len1 = ref.length; j < len1; j++) {
+              item = ref[j];
+              results.push({
+                text: item,
+                value: item
+              });
+            }
+            return results;
+          })();
+          return this.brandNameSourceDataList = (function () {
+            var j, len1, ref, results;
+            ref = Object.keys(brandNameMap);
+            results = [];
+            for (j = 0, len1 = ref.length; j < len1; j++) {
+              item = ref[j];
+              results.push({
+                text: item,
+                value: item
+              });
+            }
+            return results;
+          })();
+        }
+      },
+      brandNameCleared: function (e) {
+        this._resetMedicineForm();
+        this.activeDoseGuideline = {};
+        return this._loadDefaultMedicineCompositionList();
+      },
+      manufacturerCleared: function (e) {
+        this.set('medicine.manufacturer', null);
+        return this._loadDefaultMedicineCompositionList();
+      },
+      genericNameCleared: function (e) {
+        this.set('medicine.genericName', null);
+        this.activeDoseGuideline = {};
+        return this._loadDefaultMedicineCompositionList();
+      },
+      _isNthWeekSelectedAsEndDate: function (index) {
+        if (index !== 0 && !(this.endDateTimeTypeList.length === index + 1)) {
+          return true;
+        }
+        return false;
+      },
+      _isCustomSelectedAsEndDate: function (index) {
+        if (this.endDateTimeTypeList.length === index + 1) {
+          return true;
+        }
+        return false;
+      },
+      _isRouteCustom: function () {
+        if (this.routeSelectedIndex === this.routeList.length - 1) {
+          return true;
+        }
+        return false;
+      },
+      _isUnitCustom: function () {
+        if (this.doseUnitSelectedIndex === this.doseUnitList.length - 1) {
+          return true;
+        }
+        return false;
+      },
+      _isStregnthDropdown: function () {
+        if (this.matchingMedicineList.length) {
+          return true;
+        }
+      },
+      _isStregnthCustom: function () {
+        if (this.matchingMedicineList.length === 0) {
+          return true;
+        }
+        if (this.strengthSelectedIndex === this.strengthList.length - 1) {
+          return true;
+        }
+      },
+      _isFormCustom: function () {
+        if (this.medicineFormSelectedIndex === this.medicineFormList.length - 1) {
+          return true;
+        }
+      },
+      _makeEndDateStampfromCustom: function (startDate, week, days) {
+        var endDate;
+        if (!(week <= 0)) {
+          days += week * 7;
+        }
+        endDate = new Date(startDate);
+        return endDate = endDate.setDate(endDate.getDate() + days);
+      },
+      _doseValueChanged: function (e) {
+        if (this.medicine.dose > 20) {
+          this.medicine.dose = 20;
+          e.target.value = 20;
+        }
+        if (this.medicine.dose < 1) {
+          this.medicine.dose = 1;
+          return e.target.value = 1;
+        }
+      },
+      _compouteTimesPerInterval: function (morning, noon, night) {
+        var interval;
+        interval = (parseInt(morning)) + (parseInt(noon)) + (parseInt(night));
+        if (interval === 0) {
+          return this.set('medicine.timesPerInterval', 1);
+        } else {
+          return this.set('medicine.timesPerInterval', interval);
+        }
+      },
+      _computeIntervalInHours: function (timesPerInterval, intervalInDays) {
+        var intervalInHours;
+        intervalInHours = Math.floor((intervalInDays * 24) / timesPerInterval);
+        return this.set('medicine.intervalInHours', intervalInHours);
+      },
+      _directionSelectedIndexChanged: function () {
+        var item;
+        item = this.get(['directionList', this.directionSelectedIndex]);
+        return this.set('medicine.direction', item);
+      },
+      _medicineFormSelectedIndexChanged: function () {
+        var i, item, key, len, medicine, ref, routeMap, strengthList, unitMap, value;
+        if (this.medicineFormSelectedIndex === null) {
+          return;
+        }
+        item = this.get(['medicineFormList', this.medicineFormSelectedIndex]);
+        if (this.medicineFormSelectedIndex === this.medicineFormList.length - 1) {
+          this.doseUnitSelectedIndex = this.doseUnitList.length - 1;
+          this.routeSelectedIndex = this.routeList.length - 1;
+          this.set('medicine.form', '');
+          this.set('medicine.doseUnit', '');
+          this.set('medicine.strength', '');
+        } else {
+          this.set('medicine.form', item);
+        }
+        if (this.matchingMedicineList) {
+          strengthList = [];
+          ref = this.matchingMedicineList;
+          for (i = 0, len = ref.length; i < len; i++) {
+            medicine = ref[i];
+            if (medicine.type === item) {
+              strengthList.push(medicine.composition[0].strength);
+            }
+          }
+          this.set('strengthList', []);
+          this.set('strengthList', strengthList);
+          this.push('strengthList', 'Custom');
+          this.set('strengthSelectedIndex', null);
+          lib.util.delay(10, (function (_this) {
+            return function () {
+              return _this.set('strengthSelectedIndex', 0);
+            };
+          })(this));
+        }
+        unitMap = {
+          'Tablet': ['Tablet'],
+          'Injection': ['Injection'],
+          'Syrup': ['ml', 't.s.f', 'teaspoonfull'],
+          'Drop': ['Drop'],
+          'Capsule': ['Capsule'],
+          'Suspension': ['ml', 't.s.f', 'teaspoonfull'],
+          'I.V Injection': ['ampoule', 'm/l', 'vial'],
+          'I.M injection': ['ampoule', 'm/l', 'vial'],
+          'I.M/I.V Injection': ['ampoule', 'm/l', 'vial'],
+          'IV/IM Injection': ['ampoule', 'm/l', 'vial'],
+          'S/C Injection': ['Injection'],
+          'PR (Per Rectal)': ['Suppository'],
+          'Suppository': ['Suppository'],
+          'Solution': ['ml'],
+          'Ointment': ['application'],
+          'Cream': ['application'],
+          'Skin Patch': ['skin patch']
+        };
+        routeMap = {
+          'Tablet': ['p.o'],
+          'Injection': ['i.v injection', 'i.m injection', 's/c injection'],
+          'Syrup': ['p.o'],
+          'Drop': ['p.o', 'topical application ear', 'topical application eye'],
+          'Capsule': ['p.o'],
+          'Suspension': ['p.o'],
+          'I.V Injection': ['i.v injection'],
+          'I.M Injection': ['i.m injection'],
+          'S/C Injection': ['s/c injection'],
+          'PR (Per Rectal)': ['p.r (per rectal)'],
+          'Suppository': ['p.r (per rectal)'],
+          'Solution': ['nebulizer'],
+          'Cream': ['topical application skin', 'topical application eye', 'topical application ear', 'intravaginal'],
+          'Ointment': ['topical application skin', 'topical application eye', 'topical application ear', 'intravaginal'],
+          'Skin Patch': ['transdermal']
+        };
+        for (key in unitMap) {
+          value = unitMap[key];
+          if (key === item) {
+            this.set('doseUnitList', []);
+            this.set('doseUnitList', value);
+            this.push('doseUnitList', 'Custom');
+            this.set('doseUnitSelectedIndex', null);
+            lib.util.delay(10, (function (_this) {
+              return function () {
+                return _this.set('doseUnitSelectedIndex', 0);
+              };
+            })(this));
+            break;
+          }
+        }
+        for (key in routeMap) {
+          value = routeMap[key];
+          if (key === item) {
+            this.set('routeList', []);
+            this.set('routeList', value);
+            this.push('routeList', 'Custom');
+            this.set('routeSelectedIndex', null);
+            lib.util.delay(10, (function (_this) {
+              return function () {
+                return _this.set('routeSelectedIndex', 0);
+              };
+            })(this));
+            break;
+          }
+        }
+        this.$.form.invalid = false;
+        return this.$.doseUnit.invalid = false;
+      },
+      _routeSelectedIndexChanged: function () {
+        var item;
+        if (this.routeSelectedIndex === this.routeList.length - 1) {
+          return this.set('medicine.route', '');
+        } else {
+          item = this.get(['routeList', this.routeSelectedIndex]);
+          return this.set('medicine.route', item);
+        }
+      },
+      _strengthSelectedIndexChanged: function () {
+        var item;
+        item = this.get(['strengthList', this.strengthSelectedIndex]);
+        if (this.strengthSelectedIndex !== this.strengthList.length - 1) {
+          return this.set('medicine.strength', item);
+        }
+      },
+      _doseUnitSelectedIndexChanged: function () {
+        var item;
+        if (this.doseUnitSelectedIndex !== this.doseUnitList.length - 1) {
+          item = this.get(['doseUnitList', this.doseUnitSelectedIndex]);
+          return this.set('medicine.doseUnit', item);
+        }
+      },
+      _showComputedEndDate: function (endDate) {
+        if (this.endDateTimeTypeSelectedIndex === 0) {
+          return null;
+        }
+        return lib.datetime.mkDate(endDate, 'dd-mmm-yyyy');
+      },
+      _computeQuantityPerPrescription: function (dose, timesPerInterval, intervalInDays, endDate, startDate) {
+        var diffMs, oneDay, quantityPerPrescription, totalDay;
+        if ((Date.parse(endDate)) > 0) {
+          oneDay = 1000 * 60 * 60 * 24;
+          diffMs = (Date.parse(endDate)) - (Date.parse(startDate));
+          totalDay = Math.round(diffMs / oneDay);
+          quantityPerPrescription = (Math.ceil(timesPerInterval * (totalDay / intervalInDays))) * dose;
+        } else {
+          quantityPerPrescription = timesPerInterval * dose;
+        }
+        return this.set('medicine.quantityPerPrescription', quantityPerPrescription);
+      },
+      asNeededSelected: function (e) {
+        if (e.target.checked) {
+          this.$.endDate.disabled = true;
+          return this.medicine.endDateTimeStamp = null;
+        } else {
+          return this.$.endDate.disabled = false;
+        }
+      },
+      saveMedicineButtonClicked: function (e) {
+        var inputsToValidate, params;
+        params = this.domHost.getPageParams();
+        if (this.medicineFormSelectedIndex === this.medicineFormList.length - 1) {
+          inputsToValidate = ['brandName', 'strength', 'custom-form', 'custom-dose-unit', 'custom-route'];
+        } else {
+          inputsToValidate = ['brandName', 'form', 'doseUnit'];
+        }
+        return this._checkValidity(inputsToValidate, (function (_this) {
+          return function (status) {
+            var medicine;
+            if (status) {
+              medicine = {};
+              medicine.data = _this.medicine;
+              medicine.serial = _this.medicine.serial;
+              delete medicine.data.serial;
+              medicine.createdDatetimeStamp = lib.datetime.now();
+              medicine.lastSyncedDatetimeStamp = null;
+              medicine.createdByUserSerial = _this.user.serial;
+              medicine.patientSerial = params['patient'];
+              if (_this.visit.prescriptionSerial === null) {
+                _this._savePrescription();
+                medicine.prescriptionSerial = _this.prescription.serial;
+              } else {
+                medicine.prescriptionSerial = _this.prescription.serial;
+              }
+              medicine.lastModifiedDatetimeStamp = lib.datetime.now();
+              app.db.insert('patient-medications', medicine);
+              _this.domHost.showToast("Medicine Added!");
+              _this._addToInvoice(medicine.data.brandName, _this.visit.serial);
+              _this._resetMedicineForm();
+              return _this._listPrescribedMedications(_this.prescription.serial);
+            } else {
+              return _this.domHost.showModalDialog("Enter Required Inputs");
+            }
+          };
+        })(this));
+      },
+      _makeNewFavoriteMedicine: function (medicine) {
+        var favoriteMedicine;
+        favoriteMedicine = {
+          serial: this.generateSerialForFavoriteMedicine(),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial
+        };
+        favoriteMedicine.data = medicine.data;
+        favoriteMedicine.data.startDateTimeStamp = lib.datetime.now();
+        return app.db.insert('favorite-medicine-list', favoriteMedicine);
+      },
+      saveAndAddAsFavoriteMedicinePressed: function (e) {
+        var inputsToValidate, params;
+        params = this.domHost.getPageParams();
+        if (this.medicineFormSelectedIndex === this.medicineFormList.length - 1) {
+          inputsToValidate = ['genericName', 'brandName', 'manufacturer', 'strength', 'custom-form', 'custom-dose-unit', 'custom-route'];
+        } else {
+          inputsToValidate = ['genericName', 'brandName', 'manufacturer', 'strength', 'form', 'doseUnit'];
+        }
+        return this._checkValidity(inputsToValidate, (function (_this) {
+          return function (status) {
+            var medicine;
+            if (status) {
+              medicine = {};
+              medicine.data = _this.medicine;
+              medicine.serial = _this.medicine.serial;
+              delete medicine.data.serial;
+              medicine.createdDatetimeStamp = lib.datetime.now();
+              medicine.lastSyncedDatetimeStamp = null;
+              medicine.createdByUserSerial = _this.user.serial;
+              medicine.patientSerial = params['patient'];
+              if (_this.visit.prescriptionSerial === null) {
+                _this._savePrescription();
+                medicine.prescriptionSerial = _this.prescription.serial;
+              } else {
+                medicine.prescriptionSerial = _this.prescription.serial;
+              }
+              medicine.lastModifiedDatetimeStamp = lib.datetime.now();
+              app.db.insert('patient-medications', medicine);
+              _this._makeNewFavoriteMedicine(medicine);
+              _this._resetMedicineForm();
+              _this._listPrescribedMedications(_this.prescription.serial);
+              _this._listFavoriteMedicine(_this.user.serial);
+              return _this.domHost.showToast('Added & Saved As a Favorite!');
+            } else {
+              return _this.domHost.showModalDialog("Enter Required Inputs");
+            }
+          };
+        })(this));
+      },
+      shouldShowDisclaimer: function (showGuidelineDisclaimer) {
+        var val;
+        val = lib.localStorage.getItem('showGuidelineDisclaimer');
+        if (val || (val === 'null')) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      showGuidelineDisclaimerChanged: function (e) {
+        var val;
+        lib.localStorage.setItem('showGuidelineDisclaimer', !e.target.checked);
+        this.set('showGuidelineDisclaimer', !e.target.checked);
+        return val = lib.localStorage.getItem('showGuidelineDisclaimer');
+      },
+      $doesPassFilter: function (doseGuideline, dose, subDose, guidelineIndicationSelectedIndex, guidelineAgeSelectedIndex) {
+        var agePasses, guidelineAgeText, guidelineIndicationText, indicationPasses;
+        guidelineAgeText = this.guidelineAgeList[guidelineAgeSelectedIndex];
+        guidelineIndicationText = this.guidelineIndicationList[guidelineIndicationSelectedIndex];
+        if (subDose !== 'not-available') {
+          alert('something went wrong');
+        }
+        agePasses = false;
+        if (guidelineAgeText === 'No Age Indicated') {
+          agePasses = true;
+        } else {
+          agePasses = guidelineAgeText === (this._ageToText(dose));
+        }
+        indicationPasses = false;
+        if (guidelineIndicationText === 'No Special Indications') {
+          indicationPasses = true;
+        } else {
+          indicationPasses = (indexOf.call(this._extractIndication(dose), guidelineIndicationText) >= 0);
+        }
+        if (agePasses && indicationPasses) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      _extractIndication: function (item) {
+        var array, i, key, keyList, len;
+        keyList = ['indication', 'secondaryIndication', 'tertiaryIndication', 'condition', 'secondaryCondition'];
+        array = [];
+        for (i = 0, len = keyList.length; i < len; i++) {
+          key = keyList[i];
+          if (key in item) {
+            array.push(item[key]);
+          }
+        }
+        return array;
+      },
+      _ageToText: function (dose) {
+        var text;
+        if ('ageGroup' in dose) {
+          text = dose.ageGroup;
+        }
+        if ('ageRange' in dose) {
+          if ('min' in dose.ageRange) {
+            if ('max' in dose.ageRange) {
+              text = "from " + dose.ageRange.min + " " + dose.ageRange.unit + "(s) to " + dose.ageRange.max + " " + dose.ageRange.unit + "(s)";
+            } else {
+              text = dose.ageRange.min + " " + dose.ageRange.unit + "(s) and upwards";
+            }
+          } else {
+            text = "Upto " + dose.ageRange.max + " " + dose.ageRange.unit + "(s)";
+          }
+        }
+        return text;
+      },
+      _setActiveDoseGuideline: function (doseGuideline) {
+        var dose, guidelineAgeList, guidelineIndicationList, i, j, keyList, len, len1, ref, ref1, text;
+        this.set('activeDoseGuideline', doseGuideline);
+        guidelineIndicationList = [];
+        ref = doseGuideline.doseList;
+        for (i = 0, len = ref.length; i < len; i++) {
+          dose = ref[i];
+          keyList = this._extractIndication(dose);
+          guidelineIndicationList = [].concat(guidelineIndicationList, keyList);
+        }
+        guidelineIndicationList = lib.array.unique(guidelineIndicationList);
+        guidelineIndicationList.unshift('No Special Indications');
+        this.set('guidelineIndicationList', guidelineIndicationList);
+        this.set('guidelineIndicationSelectedIndex', 0);
+        guidelineAgeList = [];
+        ref1 = doseGuideline.doseList;
+        for (j = 0, len1 = ref1.length; j < len1; j++) {
+          dose = ref1[j];
+          text = this._ageToText(dose);
+          if (text.length > 0) {
+            guidelineAgeList.push(text);
+          }
+        }
+        guidelineAgeList = lib.array.unique(guidelineAgeList);
+        guidelineAgeList.unshift('No Age Indicated');
+        this.set('guidelineAgeList', guidelineAgeList);
+        return this.set('guidelineAgeSelectedIndex', 0);
+      },
+      populateDoseGuideline: function () {
+        var doseGuideline, genericName, i, len, matchingDoseGuideline, ref;
+        genericName = this.get('medicine.genericName');
+        matchingDoseGuideline = null;
+        ref = this.doseGuidelineList;
+        for (i = 0, len = ref.length; i < len; i++) {
+          doseGuideline = ref[i];
+          if (genericName === doseGuideline.genericName) {
+            matchingDoseGuideline = doseGuideline;
+            break;
+          }
+        }
+        if (matchingDoseGuideline) {
+          return this._setActiveDoseGuideline(matchingDoseGuideline);
+        }
+      },
+      runSanitizationCheckForDoseGuidelineList: function (doseGuidelineList) {
+        var dose, doseGuideline, handledDoseKeyList, handledSubDoseKeyList, i, knownMissingDoseKeyList, knownMissingSubDoseKeyList, len, missingKey, missingKeyList, results, subDose;
+        handledDoseKeyList = ['subDoseList', 'route', 'ageGroup', 'description', 'ageRange', 'notRecommended', 'indication', 'secondaryIndication', 'notes', 'condition', 'alternateRoiute', "secondaryCondition", "tertiaryIndication"];
+        handledDoseKeyList = [].concat(handledDoseKeyList, []);
+        knownMissingDoseKeyList = [];
+        handledSubDoseKeyList = ["type", "unit", "amount", "timesDaily", "connectionToMeal", "notes", "condition"];
+        handledSubDoseKeyList = [].concat(handledSubDoseKeyList, ["Interval", "treatmentPeriod", "timesWeekly", "notRecommended", "secondaryIndication", "timesMonthly", "indication"]);
+        handledSubDoseKeyList = [].concat(handledSubDoseKeyList, []);
+        knownMissingSubDoseKeyList = [];
+        results = [];
+        for (i = 0, len = doseGuidelineList.length; i < len; i++) {
+          doseGuideline = doseGuidelineList[i];
+          results.push((function () {
+            var j, k, len1, len2, ref, results1;
+            ref = doseGuideline.doseList;
+            results1 = [];
+            for (j = 0, len1 = ref.length; j < len1; j++) {
+              dose = ref[j];
+              missingKeyList = this.$listMissingKeys(dose, handledDoseKeyList);
+              for (k = 0, len2 = missingKeyList.length; k < len2; k++) {
+                missingKey = missingKeyList[k];
+                if (indexOf.call(knownMissingDoseKeyList, missingKey) < 0) {
+                  knownMissingDoseKeyList.push(missingKey);
+                }
+              }
+              if ('subDoseList' in dose) {
+                results1.push((function () {
+                  var l, len3, ref1, results2;
+                  ref1 = dose.subDoseList;
+                  results2 = [];
+                  for (l = 0, len3 = ref1.length; l < len3; l++) {
+                    subDose = ref1[l];
+                    missingKeyList = this.$listMissingKeys(subDose, handledSubDoseKeyList);
+                    results2.push((function () {
+                      var len4, m, results3;
+                      results3 = [];
+                      for (m = 0, len4 = missingKeyList.length; m < len4; m++) {
+                        missingKey = missingKeyList[m];
+                        if (missingKey === 'condition') {
+                          console.log(subDose);
+                        }
+                        if (indexOf.call(knownMissingSubDoseKeyList, missingKey) < 0) {
+                          results3.push(knownMissingSubDoseKeyList.push(missingKey));
+                        } else {
+                          results3.push(void 0);
+                        }
+                      }
+                      return results3;
+                    })());
+                  }
+                  return results2;
+                }).call(this));
+              } else {
+                results1.push(void 0);
+              }
+            }
+            return results1;
+          }).call(this));
+        }
+        return results;
+      },
+      _fillCommons: function (dose, subDose) {
+        var index, strMap;
+        if (subDose.connectionToMeal) {
+          strMap = {
+            "after meal": 'After meal',
+            "with meal": 'After meal',
+            "with food": 'After meal',
+            "after food": 'After meal',
+            "after a meal": 'After meal',
+            "with meals": 'After meal',
+            "before": "Before meal"
+          };
+          if (subDose.connectionToMeal.when in strMap) {
+            index = this.directionList.indexOf(strMap[subDose.connectionToMeal.when]);
+            return this.set('directionSelectedIndex', index);
+          }
+        }
+      },
+      _fillMinOrMax: function (dose, subDose, minOrMaxKey) {
+        if (subDose.timesDaily && subDose.timesDaily[minOrMaxKey]) {
+          this.set('medicine.timesPerInterval', subDose.timesDaily[minOrMaxKey]);
+        }
+        if (subDose.amount && subDose.amount[minOrMaxKey]) {
+          'todo when interface supports';
+        }
+        if (subDose.route) {
+          return 'todo when interface supports. take hints from subDose.connectionToMeal';
+        }
+      },
+      fillMinimumPressed: function (e) {
+        var dose, ref, subDose;
+        ref = e.model, dose = ref.dose, subDose = ref.subDose;
+        this._fillCommons(dose, subDose);
+        return this._fillMinOrMax(dose, subDose, 'min');
+      },
+      fillMaximumPressed: function (e) {
+        var dose, ref, subDose;
+        ref = e.model, dose = ref.dose, subDose = ref.subDose;
+        this._fillCommons(dose, subDose);
+        return this._fillMinOrMax(dose, subDose, 'max');
+      }
+    });
+  </script>
+</dom-module>
