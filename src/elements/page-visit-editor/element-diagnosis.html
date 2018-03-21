@@ -1,0 +1,220 @@
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<dom-module id="element-diagnosis">
+  <template>
+    <style is="custom-style" include="common-style">
+    </style>
+    <div class="card-item-2">
+      <div class="preview-title">
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_medical_records.png"></iron-icon> -->
+        <!-- <iron-ajax url="../../static-data/diagnosis-list.json" last-response="{{response}}" auto></iron-ajax> -->
+        <vaadin-combo-box class="flex combobox-custom-style" label="Diagnosis" id="comboBoxDiagnosis" items="{{diagnosisListArray}}"
+          allow-custom-value="true" value-changed="onComboBoxDiagnosisValueChanged" on-keyup="comboBoxKeyUpDiagnosisValueChanged"
+          selected-item="{{comboBoxDiagnosisSelectedItem}}" value="{{comboBoxDiagnosisInputValue}}"></vaadin-combo-box>
+        <div class="action-area">
+          <paper-button class="btn-add" on-tap="addDiagnosis">
+            <iron-icon icon="icons:add"></iron-icon>
+          </paper-button>
+        </div>
+      </div>
+      <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
+        <div class="p-0 b-radius">
+          <paper-listbox>
+            <template is="dom-repeat" items="[[diagnosis.data.diagnosisList]]">
+              <paper-item class="custom layout horizontal">
+                <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
+                <div class="type body flex">
+                  {{item.name}}
+                </div>
+                <paper-icon-button icon="delete" on-tap="_deleteSelectedDiagnosisButtonPressed"></paper-icon-button>
+              </paper-item>
+            </template>
+          </paper-listbox>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'element-diagnosis',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling
+      ],
+      properties: {
+        diagnosis: {
+          type: Object,
+          notify: true,
+          value: null
+        },
+        isDiagnosisValid: {
+          type: Boolean,
+          value: false
+        },
+        diagnosisListArray: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        selectedDiagnosisListArray: {
+          type: Array,
+          notify: true,
+          value: []
+        }
+      },
+
+      // Methods
+      _loadDiagnosis: function (diagnosisSerialIdentifier) {
+        return lib.util.delay(5, (function (_this) {
+          return function () {
+            var list;
+            list = app.db.find('diagnosis-record', function (arg) {
+              var serial;
+              serial = arg.serial;
+              return serial === diagnosisSerialIdentifier;
+            });
+            if (list.length === 1) {
+              _this.isDiagnosisValid = true;
+              _this.isFullVisitValid = true;
+              _this.diagnosis = list[0];
+              console.log('DIAGNOSIS:', _this.diagnosis);
+              return true;
+            } else {
+              _this.isDiagnosisValid = false;
+              return false;
+            }
+          };
+        })(this));
+      },
+      _makeNewDiagnosis: function () {
+        return this.diagnosis = {
+          serial: null,
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          visitSerial: null,
+          patientSerial: this.patient.serial,
+          doctorName: this.visit.doctorName,
+          doctorSpeciality: this.visit.doctorSpeciality,
+          data: {
+            diagnosisList: []
+          }
+        };
+      },
+      _saveDiagnosis: function () {
+        if (this.visit.serial === null) {
+          this._saveVisit();
+          this.diagnosis.visitSerial = this.visit.serial;
+        }
+        if (this.diagnosis.serial === null) {
+          this.diagnosis.serial = this.generateSerialForDiagnosis();
+          this.visit.diagnosisSerial = this.diagnosis.serial;
+          this.diagnosis.visitSerial = this.visit.serial;
+          this._saveVisit();
+        }
+        console.log('visit', this.visit);
+        console.log('diagnosis', this.diagnosis);
+        this.diagnosis.lastModifiedDatetimeStamp = lib.datetime.now();
+        app.db.upsert('diagnosis-record', this.diagnosis, (function (_this) {
+          return function (arg) {
+            var serial;
+            serial = arg.serial;
+            return _this.diagnosis.serial === serial;
+          };
+        })(this));
+        return this.comboBoxDiagnosisInputValue = '';
+      },
+      loadDiagnosisListData: function () {
+        return this.domHost.getStaticData('diagnosisList', (function (_this) {
+          return function (diagnosisList) {
+            var item, list;
+            list = (function () {
+              var i, len, results;
+              results = [];
+              for (i = 0, len = diagnosisList.length; i < len; i++) {
+                item = diagnosisList[i];
+                if (item.name) {
+                  results.push({
+                    label: item.name,
+                    value: item.name
+                  });
+                }
+              }
+              return results;
+            })();
+            return _this.set('diagnosisListArray', list);
+          };
+        })(this));
+      },
+      comboBoxKeyUpRecordTitleValueChanged: function (e) {
+        if (this.visit.recordTitle !== '' || this.visit.recordTitle !== null) {
+          if (e.which === 13) {
+            return this._saveVisit();
+          }
+        }
+      },
+      recordTitleValueChanged: function () {
+        if (this.visit.recordTitle !== '' || this.visit.recordTitle !== null) {
+          return this._saveVisit();
+        }
+      },
+      openVisitSettingsDialog: function (e) {
+        return this.$$('#dialogVisitSettings').toggle();
+      },
+      comboBoxKeyUpDiagnosisValueChanged: function (e) {
+        var diagnosis;
+        if (this.comboBoxDiagnosisInputValue !== '') {
+          if (e.which === 13) {
+            diagnosis = '';
+            if (typeof this.comboBoxDiagnosisInputValue === 'object') {
+              diagnosis = this.comboBoxDiagnosisInputValue.name;
+            } else {
+              diagnosis = this.comboBoxDiagnosisInputValue;
+            }
+            this.push('diagnosis.data.diagnosisList', {
+              name: diagnosis
+            });
+            this._saveDiagnosis();
+            this.domHost.showToast('Diagnosis Added!');
+            return this.comboBoxDiagnosisInputValue = '';
+          }
+        }
+      },
+      addDiagnosis: function () {
+        var diagnosis;
+        if (this.comboBoxDiagnosisInputValue !== '') {
+          diagnosis = '';
+          if (typeof this.comboBoxDiagnosisInputValue === 'object') {
+            diagnosis = this.comboBoxDiagnosisInputValue.name;
+          } else {
+            diagnosis = this.comboBoxDiagnosisInputValue;
+          }
+          this.push('diagnosis.data.diagnosisList', {
+            name: diagnosis
+          });
+          this._saveDiagnosis();
+          this._addToInvoice(diagnosis, this.visit.serial);
+          this.domHost.showToast('Diagnosis Added!');
+          return this.comboBoxDiagnosisInputValue = '';
+        }
+      },
+      _deleteSelectedDiagnosisButtonPressed: function (e) {
+        var index;
+        index = e.model.index;
+        this.splice('diagnosis.data.diagnosisList', index, 1);
+        this._saveDiagnosis();
+        return this.domHost.showToast('Diagnosis Deleted!');
+      }
+    });
+  </script>
+</dom-module>

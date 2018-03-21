@@ -942,35 +942,7 @@
               <!-- Card - Test Advised - end -->
 
               <!-- Card - Diagnosis - start -->
-              <div class="card-item-2">
-                <div class="preview-title">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_medical_records.png"></iron-icon> -->
-                  <!-- <iron-ajax url="../../static-data/diagnosis-list.json" last-response="{{response}}" auto></iron-ajax> -->
-                  <vaadin-combo-box class="flex combobox-custom-style" label="Diagnosis" id="comboBoxDiagnosis" items="{{diagnosisListArray}}"
-                    allow-custom-value="true" value-changed="onComboBoxDiagnosisValueChanged" on-keyup="comboBoxKeyUpDiagnosisValueChanged"
-                    selected-item="{{comboBoxDiagnosisSelectedItem}}" value="{{comboBoxDiagnosisInputValue}}"></vaadin-combo-box>
-                  <div class="action-area">
-                    <paper-button class="btn-add" on-tap="addDiagnosis">
-                      <iron-icon icon="icons:add"></iron-icon>
-                    </paper-button>
-                  </div>
-                </div>
-                <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
-                  <div class="p-0 b-radius">
-                    <paper-listbox>
-                      <template is="dom-repeat" items="[[diagnosis.data.diagnosisList]]">
-                        <paper-item class="custom layout horizontal">
-                          <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
-                          <div class="type body flex">
-                            {{item.name}}
-                          </div>
-                          <paper-icon-button icon="delete" on-tap="_deleteSelectedDiagnosisButtonPressed"></paper-icon-button>
-                        </paper-item>
-                      </template>
-                    </paper-listbox>
-                  </div>
-                </template>
-              </div>
+              <element-diagnosis></element-diagnosis>
               <!-- Card - Diagnosis - end -->
 
               <!-- Card - Notes - start -->
