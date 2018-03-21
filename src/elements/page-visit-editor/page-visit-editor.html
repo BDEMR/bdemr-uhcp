@@ -930,48 +930,7 @@
               <!-- Card - Symptoms - end -->
 
               <!-- Card - Examination - start -->
-              <div class="card-item-2">
-                <div class="preview-title">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_stethoscope.png"></iron-icon> -->
-                  <vaadin-combo-box class="flex combobox-custom-style" label="Examination" id="comboBoxExamination" items="{{examinationDataList}}"
-                    allow-custom-value="true" value-changed="onComboBoxExaminationValueChanged" on-keyup="comboBoxKeyUpExaminationValueChanged"
-                    selected-item="{{comboBoxExaminationSelectedItem}}" value="{{comboBoxExaminationInputValue}}">
-                  </vaadin-combo-box>
-                  <div class="action-area">
-                    <paper-button class="btn-add" on-tap="addExamination">
-                      <iron-icon icon="icons:add"></iron-icon>
-                    </paper-button>
-                  </div>
-                </div>
-                <template is="dom-if" if="[[!_isEmpty(addedExaminationList.length)]]">
-                  <div class="p-0 b-radius">
-                    <paper-listbox>
-                      <template id="added-examination-list-repeater" is="dom-repeat" items="[[addedExaminationList]]">
-                        <paper-item class="custom layout horizontal center">
-
-                          <div class="type caption secondary">[[_returnSerial(index)]]</div>
-                          <div class="flex type body m-left-8 vertical layout">
-                            <div class="type body-lead">{{item.name}}</div>
-                            <div class="horizontal layout wrap center">
-                              <template is="dom-repeat" items="[[item.examinationValueList]]">
-                                <!-- <div class="horizontal layout center" class="m-horizontal-4">
-                                  <paper-icon-button icon="icons:remove-circle" class="m-right-4" on-tap="removeExaminationMember"></paper-icon-button>
-                                  <div class="type body">{{item.value}}</div>
-
-                                </div> -->
-                                <paper-checkbox checked="{{item.checked}}" on-tap="checkExaminationMember">{{item.value}}</paper-checkbox>
-                              </template>
-
-                            </div>
-                          </div>
-                          <paper-icon-button icon="icons:add-circle" class="colored" on-tap="openDialogForExaminationMember"></paper-icon-button>
-                          <paper-icon-button icon="delete" on-tap="_selectedAddedExaminationDeleteBtnPressed"></paper-icon-button>
-                        </paper-item>
-                      </template>
-                    </paper-listbox>
-                  </div>
-                </template>
-              </div>
+              <element-examination></element-examination>
               <!-- Card - Examination - end -->
 
               <!-- Card - Vitals - start -->

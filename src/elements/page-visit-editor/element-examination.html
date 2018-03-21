@@ -1,0 +1,381 @@
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<dom-module id="element-examination">
+  <template>
+    <style is="custom-style" include="common-style">
+    </style>
+    <div class="card-item-2">
+      <div class="preview-title">
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_stethoscope.png"></iron-icon> -->
+        <vaadin-combo-box class="flex combobox-custom-style" label="Examination" id="comboBoxExamination" items="{{examinationDataList}}"
+          allow-custom-value="true" value-changed="onComboBoxExaminationValueChanged" on-keyup="comboBoxKeyUpExaminationValueChanged"
+          selected-item="{{comboBoxExaminationSelectedItem}}" value="{{comboBoxExaminationInputValue}}">
+        </vaadin-combo-box>
+        <div class="action-area">
+          <paper-button class="btn-add" on-tap="addExamination">
+            <iron-icon icon="icons:add"></iron-icon>
+          </paper-button>
+        </div>
+      </div>
+      <template is="dom-if" if="[[!_isEmpty(addedExaminationList.length)]]">
+        <div class="p-0 b-radius">
+          <paper-listbox>
+            <template id="added-examination-list-repeater" is="dom-repeat" items="[[addedExaminationList]]">
+              <paper-item class="custom layout horizontal center">
+
+                <div class="type caption secondary">[[_returnSerial(index)]]</div>
+                <div class="flex type body m-left-8 vertical layout">
+                  <div class="type body-lead">{{item.name}}</div>
+                  <div class="horizontal layout wrap center">
+                    <template is="dom-repeat" items="[[item.examinationValueList]]">
+                      <!-- <div class="horizontal layout center" class="m-horizontal-4">
+                                      <paper-icon-button icon="icons:remove-circle" class="m-right-4" on-tap="removeExaminationMember"></paper-icon-button>
+                                      <div class="type body">{{item.value}}</div>
+    
+                                    </div> -->
+                      <paper-checkbox checked="{{item.checked}}" on-tap="checkExaminationMember">{{item.value}}</paper-checkbox>
+                    </template>
+
+                  </div>
+                </div>
+                <paper-icon-button icon="icons:add-circle" class="colored" on-tap="openDialogForExaminationMember"></paper-icon-button>
+                <paper-icon-button icon="delete" on-tap="_selectedAddedExaminationDeleteBtnPressed"></paper-icon-button>
+              </paper-item>
+            </template>
+          </paper-listbox>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'element-examination',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling
+      ],
+      properties: {
+        examinationDataList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        addedExaminationList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        addedExaminationList2: {
+          type: Array,
+          notify: true,
+          value: function () {
+            return [];
+          }
+        },
+        examinationObject: {
+          type: Object,
+          notify: true,
+          value: {}
+        }
+      },
+
+      // Methods
+      _loadExaminationList: function (userIdentifier) {
+        return this.domHost.getStaticData('examinationList', (function (_this) {
+          return function (examinationList) {
+            var customExaminationlist, customObject, examination, groupExamination, i, item, j, k, len, len1, len2, object, ref, results, singleExamination;
+            for (i = 0, len = examinationList.length; i < len; i++) {
+              object = examinationList[i];
+              if (object.name !== '') {
+                if (typeof object.examinationValueList !== 'undefined') {
+                  if (object.examinationValueList.length !== 0) {
+                    if (object.examinationValueList.length > 1) {
+                      groupExamination = {};
+                      groupExamination.label = object.name;
+                      groupExamination.value = object;
+                      _this.push("examinationDataList", groupExamination);
+                      ref = object.examinationValueList;
+                      for (j = 0, len1 = ref.length; j < len1; j++) {
+                        item = ref[j];
+                        if (typeof item.name === 'string') {
+                          examination = {};
+                          examination.label = item.name;
+                          examination.value = {
+                            name: item.name,
+                            examinationValueList: [
+                              {
+                                value: item.name
+                              }
+                            ]
+                          };
+                          _this.push("examinationDataList", examination);
+                        }
+                      }
+                    } else {
+                      singleExamination = {};
+                      singleExamination.label = object.name;
+                      singleExamination.value = object;
+                      _this.push("examinationDataList", singleExamination);
+                    }
+                  }
+                }
+              }
+            }
+            customExaminationlist = app.db.find('custom-examination-list', function (arg) {
+              var createdByUserSerial;
+              createdByUserSerial = arg.createdByUserSerial;
+              return userIdentifier === createdByUserSerial;
+            });
+            if (customExaminationlist.length !== 0) {
+              results = [];
+              for (k = 0, len2 = customExaminationlist.length; k < len2; k++) {
+                item = customExaminationlist[k];
+                customObject = {};
+                customObject.label = item.data.name;
+                customObject.value = item.data;
+                results.push(_this.push("examinationList", customObject));
+              }
+              return results;
+            }
+          };
+        })(this));
+      },
+      _makeNewExaminationObject: function () {
+        this.examinationObject = {
+          serial: null,
+          lastModifiedDatetimeStamp: 0,
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          visitSerial: null,
+          patientSerial: this.patient.serial,
+          doctorName: this.user.name,
+          doctorSpeciality: this.getDoctorSpeciality(),
+          data: {
+            examinationValueList: []
+          },
+          availableToPatient: true
+        };
+        return this.isExaminationValid = true;
+      },
+      _loadExamination: function (examinationIdentifier) {
+        var list;
+        list = app.db.find('visit-examination', function (arg) {
+          var serial;
+          serial = arg.serial;
+          return serial === examinationIdentifier;
+        });
+        if (list.length === 1) {
+          this.isExaminationValid = true;
+          this.examinationObject = list[0];
+          console.log('EXAMINATION: ', this.examinationObject);
+          this.addedExaminationList = list[0].data.examinationValueList;
+          return true;
+        } else {
+          this._notifyInvalidExamination();
+          return false;
+        }
+      },
+      _notifyInvalidExamination: function () {
+        this.isExaminationValid = false;
+        return this.domHost.showModalDialog('Invalid Examination Provided');
+      },
+      saveUserAddedCustomExamination: function (examinationName) {
+        var object;
+        object = {
+          serial: this.generateSerialForCustomExamination,
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          data: {
+            name: examinationName,
+            examinationValueList: []
+          }
+        };
+        app.db.insert('custom-examination-list', object);
+        return this._addToInvoice(object.data.name(this.visit.serial));
+      },
+      removeExaminationMember: function (e) {
+        var el, index, memberIndex, repeater, string;
+        el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#added-examination-list-repeater');
+        index = repeater.indexForElement(el);
+        memberIndex = e.model.index;
+        string = 'addedExaminationList.' + index + '.examinationValueList';
+        this.splice(string, memberIndex, 1);
+        return this.saveExamination();
+      },
+      checkExaminationMember: function (e) {
+        var addedExaminationList;
+        addedExaminationList = this.addedExaminationList;
+        this.set('addedExaminationList', addedExaminationList);
+        return this.saveExamination();
+      },
+      _selectedAddedExaminationDeleteBtnPressed: function (e) {
+        var examinationSerial, id, index, list;
+        index = e.model.index;
+        this.splice('addedExaminationList', index, 1);
+        examinationSerial = this.examinationObject.serial;
+        if (this.addedExaminationList.length === 0) {
+          list = app.db.find('visit-examination', function (arg) {
+            var serial;
+            serial = arg.serial;
+            return serial === examinationSerial;
+          });
+          id = list[0]._id;
+          app.db.remove('visit-examination', id);
+          app.db.insert('visit-examination--deleted', {
+            serial: examinationSerial
+          });
+          this.visit.examinationSerial = null;
+          this._saveVisit();
+          return this.domHost.showToast('Deleted Successfully!');
+        } else {
+          this.saveExamination();
+          return this.domHost.showToast('Deleted Successfully!');
+        }
+      },
+      comboBoxKeyUpExaminationValueChanged: function (e) {
+        var i, index, item, len, modifiedList, modifiedObject, object, ref;
+        if (this.comboBoxExaminationInputValue !== '') {
+          if (e.which === 13) {
+            if (typeof this.comboBoxExaminationInputValue === 'object') {
+              modifiedList = [];
+              if (this.comboBoxExaminationInputValue.examinationValueList !== 0) {
+                ref = this.comboBoxExaminationInputValue.examinationValueList;
+                for (index = i = 0, len = ref.length; i < len; index = ++i) {
+                  item = ref[index];
+                  object = {};
+                  object.value = item.value;
+                  object.checked = false;
+                  modifiedList.push(object);
+                }
+                modifiedObject = {
+                  name: this.comboBoxExaminationInputValue.name,
+                  examinationValueList: modifiedList
+                };
+                console.log('modifiedObject', modifiedObject);
+                this.unshift('addedExaminationList', modifiedObject);
+              }
+            } else {
+              object = {
+                name: this.comboBoxExaminationInputValue,
+                examinationValueList: []
+              };
+              this.unshift('addedExaminationList', object);
+            }
+            return this.saveExamination();
+          }
+        }
+      },
+      openDialogForExaminationMember: function (e) {
+        var el, repeater;
+        this.customExaminationValue = '';
+        el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#added-examination-list-repeater');
+        this.ARBITARY_INDEX = repeater.indexForElement(el);
+        return this.$$('#dialogExaminationMemberValue').toggle();
+      },
+      addExaminationMember: function () {
+        var object, string;
+        object = {
+          value: this.customExaminationValue,
+          checked: true
+        };
+        string = "addedExaminationList." + this.ARBITARY_INDEX + '.examinationValueList';
+        this.push(string, object);
+        this.saveExamination();
+        return this.$$('#dialogExaminationMemberValue').close();
+      },
+      addExamination: function () {
+        var i, index, item, len, modifiedList, modifiedObject, object, ref;
+        if (this.comboBoxExaminationInputValue !== '') {
+          if (typeof this.comboBoxExaminationInputValue === 'object') {
+            modifiedList = [];
+            if (this.comboBoxExaminationInputValue.examinationValueList !== 0) {
+              ref = this.comboBoxExaminationInputValue.examinationValueList;
+              for (index = i = 0, len = ref.length; i < len; index = ++i) {
+                item = ref[index];
+                object = {};
+                object.index = index;
+                object.value = item.value;
+                object.checked = false;
+                modifiedList.push(object);
+              }
+              modifiedObject = {
+                name: this.comboBoxExaminationInputValue.name,
+                examinationValueList: modifiedList
+              };
+              this.unshift('addedExaminationList', modifiedObject);
+              this._addToInvoice(modifiedObject.name, this.visit.serial);
+            }
+          } else {
+            object = {
+              name: this.comboBoxExaminationInputValue,
+              examinationValueList: []
+            };
+            this.unshift('addedExaminationList', object);
+          }
+          console.log('addedExaminationList', this.addedExaminationList);
+          return this.saveExamination();
+        }
+      },
+      filterExaminationList: function (examinationList) {
+        var i, item, j, len, len1, modifiedAddedExaminationList, modifiedObject, modifiedValueList, object, ref;
+        modifiedAddedExaminationList = [];
+        for (i = 0, len = examinationList.length; i < len; i++) {
+          object = examinationList[i];
+          if (object.examinationValueList !== 0) {
+            modifiedValueList = [];
+            ref = object.examinationValueList;
+            for (j = 0, len1 = ref.length; j < len1; j++) {
+              item = ref[j];
+              if (item.checked) {
+                modifiedValueList.push(item);
+              }
+            }
+            modifiedObject = {
+              name: object.name,
+              examinationValueList: modifiedValueList
+            };
+          }
+          modifiedAddedExaminationList.push(modifiedObject);
+        }
+        return modifiedAddedExaminationList;
+      },
+      saveExamination: function () {
+        if (this.addedExaminationList.length !== 0) {
+          this.examinationObject.data.examinationValueList = this.filterExaminationList(this.addedExaminationList);
+          if (this.visit.examinationSerial === null) {
+            this.examinationObject.serial = this.generateSerialForExamination();
+            this.visit.examinationSerial = this.examinationObject.serial;
+            this._saveVisit();
+            this.examinationObject.visitSerial = this.visit.serial;
+          }
+          this.examinationObject.lastModifiedDatetimeStamp = lib.datetime.now();
+          app.db.upsert('visit-examination', this.examinationObject, (function (_this) {
+            return function (arg) {
+              var serial;
+              serial = arg.serial;
+              return _this.examinationObject.serial === serial;
+            };
+          })(this));
+          this.set('comboBoxExaminationInputValue', '');
+          return this.domHost.showToast('Examination Updated!');
+        }
+      }
+    });
+  </script>
+</dom-module>
