@@ -1,0 +1,301 @@
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-filter.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-sorter.html">
+<!-- behavior -->
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/page-like.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<dom-module id="page-upload-organization-patient-list">
+  <template>
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+    </style>
+
+    <div class="master-container">
+      <div class="limiting-container">
+
+        <paper-card heading="JSON Output">
+
+          <div class="p-16">
+            <paper-input class="" type="file" on-change="fileInputChanged"></paper-input>
+            <br>
+            <paper-button raised on-tap="startButtonPressed">Start</paper-button>
+          </div>
+
+          <div class="card-content">
+            <vaadin-grid items="[[jsonOutput]]">
+              <vaadin-grid-column>
+                <template class="header">Employee Id</template>
+                <template>
+                  <span>[[item.employeeId]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="1">
+                <template class="header layout horizontal">
+                  <vaadin-grid-filter path="name" value="[[nameFilter]]">
+                    <paper-input label="Search By Name" value="{{nameFilter}}" no-label-float></paper-input>
+                  </vaadin-grid-filter>
+                </template>
+                <template>
+                  <div>[[item.name]]</div>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Gender</template>
+                <template>
+                  <span>[[item.gender]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Phone</template>
+                <template>
+                  <span>[[item.phone]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Date of Birth</template>
+                <template>
+                  <span>[[item.dateOfBirth]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">NID</template>
+                <template>
+                  <span>[[item.nid]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">No# Family Member</template>
+                <template>
+                  <span>[[item.numberOfFamilyMember]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Spouse Name</template>
+                <template>
+                  <span>[[item.spouseName]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Father's Name</template>
+                <template>
+                  <span>[[item.fatherName]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Mother's Name</template>
+                <template>
+                  <span>[[item.motherName]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Salary</template>
+                <template>
+                  <span>[[item.salary]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Education</template>
+                <template>
+                  <span>[[item.education]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Designation</template>
+                <template>
+                  <span>[[item.designation]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Department</template>
+                <template>
+                  <span>[[item.department]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column>
+                <template class="header">Joining Date</template>
+                <template>
+                  <span>[[item.joiningDate]]</span>
+                </template>
+              </vaadin-grid-column>
+
+            </vaadin-grid>
+
+          </div>
+
+        </paper-card>
+
+
+      </div>
+    </div>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'page-upload-organization-patient-list',
+
+      behaviors: [
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.pageLike,
+        app.behaviors.apiCalling
+      ],
+
+      properties: {
+        jsonOutput: Array,
+        user: Object,
+        organization: Object
+      },
+
+      navigatedIn: function () {
+        this._loadUser();
+        this._loadOrganization();
+      },
+
+      _loadUser: function () {
+        let userList = app.db.find('user')
+        if (userList.length == 1) {
+          this.set('user', userList[0])
+        }
+      },
+
+      _loadOrganization: function () {
+        let organizationList = app.db.find('organization')
+        if (organizationList.length == 1) {
+          this.set('organization', organizationList[0])
+        }
+      },
+
+      fileInputChanged: function (e) {
+        let reader = new FileReader()
+        let file = e.target.files[0]
+        reader.onload = (e) => {
+          let result = JSON.parse(e.target.result)
+          this.set('jsonOutput', result)
+        }
+        reader.readAsText(file);
+      },
+
+      startButtonPressed: function () {
+        if (this.jsonOutput == null || this.jsonOutput == 'undefined') {
+          this.domHost.showModalDialog("Please upload a patient list first");
+          return
+        }
+        window.lib.util.iterate(this.jsonOutput, (next, index, item) => {
+          this.createUser(item);
+          next()
+        }).finally(() => {
+
+        })
+      },
+
+      _callBdemrAppPatientPartialSignupApi(data, cbfn) {
+        data.apiKey = this.user.apiKey;
+        return this.callApi('/bdemr-app-patient-signup-partial', data, (err, response) => {
+          console.log(response);
+          if (response.hasError) {
+            return this.domHost.showModalDialog(response.error.message);
+          } else {
+            const { patientId } = response.data;
+            return cbfn(patientId);
+          }
+        });
+      },
+
+      createUser: function (patient) {
+        // if (!patient.name || !patient.dateOfBirth || !patient.gender || !patient.phone) {
+        //   this.domHost.showToast('Please Fill Up Required Information');
+        //   return;
+        // }
+        patient.name = this.$makeNameObject(patient.name);
+        patient.organizationId = this.organization.idOnServer;
+
+        console.log(patient);
+        return
+
+        this._callBdemrAppPatientPartialSignupApi(patient, (userId) => {
+
+        })
+      },
+
+      $makeNameObject(fullName) {
+
+        if (typeof fullName === 'string') {
+
+          let first, honorifics, last, middle;
+          fullName = fullName.trim();
+
+          let partArray = fullName.split('.');
+
+          const namePart = partArray.pop();
+
+          if (partArray.length === 0) {
+            honorifics = '';
+          } else {
+            honorifics = partArray.join('.').trim();
+          }
+
+          partArray = (namePart.trim()).split(' ');
+
+          const nameObject = {};
+
+          if (partArray.length <= 1) {
+            first = partArray[0];
+          } else {
+            first = partArray.shift();
+            last = partArray.pop();
+            middle = partArray.join(' ');
+
+            if (middle === '') {
+              middle = null;
+            }
+
+            if (last === '') {
+              last = null;
+            }
+          }
+
+          if (honorifics === '') {
+            honorifics = null;
+          }
+
+          nameObject.honorifics = honorifics;
+          nameObject.first = first;
+          nameObject.middle = middle;
+          nameObject.last = last;
+          return nameObject;
+        } else {
+          return fullName;
+        }
+      }
+    });
+  </script>
+</dom-module>
