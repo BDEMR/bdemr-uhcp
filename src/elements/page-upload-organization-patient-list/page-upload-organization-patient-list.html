@@ -172,7 +172,8 @@
       properties: {
         jsonOutput: Array,
         user: Object,
-        organization: Object
+        organization: Object,
+        invalidUserList: Array
       },
 
       navigatedIn: function () {
@@ -209,12 +210,13 @@
           this.domHost.showModalDialog("Please upload a patient list first");
           return
         }
-        window.lib.util.iterate(this.jsonOutput, (next, index, item) => {
-          this.createUser(item);
-          next()
-        }).finally(() => {
+        // window.lib.util.iterate(this.jsonOutput[0], (next, index, item) => {
+        //   this.createUser(item);
+        //   next()
+        // }).finally(() => {
 
-        })
+        // })
+        this.createUser(this.jsonOutput[0]);
       },
 
       _callBdemrAppPatientPartialSignupApi(data, cbfn) {
@@ -230,17 +232,39 @@
         });
       },
 
-      createUser: function (patient) {
-        // if (!patient.name || !patient.dateOfBirth || !patient.gender || !patient.phone) {
-        //   this.domHost.showToast('Please Fill Up Required Information');
-        //   return;
-        // }
-        patient.name = this.$makeNameObject(patient.name);
+      createUser: function (doc) {
+        patient = {}
+        
+        if (!doc.name || !doc.phone || (Number.toString(doc.phone).length < 10)) {
+          this.invalidUserList.push(doc)
+          return
+        }
+
+        if (doc.dateOfBirth){
+          patient.dateOfBirth = this.makeDateOfBirth(doc.dateOfBirth)
+        } else {
+          patient.dateOfBirth = "1990-01-01"
+        }
+
+        patient.name = this.$makeNameObject(doc.name);
         patient.organizationId = this.organization.idOnServer;
+        patient.password = this.makePassword(doc.phone)
+        patient.doctorAccessPin = "0000"
+        patient.organizationSerial = this.organization.serial || this.organization.name.slice(0, 4)
+        patient.gender = doc.gender || 'Other'
+        patient.nationalIdCardNumber = doc.nid
+        patient.employmentInfo = {
+          currentPosition: doc.designation,
+          department: doc.department,
+          salary: doc.salary,
+          joiningDate: this.makeDateOfBirth(doc.joiningDate),
+          institutionName: this.organization.name,
+          institutionAddres: this.organization.address
+        }
+        patient.educationLevel = doc.education || ''
 
         console.log(patient);
         return
-
         this._callBdemrAppPatientPartialSignupApi(patient, (userId) => {
 
         })
@@ -295,6 +319,15 @@
         } else {
           return fullName;
         }
+      },
+
+      makeDateOfBirth: function (dob) {
+        let dobArr = dob.split("-")
+        return dobArr[2]+"-"+dobArr[1]+"-"+dobArr[0]
+      },
+
+      makePassword: function(phone){
+        return phone.toString().slice(-6)
       }
     });
   </script>
