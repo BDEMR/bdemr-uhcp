@@ -1,0 +1,152 @@
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<dom-module id="">
+  <template>
+    <style is="custom-style" include="common-style">
+    </style>
+    <div class="card-item-2">
+      <div class="preview-title">
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_notes.png"></iron-icon> -->
+        <div class="flex">
+          <paper-input class="paper-input-custom" label="Note/Advised" value="{{doctorNotesMessage}}"></paper-input>
+        </div>
+        <div class="action-area">
+          <paper-button class="btn-add" on-tap="_addNotePressed">
+            <iron-icon icon="icons:add"></iron-icon>
+          </paper-button>
+        </div>
+      </div>
+      <template is="dom-if" if="{{!_isEmpty(doctorNotes.data.messageList.length)}}">
+
+        <div class="p-0 b-radius">
+          <paper-listbox>
+            <template is="dom-repeat" items="[[doctorNotes.data.messageList]]">
+              <paper-item class="custom layout horizontal center">
+                <div class="type caption secondary">[[_returnSerial(index)]]</div>
+                <div class="m-left-8 flex type body" style="word-break: break-word;">
+                  {{item}}
+                </div>
+                <paper-icon-button icon="delete" on-tap="_onDoctorNoteDeletedButtonPressed"></paper-icon-button>
+              </paper-item>
+            </template>
+          </paper-listbox>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: '',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling
+      ],
+      properties: {
+        doctorNotes: {
+          type: Object,
+          notify: true,
+          value: null
+        },
+        doctorNotesMessage: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        isNoteValid: {
+          type: Boolean,
+          notify: false,
+          value: false
+        }
+      },
+
+      // Methods
+      _makeNewNote: function () {
+        this.doctorNotes = {
+          serial: null,
+          lastModifiedDatetimeStamp: 0,
+          createdDatetimeStamp: 0,
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: null,
+          visitSerial: null,
+          patientSerial: this.patient.serial,
+          doctorName: this.user.name,
+          doctorSpeciality: this.getDoctorSpeciality(),
+          data: {
+            messageList: []
+          }
+        };
+        return this.isNoteValid = true;
+      },
+      _saveNote: function (data) {
+        data.lastModifiedDatetimeStamp = lib.datetime.now();
+        return app.db.upsert('visit-note', data, (function (_this) {
+          return function (arg) {
+            var serial;
+            serial = arg.serial;
+            return data.serial === serial;
+          };
+        })(this));
+      },
+      _addNotePressed: function () {
+        if (this.doctorNotesMessage !== '') {
+          this.push('doctorNotes.data.messageList', this.doctorNotesMessage);
+          if (this.doctorNotes.serial === null) {
+            this.doctorNotes.createdDatetimeStamp = lib.datetime.now();
+            this.doctorNotes.serial = this.generateSerialForNote();
+          }
+          if (this.visit.doctorNotesSerial === null) {
+            this.visit.doctorNotesSerial = this.doctorNotes.serial;
+            this._saveVisit();
+          }
+          this._saveNote(this.doctorNotes);
+          this.doctorNotesMessage = '';
+          this._loadVisitNote(this.doctorNotes.serial);
+          return this.domHost.showToast('Note Saved.');
+        }
+      },
+      _loadVisitNote: function (doctorNotesSerialIdentifier) {
+        var list;
+        list = app.db.find('visit-note', function (arg) {
+          var serial;
+          serial = arg.serial;
+          return serial === doctorNotesSerialIdentifier;
+        });
+        if (list.length === 1) {
+          this.isNoteValid = true;
+          this.isFullVisitValid = true;
+          this.doctorNotes = list[0];
+          console.log('NOTES: ', this.doctorNotes);
+          return true;
+        } else {
+          this.isNoteValid = false;
+          return false;
+        }
+      },
+      _onDoctorNoteDeletedButtonPressed: function (e) {
+        var index;
+        index = e.model.index;
+        return this.domHost.showModalPrompt('Are you sure?', (function (_this) {
+          return function (answer) {
+            if (answer === true) {
+              _this.splice('doctorNotes.data.messageList', index, 1);
+              return app.db.upsert('visit-note', _this.doctorNotes, function (arg) {
+                var serial;
+                serial = arg.serial;
+                return _this.doctorNotes.serial === serial;
+              });
+            }
+          };
+        })(this));
+      }
+    });
+  </script>
+</dom-module>

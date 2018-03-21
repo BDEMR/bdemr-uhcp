@@ -169,16 +169,6 @@ Polymer {
       notify: true
       value: null
 
-    doctorNotes:
-      type: Object
-      notify: true
-      value: null
-
-    doctorNotesMessage:
-      type: String
-      notify: true
-      value: ''
-
     nextVisit:
       type: Object
       notify: true
@@ -566,23 +556,7 @@ Polymer {
 
     @isNextVisitValid = true
 
-  _makeNewNote: ()->
-    @doctorNotes =
-      serial: null
-      lastModifiedDatetimeStamp: 0
-      createdDatetimeStamp: 0
-      lastSyncedDatetimeStamp: 0
-      createdByUserSerial: null
-      visitSerial: null
-      patientSerial: @patient.serial
-      doctorName: @user.name
-      doctorSpeciality: @getDoctorSpeciality()
-      data:
-        messageList: []
-
-    # console.log 'doctorNotes', @doctorNotes
-
-    @isNoteValid = true
+  
 
   _loadPatient: (patientIdentifier, cbfn)->
     list = app.db.find 'patient-list', ({serial})-> serial is patientIdentifier
@@ -721,28 +695,8 @@ Polymer {
   #####################################################################
   ### Note - start
   #####################################################################
-  _saveNote: (data)->
-    data.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'visit-note', data, ({serial})=> data.serial is serial
-
-    # console.log app.db.find 'visit-note'
-    
-
-  _addNotePressed: ()->
-    unless @doctorNotesMessage is ''
-      @push 'doctorNotes.data.messageList', @doctorNotesMessage
-
-      if @doctorNotes.serial is null
-        @doctorNotes.createdDatetimeStamp = lib.datetime.now()
-        @doctorNotes.serial = @generateSerialForNote()
-      if @visit.doctorNotesSerial is null
-        @visit.doctorNotesSerial = @doctorNotes.serial
-        @_saveVisit()
-    
-      @_saveNote @doctorNotes
-      @doctorNotesMessage = ''
-      @_loadVisitNote @doctorNotes.serial
-      @domHost.showToast 'Note Saved.'
+  
+  
 
   #####################################################################
   ### Note - end
@@ -928,18 +882,7 @@ Polymer {
 
 
 
-  _loadVisitNote: (doctorNotesSerialIdentifier)->
-
-    list = app.db.find 'visit-note', ({serial})-> serial is doctorNotesSerialIdentifier
-    if list.length is 1
-      @isNoteValid = true
-      @isFullVisitValid = true
-      @doctorNotes = list[0]
-      console.log 'NOTES: ', @doctorNotes
-      return true
-    else
-      @isNoteValid = false
-      return false
+  
 
   
   _loadNextVisit: (nextVisitSerial)->
@@ -984,18 +927,6 @@ Polymer {
       @isInvoiceValid = false
       return false
 
-
-  _onDoctorNoteDeletedButtonPressed: (e)->
-
-    index = e.model.index
-    @domHost.showModalPrompt 'Are you sure?', (answer)=>
-      if answer is true
-        @splice 'doctorNotes.data.messageList', index, 1
-        app.db.upsert 'visit-note', @doctorNotes, ({serial})=> @doctorNotes.serial is serial
-
-
-
-  
 
 
   #####################################################################

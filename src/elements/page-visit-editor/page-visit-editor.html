@@ -946,35 +946,7 @@
               <!-- Card - Diagnosis - end -->
 
               <!-- Card - Notes - start -->
-              <div class="card-item-2">
-                <div class="preview-title">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_notes.png"></iron-icon> -->
-                  <div class="flex">
-                    <paper-input class="paper-input-custom" label="Note/Advised" value="{{doctorNotesMessage}}"></paper-input>
-                  </div>
-                  <div class="action-area">
-                    <paper-button class="btn-add" on-tap="_addNotePressed">
-                      <iron-icon icon="icons:add"></iron-icon>
-                    </paper-button>
-                  </div>
-                </div>
-                <template is="dom-if" if="{{!_isEmpty(doctorNotes.data.messageList.length)}}">
-
-                  <div class="p-0 b-radius">
-                    <paper-listbox>
-                      <template is="dom-repeat" items="[[doctorNotes.data.messageList]]">
-                        <paper-item class="custom layout horizontal center">
-                          <div class="type caption secondary">[[_returnSerial(index)]]</div>
-                          <div class="m-left-8 flex type body" style="word-break: break-word;">
-                            {{item}}
-                          </div>
-                          <paper-icon-button icon="delete" on-tap="_onDoctorNoteDeletedButtonPressed"></paper-icon-button>
-                        </paper-item>
-                      </template>
-                    </paper-listbox>
-                  </div>
-                </template>
-              </div>
+              
               <!-- Card - Notes - end -->
 
               <!-- Card - Next Visit - start -->
