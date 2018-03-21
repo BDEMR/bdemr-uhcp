@@ -1,0 +1,659 @@
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<dom-module id="">
+  <template>
+    <style is="custom-style" include="common-style">
+    </style>
+    <div class="card-item-2">
+      <div class="preview-title">
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_medicine_flask.png"></iron-icon> -->
+        <vaadin-combo-box class="flex combobox-custom-style" label="Investigation" id="comboBoxInvestigaiton" items="{{investigationDataList}}"
+          allow-custom-value="true" value-changed="onComboBoxInvestigationValueChanged" on-keyup="comboBoxKeyUpInvestigationValueChanged"
+          selected-item="{{comboBoxInvestigationSelectedItem}}" value="{{comboBoxInvestigationInputValue}}">
+        </vaadin-combo-box>
+        <div class="action-area">
+          <paper-button class="btn-add" on-tap="addInvestigation">
+            <iron-icon icon="icons:add"></iron-icon>
+          </paper-button>
+        </div>
+      </div>
+      <div class="horizontal layout center end-justified">
+        <paper-button class="btn-add colored" style="margin-bottom: 8px; margin-right: 12px; font-size: 14px;" on-tap="showFavoriteInvestigationDialog">pick from favorites</paper-button>
+      </div>
+      <template is="dom-if" if="[[!_isEmpty(addedInvestigationList.length)]]">
+
+        <div class="p-0 b-radius">
+          <paper-listbox>
+            <template id="added-advised-test-list-repeater" is="dom-repeat" items="[[addedInvestigationList]]">
+              <paper-item class="custom layout horizontal center">
+
+                <div class="type caption secondary">[[_returnSerial(index)]]</div>
+                <div class="flex type body m-left-8 vertical layout">
+                  <div class="type body-lead">{{item.investigationName}}</div>
+                  <div class="horizontal layout wrap">
+
+                    <template is="dom-if" if="[[_compareFn(item.testList.length, '==', 1)]]">
+                      <div class="type body">{{item.testList.0.name}}</div>
+                    </template>
+
+                    <template is="dom-if" if="[[_compareFn(item.testList.length, '>', 1)]]">
+                      <template is="dom-repeat" items="[[item.testList]]">
+                        <div class="horizontal layout center" class="m-horizontal-4">
+                          <paper-icon-button icon="icons:remove-circle-outline" class="m-right-4" on-tap="removeInvestigationMember"></paper-icon-button>
+                          <div class="type body">{{item.name}}</div>
+                        </div>
+                      </template>
+                    </template>
+
+                  </div>
+                  <div class="type caption-2 secondary italic capitalize">
+                    <template is="dom-if" if="[[_isEmptyString(item.suggestedInstitutionName)]]">
+                      <paper-button style="padding: 3px !important;" on-click="_openSuggestedInstitutionDialog">add suggeted institution</paper-button>
+                    </template>
+
+
+
+                    <template is="dom-if" if="[[!_isEmptyString(item.suggestedInstitutionName)]]">
+                      <strong>Suggested Institution: </strong>
+                      <span class="flex">[[item.suggestedInstitutionName]]</span>
+                      <paper-button class="btn btn-default" style="padding: 3px !important;" on-click="_openSuggestedInstitutionDialog">change</paper-button>
+                    </template>
+                  </div>
+                  <!-- <div class="type caption-2 secondary">
+                      <strong>Suggested Institution: </strong>
+                      <span class="flex">{{item.suggestedInstitutionName}}</span>
+                  </div> -->
+
+                </div>
+                <paper-icon-button icon="icons:add-circle" on-tap="showInevestigationMemberDialog"></paper-icon-button>
+                <paper-icon-button icon="delete" on-tap="_selectedAddedInvestigationtDeleteBtnPressed"></paper-icon-button>
+              </paper-item>
+            </template>
+          </paper-listbox>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: '',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling
+      ],
+      properties: {
+        favoriteInvestigaitonList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        investigationMemberValue: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        investigationDataList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        addedInvestigationList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        testAdvisedObject: {
+          type: Object,
+          notify: true,
+          value: {}
+        },
+        suggestedInstitutionValue: {
+          type: String,
+          value: '',
+          notify: true
+        },
+        machingUserAddedInstitutionList: {
+          type: Array,
+          value: [],
+          notify: true
+        },
+        addedInvestigationNameIndex: {
+          type: Number,
+          value: 0
+        },
+        customInvestigationObject: {
+          type: Object,
+          notify: true,
+          value: {}
+        },
+        customInvestigationUnitValue: {
+          type: String,
+          value: '',
+          notify: true
+        },
+        customInvestigationUnitList: {
+          type: Array,
+          value: [],
+          notify: true
+        }
+      },
+
+      // Methods
+      _makeNewTestAdvisedObject: function () {
+        this.testAdvisedObject = {
+          serial: null,
+          lastModifiedDatetimeStamp: 0,
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          visitSerial: null,
+          patientSerial: this.patient.serial,
+          doctorName: this.user.name,
+          doctorSpeciality: this.getDoctorSpeciality(),
+          data: {
+            testAdvisedName: null,
+            testAdvisedList: []
+          },
+          availableToPatient: true
+        };
+        return this.isTestAdvisedValid = true;
+      },
+      _makeNewAddedInvestigationObject: function (data) {
+        var object, objectStatus;
+        object = {};
+        objectStatus = {};
+        objectStatus.hasTestResults = false;
+        objectStatus.testResultsSerial = null;
+        object.investigationName = data.name;
+        object.testList = data.investigationList;
+        object.status = objectStatus;
+        object.serial = this.generateSerialForTestAdvisedInvestigation();
+        if (this.machingUserAddedInstitutionList.length !== 0) {
+          object.suggestedInstitutionName = this.machingUserAddedInstitutionList[0].label;
+        }
+        object.suggestedInstitutionName = '';
+        return object;
+      },
+      _makeCustomInvestigationObject: function () {
+        return this.customInvestigationObject = {
+          serial: this.generateSerialForCustomInvestigation,
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          visitSerial: this.visit.serial,
+          patientSerial: this.patient.serial,
+          data: {
+            name: '',
+            investigationList: [
+              {
+                name: '',
+                referenceRange: '',
+                unitList: []
+              }
+            ]
+          }
+        };
+      },
+      _loadAdvisedTest: function (adviseTestIdentifier) {
+        var list;
+        list = app.db.find('visit-advised-test', function (arg) {
+          var serial;
+          serial = arg.serial;
+          return serial === adviseTestIdentifier;
+        });
+        if (list.length === 1) {
+          this.isTestAdvisedValid = true;
+          this.testAdvisedObject = list[0];
+          console.log("ADVISED TEST: ", this.testAdvisedObject);
+          this.addedInvestigationList = list[0].data.testAdvisedList;
+          return true;
+        } else {
+          this._notifyInvalidTestAdvised();
+          return false;
+        }
+      },
+      _loadInvestigationList: function (userIdentifier) {
+        var customInvestigationlist, i, investigation, item, len;
+        this.domHost.getStaticData('investigationList', (function (_this) {
+          return function (investigationList) {
+            var childList, groupInvestigation, i, investigation, item, len, object, parentList, results, singleInvestigation;
+            childList = [];
+            parentList = [];
+            results = [];
+            for (i = 0, len = investigationList.length; i < len; i++) {
+              object = investigationList[i];
+              if (object.name !== '') {
+                if (typeof object.investigationList !== 'undefined') {
+                  if (object.investigationList.length !== 0) {
+                    if (object.investigationList.length > 1) {
+                      groupInvestigation = {};
+                      groupInvestigation.label = object.name;
+                      groupInvestigation.value = object;
+                      _this.push("investigationDataList", groupInvestigation);
+                      results.push((function () {
+                        var j, len1, ref, results1;
+                        ref = object.investigationList;
+                        results1 = [];
+                        for (j = 0, len1 = ref.length; j < len1; j++) {
+                          item = ref[j];
+                          if (typeof item.name === 'string') {
+                            investigation = {};
+                            investigation.label = item.name;
+                            investigation.value = {
+                              name: item.name,
+                              investigationList: [
+                                {
+                                  name: item.name,
+                                  referenceRange: item.referenceRange,
+                                  unitList: item.unitList
+                                }
+                              ]
+                            };
+                            results1.push(this.push("investigationDataList", investigation));
+                          } else {
+                            results1.push(void 0);
+                          }
+                        }
+                        return results1;
+                      }).call(_this));
+                    } else {
+                      singleInvestigation = {};
+                      singleInvestigation.label = object.name;
+                      singleInvestigation.value = object;
+                      results.push(_this.push("investigationDataList", singleInvestigation));
+                    }
+                  } else {
+                    results.push(void 0);
+                  }
+                } else {
+                  results.push(void 0);
+                }
+              } else {
+                results.push(void 0);
+              }
+            }
+            return results;
+          };
+        })(this));
+        customInvestigationlist = app.db.find('custom-investigation-list', (function (_this) {
+          return function (arg) {
+            var createdByUserSerial;
+            createdByUserSerial = arg.createdByUserSerial;
+            return userIdentifier === createdByUserSerial;
+          };
+        })(this));
+        if (customInvestigationlist.length !== 0) {
+          for (i = 0, len = customInvestigationlist.length; i < len; i++) {
+            item = customInvestigationlist[i];
+            investigation = {};
+            investigation.label = item.data.name;
+            investigation.value = {
+              name: item.data.name,
+              investigationList: item.data.investigationList
+            };
+            this.push("investigationDataList", investigation);
+          }
+        }
+        return this.investigationDataList.sort(function (left, right) {
+          if (left.label < right.label) {
+            return -1;
+          }
+          if (left.label > right.label) {
+            return 1;
+          }
+          return 0;
+        });
+      },
+      _loadUserAddedInstitutionList: function (userIdentifier) {
+        var i, institutionList, item, len, list, object;
+        list = app.db.find('user-added-institution-list', (function (_this) {
+          return function (arg) {
+            var createdByUserSerial;
+            createdByUserSerial = arg.createdByUserSerial;
+            return userIdentifier === createdByUserSerial;
+          };
+        })(this));
+        if (list.length !== 0) {
+          institutionList = [].concat(list);
+          for (i = 0, len = institutionList.length; i < len; i++) {
+            item = institutionList[i];
+            object = {};
+            object.label = item.data.institutionName;
+            object.value = item.data.institutionName;
+            this.push('machingUserAddedInstitutionList', object);
+          }
+          return this.machingUserAddedInstitutionList.sort(function (left, right) {
+            if (left.label < right.label) {
+              return -1;
+            }
+            if (left.label > right.label) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+      },
+      saveUserAddedCustomInvestigation: function (data) {
+        return app.db.insert('custom-investigation-list', data);
+      },
+      _duplicationInvestigationCheck: function (data) {
+        var i, item, len, ref;
+        ref = this.investigationDataList;
+        for (i = 0, len = ref.length; i < len; i++) {
+          item = ref[i];
+          if (item.label === data) {
+            return true;
+          }
+        }
+      },
+      saveUserAddedInstituion: function () {
+        var userAddedInsitution;
+        userAddedInsitution = {
+          serial: this.generateSerialForUserAddedInstituion,
+          createdDatetimeStamp: lib.datetime.now(),
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          createdByUserSerial: this.user.serial,
+          data: {
+            institutionName: this.suggestedInstitutionValue
+          }
+        };
+        this.push("machingUserAddedInstitutionList", {
+          label: this.suggestedInstitutionValue,
+          value: this.suggestedInstitutionValue
+        });
+        return app.db.upsert("user-added-institution-list", userAddedInsitution, function (arg) {
+          var serial;
+          serial = arg.serial;
+          return serial === userAddedInsitution.serial;
+        });
+      },
+      comboBoxKeyUpSeggestedInstitutionNameChanged: function (e) {
+        if (this.suggestedInstitutionValue !== '') {
+          if (e.which === 13) {
+            if (typeof this.suggestedInstitutionValue === 'object') {
+              this.addedInvestigationList[this.addedInvestigationNameIndex].suggestedInstitutionName = this.suggestedInstitutionValue.value;
+              if (!this._isInstitutionAddedByUserAlready(this.suggestedInstitutionValue.value)) {
+                this.saveUserAddedInstituion();
+              }
+            } else {
+              this.addedInvestigationList[this.addedInvestigationNameIndex].suggestedInstitutionName = this.suggestedInstitutionValue;
+              if (!this._isInstitutionAddedByUserAlready(this.suggestedInstitutionValue)) {
+                this.saveUserAddedInstituion();
+              }
+            }
+            this.saveAdvisedTest();
+            this._loadAdvisedTest(this.visit.advisedTestSerial);
+            return this.$$('#dialogSuggestedInstitution').toggle();
+          }
+        }
+      },
+      _saveSuggestedInstituonName: function (e) {
+        if (this.suggestedInstitutionValue !== '') {
+          if (typeof this.suggestedInstitutionValue === 'object') {
+            this.addedInvestigationList[this.addedInvestigationNameIndex].suggestedInstitutionName = this.suggestedInstitutionValue.value;
+            if (!this._isInstitutionAddedByUserAlready(this.suggestedInstitutionValue.value)) {
+              this.saveUserAddedInstituion();
+            }
+          } else {
+            this.addedInvestigationList[this.addedInvestigationNameIndex].suggestedInstitutionName = this.suggestedInstitutionValue;
+            if (!this._isInstitutionAddedByUserAlready(this.suggestedInstitutionValue)) {
+              this.saveUserAddedInstituion();
+            }
+          }
+          this.saveAdvisedTest();
+          this._loadAdvisedTest(this.visit.advisedTestSerial);
+          return this.$$('#dialogSuggestedInstitution').close();
+        }
+      },
+      _isInstitutionAddedByUserAlready: function (institutionName) {
+        var i, index, item, len, ref;
+        ref = this.machingUserAddedInstitutionList;
+        for (index = i = 0, len = ref.length; i < len; index = ++i) {
+          item = ref[index];
+          if (this.machingUserAddedInstitutionList.value === institutionName) {
+            return true;
+          }
+        }
+        return false;
+      },
+      _notifyInvalidTestAdvised: function () {
+        this.isTestAdvisedValid = false;
+        return this.domHost.showModalDialog('Invalid Test Advised Provided');
+      },
+      _selectedAddedInvestigationtDeleteBtnPressed: function (e) {
+        var advisedTestSerial, id, index, list;
+        index = e.model.index;
+        this.splice('addedInvestigationList', index, 1);
+        advisedTestSerial = this.testAdvisedObject.serial;
+        if (this.addedInvestigationList.length === 0) {
+          list = app.db.find('visit-advised-test', function (arg) {
+            var serial;
+            serial = arg.serial;
+            return serial === advisedTestSerial;
+          });
+          id = list[0]._id;
+          app.db.remove('visit-advised-test', id);
+          app.db.insert('visit-advised-test--deleted', {
+            serial: this.testAdvisedObject.serial
+          });
+          this.visit.advisedTestSerial = null;
+          this._saveVisit();
+          return this.domHost.showToast('Deleted Successfully!');
+        } else {
+          this.saveAdvisedTest();
+          return this.domHost.showToast('Deleted Successfully!');
+        }
+      },
+      removeInvestigationMember: function (e) {
+        var el, index, memberIndex, repeater, string;
+        memberIndex = e.model.index;
+        el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#added-advised-test-list-repeater');
+        index = repeater.indexForElement(el);
+        string = 'addedInvestigationList.' + index + '.testList';
+        this.splice(string, memberIndex, 1);
+        return this.saveAdvisedTest();
+      },
+      showInevestigationMemberDialog: function (e) {
+        var el, repeater;
+        this.investigationMemberValue = '';
+        el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#added-advised-test-list-repeater');
+        this.ARBITARY_INDEX = repeater.indexForElement(el);
+        return this.$$('#dialogInvestigationMemberValue').toggle();
+      },
+      addInvestigationMember: function (e) {
+        var object, string;
+        object = {};
+        string = 'addedInvestigationList.' + this.ARBITARY_INDEX + '.testList';
+        object.name = this.investigationMemberValue;
+        this.push(string, object);
+        this.saveAdvisedTest();
+        return this.$$('#dialogInvestigationMemberValue').close();
+      },
+      _openSuggestedInstitutionDialog: function (e) {
+        var el, repeater;
+        el = this.locateParentNode(e.target, 'PAPER-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#added-advised-test-list-repeater');
+        this.addedInvestigationNameIndex = repeater.indexForElement(el);
+        this.set('suggestedInstitutionValue', this.addedInvestigationList[this.addedInvestigationNameIndex].suggestedInstitutionName);
+        return this.$$('#dialogSuggestedInstitution').toggle();
+      },
+      onComboBoxInvestigationValueChanged: function (e) { },
+      comboBoxKeyUpInvestigationValueChanged: function (e) {
+        if (this.comboBoxInvestigationInputValue !== '') {
+          if (e.which === 13) {
+            if (typeof this.comboBoxInvestigationInputValue === 'object') {
+              this.push('addedInvestigationList', this._makeNewAddedInvestigationObject(this.comboBoxInvestigationInputValue));
+              return this.saveAdvisedTest();
+            } else {
+              if (!this._duplicationInvestigationCheck(this.comboBoxInvestigationInputValue)) {
+                this._makeCustomInvestigationObject();
+                this.customInvestigationObject.data.name = this.comboBoxInvestigationInputValue;
+                this.customInvestigationObject.data.investigationList[0].name = this.comboBoxInvestigationInputValue;
+                return this.$$('#dialogCustomInvestigation').toggle();
+              }
+            }
+          }
+        }
+      },
+      addInvestigation: function () {
+        if (this.comboBoxInvestigationInputValue !== '') {
+          if (typeof this.comboBoxInvestigationInputValue === 'object') {
+            this._addToInvoice(this.comboBoxInvestigationInputValue.name, this.visit.serial);
+            this.push('addedInvestigationList', this._makeNewAddedInvestigationObject(this.comboBoxInvestigationInputValue));
+            this.addInvestigationAsFavorite(this.comboBoxInvestigationInputValue);
+            return this.saveAdvisedTest();
+          } else {
+            if (!this._duplicationInvestigationCheck(this.comboBoxInvestigationInputValue)) {
+              this._makeCustomInvestigationObject();
+              this.customInvestigationObject.data.name = this.comboBoxInvestigationInputValue;
+              this.customInvestigationObject.data.investigationList[0].name = this.comboBoxInvestigationInputValue;
+              return this.$$('#dialogCustomInvestigation').toggle();
+            }
+          }
+        }
+      },
+      loadFavoriteInvestigationList: function (userIdentifier, cbfn) {
+        var list;
+        list = app.db.find('favorite-advised-test', function (arg) {
+          var createdByUserSerial;
+          createdByUserSerial = arg.createdByUserSerial;
+          return userIdentifier === createdByUserSerial;
+        });
+        list.sort(function (left, right) {
+          if (left.data.investigationName > right.data.investigationName) {
+            return -1;
+          }
+          if (left.data.investigationName < right.data.investigationName) {
+            return 1;
+          }
+          return 0;
+        });
+        this.favoriteInvestigaitonList = list;
+        return cbfn();
+      },
+      addInvestigationAsFavorite: function (data) {
+        var object;
+        if (this._duplicatieInvestigationCheck(data.name)) {
+
+        } else {
+          object = {
+            createdByUserSerial: this.user.serial,
+            isSelected: false,
+            data: data
+          };
+          return app.db.insert('favorite-advised-test', object);
+        }
+      },
+      _duplicatieInvestigationCheck: function (investigationIdentifier) {
+        var i, item, len, list, userIdentifier;
+        userIdentifier = this.user.serial;
+        list = app.db.find('favorite-advised-test', function (arg) {
+          var createdByUserSerial;
+          createdByUserSerial = arg.createdByUserSerial;
+          return userIdentifier === createdByUserSerial;
+        });
+        if (list.length > 0) {
+          for (i = 0, len = list.length; i < len; i++) {
+            item = list[i];
+            if (item.data.name === investigationIdentifier) {
+              return true;
+            } else {
+              continue;
+            }
+          }
+          return false;
+        } else {
+          return false;
+        }
+      },
+      _addUnitValueForCustomInvestigation: function () {
+        if (this.customInvestigationUnitValue !== '') {
+          this.push('customInvestigationUnitList', this.customInvestigationUnitValue);
+          return this.set('customInvestigationUnitValue', '');
+        }
+      },
+      _saveCustomInvestigation: function () {
+        this.customInvestigationObject.data.investigationList[0].unitList = this.customInvestigationUnitList;
+        this.saveUserAddedCustomInvestigation(this.customInvestigationObject);
+        this.push("investigationDataList", {
+          label: this.customInvestigationObject.data.investigationName,
+          value: this.customInvestigationObject.data
+        });
+        this.push('addedInvestigationList', this._makeNewAddedInvestigationObject(this.customInvestigationObject.data));
+        this.addInvestigationAsFavorite(this.customInvestigationObject.data);
+        this.saveAdvisedTest();
+        this._loadInvestigationList(this.user.serial);
+        this.set('comboBoxInvestigationInputValue', '');
+        return this.$$('#dialogCustomInvestigation').close();
+      },
+      _deleteSelectedUnit: function (e) {
+        var index;
+        index = e.model.index;
+        return this.splice('customInvestigationUnitList', index, 1);
+      },
+      _onAddedInvestigationTestChange: function (e) {
+        var el, repeater, selectedChildTestIndex, selectedTestIndex;
+        el = this.locateParentNode(e.target, 'PAPER-BUTTON');
+        el.opened = false;
+        repeater = this.$$('#added-advised-test-list-repeater');
+        selectedTestIndex = repeater.indexForElement(el);
+        selectedChildTestIndex = e.model.index;
+        this.addedInvestigationList[selectedTestIndex].testList.splice(selectedChildTestIndex, 1);
+        return this.saveAdvisedTest();
+      },
+      saveAdvisedTest: function () {
+        if (this.addedInvestigationList.length !== 0) {
+          this.testAdvisedObject.data.testAdvisedList = this.addedInvestigationList;
+          if (this.visit.advisedTestSerial === null) {
+            this.testAdvisedObject.serial = this.generateSerialForTestAdvised();
+            this.visit.advisedTestSerial = this.testAdvisedObject.serial;
+            this._saveVisit();
+            this.testAdvisedObject.visitSerial = this.visit.serial;
+          }
+          this.testAdvisedObject.lastModifiedDatetimeStamp = lib.datetime.now();
+          app.db.upsert('visit-advised-test', this.testAdvisedObject, (function (_this) {
+            return function (arg) {
+              var serial;
+              serial = arg.serial;
+              return _this.testAdvisedObject.serial === serial;
+            };
+          })(this));
+          this.set('comboBoxInvestigationInputValue', '');
+          return this.domHost.showToast('Test Added.');
+        }
+      },
+      showFavoriteInvestigationDialog: function () {
+        this.loadFavoriteInvestigationList(this.user.serial, (function (_this) {
+          return function () { };
+        })(this));
+        return this.$$('#dialogFavoriteInvestigation').toggle();
+      },
+      addInvestigationFromFavorite: function () {
+        var i, item, len, ref;
+        ref = this.favoriteInvestigaitonList;
+        for (i = 0, len = ref.length; i < len; i++) {
+          item = ref[i];
+          if (item.isSelected) {
+            this.push('addedInvestigationList', this._makeNewAddedInvestigationObject(item.data));
+          }
+        }
+        return this.$$('#dialogFavoriteInvestigation').close();
+      }
+    });
+  </script>
+</dom-module>
