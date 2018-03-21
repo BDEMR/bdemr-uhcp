@@ -1,0 +1,279 @@
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<dom-module id="element-symptoms">
+  <template>
+    <style is="custom-style" include="common-style">
+    </style>
+    <div class="card-item-2">
+      <div class="preview-title">
+        <!-- <iron-ajax url="../../static-data/symptoms-list.json" last-response="{{symptomsDataList}}" auto></iron-ajax> -->
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_symptoms.png"></iron-icon> -->
+        <vaadin-combo-box class="flex combobox-custom-style" label="Symptoms" id="comboBoxSymptoms" items="{{symptomsDataList}}"
+          allow-custom-value="true" value-changed="onComboBoxSymptomsValueChanged" on-keyup="comboBoxKeyUpSymptomsValueChanged"
+          selected-item="{{comboBoxSymptomsSelectedItem}}" value="{{comboBoxSymptomsInputValue}}">
+        </vaadin-combo-box>
+        <div class="action-area">
+          <paper-button class="btn-add" on-tap="addSymptoms">
+            <iron-icon icon="icons:add"></iron-icon>
+          </paper-button>
+        </div>
+      </div>
+      <template is="dom-if" if="[[!_isEmpty(addedIdentifiedSymptomsList.length)]]">
+        <div class="b-radius p-0">
+          <paper-listbox>
+            <template is="dom-repeat" items="[[addedIdentifiedSymptomsList]]">
+              <paper-item class="custom layout horizontal center">
+
+                <div class="type caption secondary">[[_returnSerial(index)]]</div>
+                <div class="flex type body m-left-8 vertical layout">
+                  <div>
+                    {{item.name}}
+                    <template is="dom-if" if="[[_compareFn(item.possibleValueList.length, '>', 0)]]">
+                      [
+                      <template is="dom-repeat" items="[[item.possibleValueList]]">
+                        <span class="type caption-2">{{item}}, </span>
+                      </template>]
+                    </template>
+                  </div>
+                </div>
+                <paper-icon-button icon="delete" on-tap="_selectedAddedIdentifiedSymtomsDeleteBtnPressed"></paper-icon-button>
+              </paper-item>
+            </template>
+          </paper-listbox>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'element-symptoms',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling
+      ],
+      properties: {
+        symptomsDataList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        addedIdentifiedSymptomsList: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        customSymptomsObject: {
+          type: Object,
+          notify: true,
+          value: {}
+        }
+      },
+
+      // Methods
+      _makeNewIdentifiedSymptomsObject: function () {
+        this.identifiedSymptomsObject = {
+          serial: null,
+          lastModifiedDatetimeStamp: 0,
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          visitSerial: null,
+          patientSerial: this.patient.serial,
+          doctorName: this.user.name,
+          doctorSpeciality: this.getDoctorSpeciality(),
+          data: {
+            symptomsList: []
+          },
+          availableToPatient: true
+        };
+        return this.isIdentifiedSymptomsValid = true;
+      },
+      _loadIdentifiedSymptoms: function (symptomsIdentifier) {
+        var list;
+        list = app.db.find('visit-identified-symptoms', function (arg) {
+          var serial;
+          serial = arg.serial;
+          return serial === symptomsIdentifier;
+        });
+        if (list.length === 1) {
+          this.isIdentifiedSymptomsValid = true;
+          this.identifiedSymptomsObject = list[0];
+          console.log('SYMPTOMS: ', this.identifiedSymptomsObject);
+          this.addedIdentifiedSymptomsList = list[0].data.symptomsList;
+          return true;
+        } else {
+          this._notifyInvalidIdentifeidSymptoms();
+          return false;
+        }
+      },
+      _loadSymptomsListFromSystem: function (userIdentifier) {
+        this.set('symptomsDataList', []);
+        return this.domHost.getStaticData('symptomsList', (function (_this) {
+          return function (symptomsList) {
+            var customObject, customSymptomslist, i, item, j, len, len1, object;
+            if (symptomsList.length !== 0) {
+              for (i = 0, len = symptomsList.length; i < len; i++) {
+                item = symptomsList[i];
+                if (item.name !== '') {
+                  object = {};
+                  object.label = item.name;
+                  object.value = item;
+                  _this.push("symptomsDataList", object);
+                }
+              }
+            }
+            customSymptomslist = app.db.find('custom-symptoms-list', function (arg) {
+              var createdByUserSerial;
+              createdByUserSerial = arg.createdByUserSerial;
+              return userIdentifier === createdByUserSerial;
+            });
+            if (customSymptomslist.length !== 0) {
+              for (j = 0, len1 = customSymptomslist.length; j < len1; j++) {
+                item = customSymptomslist[j];
+                customObject = {};
+                customObject.label = item.data.name;
+                customObject.value = item.data.name;
+                _this.push("symptomsDataList", customObject);
+              }
+            }
+            return _this.symptomsDataList.sort(function (left, right) {
+              if (left.label < right.label) {
+                return -1;
+              }
+              if (left.label > right.label) {
+                return 1;
+              }
+              return 0;
+            });
+          };
+        })(this));
+      },
+      saveUserAddedCustomSymptoms: function (symptomName) {
+        var object;
+        object = {
+          serial: this.generateSerialForCustomSymptoms,
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          data: {
+            name: symptomName
+          }
+        };
+        return app.db.insert('custom-symptoms-list', object);
+      },
+      _duplicationSymptomsCheck: function (symptomName) {
+        var i, item, len, ref;
+        ref = this.symptomsDataList;
+        for (i = 0, len = ref.length; i < len; i++) {
+          item = ref[i];
+          if (item.label === symptomName) {
+            return true;
+          }
+        }
+      },
+      _notifyInvalidIdentifeidSymptoms: function () {
+        this.isIdentifiedSymptomsValid = false;
+        return this.domHost.showModalDialog('Invalid Stymptoms Provided');
+      },
+      _selectedAddedIdentifiedSymtomsDeleteBtnPressed: function (e) {
+        var id, identifiedSymtomsSerial, index, list;
+        index = e.model.index;
+        this.splice('addedIdentifiedSymptomsList', index, 1);
+        identifiedSymtomsSerial = this.identifiedSymptomsObject.serial;
+        if (this.addedIdentifiedSymptomsList.length === 0) {
+          list = app.db.find('visit-identified-symptoms', function (arg) {
+            var serial;
+            serial = arg.serial;
+            return serial === identifiedSymtomsSerial;
+          });
+          id = list[0]._id;
+          app.db.remove('visit-identified-symptoms', id);
+          app.db.insert('visit-identified-symptoms--deleted', {
+            serial: this.identifiedSymptomsObject.serial
+          });
+          this.visit.identifiedSymptomsSerial = null;
+          this._saveVisit();
+          return this.domHost.showToast('Deleted Successfully!');
+        } else {
+          this.saveIdentifiedSymptoms();
+          return this.domHost.showToast('Deleted Successfully!');
+        }
+      },
+      comboBoxKeyUpSymptomsValueChanged: function (e) {
+        if (this.comboBoxSymptomsInputValue !== '') {
+          if (e.which === 13) {
+            if (typeof this.comboBoxSymptomsInputValue === 'object') {
+              this.push('addedIdentifiedSymptomsList', {
+                name: this.comboBoxSymptomsInputValue.name
+              });
+            } else {
+              this.push('addedIdentifiedSymptomsList', {
+                name: this.comboBoxSymptomsInputValue
+              });
+              if (!this._duplicationSymptomsCheck(this.comboBoxSymptomsInputValue)) {
+                this.saveUserAddedCustomSymptoms(this.comboBoxSymptomsInputValue);
+              }
+              this.push("symptomsDataList", {
+                label: this.comboBoxSymptomsInputValue,
+                value: this.comboBoxSymptomsInputValue
+              });
+            }
+            return this.saveIdentifiedSymptoms();
+          }
+        }
+      },
+      addSymptoms: function () {
+        if (this.comboBoxSymptomsInputValue !== '') {
+          if (typeof this.comboBoxSymptomsInputValue === 'object') {
+            this.push('addedIdentifiedSymptomsList', {
+              name: this.comboBoxSymptomsInputValue.name
+            });
+          } else {
+            this.push('addedIdentifiedSymptomsList', {
+              name: this.comboBoxSymptomsInputValue
+            });
+            if (!this._duplicationSymptomsCheck(this.comboBoxSymptomsInputValue)) {
+              this.saveUserAddedCustomSymptoms(this.comboBoxSymptomsInputValue);
+            }
+            this.push("symptomsDataList", {
+              label: this.comboBoxSymptomsInputValue,
+              value: this.comboBoxSymptomsInputValue
+            });
+          }
+          return this.saveIdentifiedSymptoms();
+        }
+      },
+      saveIdentifiedSymptoms: function () {
+        if (this.addedIdentifiedSymptomsList.length !== 0) {
+          this.identifiedSymptomsObject.data.symptomsList = this.addedIdentifiedSymptomsList;
+          if (this.visit.identifiedSymptomsSerial === null) {
+            this.identifiedSymptomsObject.serial = this.generateSerialForIdentifiedSymptoms();
+            this.visit.identifiedSymptomsSerial = this.identifiedSymptomsObject.serial;
+            this._saveVisit();
+            this.identifiedSymptomsObject.visitSerial = this.visit.serial;
+          }
+          this.identifiedSymptomsObject.lastModifiedDatetimeStamp = lib.datetime.now();
+          app.db.upsert('visit-identified-symptoms', this.identifiedSymptomsObject, (function (_this) {
+            return function (arg) {
+              var serial;
+              serial = arg.serial;
+              return _this.identifiedSymptomsObject.serial === serial;
+            };
+          })(this));
+          this.set('comboBoxSymptomsInputValue', '');
+          return this.domHost.showToast('Symptoms Added.');
+        }
+      }
+    });
+  </script>
+</dom-module>

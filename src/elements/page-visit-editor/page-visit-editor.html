@@ -926,45 +926,7 @@
             <div class="content left">
 
               <!-- Card - Symptoms - start -->
-              <div class="card-item-2">
-                <div class="preview-title">
-                  <!-- <iron-ajax url="../../static-data/symptoms-list.json" last-response="{{symptomsDataList}}" auto></iron-ajax> -->
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_symptoms.png"></iron-icon> -->
-                  <vaadin-combo-box class="flex combobox-custom-style" label="Symptoms" id="comboBoxSymptoms" items="{{symptomsDataList}}"
-                    allow-custom-value="true" value-changed="onComboBoxSymptomsValueChanged" on-keyup="comboBoxKeyUpSymptomsValueChanged"
-                    selected-item="{{comboBoxSymptomsSelectedItem}}" value="{{comboBoxSymptomsInputValue}}">
-                  </vaadin-combo-box>
-                  <div class="action-area">
-                    <paper-button class="btn-add" on-tap="addSymptoms">
-                      <iron-icon icon="icons:add"></iron-icon>
-                    </paper-button>
-                  </div>
-                </div>
-                <template is="dom-if" if="[[!_isEmpty(addedIdentifiedSymptomsList.length)]]">
-                  <div class="b-radius p-0">
-                    <paper-listbox>
-                      <template is="dom-repeat" items="[[addedIdentifiedSymptomsList]]">
-                        <paper-item class="custom layout horizontal center">
-
-                          <div class="type caption secondary">[[_returnSerial(index)]]</div>
-                          <div class="flex type body m-left-8 vertical layout">
-                            <div>
-                              {{item.name}}
-                              <template is="dom-if" if="[[_compareFn(item.possibleValueList.length, '>', 0)]]">
-                                [
-                                <template is="dom-repeat" items="[[item.possibleValueList]]">
-                                  <span class="type caption-2">{{item}}, </span>
-                                </template>]
-                              </template>
-                            </div>
-                          </div>
-                          <paper-icon-button icon="delete" on-tap="_selectedAddedIdentifiedSymtomsDeleteBtnPressed"></paper-icon-button>
-                        </paper-item>
-                      </template>
-                    </paper-listbox>
-                  </div>
-                </template>
-              </div>
+              <element-symptoms></element-symptoms>
               <!-- Card - Symptoms - end -->
 
               <!-- Card - Examination - start -->
