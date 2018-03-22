@@ -4,12 +4,27 @@
 <link rel="import" href="../../behaviors/translating.html">
 <link rel="import" href="../../behaviors/api-calling.html">
 
+<link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
+<!-- Custom AutoComplete -->
+<link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
+
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
+<link rel="import" href="visit-common-styles.html">
 
 <dom-module id="element-refferal">
   <template>
-    <style is="custom-style" include="common-style">
+    <style is="custom-style" include="common-style visit-common-styles">
     </style>
     <div class="card-item-2">
       <div class="preview-title layout">
@@ -39,7 +54,71 @@
       </div>
 
     </div>
+    <!-- Dialog for - Referral start -->
+    <paper-dialog id="dialogReferral" style="width: 360px">
+      <h2>Add Referral</h2>
+      <div class="p-16">
+        <paper-dropdown-menu label="Select Referral Type">
+          <paper-listbox class="dropdown-content" selected="{{selectedReferralTypeIndex}}">
+            <paper-item>Doctor</paper-item>
+            <paper-item>Hospital</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+
+        <template is="dom-if" if="[[!selectedReferralTypeIndex]]">
+          <paper-input label="Referred By" value="[[user.name]]"></paper-input>
+          <div>
+            <paper-autocomplete id="doctorSearch" label="[[$TRANSLATE('Search for Doctor',LANG)]]" text="{{doctorSearchFieldInput}}"
+              text-property="name" value-property="idOnServer" remote-source="true" on-autocomplete-reset="doctorSearchCleared"
+              on-keyup="doctorSearchStartKeyPressed" error-message="Input Required" required>
+              <template autocomplete-custom-template>
+                <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+                  <paper-item-body two-line>
+                    <div class="type bold">[[item.name]]</div>
+                    <div secondary>
+                      <span class="type secondary caption-2">([[item.phone]])</span>
+                      <span class="type secondary caption-2 m-left-8">[[item.email]]</span>
+                    </div>
+                  </paper-item-body>
+                  <paper-ripple></paper-ripple>
+                </paper-item>
+              </template>
+            </paper-autocomplete>
+            <paper-button class="btn btn-success" on-tap="doctorSearchButtonPressed">Search</paper-button>
+          </div>
+          <paper-dropdown-menu label="Specialist Type">
+            <paper-listbox class="dropdown-content" selected="{{referredDoctorSpecialitySelectedIndex}}">
+              <template is="dom-repeat" items="[[referredDoctorSpecialityList]]">
+                <paper-item>[[item]]</paper-item>
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
+        </template>
+
+
+        <template is="dom-if" if="[[selectedReferralTypeIndex]]">
+          <paper-autocomplete class="flex" id="organizationSearch" label="[[$TRANSLATE('Search for Hospital',LANG)]]" text="{{organizationSearchFieldInput}}"
+            text-property="name" value-property="idOnServer" remote-source="true" on-autocomplete-selected="organizationSelected"
+            on-autocomplete-reset="organizationSearchCleared" on-keyup="organizationSearchStartKeyPressed" error-message="Input Required"
+            required>
+            <template autocomplete-custom-template>
+              <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+                <div class="type bold">[[item.name]]</div>
+                <paper-ripple></paper-ripple>
+              </paper-item>
+            </template>
+          </paper-autocomplete>
+          <paper-button class="btn btn-success" on-tap="organizationSearchButtonPressed">Search</paper-button>
+        </template>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="btn btn-primary" on-tap="addReferralButtonClicked">Add Referral</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Referral start -->
   </template>
+  <script src="mixin-utils.js"></script>
   <script>
     Polymer({
       is: 'element-refferal',
@@ -47,10 +126,11 @@
         app.behaviors.commonComputes,
         app.behaviors.dbUsing,
         app.behaviors.translating,
-        app.behaviors.apiCalling
+        app.behaviors.apiCalling,
+        app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        
+
         referral: {
           type: Object,
           value: function () {

@@ -1,0 +1,93 @@
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../styles/common-style.html">
+<link rel="import" href="visit-common-styles.html">
+
+<!-- custom-elements -->
+<link rel="import" href="../html-block/html-block.html">
+
+<dom-module id="element-history-physical">
+  <template>
+    <style is="custom-style" include="common-style visit-common-styles">
+    </style>
+
+    <div class="card-item-2">
+
+      <!-- preview-title - start -->
+      <div class="preview-title layout wrap">
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_history_and_physical.png"></iron-icon> -->
+
+        <div class="type title-2 flex">History &amp; Physical</div>
+
+
+        <div class="layout horizontal wrap">
+
+
+          <template is="dom-if" if="[[_isEmptyString(visit.historyAndPhysicalRecordSerial)]]">
+            <paper-button class="btn-add" on-tap="historyAndPhysicalRecordCreate">
+              <iron-icon icon="icons:add"></iron-icon>
+            </paper-button>
+
+
+            <template is="dom-if" if="[[recordInClipboard]]">
+              <paper-button class="btn-add btn btn-default" on-tap="pasteRecordPressed">
+                <iron-icon icon="icons:content-paste" class="m-right-8"></iron-icon>Paste Record: [[recordInClipboard.serial]]
+              </paper-button>
+            </template>
+          </template>
+
+          <template is="dom-if" if="[[!_isEmptyString(visit.historyAndPhysicalRecordSerial)]]">
+            <paper-checkbox checked="[[historyAndPhysicalRecord.availableToPatient]]" on-change="historyAndPhysicalAvailableToPatientCheckBoxChanged">Available to Patient</paper-checkbox>
+
+            <!-- <paper-icon-button icon="print" on-tap="historyAndPhysicalRecordPrint"></paper-icon-button> -->
+
+            <paper-icon-button icon="create" on-tap="historyAndPhysicalRecordEdit"></paper-icon-button>
+            <paper-icon-button icon="icons:content-copy" on-tap="historyAndPhysicalRecordCopy"></paper-icon-button>
+            <paper-icon-button icon="icons:delete" on-tap="historyAndPhysicalRecordRemove"></paper-icon-button>
+
+            <!-- <div>[[$mkDate(record.content.preopAssessment.lastChangedDatetimeStamp)]]</div> -->
+          </template>
+        </div>
+      </div>
+      <!-- preview-title - end -->
+
+
+      <template is="dom-if" if="[[shouldRender]]">
+        <div class="p-horizontal-16" style="background: #fff;">
+          <html-block html="[[recordPartHtmlContent]]"></html-block>
+        </div>
+      </template>
+    </div>
+
+  </template>
+  <script src="mixin-utils.js"></script>
+  <script>
+    Polymer({
+      is: 'element-history-physical',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling,
+        app.behaviors.local.visitUtilsMixin
+      ],
+      properties: {
+
+      }
+    });
+  </script>
+</dom-module>

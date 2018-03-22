@@ -1,0 +1,113 @@
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../styles/common-style.html">
+<link rel="import" href="visit-common-styles.html">
+
+<dom-module id="element-patient-details">
+  <template>
+    <style is="custom-style" include="common-style visit-common-styles">
+    </style>
+    <div class="card-item-2 p-8">
+      <div class="horizontal layout wrap center">
+        <iron-image class="profile-image m-right-8" src$="[[patient.profileImage]]" preload sizing="cover"></iron-image>
+
+        <div class="flex">
+          <div class="m-horizontal-4 horizontal layout">
+            <div class="type body-lead capitalize">{{$getFullName(patient.name)}}</div>
+            <div class="m-left-8 type caption bg-gray">{{patient.serial}}</div>
+          </div>
+          <div class="horizontal layout wrap type caption-2 secondary">
+
+            <template is="dom-if" if="[[!patient.isForOrganizationOnly]]">
+
+              <div class="m-horizontal-4">
+                <strong>Sex: </strong>
+                <span>{{patient.gender}}</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Age: </strong>
+                <span>[[_computeAge(patient.dateOfBirth)]] years </span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Blood Group: </strong>
+                <span> [[patient.bloodGroup]]</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Allergy: </strong>
+                <span>[[patient.allergy]] </span>
+              </div>
+            </template>
+
+            <template is="dom-if" if="[[patient.isForOrganizationOnly]]">
+              <div class="m-horizontal-4">
+                <strong>Patient Name: </strong>
+                <i>REDACTED FOR CONFIDENTIALITY</i>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Age: </strong>
+                <i>REDACTED FOR CONFIDENTIALITY</i>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Blood Group: </strong>
+                <span>[[patient.bloodGroup]]</span>
+              </div>
+              <div class="m-horizontal-4">
+                <strong>Allergy: </strong>
+                <span>[[patient.allergy]]</span>
+              </div>
+            </template>
+          </div>
+          <div class="layout horizontal m-4">
+            <div class="type secondary caption-2">OPD:
+              <span class="type caption bold bg-gray">[[patientOrganizationWallet.outdoorBalance]]</span>
+            </div>
+            <div class="type secondary caption-2 m-left-8">IPD:
+              <span class="type caption bold bg-gray">[[patientOrganizationWallet.indoorBalance]]</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <paper-button raised class="fixed-btn btn-add colored" on-tap="editPatientBtnPressed">Edit Patient</paper-button>
+    </div>
+  </template>
+  <script src="mixin-utils.js"></script>
+  <script>
+    Polymer({
+      is: 'element-patient-details',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling,
+        app.behaviors.local.visitUtilsMixin
+      ],
+      properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        }
+      },
+
+      patientValueChanged: function (value) {
+        console.log('patient',value)
+      },
+
+      editPatientBtnPressed: function(){
+        this.domHost.domHost.navigateToPage("#/patient-editor/patient:" + this.patient.serial)
+      }
+    });
+  </script>
+</dom-module>

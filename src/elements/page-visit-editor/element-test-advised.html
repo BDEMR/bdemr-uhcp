@@ -4,12 +4,26 @@
 <link rel="import" href="../../behaviors/translating.html">
 <link rel="import" href="../../behaviors/api-calling.html">
 
+<link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
+
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
+<link rel="import" href="visit-common-styles.html">
 
-<dom-module id="">
+<dom-module id="element-test-advised">
   <template>
-    <style is="custom-style" include="common-style">
+    <style is="custom-style" include="common-style visit-common-styles">
     </style>
     <div class="card-item-2">
       <div class="preview-title">
@@ -80,15 +94,71 @@
         </div>
       </template>
     </div>
+    <!-- Dialog for - Custom Investigation - start -->
+    <paper-dialog id="dialogCustomInvestigation">
+
+      <div class="dialog-content">
+        <div class="type body-lead" style="color: green;">[[comboBoxInvestigationInputValue]]</div>
+        <paper-input label="[[$TRANSLATE('Reference Range',LANG)]]" value="{{customInvestigationObject.data.investigationList.0.referenceRange}}"></paper-input>
+
+        <div class="horizontal layout center wrap">
+          <paper-input class="flex" label="[[$TRANSLATE('Add Unit',LANG)]]" value="{{customInvestigationUnitValue}}"></paper-input>
+          <paper-icon-button icon="add" on-click="_addUnitValueForCustomInvestigation"></paper-icon-button>
+        </div>
+
+        <div>
+          <template is="dom-if" if="{{!_isEmpty(customInvestigationUnitList.length)}}">
+            <strong>Added Units: </strong>
+            <div class="horizontal layout wrap">
+              <template is="dom-repeat" items="{{customInvestigationUnitList}}">
+                <div class="card-item horizontal layout center">
+                  <div class="type body flex p-horizontal-8">{{item}}</div>
+                  <div style="border-left: 1px solid #eee;" class="horizontal layout center">
+                    <paper-icon-button style="color: red;" icon="delete" on-tap="_deleteSelectedUnit"></paper-icon-button>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+          </template>
+        </div>
+
+      </div>
+
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="btn btn-success" on-click="_saveCustomInvestigation" autofocus raised>Save</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Custom Investigation - end -->
+
+
+    <!-- Dialog for - Favorite Investigation - start -->
+    <paper-dialog id="dialogFavoriteInvestigation">
+      <div class="type body-lead">Add Test</div>
+      <div class="dialog-content">
+        <template is="dom-repeat" items="[[favoriteInvestigaitonList]]">
+          <paper-checkbox checked="{{item.isSelected}}">{{item.data.name}}</paper-checkbox>
+        </template>
+      </div>
+
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="colored" on-click="addInvestigationFromFavorite" autofocus raised>Add</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Custom Investigation - end -->
   </template>
+  <script src="mixin-utils.js"></script>
   <script>
     Polymer({
-      is: '',
+      is: 'element-test-advised',
       behaviors: [
         app.behaviors.commonComputes,
         app.behaviors.dbUsing,
         app.behaviors.translating,
-        app.behaviors.apiCalling
+        app.behaviors.apiCalling,
+        app.behaviors.local.visitUtilsMixin
       ],
       properties: {
         favoriteInvestigaitonList: {

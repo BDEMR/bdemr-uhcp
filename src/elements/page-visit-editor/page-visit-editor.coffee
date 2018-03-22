@@ -128,11 +128,6 @@ Polymer {
       notify: false
       value: false
 
-    isNextVisitValid:
-      type: Boolean
-      notify: true
-      value: false
-
     isInvoiceValid:
       type: Boolean
       notify: false
@@ -165,11 +160,6 @@ Polymer {
       value: null
 
     visit:
-      type: Object
-      notify: true
-      value: null
-
-    nextVisit:
       type: Object
       notify: true
       value: null
@@ -281,77 +271,6 @@ Polymer {
     # Vitals - end
     #####################################################################
 
-    #####################################################################
-    # Next Visit - start
-    #####################################################################
-
-
-    priorityTypeList:
-      type: Array
-      value: [
-        'As Necessary'
-        'Others'
-      ]
-
-    nextVisitDurationTypeList:
-      type: Array
-      value: [
-        '0 Day'
-        '1 Day'
-        '2 Days'
-        '3 Days'
-        '4 Days'
-        '5 Days'
-        '6 Days'
-        '7 Days'
-        '8 Days'
-        '9 Days'
-        '10 Days'
-        '11 Days'
-        '12 Days'
-        '13 Days'
-        '14 Days'
-        '15 Days'
-        '1 Week'
-        '2 Weeks'
-        '3 Weeks'
-        '4 Weeks'
-        '1 month'
-        '2 months'
-        '3 months'
-        '4 months'
-        '5 months'
-        '6 months'
-        '7 months'
-        '8 months'
-        '9 months'
-        '11 month'
-        '1 year'
-        '2 years'
-        '3 years'
-        'Custom'
-      ]
-
-    nextVisitDurationTypeSelectedIndex:
-      type: Number
-      notify: true
-      value: 0
-
-    nextVisitPriorityTypeSelectedIndex:
-      type: Number
-      notify: true
-      value: 0
-
-    computedNextVisitDate:
-      type: String
-      notify: true
-      computed: '_showComputedNextVisitDate(nextVisit.nextVisitDateTimeStamp)'
-
-    isCustomDateTypeSelected:
-      type: Boolean
-      notify: true
-      value: false
-
 
     #####################################################################
     # Full Visit Preview - start
@@ -417,71 +336,7 @@ Polymer {
 
 
   # Util Functions - start
-  $of: (a, b)->
-    unless b of a
-      a[b] = null
-    return a[b]
-
-  _isEmpty: (data)-> 
-    if data is 0
-      return true
-    else
-      return false
-
-  _isEmptyArray: (data)->
-    if data.length is 0
-      return true
-    else
-      return false
-
-  _isEmptyString: (data)->
-    if data is null or data is '' or data is 'undefined'
-      return true
-    else
-      return false
-
-  _compareFn: (left, op, right) ->
-    # lib.util.delay 5, ()=>
-    if op is '<'
-      return left < right
-    if op is '>'
-      return left > right
-    if op is '=='
-      return left == right
-    if op is '>='
-      return left >= right
-    if op is '<='
-      return left <= right
-    if op is '!='
-      return left != right
-
-  _sortByDate: (a, b)->
-    if a.lastModifiedDatetimeStamp < b.lastModifiedDatetimeStamp
-      return 1
-    if a.lastModifiedDatetimeStamp > b.lastModifiedDatetimeStamp
-      return -1
-
-  _computeTotalDaysCount: (endDate, startDate)->
-    return (@$TRANSLATE 'As Needed', @LANG) unless endDate
-    oneDay = 1000*60*60*24;
-    startDate = new Date startDate
-    endDate = new Date endDate
-    diffMs = endDate - startDate
-    return @$TRANSLATE (Math.round(diffMs / oneDay)), @LANG
-
-  _returnSerial: (index)->
-    index+1
-
-  _computeAge: (dateString)->
-    today = new Date()
-    birthDate = new Date dateString
-    age = today.getFullYear() - birthDate.getFullYear()
-    m = today.getMonth() - birthDate.getMonth()
-
-    if m < 0 || (m == 0 && today.getDate() < birthDate.getDate())
-      age--
-
-    return age
+  
   # Util Functions - end
     
 
@@ -539,168 +394,17 @@ Polymer {
       return @user.specializationList[0].specializationTitle
     return 'not provided yet'
 
-  _makeNewNextVisit: ()->
-    @nextVisit =
-      serial: null
-      lastModifiedDatetimeStamp: 0
-      createdDatetimeStamp: 0
-      lastSyncedDatetimeStamp: 0
-      createdByUserSerial: @user.serial
-      visitSerial: @visit.serial
-      patientSerial: @patient.serial
-      doctorName: @$getFullName @user.name
-      doctorSpeciality: @getDoctorSpeciality()
-      data:
-        nextVisitDateTimestamp: null
-        priorityType: 'As Necessary'
-
-    @isNextVisitValid = true
-
   
-
   _loadPatient: (patientIdentifier, cbfn)->
     list = app.db.find 'patient-list', ({serial})-> serial is patientIdentifier
     if list.length is 1
       @isPatientValid = true
-      @patient = list[0]
-      console.log 'PATIENT:', @patient
+      @set 'patient', list[0]
+      # console.log 'PATIENT:', @patient
     else
       @_notifyInvalidPatient()
 
     cbfn()
-
-
-  #####################################################################
-  ### Prescription - start
-  #####################################################################
-
-  
-
-
-  ## REGION: doseGuideline - End
-
-  #####################################################################
-  ### Prescription - end
-  #####################################################################
-
-  #####################################################################
-  ### Symptoms - start
-  #####################################################################
-
-  #####################################################################
-  ### Stymptoms - end
-  #####################################################################
-
-  #####################################################################
-  ### Examination - start
-  #####################################################################
-
-  #####################################################################
-  ### Examination - end
-  #####################################################################
-
-  #####################################################################
-  ### Test Advised - start
-  #####################################################################
-  
-    #####################################################################
-  ### Test Advised - end
-  #####################################################################
-
-  #####################################################################
-  ### Vitals - start
-  #####################################################################
-
-  #####################################################################
-  ### Vitals - end
-  #####################################################################
-
-
-  #####################################################################
-  ### Next Visit - start
-  #####################################################################
-
-  _showComputedNextVisitDate: (date)->
-    return null if @nextVisitDurationTypeSelectedIndex is 0
-    return lib.datetime.mkDate date, 'dd-mmm-yyyy'
-
-
-  _nextVisitDurationTypeSelectedIndexChanged: ->
-
-    console.log 'nextVisit', @nextVisit
-    
-    getDurationValue = @nextVisitDurationTypeList[@nextVisitDurationTypeSelectedIndex]
-    getDurationValue = getDurationValue.toLowerCase()
-
-    if getDurationValue.search('day') isnt -1
-      days = parseInt getDurationValue
-      @_setNextVisitDateTimestamp days
-
-    else if getDurationValue.search('week') isnt -1
-      weeks = parseInt(getDurationValue.substr 0, 1)
-      days = weeks * 7
-      @_setNextVisitDateTimestamp days
-
-    else if getDurationValue.search('month') isnt -1
-      # Note: 1 month = 30days 
-      months = parseInt(getDurationValue.substr 0, 1)
-      days = months * 30
-      @_setNextVisitDateTimestamp days
-
-    else if getDurationValue.search('year') isnt -1
-      # Note: 1 year = 365days 
-      years = parseInt(getDurationValue.substr 0, 1)
-      days = years * 365
-      @_setNextVisitDateTimestamp days
-
-    else if getDurationValue.search('custom') isnt -1
-      @isCustomDateTypeSelected  = true
-
-
-  _setNextVisitDateTimestamp:(days)->
-    getCurrentDateTimestamp = lib.datetime.now()
-    nextVisitDateTimestamp = getCurrentDateTimestamp + (days * 24 * 60 * 60 * 1000)
-    @nextVisit.data.nextVisitDateTimestamp = nextVisitDateTimestamp
-
-  _nextVisitPriorityTypeSelectedIndexChanged: ->
-
-    # console.log @priorityTypeList[@nextVisitPriorityTypeSelectedIndex]
-    @nextVisit.data.priorityType = @priorityTypeList[@nextVisitPriorityTypeSelectedIndex]
-
-  _saveNextVisit: (data)->
-    data.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'visit-next-visit', data, ({serial})=> data.serial is serial
-
-
-    
-  _addNextVisitPressed: ()->
-    unless @nextVisit.data.nextVisitDateTimestamp is 0
-      @nextVisit.serial = @generateSerialForNextVisit()
-      @nextVisit.createdDatetimeStamp = lib.datetime.now()
-      if @visit.nextVisitSerial is null
-        @visit.nextVisitSerial = @nextVisit.serial
-        @_saveVisit()
-
-
-      @nextVisit.data.priorityType = @priorityValue
-      @_saveNextVisit @nextVisit
-      @_loadNextVisit @nextVisit.serial
-      @domHost.showToast 'Next Visit Saved!'
-
-
-  #####################################################################
-  ### Next Visit - end
-  #####################################################################
-
-  #####################################################################
-  ### Note - start
-  #####################################################################
-  
-  
-
-  #####################################################################
-  ### Note - end
-  #####################################################################
 
   $findCreator: (creatorSerial)-> 'me'
 
@@ -879,25 +583,6 @@ Polymer {
     else
       @isPrescriptionValid = false
       return false
-
-
-
-  
-
-  
-  _loadNextVisit: (nextVisitSerial)->
-    list = app.db.find 'visit-next-visit', ({serial})-> serial is nextVisitSerial
-
-    if list.length is 1
-      @isNextVisitValid = true
-      @isFullVisitValid = true
-      @nextVisit = list[0]
-      console.log "NEXT VISIT: ", @nextVisit
-      return true
-    else
-      @isNextVisitValid = false
-      return false
-
 
 
 
@@ -1568,9 +1253,6 @@ Polymer {
   onVitalIndexChange: ()->
     console.log @selectedVitalIndex
   # psedo lifecycle callback
-
-  editPatientBtnPressed: ()->
-    @domHost.navigateToPage "#/patient-editor/patient:" + @patient.serial
     
   navigatedIn: ->
 

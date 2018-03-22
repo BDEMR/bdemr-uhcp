@@ -1,0 +1,263 @@
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="../../bower-assets/vaadin-date-picker/vaadin-date-picker.html">
+
+<!-- custom-elements -->
+<link rel="import" href="../html-block/html-block.html">
+
+<link rel="import" href="../../styles/common-style.html">
+<link rel="import" href="visit-common-styles.html">
+
+<dom-module id="element-next-visit">
+  <template>
+    <style is="custom-style" include="common-style visit-common-styles">
+    </style>
+    <div class="card-item-2">
+
+      <div class="preview-title wrap">
+        <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_calander_time.png"></iron-icon> -->
+        <vaadin-date-picker style="padding-top: 27px;" label="[[$TRANSLATE('Next Visit Date',LANG)]]" class="flex one date-picker-custom-style"
+          value="{{nextVisit.data.nextVisitDateTimestamp}}"></vaadin-date-picker>
+        <vaadin-combo-box class="flex one combobox-custom-style" label="Add Priority" items="{{priorityTypeList}}" allow-custom-value="true"
+          on-keyup="comboBoxKeyUpPriorityValueChanged" value="{{priorityValue}}" class="flex one">
+        </vaadin-combo-box>
+        <div class="action-area">
+          <paper-button class="btn-add" on-tap="_addNextVisitPressed">
+            <iron-icon icon="icons:save"></iron-icon>
+          </paper-button>
+        </div>
+
+      </div>
+      <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
+        <div class="card-content">
+          <div class="type body">
+            <span class="type bold">Date: [[$mkDate(nextVisit.data.nextVisitDateTimestamp)]]</span>
+            (
+            <span>{{nextVisit.data.priorityType}}</span>)
+          </div>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script src="mixin-utils.js"></script>
+  <script>
+    Polymer({
+      is: 'element-next-visit',
+      behaviors: [
+        app.behaviors.commonComputes,
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.apiCalling,
+        app.behaviors.local.visitUtilsMixin
+      ],
+      properties: {
+        isNextVisitValid: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        nextVisit: {
+          type: Object,
+          notify: true,
+          value: null
+        },
+        priorityTypeList: {
+          type: Array,
+          value: [
+            'As Necessary',
+            'Others'
+          ]
+        },
+
+        nextVisitDurationTypeList: {
+          type: Array,
+          value: [
+            '0 Day',
+            '1 Day',
+            '2 Days',
+            '3 Days',
+            '4 Days',
+            '5 Days',
+            '6 Days',
+            '7 Days',
+            '8 Days',
+            '9 Days',
+            '10 Days',
+            '11 Days',
+            '12 Days',
+            '13 Days',
+            '14 Days',
+            '15 Days',
+            '1 Week',
+            '2 Weeks',
+            '3 Weeks',
+            '4 Weeks',
+            '1 month',
+            '2 months',
+            '3 months',
+            '4 months',
+            '5 months',
+            '6 months',
+            '7 months',
+            '8 months',
+            '9 months',
+            '11 month',
+            '1 year',
+            '2 years',
+            '3 years',
+            'Custom'
+          ]
+        },
+
+        nextVisitDurationTypeSelectedIndex: {
+          type: Number,
+          notify: true,
+          value: 0
+        },
+
+        nextVisitPriorityTypeSelectedIndex: {
+          type: Number,
+          notify: true,
+          value: 0
+        },
+
+        computedNextVisitDate: {
+          type: String,
+          notify: true,
+          computed: '_showComputedNextVisitDate(nextVisit.nextVisitDateTimeStamp)'
+        },
+
+        isCustomDateTypeSelected: {
+          type: Boolean,
+          notify: true,
+          value: false
+        }
+      },
+
+      _loadNextVisit: function (nextVisitSerial) {
+        const list = app.db.find('visit-next-visit', ({ serial }) => serial === nextVisitSerial);
+        if (list.length === 1) {
+          this.isNextVisitValid = true;
+          this.isFullVisitValid = true;
+          this.nextVisit = list[0];
+          console.log("NEXT VISIT: ", this.nextVisit);
+          return true;
+        } else {
+          this.isNextVisitValid = false;
+          return false;
+        }
+      },
+
+
+      _makeNewNextVisit: function () {
+        this.nextVisit = {
+          serial: null,
+          lastModifiedDatetimeStamp: 0,
+          createdDatetimeStamp: 0,
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          visitSerial: this.visit.serial,
+          patientSerial: this.patient.serial,
+          doctorName: this.$getFullName(this.user.name),
+          doctorSpeciality: this.getDoctorSpeciality(),
+          data: {
+            nextVisitDateTimestamp: null,
+            priorityType: 'As Necessary'
+          }
+        };
+        this.isNextVisitValid = true;
+      },
+
+      _showComputedNextVisitDate(date) {
+        if (this.nextVisitDurationTypeSelectedIndex === 0) { return null; }
+        return lib.datetime.mkDate(date, 'dd-mmm-yyyy');
+      },
+
+
+      _nextVisitDurationTypeSelectedIndexChanged: function () {
+
+        let days;
+        console.log('nextVisit', this.nextVisit);
+
+        let getDurationValue = this.nextVisitDurationTypeList[this.nextVisitDurationTypeSelectedIndex];
+        getDurationValue = getDurationValue.toLowerCase();
+
+        if (getDurationValue.search('day') !== -1) {
+          days = parseInt(getDurationValue);
+          return this._setNextVisitDateTimestamp(days);
+
+        } else if (getDurationValue.search('week') !== -1) {
+          const weeks = parseInt(getDurationValue.substr(0, 1));
+          days = weeks * 7;
+          return this._setNextVisitDateTimestamp(days);
+
+        } else if (getDurationValue.search('month') !== -1) {
+          // Note: 1 month = 30days 
+          const months = parseInt(getDurationValue.substr(0, 1));
+          days = months * 30;
+          return this._setNextVisitDateTimestamp(days);
+
+        } else if (getDurationValue.search('year') !== -1) {
+          // Note: 1 year = 365days 
+          const years = parseInt(getDurationValue.substr(0, 1));
+          days = years * 365;
+          return this._setNextVisitDateTimestamp(days);
+
+        } else if (getDurationValue.search('custom') !== -1) {
+          return this.isCustomDateTypeSelected = true;
+        }
+      },
+
+
+      _setNextVisitDateTimestamp: function (days) {
+        const getCurrentDateTimestamp = lib.datetime.now();
+        const nextVisitDateTimestamp = getCurrentDateTimestamp + (days * 24 * 60 * 60 * 1000);
+        return this.nextVisit.data.nextVisitDateTimestamp = nextVisitDateTimestamp;
+      },
+
+      _nextVisitPriorityTypeSelectedIndexChanged: function () {
+
+        // console.log @priorityTypeList[@nextVisitPriorityTypeSelectedIndex]
+        return this.nextVisit.data.priorityType = this.priorityTypeList[this.nextVisitPriorityTypeSelectedIndex];
+      },
+
+      _saveNextVisit: function (data) {
+        data.lastModifiedDatetimeStamp = lib.datetime.now();
+        return app.db.upsert('visit-next-visit', data, ({ serial }) => data.serial === serial);
+      },
+
+      _addNextVisitPressed: function () {
+        if (this.nextVisit.data.nextVisitDateTimestamp !== 0) {
+          this.nextVisit.serial = this.generateSerialForNextVisit();
+          this.nextVisit.createdDatetimeStamp = lib.datetime.now();
+          if (this.visit.nextVisitSerial === null) {
+            this.visit.nextVisitSerial = this.nextVisit.serial;
+            this._saveVisit();
+          }
+
+
+          this.nextVisit.data.priorityType = this.priorityValue;
+          this._saveNextVisit(this.nextVisit);
+          this._loadNextVisit(this.nextVisit.serial);
+          return this.domHost.showToast('Next Visit Saved!');
+        }
+      }
+
+    });
+  </script>
+</dom-module>

@@ -4,9 +4,23 @@
 <link rel="import" href="../../behaviors/translating.html">
 <link rel="import" href="../../behaviors/api-calling.html">
 
+<link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../styles/common-style.html">
+<link rel="import" href="visit-common-styles.html">
+
 <dom-module id="element-invoice">
   <template>
-    <style is="custom-style" include="common-style">
+    <style is="custom-style" include="common-style visit-common-styles">
     </style>
 
     <div class="card-item-2">
@@ -70,6 +84,7 @@
       </template>
     </div>
   </template>
+  <script src="mixin-utils.js"></script>
   <script>
     Polymer({
       is: 'element-invoice',
@@ -77,7 +92,8 @@
         app.behaviors.commonComputes,
         app.behaviors.dbUsing,
         app.behaviors.translating,
-        app.behaviors.apiCalling
+        app.behaviors.apiCalling,
+        app.behaviors.local.visitUtilsMixin
       ],
       properties: {
         isInvoiceValid: {

@@ -1,43 +1,38 @@
 <!-- iron-* -->
-<link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower-assets/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower-assets/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower-assets/iron-list/iron-list.html">
-<link rel="import" href="../../bower-assets/iron-icons/communication-icons.html">
-
 <!-- paper-* -->
 <link rel="import" href="../../bower-assets/paper-button/paper-button.html">
 <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
 <link rel="import" href="../../bower-assets/paper-input/paper-input.html">
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower-assets/paper-tabs/paper-tabs.html">
-<link rel="import" href="../../bower-assets/paper-tabs/paper-tab.html">
 <link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
-<link rel="import" href="../../bower-assets/iron-selector/iron-selector.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
 <link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower-assets/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../../bower-assets/paper-fab/paper-fab.html">
-<link rel="import" href="../../bower-assets/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../../bower-assets/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower-assets/paper-input/paper-textarea.html">
-<link rel="import" href="../../bower-assets/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../../bower-assets/paper-radio-group/paper-radio-group.html">
-<link rel="import" href="../../bower-assets/paper-radio-button/paper-radio-button.html">
 
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html"
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
 
-<!-- 3rd party elements -->
-<link rel="import" href="../../bower-assets/vaadin-date-picker/vaadin-date-picker.html">
-<link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
-
-<!-- Custom AutoComplete -->
-<link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
-
-
-<!-- custom-elements -->
-<link rel="import" href="../html-block/html-block.html">
+<!-- ELEMENTS -->
+<link rel="import" href="element-patient-details.html">
+<link rel="import" href="element-visit-details.html">
+<link rel="import" href="element-prescription.html">
+<link rel="import" href="element-symptoms.html">
+<link rel="import" href="element-examination.html">
+<link rel="import" href="element-vital.html">
+<link rel="import" href="element-test-advised.html">
+<link rel="import" href="element-diagnosis.html">
+<link rel="import" href="element-next-visit.html">
+<link rel="import" href="element-refferal.html">
+<link rel="import" href="element-invoice.html">
+<link rel="import" href="element-history-physical.html">
+<link rel="import" href="element-prescription.html">
+<link rel="import" href="element-patient-stay.html">
+<link rel="import" href="element-visit-print-preview.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -49,8 +44,7 @@
 <link rel="import" href="../../behaviors/page-like.html">
 <link rel="import" href="../../behaviors/api-calling.html">
 
-<!-- custom-elements -->
-<link rel="import" href="./element-prescription.html">
+
 
 <!-- element -->
 <dom-module id="page-visit-editor">
@@ -803,15 +797,6 @@
       }
     </style>
 
-    <!-- local DOM -->
-    <!-- <template is="dom-if" if="{{!isVisitValid}}">
-      Visit invalid
-    </template>
-
-    <template is="dom-if" if="{{!isPatientValid}}">
-      Patient invalid
-    </template> -->
-
     <div class="master-container">
       <div class="limiting-container">
 
@@ -820,104 +805,12 @@
 
           <!-- visit content - start -->
           <div class="custom-card-content">
-            <div class="card-item-2 p-8">
-              <div class="horizontal layout wrap center">
-                <iron-image class="profile-image m-right-8" src$="[[patient.profileImage]]" preload sizing="cover"></iron-image>
+            <!-- Patient Details start -->
+            <element-patient-details patient="[[patient]]"></element-patient-details>
+            <!-- Patient Details end -->
 
-                <div class="flex">
-                  <div class="m-horizontal-4 horizontal layout">
-                    <div class="type body-lead capitalize">{{$getFullName(patient.name)}}</div>
-                    <div class="m-left-8 type caption bg-gray">{{patient.serial}}</div>
-                  </div>
-                  <div class="horizontal layout wrap type caption-2 secondary">
-
-                    <template is="dom-if" if="[[!patient.isForOrganizationOnly]]">
-
-                      <div class="m-horizontal-4">
-                        <strong>Sex: </strong>
-                        <span>{{patient.gender}}</span>
-                      </div>
-                      <div class="m-horizontal-4">
-                        <strong>Age: </strong>
-                        <span>[[_computeAge(patient.dateOfBirth)]] years </span>
-                      </div>
-                      <div class="m-horizontal-4">
-                        <strong>Blood Group: </strong>
-                        <span> [[patient.bloodGroup]]</span>
-                      </div>
-                      <div class="m-horizontal-4">
-                        <strong>Allergy: </strong>
-                        <span>[[patient.allergy]] </span>
-                      </div>
-                    </template>
-
-                    <template is="dom-if" if="[[patient.isForOrganizationOnly]]">
-                      <div class="m-horizontal-4">
-                        <strong>Patient Name: </strong>
-                        <i>REDACTED FOR CONFIDENTIALITY</i>
-                      </div>
-                      <div class="m-horizontal-4">
-                        <strong>Age: </strong>
-                        <i>REDACTED FOR CONFIDENTIALITY</i>
-                      </div>
-                      <div class="m-horizontal-4">
-                        <strong>Blood Group: </strong>
-                        <span>[[patient.bloodGroup]]</span>
-                      </div>
-                      <div class="m-horizontal-4">
-                        <strong>Allergy: </strong>
-                        <span>[[patient.allergy]]</span>
-                      </div>
-                    </template>
-                  </div>
-                  <div class="layout horizontal m-4">
-                    <div class="type secondary caption-2">OPD:
-                      <span class="type caption bold bg-gray">[[patientOrganizationWallet.outdoorBalance]]</span>
-                    </div>
-                    <div class="type secondary caption-2 m-left-8">IPD:
-                      <span class="type caption bold bg-gray">[[patientOrganizationWallet.indoorBalance]]</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <paper-button raised class="fixed-btn btn-add colored" on-tap="editPatientBtnPressed">Edit Patient</paper-button>
-            </div>
             <!-- visit details - start -->
-            <div class="card-item-2 horizontal layout wrap center p-8">
-
-              <div class="content left horizontal layout wrap type caption-2">
-                <div class="m-4">
-                  <strong>Record:</strong> [[visit.serial]]</div>
-                <div class="m-4">
-                  <strong>Created Date:</strong> [[$mkDate(visit.createdDatetimeStamp)]]</div>
-                <div class="m-4">
-                  <strong>Created By:</strong> {{visit.doctorName}}</div>
-              </div>
-
-              <div class="content right horizontal layout end-justified">
-                <paper-button class="btn-add m-vert" on-tap="openVisitSettingsDialog">
-                  <iron-icon icon="icons:settings"></iron-icon>
-                </paper-button>
-
-                <paper-button class="btn-add m-vert" on-tap="printButtonPressed">
-                  <iron-icon icon="icons:print" class="m-right-8"></iron-icon>Print
-                </paper-button>
-
-                <!-- <paper-button raised class="btn-add m-vert" on-tap="openVisitSettingsDialog">
-                  <iron-icon icon="communication:email"></iron-icon>
-                </paper-button> -->
-
-                <paper-button raised class="colored btn-add m-vert" on-tap="finishButtonPressed">
-                  <iron-icon icon="icons:check" class="m-right-8"></iron-icon>Finish
-                </paper-button>
-
-                <paper-button style="background: green !important;" raised class="colored btn-add m-vert" on-tap="makeNewVisitButtonPressed">
-                  <iron-icon icon="icons:check" class="m-right-8"></iron-icon>New Visit
-                </paper-button>
-
-
-              </div>
-            </div>
+            <element-visit-details visit="{{visit}}"></element-visit-details>
             <!-- visit details - end -->
           </div>
 
@@ -950,32 +843,7 @@
               <!-- Card - Notes - end -->
 
               <!-- Card - Next Visit - start -->
-              <div class="card-item-2">
-
-                <div class="preview-title wrap">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_calander_time.png"></iron-icon> -->
-                  <vaadin-date-picker style="padding-top: 27px;" label="[[$TRANSLATE('Next Visit Date',LANG)]]" class="flex one date-picker-custom-style"
-                    value="{{nextVisit.data.nextVisitDateTimestamp}}"></vaadin-date-picker>
-                  <vaadin-combo-box class="flex one combobox-custom-style" label="Add Priority" items="{{priorityTypeList}}" allow-custom-value="true"
-                    on-keyup="comboBoxKeyUpPriorityValueChanged" value="{{priorityValue}}" class="flex one">
-                  </vaadin-combo-box>
-                  <div class="action-area">
-                    <paper-button class="btn-add" on-tap="_addNextVisitPressed">
-                      <iron-icon icon="icons:save"></iron-icon>
-                    </paper-button>
-                  </div>
-
-                </div>
-                <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
-                  <div class="card-content">
-                    <div class="type body">
-                      <span class="type bold">Date: [[$mkDate(nextVisit.data.nextVisitDateTimestamp)]]</span>
-                      (
-                      <span>{{nextVisit.data.priorityType}}</span>)
-                    </div>
-                  </div>
-                </template>
-              </div>
+              <element-next-visit></element-next-visit>
               <!-- Card - Next Visit - end -->
 
               <!-- Card - Referral start -->
@@ -991,53 +859,7 @@
             <div class="content right">
 
               <!-- Card - History And Physical - start -->
-              <div class="card-item-2">
-
-                <!-- preview-title - start -->
-                <div class="preview-title layout wrap">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_history_and_physical.png"></iron-icon> -->
-
-                  <div class="type title-2 flex">History &amp; Physical</div>
-
-
-                  <div class="layout horizontal wrap">
-
-
-                    <template is="dom-if" if="[[_isEmptyString(visit.historyAndPhysicalRecordSerial)]]">
-                      <paper-button class="btn-add" on-tap="historyAndPhysicalRecordCreate">
-                        <iron-icon icon="icons:add"></iron-icon>
-                      </paper-button>
-
-
-                      <template is="dom-if" if="[[recordInClipboard]]">
-                        <paper-button class="btn-add btn btn-default" on-tap="pasteRecordPressed">
-                          <iron-icon icon="icons:content-paste" class="m-right-8"></iron-icon>Paste Record: [[recordInClipboard.serial]]
-                        </paper-button>
-                      </template>
-                    </template>
-
-                    <template is="dom-if" if="[[!_isEmptyString(visit.historyAndPhysicalRecordSerial)]]">
-                      <paper-checkbox checked="[[historyAndPhysicalRecord.availableToPatient]]" on-change="historyAndPhysicalAvailableToPatientCheckBoxChanged">Available to Patient</paper-checkbox>
-
-                      <!-- <paper-icon-button icon="print" on-tap="historyAndPhysicalRecordPrint"></paper-icon-button> -->
-
-                      <paper-icon-button icon="create" on-tap="historyAndPhysicalRecordEdit"></paper-icon-button>
-                      <paper-icon-button icon="icons:content-copy" on-tap="historyAndPhysicalRecordCopy"></paper-icon-button>
-                      <paper-icon-button icon="icons:delete" on-tap="historyAndPhysicalRecordRemove"></paper-icon-button>
-
-                      <!-- <div>[[$mkDate(record.content.preopAssessment.lastChangedDatetimeStamp)]]</div> -->
-                    </template>
-                  </div>
-                </div>
-                <!-- preview-title - end -->
-
-
-                <template is="dom-if" if="[[shouldRender]]">
-                  <div class="p-horizontal-16" style="background: #fff;">
-                    <html-block html="[[recordPartHtmlContent]]"></html-block>
-                  </div>
-                </template>
-              </div>
+              <element-history-physical></element-history-physical>
               <!-- Card - History And Physical - end -->
 
               <!-- Card :: Prescription - start -->
@@ -1047,221 +869,7 @@
               <!-- Card :: Prescription - end -->
 
               <!-- Card :: Patient Stay - start -->
-              <template is="dom-if" if="[[_checkUserAccess('D015')]]">
-                <div class="card-item-2">
-
-                  <div class="preview-title layout">
-                    <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_patient_stay.png"></iron-icon> -->
-                    <div class="type title-2 flex">Patient Stay</div>
-                    <div class="action-area">
-                      <paper-button class="btn-add m-vert" on-tap="savePatientStayPressed">
-                        <iron-icon icon="icons:save"></iron-icon>
-                      </paper-button>
-                    </div>
-                  </div>
-
-                  <iron-pages selected="{{selectedView}}">
-
-                    <section id="admission-section">
-
-                      <div class="type body-lead p-vertical-8 p-horizontal-16">Type</div>
-                      <div class="card-content layout vertical types">
-                        <paper-radio-group id="admissionTypeRadioGroup" selected="{{patientStay.data.admissionType}}" class="layout vertical" on-iron-select="admissionTypeChanged">
-                          <template is="dom-repeat" items="[[admissionTypeList]]">
-                            <paper-radio-button name="[[item]]">[[item]]</paper-radio-button>
-                          </template>
-                        </paper-radio-group>
-
-                        <template is="dom-if" if="[[!advisedAdmission]]">
-                          <paper-input class="p-16" label="Advice" value="{{patientStay.data.advise}}"></paper-input>
-                        </template>
-                        <template is="dom-if" if="[[advisedAdmission]]">
-                          <paper-input label="Referred By" value="{{patientStay.data.referredByDoctorName}}"></paper-input>
-                          <paper-input label="Admitted By" value="{{patientStay.data.admittedByDoctorName}}"></paper-input>
-                        </template>
-                      </div>
-
-
-                      <template is="dom-if" if="[[advisedAdmission]]">
-
-                        <!-- Admission to - start -->
-                        <div class="type body-lead p-vertical-8 p-horizontal-16">Admission to</div>
-                        <div class="card-content layout horizontal start">
-                          <div class="m-right-8">
-                            <vaadin-date-picker label="Admission Date" value="{{patientStay.data.admissionDateTimeStamp}}"></vaadin-date-picker>
-                          </div>
-                          <paper-dropdown-menu class="m-right-8" label="Clinic/Hospital" id="organizationDropdown">
-                            <paper-listbox class="dropdown-content" on-iron-select="organizationSelected" selected="{{selectedOrganizationIndex}}">
-                              <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
-                                <paper-item>[[organization.name]]</paper-item>
-                              </template>
-                            </paper-listbox>
-                          </paper-dropdown-menu>
-
-                          <template is="dom-if" if="[[$notUndefined(selectedOrganizationIndex)]]">
-                            <paper-dropdown-menu class="m-right-8" label="Department" id="departmentDropdown">
-                              <paper-listbox class="dropdown-content" on-iron-select="departmentSelected" selected="{{selectedDepartmentIndex}}">
-                                <template is="dom-repeat" items="[[patientStayObject.departmentList]]" as="department">
-                                  <paper-item>[[department.name]]</paper-item>
-                                </template>
-                              </paper-listbox>
-                            </paper-dropdown-menu>
-                          </template>
-
-                          <template is="dom-if" if="[[$notUndefined(selectedDepartmentIndex)]]">
-                            <paper-dropdown-menu class="m-right-8" label="Unit" id="unitDropdown">
-                              <paper-listbox class="dropdown-content" on-iron-select="unitSelected" selected="{{selectedUnitIndex}}">
-                                <template is="dom-repeat" items="[[unitList]]" as="unit">
-                                  <paper-item>[[unit.name]]</paper-item>
-                                </template>
-                              </paper-listbox>
-                            </paper-dropdown-menu>
-                          </template>
-
-                          <template is="dom-if" if="[[$notUndefined(selectedUnitIndex)]]">
-                            <paper-dropdown-menu class="m-right-8" label="Ward" id="wardDropdown">
-                              <paper-listbox class="dropdown-content" on-iron-select="wardSelected" selected="{{selectedWardIndex}}">
-                                <template is="dom-repeat" items="[[wardList]]" as="ward">
-                                  <paper-item>[[ward.name]]</paper-item>
-                                </template>
-                              </paper-listbox>
-                            </paper-dropdown-menu>
-                          </template>
-                        </div>
-                        <!-- Admission to - end -->
-
-                        <!-- Seat List - start -->
-                        <template is="dom-if" if="[[seatList.length]]">
-                          <div class="card-content">
-                            <iron-list id="seatList" items="[[seatList]]" style="max-height: 300px;">
-                              <template>
-                                <paper-item class="layout horizontal seat center">
-                                  <div class="m-right-16">
-                                    <paper-input value="[[item.department]]" label="department" disabled="disabled"></paper-input>
-                                  </div>
-                                  <div class="m-right-16">
-                                    <paper-input value="[[item.unit]]" label="unit" disabled="disabled"></paper-input>
-                                  </div>
-                                  <div class="m-right-16">
-                                    <paper-input value="[[item.ward]]" label="ward" disabled="disabled"></paper-input>
-                                  </div>
-                                  <div class="m-right-16">[[item.name]]</div>
-                                  <template is="dom-if" if="[[item.isOverflow]]">
-                                    <div style="color: red">OVERFLOW</div>
-                                  </template>
-                                  <template is="dom-if" if="[[$equals(patient.serial, item.patientSerial)]]">
-                                    Occupied by this patient ([[item.location]])
-                                    <div hidden>[[index]]</div>
-                                    <paper-button class="btn btn-default btn-sm btn-danger" raised on-tap="dischargeTapped">Discharge</paper-button>
-                                  </template>
-                                  <template is="dom-if" if="[[!$equals(patient.serial, item.patientSerial)]]">
-                                    <template is="dom-if" if="[[!item.patientSerial]]">
-                                      Vacant &nbsp;
-                                      <div hidden>[[index]]</div>
-                                      <paper-button class="btn btn-default btn-sm" raised on-tap="fillTapped">Fill</paper-button>
-                                    </template>
-                                    <template is="dom-if" if="[[item.patientSerial]]">
-                                      Occupied
-                                    </template>
-                                  </template>
-                                </paper-item>
-                              </template>
-                            </iron-list>
-                          </div>
-                          <div class="card-actions">
-                            <paper-button class="btn btn-default" raised on-tap="addOverflow">Add as overflow</paper-button>
-                          </div>
-                        </template>
-                        <!-- Seat List - end -->
-
-                        <template is="dom-if" if="[[seatList.length]]">
-
-                          <!-- Location Logs - start -->
-                          <div class="type body-lead p-vertical-8 p-horizontal-16">Location Logs</div>
-                          <div class="card-content" style="max-height: 200px;overflow: auto">
-                            <template is="dom-repeat" items="[[patientStay.data.currentLocation]]" sort="_sortByDate">
-                              <paper-item class="layout center">
-                                <div class="flex">[[$mkDateTime(item.datetimeStamp)]] :
-                                  <span class="type primary">[[item.location]]</span>
-                                </div>
-                                <paper-icon-button class="type danger" icon="delete" on-tap="deleteLocationEntry"></paper-icon-button>
-                              </paper-item>
-                            </template>
-                          </div>
-                          <!-- Location Logs - end -->
-
-                          <!-- Patient's Current Location - start -->
-                          <div class="type body-lead p-vertical-8 p-horizontal-16">Patient's Current Location</div>
-                          <div class="card-content">
-                            <paper-radio-group id="locationRadioGroup" selected="{{selectedLocation}}" class="layout" on-iron-select="locationChanged">
-                              <template is="dom-repeat" items="[[patientStayObject.locations]]">
-                                <paper-radio-button name="[[item]]">[[item]]</paper-radio-button>
-                              </template>
-                            </paper-radio-group>
-                            <paper-textarea label="Custom Location" on-keyup="customLocationAdded"></paper-textarea>
-                          </div>
-                          <!-- Patient's Current Location - end -->
-
-                        </template>
-
-                      </template>
-                    </section>
-
-                    <section id="discharge-section">
-                      <template is="dom-if" if="[[patientDischarged]]">
-
-                        <!-- Discharged Reason - start -->
-                        <div class="type body-lead p-vertical-8 p-horizontal-16">Discharged Reason</div>
-                        <div class="card-content layout vertical discharge-reason">
-                          <div>
-                            <vaadin-date-picker class="m-left-16" label="Discharged Date" value="{{patientStay.data.dischargeDatetimeStamp}}"></vaadin-date-picker>
-                            <br>
-                          </div>
-                          <div class="checkbox-group layout vertical m-left-16">
-                            <template is="dom-repeat" items="[[dischargeReasonList]]">
-                              <paper-checkbox on-change="dischargeReasonChanged" name="[[item]]">[[item]]</paper-checkbox>
-                            </template>
-                          </div>
-
-                          <template is="dom-if" if="[[patientStay.data.dischargeReason.length]]">
-                            <div class="p-16 bg-gray" style="text-align: left;">
-                              <template is="dom-repeat" items="[[patientStay.data.dischargeReason]]">
-                                <span class="type italic bold m-right-8 primary">[[item]]</span>,
-                              </template>
-                            </div>
-                          </template>
-
-                          <paper-textarea class="m-left-16" label="Discharged Custom Resaon" on-keyup="customDischargeReasonAdded"></paper-textarea>
-                        </div>
-                        <!-- Discharged Reason - end -->
-
-                        <!-- Discharged - start -->
-                        <div class="type body-lead p-vertical-8 p-horizontal-16">Discharged to</div>
-                        <div class="card-content layout vertical discharge-reason">
-                          <div class="checkbox-group layout vertical m-left-16">
-                            <template is="dom-repeat" items="[[dischargedToList]]">
-                              <paper-checkbox on-change="dischargedToChanged" name="[[item]]">[[item]]</paper-checkbox>
-                            </template>
-                          </div>
-                          <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
-                            <div class="p-16 bg-gray" style="text-align: left;">
-                              <template is="dom-repeat" items="[[patientStay.data.dischargeTo]]">
-                                <span class="type italic bold m-right-8 primary">[[item]]</span>,
-                              </template>
-                            </div>
-                          </template>
-                          <paper-textarea class="m-left-16" label="Discharged To Custom Resaon" on-keyup="customDischargeToAdded"></paper-textarea>
-
-                          <paper-input label="Discharged By" value="{{patientStay.data.dischargedByDoctorName}}"></paper-input>
-                        </div>
-                        <!-- Discharged - end -->
-
-                      </template>
-                    </section>
-
-                  </iron-pages>
-                </div>
-              </template>
+              <element-patient-stay></element-patient-stay>
               <!-- Card :: Patient Stay - end -->
 
             </div>
@@ -1271,6 +879,10 @@
         <!-- New Visit - end -->
       </div>
     </div>
+
+    <!-- Print Preview Area - start -->
+    <element-visit-print-preview></element-visit-print-preview>
+    <!-- Print Preview Area - end -->
 
     <!-- Dialog for - Continue Current Medication - start -->
     <paper-dialog id="dialogContinueCurrentMedication">
@@ -1322,61 +934,6 @@
     </paper-dialog>
     <!-- Dialog for - Examination Member Name - end -->
 
-    <!-- Dialog for - Custom Investigation - start -->
-    <paper-dialog id="dialogCustomInvestigation">
-
-      <div class="dialog-content">
-        <div class="type body-lead" style="color: green;">[[comboBoxInvestigationInputValue]]</div>
-        <paper-input label="[[$TRANSLATE('Reference Range',LANG)]]" value="{{customInvestigationObject.data.investigationList.0.referenceRange}}"></paper-input>
-
-        <div class="horizontal layout center wrap">
-          <paper-input class="flex" label="[[$TRANSLATE('Add Unit',LANG)]]" value="{{customInvestigationUnitValue}}"></paper-input>
-          <paper-icon-button icon="add" on-click="_addUnitValueForCustomInvestigation"></paper-icon-button>
-        </div>
-
-        <div>
-          <template is="dom-if" if="{{!_isEmpty(customInvestigationUnitList.length)}}">
-            <strong>Added Units: </strong>
-            <div class="horizontal layout wrap">
-              <template is="dom-repeat" items="{{customInvestigationUnitList}}">
-                <div class="card-item horizontal layout center">
-                  <div class="type body flex p-horizontal-8">{{item}}</div>
-                  <div style="border-left: 1px solid #eee;" class="horizontal layout center">
-                    <paper-icon-button style="color: red;" icon="delete" on-tap="_deleteSelectedUnit"></paper-icon-button>
-                  </div>
-                </div>
-              </template>
-            </div>
-
-          </template>
-        </div>
-
-      </div>
-
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button class="btn btn-success" on-click="_saveCustomInvestigation" autofocus raised>Save</paper-button>
-      </div>
-    </paper-dialog>
-    <!-- Dialog for - Custom Investigation - end -->
-
-
-    <!-- Dialog for - Favorite Investigation - start -->
-    <paper-dialog id="dialogFavoriteInvestigation">
-      <div class="type body-lead">Add Test</div>
-      <div class="dialog-content">
-        <template is="dom-repeat" items="[[favoriteInvestigaitonList]]">
-          <paper-checkbox checked="{{item.isSelected}}">{{item.data.name}}</paper-checkbox>
-        </template>
-      </div>
-
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button class="colored" on-click="addInvestigationFromFavorite" autofocus raised>Add</paper-button>
-      </div>
-    </paper-dialog>
-    <!-- Dialog for - Custom Investigation - end -->
-
     <!-- Dialog - Visit Settings - start -->
     <paper-dialog id="dialogVisitSettings">
       <div class="dialog-content">
@@ -1411,500 +968,9 @@
       </div>
     </paper-dialog>
 
-    <!-- Dialog for - Referral start -->
-    <paper-dialog id="dialogReferral" style="width: 360px">
-      <h2>Add Referral</h2>
-      <div class="p-16">
-        <paper-dropdown-menu label="Select Referral Type">
-          <paper-listbox class="dropdown-content" selected="{{selectedReferralTypeIndex}}">
-            <paper-item>Doctor</paper-item>
-            <paper-item>Hospital</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
+    
 
-        <template is="dom-if" if="[[!selectedReferralTypeIndex]]">
-          <paper-input label="Referred By" value="[[user.name]]"></paper-input>
-          <div>
-            <paper-autocomplete id="doctorSearch" label="[[$TRANSLATE('Search for Doctor',LANG)]]" text="{{doctorSearchFieldInput}}"
-              text-property="name" value-property="idOnServer" remote-source="true" on-autocomplete-reset="doctorSearchCleared"
-              on-keyup="doctorSearchStartKeyPressed" error-message="Input Required" required>
-              <template autocomplete-custom-template>
-                <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-                  <paper-item-body two-line>
-                    <div class="type bold">[[item.name]]</div>
-                    <div secondary>
-                      <span class="type secondary caption-2">([[item.phone]])</span>
-                      <span class="type secondary caption-2 m-left-8">[[item.email]]</span>
-                    </div>
-                  </paper-item-body>
-                  <paper-ripple></paper-ripple>
-                </paper-item>
-              </template>
-            </paper-autocomplete>
-            <paper-button class="btn btn-success" on-tap="doctorSearchButtonPressed">Search</paper-button>
-          </div>
-          <paper-dropdown-menu label="Specialist Type">
-            <paper-listbox class="dropdown-content" selected="{{referredDoctorSpecialitySelectedIndex}}">
-              <template is="dom-repeat" items="[[referredDoctorSpecialityList]]">
-                <paper-item>[[item]]</paper-item>
-              </template>
-            </paper-listbox>
-          </paper-dropdown-menu>
-        </template>
-
-
-        <template is="dom-if" if="[[selectedReferralTypeIndex]]">
-          <paper-autocomplete class="flex" id="organizationSearch" label="[[$TRANSLATE('Search for Hospital',LANG)]]" text="{{organizationSearchFieldInput}}"
-            text-property="name" value-property="idOnServer" remote-source="true" on-autocomplete-selected="organizationSelected"
-            on-autocomplete-reset="organizationSearchCleared" on-keyup="organizationSearchStartKeyPressed" error-message="Input Required"
-            required>
-            <template autocomplete-custom-template>
-              <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-                <div class="type bold">[[item.name]]</div>
-                <paper-ripple></paper-ripple>
-              </paper-item>
-            </template>
-          </paper-autocomplete>
-          <paper-button class="btn btn-success" on-tap="organizationSearchButtonPressed">Search</paper-button>
-        </template>
-      </div>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button class="btn btn-primary" on-tap="addReferralButtonClicked">Add Referral</paper-button>
-      </div>
-    </paper-dialog>
-    <!-- Dialog for - Referral start -->
-
-    <!-- Print Preview Area - start -->
-    <div id="printPreview">
-
-      <div class="print-header horizontal layout center center-justified">
-        <h1>[[settings.printDecoration.headerLine]]</h1>
-      </div>
-
-      <!-- Print Header - Main - start -->
-      <div class="document-header horizontal layout center">
-        <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
-          <img class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
-        </template>
-
-        <div class="leftSide">
-          <div class="leftSideLine1">[[settings.printDecoration.leftSideLine1]]</div>
-          <div class="leftSideLine2">[[settings.printDecoration.leftSideLine2]]</div>
-          <div class="leftSideLine3">[[settings.printDecoration.leftSideLine3]]</div>
-        </div>
-        <div class="flex"></div>
-        <div class="rightSide layout end-justified">
-          <div class="rightSideLine1">[[settings.printDecoration.rightSideLine1]]</div>
-          <div class="rightSideLine2">[[settings.printDecoration.rightSideLine2]]</div>
-          <div class="rightSideLine3">[[settings.printDecoration.rightSideLine3]]</div>
-        </div>
-      </div>
-      <!-- Print Header - Main - end -->
-
-      <!-- Print Header - Patient Details - start -->
-      <div class="document-header horizontal layout center p-vertical-8">
-        <template is="dom-if" if="[[!patient.isForOrganizationOnly]]">
-          <div class="m-horizontal-4">
-            <strong>Patient Serial: </strong>
-            <span>{{patient.serial}}</span>
-          </div>
-          <div class="m-horizontal-4">
-            <strong>Patient Name: </strong>
-            <span>{{patient.name}}</span>
-          </div>
-          <div class="m-horizontal-4">
-            <strong>Sex: </strong>
-            <span></span>
-          </div>
-          <div class="m-horizontal-4">
-            <strong>Age: </strong>
-            <span>[[_computeAge(patient.dob)]] years </span>
-          </div>
-          <div class="m-horizontal-4">
-            <strong>Blood Group: [[patient.bloodGroup]] </strong>
-            <span> </span>
-          </div>
-          <div class="m-horizontal-4">
-            <strong>Allergy: [[patient.allergy]]</strong>
-            <span> </span>
-          </div>
-        </template>
-
-        <template is="dom-if" if="[[patient.isForOrganizationOnly]]">
-          <div class="m-horizontal-4">
-            <strong>Patient Name: </strong>
-            <i></i>
-          </div>
-          <div class="m-horizontal-4">
-            <strong>Age: </strong>
-            <i>REDACTED FOR CONFIDENTIALITY</i>
-          </div>
-          <div class="m-horizontal-4">
-            <strong>Blood Group: [[patient.bloodGroup]]</strong>
-            <span> </span>
-          </div>
-          <div class="m-horizontal-4">
-            <strong>Allergy: [[patient.allergy]]</strong>
-            <span> </span>
-          </div>
-        </template>
-      </div>
-      <!-- Print Header - Patient Details - end -->
-
-      <!-- Print Header - record Title - start -->
-      <div class="p-16 horizontal layout center center-justified" hidden$="{{!printPrescriptionOnly}}">
-        <div class="type headline">{{visit.recordTitle}}</div>
-      </div>
-      <!-- Print Header - record Title - start -->
-
-      <!-- Print Content [FULL] - start -->
-      <div class="print-content" hidden$="{{printPrescriptionOnly}}">
-        <!-- Print Content - Left - start -->
-        <div class="left">
-
-          <!-- Print - Symptoms - start -->
-          <template is="dom-if" if="[[!_isEmpty(addedIdentifiedSymptomsList.length)]]">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body">Symptoms</div>
-            </div>
-            <template is="dom-repeat" items="[[addedIdentifiedSymptomsList]]">
-              <div class="type caption-2">
-                <span class="type secondary">[[_returnSerial(index)]]. </span>
-                <span>{{item.name}}</span>
-                <template is="dom-if" if="[[_compareFn(item.possibleValueList.length, '>', 0)]]">
-                  (
-                  <template is="dom-repeat" items="[[item.possibleValueList]]">
-                    <span>{{item}}, </span>
-                  </template>)
-                </template>
-              </div>
-            </template>
-            <div class="b-top m-top-8"></div>
-          </template>
-          <!-- Print - Symptoms - end -->
-
-          <!-- Print - Examination - start -->
-          <template is="dom-if" if="[[!_isEmpty(addedExaminationList2.length)]]">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body">Examination</div>
-            </div>
-            <template is="dom-repeat" items="[[addedExaminationList2]]" as="examination">
-              <div class="type caption-2">
-                <span class="type secondary">[[_returnSerial(index)]]. </span>
-                <span>{{examination.name}}</span>
-                (
-                <template is="dom-repeat" items="[[examination.examinationValueList]]" as="examItem">
-                  <span hidden$="{{!examItem.checked}}">{{examItem.value}}, </span>
-                </template>)
-              </div>
-            </template>
-            <div class="b-top m-top-8 "></div>
-          </template>
-          <!-- Print - Examination - end -->
-
-          <!-- Print - Vitals - start -->
-          <template is="dom-if" if="[[!_isEmpty(addedVitalList.length)]]">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body">Vitals</div>
-            </div>
-            <template is="dom-repeat" items="[[addedVitalList]]">
-              <div class="type caption-2">
-                <strong>{{item.vitalType}}: </strong>
-                <span>[[_pritifyVitalData(item)]]</span>
-              </div>
-            </template>
-            <div class="b-top m-top-8"></div>
-          </template>
-          <!-- Print - Vitals - end -->
-
-          <!-- Print - Test Advised - start -->
-          <template is="dom-if" if="[[!_isEmpty(addedInvestigationList.length)]]">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body">Advised Test</div>
-            </div>
-            <template is="dom-repeat" items="[[addedInvestigationList]]">
-              <div class="type caption-2 layout horizontal">
-                <div class="type secondary m-right-8">[[_returnSerial(index)]]. </div>
-                <div class="flex vertical layout">
-                  <div>{{item.investigationName}}</div>
-                  <template is="dom-if" if="[[_compareFn(item.testList.length, '==', 1)]]">
-                    <ol class="order-list">
-                      <li>{{item.testList.0.name}}</li>
-                    </ol>
-                  </template>
-                  <template is="dom-if" if="[[_compareFn(item.testList.length, '>', 1)]]">
-                    <ol class="order-list">
-                      <template is="dom-repeat" items="[[item.testList]]">
-                        <li>{{item.name}}</li>
-                      </template>
-                    </ol>
-                  </template>
-                </div>
-                <template is="dom-if" if="[[item.suggestedInstitutionName]]">
-                  <div class="type caption secondary m-left-16">
-                    <strong>Suggested Institution: </strong>
-                    <span class="flex">{{item.suggestedInstitutionName}}</span>
-                  </div>
-                </template>
-              </div>
-            </template>
-            <div class="b-top"></div>
-          </template>
-          <!-- Print - Test Advised - end -->
-
-          <!-- Print - Diagnosis - start -->
-          <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body">Diagnosis</div>
-            </div>
-            <template is="dom-repeat" items="[[diagnosis.data.diagnosisList]]">
-              <div class="type caption-2">
-                <span class="type secondary">[[_returnSerial(index)]]. </span>
-                <span>{{item.name}}</span>
-                <template is="dom-if" if="[[_compareFn(item.possibleValueList.length, '>', 0)]]">
-                  (
-                  <template is="dom-repeat" items="[[item.possibleValueList]]">
-                    <span>{{item}}, </span>
-                  </template>)
-                </template>
-              </div>
-            </template>
-            <div class="b-top m-top-8"></div>
-          </template>
-          <!-- Print - Diagnosis - end -->
-
-          <!-- Print Referral Start -->
-
-          <div class="layout horizontal">
-            <span class="type bold">Referred By: </span> [[referral.data.referredByDoctorName]]
-          </div>
-          <template is="dom-if" if="[[referral.data.doctorName]]">
-            <div class="layout horizontal">
-              <span class="type bold">Referred To: </span> [[referral.data.doctorName]]
-            </div>
-            <div class="layout horizontal">
-              <span class="type bold">Speciality: </span> [[referral.data.speciality]]</div>
-          </template>
-          <template is="dom-if" if="[[referral.data.organizationName]]">
-            <div class="layout horizontal">
-              <span class="type bold">Organization Name: </span> [[referral.data.organizationName]]</div>
-          </template>
-          <!-- Print Referral end -->
-
-          <!-- Print - Notes - start -->
-          <template is="dom-if" if="{{!_isEmpty(doctorNotes.data.messageList.length)}}">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body">Doctor Advised/Notes</div>
-            </div>
-            <ul class="unorderd-list-custom">
-              <template is="dom-repeat" items="[[doctorNotes.data.messageList]]">
-                <li class="type caption-2" style="word-break: break-word; margin-right: 4px;">{{item}}</li>
-              </template>
-            </ul>
-            <div class="b-top m-top-8"></div>
-          </template>
-          <!-- Print - Notes - end -->
-
-          <!-- Print - Next Visit - start -->
-          <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body">Next Visit</div>
-            </div>
-            <div class="type caption-2">
-              <div>
-                <strong>Date: </strong>
-                <span>[[$mkDate(nextVisit.data.nextVisitDateTimestamp)]]</span>
-              </div>
-              <div>{{nextVisit.data.priorityType}}</div>
-            </div>
-            <div class="b-top m-top-8"></div>
-          </template>
-          <!-- Print - Next Visit - end -->
-        </div>
-        <!-- Print Content - Left - end -->
-
-        <!-- Print Content - right - start -->
-        <div class="right">
-
-          <!-- Print - History And Physical - start -->
-          <template is="dom-if" if="[[shouldRender]]">
-            <div class="horizontal layout center">
-              <div class="type body print-sub-header">[[recordPartTitle]]</div>
-            </div>
-            <div class="p-horizontal-16">
-              <html-block html="[[recordPartHtmlContent]]"></html-block>
-            </div>
-            <div class="b-top m-top-8"></div>
-          </template>
-          <!-- Print - History And Physical - end -->
-
-          <br>
-          <br>
-
-          <!-- Print - Prescription - start -->
-          <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body p-left-16">Prescription</div>
-            </div>
-
-            <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
-              <div class="m-vertical-8 p-left-16 horizontal layout center">
-                <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
-                <div>
-                  <div>
-                    <span class="type caption-2 text-bold">{{item.data.brandName}}</span>
-                    <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
-                    <span class="type caption italic">{{item.data.genericName}} {{item.data.strength}}</span>
-                  </div>
-
-
-                  <div class="type caption">
-                    <strong>Instruction: </strong>
-                    <span>[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                      <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
-                    </span>
-                    <span>[[$TRANSLATE('By', LANG)]] </span>
-                    <span>[[$TRANSLATE(item.data.route, LANG)]]</span>
-                    <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
-                  </div>
-                  <div class="type caption">[[item.data.comments]]</div>
-                </div>
-              </div>
-            </template>
-
-          </template>
-          <!-- Print - Prescription - end -->
-          <br>
-          <!-- Patient Stay Preview -->
-          <template is="dom-if" if="[[patientStay.serial]]">
-            <div class="horizontal layout center print-sub-header">
-              <div class="type body p-left-16">Patient Stay</div>
-            </div>
-            <div class="p-horizontal-16">
-              <div class="layout horizontal">
-                <span class="type bold"> Admission Date: </span>
-                <span>&nbsp;[[$mkDate(patientStay.data.admissionDateTimeStamp)]]</span>
-              </div>
-              <div>
-                <span class="type bold">Type: </span> [[patientStay.data.admissionType]]
-              </div>
-              <template is="dom-if" if="[[patientStay.adviseOnly]]">
-                <div>
-                  <span class="type bold">Advice: </span> [[patientStay.data.advise]]
-                </div>
-              </template>
-              <template is="dom-if" if="[[!patientStay.adviseOnly]]">
-                <div>
-                  <span class="type bold">Referred By: </span> [[patientStay.data.referredByDoctorName]]
-                </div>
-                <div>
-                  <span class="type bold">Admitted By: </span> [[patientStay.data.admittedByDoctorName]]
-                </div>
-                <div class="type italic">
-                  <span>[[patientStay.data.locationHospitalName]]</span> >
-                  <span>[[patientStay.data.locationDepartment]]</span> >
-                  <span>[[patientStay.data.locationUnit]]</span> >
-                  <span>[[patientStay.data.locationWard]]</span> >
-                  <span>[[patientStay.data.locationBed]]</span>
-                </div>
-              </template>
-              <template is="dom-if" if="[[patientStay.data.currentLocation.length]]">
-                <div>
-                  <span class="type bold"> Current Location:</span>
-                  <span>[[patientStay.data.currentLocation.0.location]]</span>
-                </div>
-              </template>
-              <template is="dom-if" if="[[patientStay.data.dischargeDatetimeStamp]]">
-                <div>
-                  <span class="type bold"> Discharge Date:</span>
-                  <span>[[$mkDate(patientStay.data.dischargeDatetimeStamp)]]</span>
-                </div>
-                <div>
-                  <span class="type bold">Discharged By: </span> [[patientStay.data.dischargedByDoctorName]]
-                </div>
-                <div>
-                  <span class="type bold"> Length of Stay:</span>
-                  <span>[[calculateLengthOfStay(patientStay.data.admissionDateTimeStamp, patientStay.data.dischargeDatetimeStamp)]]
-                    Days
-                  </span>
-                </div>
-              </template>
-              <template is="dom-if" if="[[patientStay.data.dischargeReason.length]]">
-                <div>
-                  <span class="type bold">Discharge Reason: </span> [[patientStay.data.dischargeReason]]</div>
-              </template>
-              <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
-                <div>
-                  <span class="type bold"> Discharged To:</span> [[patientStay.data.dischargeTo]]</div>
-              </template>
-            </div>
-          </template>
-          <!-- Patient Stay Preview End -->
-        </div>
-        <!-- Print Content - right - end -->
-      </div>
-      <!-- Print Content [FULL] - end -->
-
-      <!-- Print Content - [Prescripton only] - start -->
-      <div hidden$="{{!printPrescriptionOnly}}">
-        <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
-          <div class="horizontal layout center print-sub-header">
-            <div class="type body p-left-16">Prescription</div>
-          </div>
-
-          <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
-            <div class="m-vertical-8 p-left-16 horizontal layout center">
-              <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
-              <div>
-                <div>
-                  <span class="type caption-2 text-bold">{{item.data.brandName}}</span>
-                  <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
-                  <span class="type caption italic">{{item.data.genericName}} {{item.data.strength}}</span>
-                </div>
-
-
-                <div class="type caption">
-                  <strong>Instruction: </strong>
-                  <span>[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                    <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
-                  </span>
-                  <span>[[$TRANSLATE('By', LANG)]] </span>
-                  <span>[[$TRANSLATE(item.data.route, LANG)]]</span>
-                  <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
-                </div>
-                <div class="type caption">[[item.data.comments]]</div>
-              </div>
-            </div>
-          </template>
-        </template>
-      </div>
-      <!-- Print Content - [Prescripton only] - end -->
-
-      <div>
-        <div class="horizontal layout end-justified center">
-          <template is="dom-if" if="[[settings.printDecoration.signatureDataUri]]">
-            <img height="96" width="128" class="logo" src="[[settings.printDecoration.signatureDataUri]]" alt="signature">
-          </template>
-        </div>
-        <div class="type caption secondary" style="text-align: center; padding: 8px;">
-          <div>
-            <i>
-              <strong>prepared by: </strong>{{user.name}}</i>
-          </div>
-
-        </div>
-        <template is="dom-if" if="[[settings.flags.showFooterLine]]">
-          <div class="b-top">
-            <div class="type caption secondary">[[settings.printDecoration.footerLine]]</div>
-          </div>
-        </template>
-      </div>
-
-
-    </div>
-
-    <!-- Print Preview Area - end -->
+    
 
     <!-- local DOM -->
   </template>
