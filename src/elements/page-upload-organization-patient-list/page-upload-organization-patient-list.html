@@ -254,8 +254,7 @@
           this.domHost.showModalDialog("Please upload a patient list first");
           return
         }
-        partialJson = this.jsonOutput.slice(0, 3)
-        window.lib.util.iterate(partialJson, (next, index, item) => {
+        window.lib.util.iterate(this.jsonOutput.slice(0,3), (next, index, item) => {
           this.createUser(item, (err, response) => {
             if (response.hasError) {
               this.unsuccessfulSignUpUserList.push({ employeeId: item.employeeId, message: response.error.message })
@@ -278,28 +277,30 @@
             }
           });
         }).finally(() => {
-          console.log('successful:', this.successfulSignUpUserList)
-          console.error('un-successful:', this.unsuccessfulSignUpUserList)
+          console.info('un-successful:', JSON.stringify(this.unsuccessfulSignUpUserList))
         })
       },
 
       createUser: function (doc, cbfn) {
         patient = {}
 
-        doc.phone = (doc.phone).toString()
-        if (doc.phone.length == 10) {
-          doc.phone = "0" + doc.phone
+        if (doc.phone != null && doc.phone !== 'undefined') {
+          if (typeof doc.phone !== 'string') {
+            doc.phone = (doc.phone).toString()
+          }
+          if (doc.phone.length == 10) {
+            doc.phone = "0" + doc.phone
+          }
         }
-
-        if (!doc.name || !doc.phone || (doc.phone.length < 11)) {
-          this.invalidUserList.push(doc)
-          response = {
+        
+        if (!doc.name || !doc.phone || (doc.phone.length < 10 || doc.phone.length > 11)) {
+          fakeResponse = {
+            hasError: true,
             error: {
               message: 'Invalid User'
             }
           }
-          return cbfn(null, response)
-
+          return cbfn(null, fakeResponse)
         }
 
         if (doc.dateOfBirth) {
@@ -315,16 +316,16 @@
         patient.doctorAccessPin = "0000"
         patient.organizationSerial = this.organization.serial || this.organization.name.slice(0, 4)
         patient.gender = doc.gender || 'Other'
-        patient.nationalIdCardNumber = doc.nid
+        patient.nationalIdCardNumber = doc.nid || null
         patient.employmentInfo = {
           employmentStatus: true,
-          currentPosition: doc.designation,
-          department: doc.department,
-          salaryRange: doc.salary,
+          currentPosition: doc.designation || null,
+          department: doc.department || null,
+          salaryRange: doc.salary || null,
           salary: null,
-          joiningDate: this.makeDateOfBirth(doc.joiningDate),
-          institutionName: this.organization.name,
-          institutionAddress: this.organization.address
+          joiningDate: this.makeDateOfBirth(doc.joiningDate) || null,
+          institutionName: this.organization.name || null,
+          institutionAddress: this.organization.address || null
         }
         patient.degreeInfo = {
           degreeTitle: doc.education || '',
