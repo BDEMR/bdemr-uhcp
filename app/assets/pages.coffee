@@ -370,6 +370,18 @@ app.pages.pageList = [
   }
 
   {
+    name: 'upload-organization-patient-list'
+    element: 'page-upload-organization-patient-list'
+    windowTitlePostfix: 'UHCP Upload Patient List'
+    headerTitle: 'UHCP Upload Patient List'
+    hrefList: [ 'upload-organization-patient-list' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    hideHeaderTitle: false
+  }
+
+  {
     name: 'review-report'
     element: 'page-review-report'
     windowTitlePostfix: 'Review Report'
