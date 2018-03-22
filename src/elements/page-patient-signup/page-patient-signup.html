@@ -387,11 +387,9 @@
                     </paper-radio-group>
                   </div>
 
-                  <paper-input class="custom-input paper-custom full" class="p-horizontal-8" value="{{patient.phone}}" label="Phone Number" pattern="^[0-9]{11,11}(-[0-9]*){0,1}$" required auto-validate error-message="Phone Number Required. i.e.: 01712345678 or 01712345678-12'" char-counter minlength="11" maxlength="14" on-keyup="_checkIfMobileNumberAvailable">
+                  <paper-input class="custom-input paper-custom full" class="p-horizontal-8" value="{{patient.phone}}" label="Phone Number" pattern="^[0-9]{11,11}(-[0-9]*){0,1}$" required auto-validate error-message="Phone Number Required. i.e.: 01712345678 or 01712345678-12'" char-counter minlength="11" maxlength="14">
                     <div prefix>+88</div>
                   </paper-input>
-
-                  
 
                   <template is="dom-if" if="[[errorMsg]]">
                     <div class="p-top-8 type caption-2 danger p-horizontal-8 horizontal layout center">
@@ -406,13 +404,58 @@
                       <div class="flex">{{successMsg}}</div>
                     </div>
                   </template>
+
+                  <paper-input class="custom-input paper-custom full" class="p-horizontal-8" value="{{patient.repeatPhone}}" required label="Repeat Phone Number"
+                   char-counter minlength="11" maxlength="14" on-keyup="_checkForPhoneNumberMatch">
+                    <div prefix>+88</div>
+                  </paper-input>
+
+                  <template is="dom-if" if="[[errorMsg2]]">
+                    <div class="p-top-8 type caption-2 danger p-horizontal-8 horizontal layout center">
+                      <iron-icon icon="icons:info-outline" class="icon small m-right-4"></iron-icon>
+                      <div class="flex">{{errorMsg2}}</div>
+                    </div>
+                  </template>
+
+                  <template is="dom-if" if="[[successMsg2]]">
+                    <div class="p-top-8 type caption-2 primary p-horizontal-8 horizontal layout center">
+                      <iron-icon icon="icons:info-outline" class="icon small m-right-4"></iron-icon>
+                      <div class="flex">{{successMsg2}}</div>
+                    </div>
+                  </template>
+
+                  <paper-input class="custom-input paper-custom full" label="Email" value="{{patient.email}}" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' error-message="Please Enter valid Email."></paper-input>
+
+
+                  <paper-input class="custom-input paper-custom full" label="Repeat Email" value="{{patient.repeatEmail}}" on-keyup="_checkForEmailMatch"></paper-input>
+                  <template is="dom-if" if="[[errorMsg3]]">
+                    <div class="p-top-8 type caption-2 danger p-horizontal-8 horizontal layout center">
+                      <iron-icon icon="icons:info-outline" class="icon small m-right-4"></iron-icon>
+                      <div class="flex">{{errorMsg3}}</div>
+                    </div>
+                  </template>
+
+                  <template is="dom-if" if="[[successMsg3]]">
+                    <div class="p-top-8 type caption-2 primary p-horizontal-8 horizontal layout center">
+                      <iron-icon icon="icons:info-outline" class="icon small m-right-4"></iron-icon>
+                      <div class="flex">{{successMsg3}}</div>
+                    </div>
+                  </template>
+
+                  <paper-input class="custom-input paper-custom full" label="Password" required value="{{patient.password}}" auto-validate error-message="Password is Required!"></paper-input>
+
+                  <paper-input class="custom-input paper-custom full" label="Doctor Access Pin" required value="{{patient.doctorAccessPin}}" auto-validate error-message="Doctor Access Pin is Required!"></paper-input>
+
+                  
+
+                  
                   
 
 
                   <div class="horizontal layout m-top-16 center">
                     <div class="flex"></div>
-                    <!-- <paper-button disabled class$="p-horizontal-40 {{addClassOnNextBtn}}" raised auto-focuse on-tap="offlineSignup">Signup (offline)</paper-button> -->
-                    <paper-button disabled="{{disableNextBtn}}" class$="p-horizontal-40 {{addClassOnNextBtn}}" raised auto-focuse on-tap="nextBtnPressed">Signup</paper-button>
+                    <paper-button  class="p-horizontal-40" on-tap="offlineSignup" raised>Signup (offline)</paper-button>
+                    <paper-button class="colored p-horizontal-40" raised auto-focuse on-tap="nextBtnPressed">Signup</paper-button>
                   </div>
                 </div>
               </div>

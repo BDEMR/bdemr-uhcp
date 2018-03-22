@@ -1,0 +1,411 @@
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-filter.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
+<!-- behavior -->
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/page-like.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<dom-module id="page-upload-organization-patient-list">
+  <template>
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+    </style>
+
+    <div class="master-container">
+      <div class="limiting-container">
+
+        <paper-card heading="JSON Output">
+
+          <div class="p-16">
+            <paper-input class="" type="file" on-change="fileInputChanged"></paper-input>
+            <br>
+            <paper-button raised on-tap="startButtonPressed">Start</paper-button>
+          </div>
+
+          <div class="card-content">
+            <vaadin-grid items="[[jsonOutput]]">
+              <vaadin-grid-column resizable>
+                <template class="header">Status</template>
+                <template>
+                  <template is="dom-if" if="[[getStatus(item.status, 'Success')]]">
+                    <span class="type success">
+                      <iron-icon icon="check-circle"></iron-icon>
+                    </span>
+                  </template>
+                  <template is="dom-if" if="[[getStatus(item.status, 'Exist')]]">
+                    <span class="type success">
+                      <iron-icon icon="check-circle"></iron-icon>
+                    </span>
+                  </template>
+                  <template is="dom-if" if="[[getStatus(item.status, 'Failed')]]">
+                    <span class="type danger">
+                      <iron-icon icon="cancel"></iron-icon>
+                    </span>
+                  </template>
+                  <template is="dom-if" if="[[getStatus(item.status, 'Pending')]]">
+                    <span class="type secondary">
+                      <iron-icon icon="backup"></iron-icon>
+                    </span>
+                  </template>
+                  <span>[[item.statusMessage]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Employee Id</template>
+                <template>
+                  <span>[[item.employeeId]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="5" resizable>
+                <template class="header layout horizontal">
+                  <vaadin-grid-filter path="name" value="[[nameFilter]]">
+                    <paper-input label="Search By Name" value="{{nameFilter}}" no-label-float></paper-input>
+                  </vaadin-grid-filter>
+                </template>
+                <template>
+                  <div>[[item.name]]</div>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Phone</template>
+                <template>
+                  <span>[[item.phone]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Gender</template>
+                <template>
+                  <span>[[item.gender]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Date of Birth</template>
+                <template>
+                  <span>[[item.dateOfBirth]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">NID</template>
+                <template>
+                  <span>[[item.nid]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">No# Family Member</template>
+                <template>
+                  <span>[[item.numberOfFamilyMember]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Spouse Name</template>
+                <template>
+                  <span>[[item.spouseName]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Father's Name</template>
+                <template>
+                  <span>[[item.fatherName]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Mother's Name</template>
+                <template>
+                  <span>[[item.motherName]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Salary</template>
+                <template>
+                  <span>[[item.salary]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Education</template>
+                <template>
+                  <span>[[item.education]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Designation</template>
+                <template>
+                  <span>[[item.designation]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Department</template>
+                <template>
+                  <span>[[item.department]]</span>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column resizable>
+                <template class="header">Joining Date</template>
+                <template>
+                  <span>[[item.joiningDate]]</span>
+                </template>
+              </vaadin-grid-column>
+
+            </vaadin-grid>
+
+          </div>
+
+        </paper-card>
+
+
+      </div>
+    </div>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'page-upload-organization-patient-list',
+
+      behaviors: [
+        app.behaviors.dbUsing,
+        app.behaviors.translating,
+        app.behaviors.pageLike,
+        app.behaviors.apiCalling
+      ],
+
+      properties: {
+        jsonOutput: Array,
+        user: Object,
+        organization: Object,
+        invalidUserList: Array,
+        unsuccessfulSignUpUserList: {
+          type: Array,
+          value: []
+        },
+        successfulSignUpUserList: {
+          type: Array,
+          value: []
+        }
+      },
+
+      navigatedIn: function () {
+        this._loadUser();
+        this._loadOrganization();
+      },
+
+      _loadUser: function () {
+        let userList = app.db.find('user')
+        if (userList.length == 1) {
+          this.set('user', userList[0])
+        }
+      },
+
+      _loadOrganization: function () {
+        let organizationList = app.db.find('organization')
+        if (organizationList.length == 1) {
+          this.set('organization', organizationList[0])
+        }
+      },
+
+      fileInputChanged: function (e) {
+        let reader = new FileReader()
+        let file = e.target.files[0]
+        reader.onload = (e) => {
+          let result = JSON.parse(e.target.result)
+          this.set('jsonOutput', result.map(function (item) {
+            item.status = 'Pending'
+            item.statusMessage = ''
+            return item
+          }))
+        }
+        reader.readAsText(file);
+      },
+
+      getStatus: function (status, text) {
+        return (status == text) ? true : false;
+      },
+
+      startButtonPressed: function () {
+        if (this.jsonOutput == null || this.jsonOutput == 'undefined') {
+          this.domHost.showModalDialog("Please upload a patient list first");
+          return
+        }
+        window.lib.util.iterate(this.jsonOutput.slice(0,3), (next, index, item) => {
+          this.createUser(item, (err, response) => {
+            if (response.hasError) {
+              this.unsuccessfulSignUpUserList.push({ employeeId: item.employeeId, message: response.error.message })
+              index = this.jsonOutput.findIndex((patient) => patient.employeeId == item.employeeId)
+              if (response.error.message == "Phone number already exists.") {
+                item.status = 'Exist'
+                item.statusMessage = "User Already exist"
+              } else {
+                item.status = 'Failed'
+                item.statusMessage = response.error.message
+              }
+              this.splice('jsonOutput', index, 1, item)
+              next()
+            } else {
+              this.successfulSignUpUserList.push(item.employeeId)
+              index = this.jsonOutput.findIndex((patient) => patient.employeeId == item.employeeId)
+              item.status = 'Success'
+              this.splice('jsonOutput', index, 1, item)
+              next()
+            }
+          });
+        }).finally(() => {
+          console.info('un-successful:', JSON.stringify(this.unsuccessfulSignUpUserList))
+        })
+      },
+
+      createUser: function (doc, cbfn) {
+        patient = {}
+
+        if (doc.phone != null && doc.phone !== 'undefined') {
+          if (typeof doc.phone !== 'string') {
+            doc.phone = (doc.phone).toString()
+          }
+          if (doc.phone.length == 10) {
+            doc.phone = "0" + doc.phone
+          }
+        }
+        
+        if (!doc.name || !doc.phone || (doc.phone.length < 10 || doc.phone.length > 11)) {
+          fakeResponse = {
+            hasError: true,
+            error: {
+              message: 'Invalid User'
+            }
+          }
+          return cbfn(null, fakeResponse)
+        }
+
+        if (doc.dateOfBirth) {
+          patient.dateOfBirth = this.makeDateOfBirth(doc.dateOfBirth)
+        } else {
+          patient.dateOfBirth = "1990-01-01"
+        }
+
+        patient.name = this.$makeNameObject(doc.name);
+        patient.phone = doc.phone
+        patient.organizationId = this.organization.idOnServer;
+        patient.password = this.makePassword(doc.phone)
+        patient.doctorAccessPin = "0000"
+        patient.organizationSerial = this.organization.serial || this.organization.name.slice(0, 4)
+        patient.gender = doc.gender || 'Other'
+        patient.nationalIdCardNumber = doc.nid || null
+        patient.employmentInfo = {
+          employmentStatus: true,
+          currentPosition: doc.designation || null,
+          department: doc.department || null,
+          salaryRange: doc.salary || null,
+          salary: null,
+          joiningDate: this.makeDateOfBirth(doc.joiningDate) || null,
+          institutionName: this.organization.name || null,
+          institutionAddress: this.organization.address || null
+        }
+        patient.degreeInfo = {
+          degreeTitle: doc.education || '',
+          degreeInstitution: '',
+          degreeYear: ''
+        }
+        patient.patientSpouseName = doc.spouseName || ''
+        patient.patientFatherName = doc.fatherName || ''
+        patient.patientMotherName = doc.motherName || ''
+        patient.numberOfFamilyMember = doc.numberOfFamilyMember
+        patient.employeeId = doc.employeeId || ''
+
+
+
+        console.log(patient);
+
+        patient.apiKey = this.user.apiKey;
+        return this.callApi('/bdemr-app-patient-signup-partial', patient, cbfn)
+
+      },
+
+      $makeNameObject(fullName) {
+
+        if (typeof fullName === 'string') {
+
+          let first, honorifics, last, middle;
+          fullName = fullName.trim();
+
+          let partArray = fullName.split('.');
+
+          const namePart = partArray.pop();
+
+          if (partArray.length === 0) {
+            honorifics = '';
+          } else {
+            honorifics = partArray.join('.').trim();
+          }
+
+          partArray = (namePart.trim()).split(' ');
+
+          const nameObject = {};
+
+          if (partArray.length <= 1) {
+            first = partArray[0];
+          } else {
+            first = partArray.shift();
+            last = partArray.pop();
+            middle = partArray.join(' ');
+
+            if (middle === '') {
+              middle = null;
+            }
+
+            if (last === '') {
+              last = null;
+            }
+          }
+
+          if (honorifics === '') {
+            honorifics = null;
+          }
+
+          nameObject.honorifics = honorifics;
+          nameObject.first = first;
+          nameObject.middle = middle;
+          nameObject.last = last;
+          return nameObject;
+        } else {
+          return fullName;
+        }
+      },
+
+      makeDateOfBirth: function (dob) {
+        let dobArr = dob.split("-")
+        return dobArr[2] + "-" + dobArr[1] + "-" + dobArr[0]
+      },
+
+      makePassword: function (phone) {
+        return phone.toString().slice(-6)
+      }
+    });
+  </script>
+</dom-module>

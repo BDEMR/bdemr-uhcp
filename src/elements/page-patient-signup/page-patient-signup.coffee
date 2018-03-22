@@ -51,6 +51,32 @@ Polymer {
       notify: true
       value: null
 
+    errorMsg2:
+      type: String
+      notify: true
+      value: null
+
+    successMsg2:
+      type: String
+      notify: true
+      value: null
+
+    disableRepeatPhoneNumber:
+      type: Boolean
+      notify: true
+      value: true
+
+    errorMsg3:
+      type: String
+      notify: true
+      value: null
+
+    successMsg3:
+      type: String
+      notify: true
+      value: null
+
+
     maximumImageSizeAllowedInBytes:
       type: Number
       value: 1000 * 1000
@@ -176,15 +202,26 @@ Polymer {
 
   nextBtnPressed: ()->
     console.log @patient
-    unless @patient.name and @patient.dateOfBirth and @patient.gender and @patient.phone
+    unless @patient.name and @patient.dateOfBirth and @patient.gender and @patient.phone and @patient.password and @patient.doctorAccessPin
       @domHost.showToast 'Please Fill Up Required Information'
       return
+
+    if @patient.phone
+      if @patient.repeatPhone isnt @patient.phone
+        @domHost.showToast 'Repeated Phone Number Not Matched!'
+        return
+
+    if @patient.email
+      if @patient.repeatEmail isnt @patient.email
+        @domHost.showToast 'Repeated Email Not Matched!'
+        return
     
     @patient.name = @$makeNameObject @patient.name
 
     console.log 'PATINET NAME', @patient.name
 
     @patient.organizationId = @organization.idOnServer
+    @patient.organizationSerial = @organization.serial or @organization.name.slice(0, 4)
     
     @_callBdemrAppPatientPartialSignupApi @patient, (patientSerial, doctorAccessPin)=>
       @_importPatient patientSerial, doctorAccessPin, (patient)=>
@@ -208,15 +245,99 @@ Polymer {
       @_mimicPatientImport patient
       @domHost.showModalDialog "Patient Created Successfully!"
 
+  _mimicImportPatient: (item, cbfn)->
+    patient = 
+          
+      idOnServer: null
+      source: 'online'
+      lastSyncedDatetimeStamp: 0
+      lastModifiedDatetimeStamp : lib.datetime.mkDate lib.datetime.now()
+      createdDatetimeStamp: lib.datetime.mkDate lib.datetime.now()
+      createdByUserSerial: @user.serial
+      serial: @generateSerialForOfflinePatient()
+      name: item.name
+      email: item.email or ''
+      phone: item.phone or ''
+      additionalPhoneNumber: item.additionalPhoneNumber or ''
+      profileImage: null
+
+      dateOfBirth: item.dateOfBirth or ''
+      effectiveRegion: item.effectiveRegion or ''
+      gender: item.gender  or ''
+      bloodGroup: item.bloodGroup  or ''
+      allergy: item.allergy or ''
+      drugAllergy: item.drugAllergy or {value: null, list: []}
+      emmergencyContact: item.emmergencyContact or {}
+
+      addressList: item.addressList or []
+
+      nationalIdCardNumber: item.nationalIdCardNumber or ''
+
+
+      belongOrganizationList: item.belongOrganizationList or []
+
+      expenditure: item.expenditure or ''
+      profession: item.profession or ''
+
+      
+      patientSpouseName: item.patientSpouseName or ''
+      patientFatherName: item.patientFatherName or ''
+      patientMotherName: item.patientFatherName or ''
+      maritalAge: item.maritalAge or ''
+      maritalStatus: item.maritalStatus or ''
+      numberOfFamilyMember: item.numberOfFamilyMember or ''
+      numberOfChildren: item.numberOfChildren or ''
+      recordSpecificPatientIdList: item.recordSpecificPatientIdList or []
+
+      doctorAccessPin: item.doctorAccessPin or '0000'
+      password: item.password or '123456'
+      organizationId: item.organizationId
+      organizationSerial: item.organizationSerial
+
+
+      flags:
+        isImported: true
+        isLocalOnly: false
+        isOnlineOnly: false
+
+      isTemporaryOfflinePatient: true
+      
+      userAlreadyExist: false
+
+    cbfn patient
+    return
+
+
+
   offlineSignup: ()->
     console.log @patient
-    unless @patient.name and @patient.dateOfBirth and @patient.gender and @patient.phone
+    unless @patient.name and @patient.dateOfBirth and @patient.gender and @patient.phone and @patient.password and @patient.doctorAccessPin
       @domHost.showToast 'Please Fill Up Required Information'
       return
+
+    if @patient.phone
+      if @patient.repeatPhone isnt @patient.phone
+        @domHost.showToast 'Repeated Phone Number Not Matched!'
+        return
+
+    if @patient.email
+      if @patient.repeatEmail isnt @patient.email
+        @domHost.showToast 'Repeated Email Not Matched!'
+        return
     
     @patient.name = @$makeNameObject @patient.name
+
+    console.log 'PATINET NAME', @patient.name
+
     @patient.organizationId = @organization.idOnServer
-    @patient.doctorAccessPin = @generateRandomNumericString 4
+    @patient.organizationSerial = @organization.serial
+    
+    @_mimicImportPatient @patient, (patient)=>
+      console.log 'patient', patient
+      app.db.insert 'patient-list', patient
+      @_memorizePinForNewPatient patient.serial, patient.doctorAccessPin
+      @goPatientViewPage patient
+      @domHost.showToast 'Patient Created Successfully in Offline!'
 
 
   verifyBtnPressed: ()->
@@ -282,10 +403,12 @@ Polymer {
           @set 'errorMsg', response.data.message
           @set 'successMsg', null
           @set 'isPhoneNumberAvailable', false
+          @set 'disableRepeatPhoneNumber', true
         else
           @set 'errorMsg', null
           @set 'successMsg', response.data.message
           @set 'isPhoneNumberAvailable', true
+          @set 'disableRepeatPhoneNumber', false
       
       @checkNextBtnStatus()
 
@@ -336,18 +459,49 @@ Polymer {
         @domHost.showModalDialog response.error.message
       else
         cbfn()
-        
+
+  _checkForPhoneNumberMatch: (e)->
+
+    length = @patient.repeatPhone.length
+
+    if ((length is 11) or (length is 13) or (length is 14))
+      if (@patient.repeatPhone is @patient.phone)
+        @set "successMsg2", "Phone Number Matched!"
+        @set "errorMsg2", null
+      else
+        @set "errorMsg2", "Phone Number Not Matched!"
+        @set "successMsg2", null
+
+  _checkForEmailMatch: (e)->
+
+    if @patient.email
+      emailRegex =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      emailTest = emailRegex.test @patient.email
+      if emailTest
+        if (@patient.repeatEmail is @patient.email)
+          @set "successMsg3", "Email Address Matched!"
+          @set "errorMsg3", null
+        else
+          @set "errorMsg3", "Email Address Not Matched!"
+          @set "successMsg3", null
+
 
 
   _makePatientSignupObject: ()->
     @patient =
       name: null
       phone: null
+      repeatPhone: null
+      email: null
+      repeatEmail: null
       dateOfBirth: lib.datetime.mkDate lib.datetime.now()
       gender: 'male'
       profileImage: null
       nationalIdCardNumber: null
       organizationId: null
+      password: '123456'
+      doctorAccessPin: '0000'
+
 
     @verifyPhoneNumber =
       patientId: null
