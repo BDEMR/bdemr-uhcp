@@ -428,8 +428,13 @@ Polymer {
     @reloadPage()
 
   logoutPressed: (e)->
-    @navigateToPage '#/login'
+    user = (app.db.find 'user')[0]
+    # if navigator.onLine
+    #   @callApi '/bdemr-app-logout', {apiKey: user.apiKey}, (err, response)=> {}
+    user.apiKey = ""
+    app.db.update 'user', user._id, user
     @$$('app-drawer').toggle()
+    @navigateToPage '#/login'
     @reloadPage()
     
 

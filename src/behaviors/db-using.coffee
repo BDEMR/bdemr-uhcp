@@ -67,7 +67,7 @@ app.behaviors.dbUsing =
 
   isUserLoggedIn: ->
     userList = app.db.find 'user'
-    if userList.length is 0
+    if (userList.length is 0) or (not userList[0].apiKey)
       return false
     else if userList.length is 1
       return true
