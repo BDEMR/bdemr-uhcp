@@ -29,11 +29,6 @@ Polymer {
 
   properties:
 
-    comboBoxSymptomsInputValue:
-      type: String
-      notify: true
-      value: null
-
     walletBalance:
       type: Number
       value: -1
@@ -47,46 +42,10 @@ Polymer {
       notify: true
       value: null
 
-    selectedMedicinePage:
-      type: Number
-      notify: false
-      value: 0
-
     printPrescriptionOnly:
       type: Boolean
       notify: true
       value: true
-
-
-    isBPAdded:
-      type: Boolean
-      notify: true
-      value: false
-
-    isHRAdded:
-      type: Boolean
-      notify: true
-      value: false
-
-    isBMIAdded:
-      type: Boolean
-      notify: true
-      value: false
-
-    isSpO2Added:
-      type: Boolean
-      notify: true
-      value: false
-
-    isRRAdded:
-      type: Boolean
-      notify: true
-      value: false
-
-    isTempAdded:
-      type: Boolean
-      notify: true
-      value: false
 
     isThatNewVisit:
       type: Boolean
@@ -115,11 +74,6 @@ Polymer {
 
     selectedVisitPageIndex:
       type: Number
-      notify: false
-      value: false
-
-    isPrescriptionValid:
-      type: Boolean
       notify: false
       value: false
 
@@ -164,17 +118,6 @@ Polymer {
       notify: true
       value: null
 
-    testAdvised:
-      type: Object
-      notify: true
-      value: null
-    
-
-    matchingPrescribedMedicineList:
-      type: Array
-      notify: true
-      value: []
-
     doctorInstitutionList:
       type: Array
       notify: true
@@ -200,78 +143,7 @@ Polymer {
       notify: true
       value: false
 
-    computedEndDate:
-      type: String
-      computed: '_showComputedEndDate(duplicateMedicineEditablePart.endDateTimeStamp)'      
-
-    ## historyAndPhysicalRecord - start
-    historyAndPhysicalRecord:
-      type: Object
-      notify: true
-      value: null
-
-    matchingRecordList:
-      type: Object
-      notify: true
-      value: null
-
-    ## historyAndPhysicalRecord - end
-
-    ## diagnosis - start
     
-
-    ## diagnosis - end
-
-    #####################################################################
-    ### Prescription - start
-    #####################################################################
-    
-
-    #####################################################################
-    ### Prescription - end
-    #####################################################################
-
-    #####################################################################
-    ### Symptoms - start
-    #####################################################################
-    
-    #####################################################################
-    ### Symptoms - end
-    #####################################################################
-
-    #####################################################################
-    ### Examination - start
-    #####################################################################
-    
-    #####################################################################
-    ### Examination - end
-    #####################################################################
-
-
-
-    #####################################################################
-    ### Test Advised - start
-    #####################################################################
-
-    
-
-
-
-    #####################################################################
-    ### Test Advised - end
-    #####################################################################
-
-    #####################################################################
-    ### Vitals - start
-    #####################################################################
-
-    
-
-    #####################################################################
-    # Vitals - end
-    #####################################################################
-
-
     #####################################################################
     # Full Visit Preview - start
     #####################################################################
@@ -328,18 +200,16 @@ Polymer {
     #####################################################################
 
 
-  observers : [
-    '_computeQuantityPerPrescription(medicine.dose, medicine.timesPerInterval, intervalInDays, medicine.endDateTimeStamp, medicine.startDateTimeStamp)'
-    '_computeIntervalInHours(medicine.timesPerInterval, intervalInDays)'
-    
-  ]
-
-
   # Util Functions - start
   
   # Util Functions - end
     
-
+  _loadOrganization: ->
+    organization = @getCurrentOrganization()
+    unless organization
+      @domHost.navigateToPage "#/select-organization"
+      return
+    @set 'organization', organization
 
   _loadUser:(cbfn)->
     list = app.db.find 'user'
@@ -352,7 +222,6 @@ Polymer {
     else
       @domHost.showModalDialog 'Invalid User!'
 
-    cbfn()
 
   _getEmploymentList: (user)->
     if user.employmentDetailsList.length > 0
@@ -395,7 +264,7 @@ Polymer {
     return 'not provided yet'
 
   
-  _loadPatient: (patientIdentifier, cbfn)->
+  _loadPatient: (patientIdentifier)->
     list = app.db.find 'patient-list', ({serial})-> serial is patientIdentifier
     if list.length is 1
       @isPatientValid = true
@@ -403,8 +272,6 @@ Polymer {
       # console.log 'PATIENT:', @patient
     else
       @_notifyInvalidPatient()
-
-    cbfn()
 
   $findCreator: (creatorSerial)-> 'me'
 
@@ -1160,18 +1027,6 @@ Polymer {
       return true
 
 
-  printButtonPressed: (e)->
- 
-    @set 'addedExaminationList2', []
-
-    @printPrescriptionOnly = @checkForPrintPreviewType()
-    
-    # hack for addedExamination List not updated on print preview
-    lib.util.delay 200, ()=>
-      @set 'addedExaminationList2', @addedExaminationList
-      lib.util.delay 200, ()=>
-        console.log 'addedExaminationList2', @addedExaminationList2
-        window.print()
 
   saveVisitSettings: ()->
     @recordTitleValueChanged()
@@ -1203,38 +1058,6 @@ Polymer {
       return "(" + string + ")"
     return ""
 
-  loadMedicineList: ()->
-    @domHost.getStaticData 'pccMedicineList', (medicineCompositionList)=>
-      @medicineCompositionList = medicineCompositionList
-      @_loadDefaultMedicineCompositionList()
-
-
-  _checkUserAccess: (accessId)->
-
-    if accessId is 'none'
-      return true
-    else
-      if @organization
-
-        if @organization.isCurrentUserAnAdmin
-          return true
-        else if @organization.isCurrentUserAMember
-          if @organization.userActiveRole
-            privilegeList = @organization.userActiveRole.privilegeList
-            unless privilegeList.length is 0
-              for privilege in privilegeList
-                if privilege.serial is accessId
-                  return true
-          else
-            return true
-
-          return false
-        else
-          return false
-
-      else
-        # @navigateToPage "#/select-organization"
-        return true
 
   _loadVariousWallets: ->
     @_loadPatientWallet @patient.idOnServer, ()=>
@@ -1256,44 +1079,35 @@ Polymer {
     
   navigatedIn: ->
 
-    @domHost.selectedPatientPageIndex = 0
+    params = @domHost.getPageParams()
+    
+    @_loadOrganization()
+    @_loadUser()
+    @_loadPatient(params['patient'])
 
-    @organization = @getCurrentOrganization()
-    unless @organization
-      @domHost.navigateToPage "#/select-organization"
+    # load Wallets
+    @_loadVariousWallets => null
 
- 
-    # Load User
-    @_loadUser =>
-      params = @domHost.getPageParams()
+    # Set SelectedVisitPageIndex
+    if params['selected']
+      @selectedVisitPageIndex = params['selected']
+    else
+      @selectedVisitPageIndex = 0
 
-      # Load Settings Data
-      @settings = @_getSettings()
-      console.log "SETTINGS:", @settings
+  
+  old_navigatedIn: ->
 
-      # Load Patient
-      unless params['patient']
-        @_notifyInvalidPatient()
-        return
-      else
-        @_loadPatient params['patient'], =>
+    
+          
 
-          # load Wallets
-          @_loadVariousWallets => null
-
-          # Set SelectedVisitPageIndex
-          if params['selected']
-           @selectedVisitPageIndex = params['selected']
-          else
-            @selectedVisitPageIndex = 0
+          
 
           # Reset Properties - History and Physical
           @historyAndPhysicalRecord = {}
 
           # Reset Properties - Prescription
-          @_resetMedicineForm()
-          @_makeDuplicateMedicineEditablePart()
-          @matchingPrescribedMedicineList = []
+          
+          
 
           # Reset Properties - Symptoms
           @addedIdentifiedSymptomsList = []
@@ -1320,9 +1134,7 @@ Polymer {
 
 
           # Preloaded Data - Prescription
-          @loadMedicineList()
-          @_listFavoriteMedicine @user.serial
-          @_listCurrentMedications params['patient']
+          
 
           # Preloaded Data - Symptoms
           @_loadSymptomsListFromSystem @user.serial

@@ -19,7 +19,7 @@
 <link rel="import" href="../../styles/common-style.html">
 <link rel="import" href="visit-common-styles.html">
 
-<dom-module id="">
+<dom-module id="element-notes">
   <template>
     <style is="custom-style" include="common-style visit-common-styles">
     </style>
@@ -56,7 +56,7 @@
   <script src="mixin-utils.js"></script>
   <script>
     Polymer({
-      is: '',
+      is: 'element-notes',
       behaviors: [
         app.behaviors.commonComputes,
         app.behaviors.dbUsing,
@@ -65,6 +65,20 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         doctorNotes: {
           type: Object,
           notify: true,
@@ -80,6 +94,14 @@
           notify: false,
           value: false
         }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       },
 
       // Methods

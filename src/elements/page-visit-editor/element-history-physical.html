@@ -86,7 +86,38 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
+        historyAndPhysicalRecord: {
+          type: Object
+        },
+        matchingRecordList: {
+          type: Object
+        }
+      },
 
+      attached: function (){
+
+      },
+
+      detached: function () {
+
+      },
+
+      patientValueChanged: function (patient) {
+        this.historyAndPhysicalRecord = {}
       }
     });
   </script>

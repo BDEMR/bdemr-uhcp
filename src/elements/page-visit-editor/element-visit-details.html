@@ -72,10 +72,53 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
         visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
           type: Object
         }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
+      },
+
+      visitValueChanged: function (visit) {
+        console.log('visit', visit);
+      },
+
+      makeNewVisitButtonPressed: function () {
+        this.domHost.domHost.setSelectedVisitSerial('new')
+      },
+
+      printButtonPressed: function (e) {
+        this.set('addedExaminationList2', []);
+        this.printPrescriptionOnly = this.checkForPrintPreviewType();
+        // hack for addedExamination List not updated on print preview
+        lib.util.delay(200, () => {
+          this.set('addedExaminationList2', this.addedExaminationList);
+          lib.util.delay(200, () => {
+            console.log('addedExaminationList2', this.addedExaminationList2);
+            window.print();
+          });
+        });
       }
+
+
+
     });
   </script>
 </dom-module>

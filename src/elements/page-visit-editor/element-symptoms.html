@@ -78,6 +78,20 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         symptomsDataList: {
           type: Array,
           notify: true,
@@ -92,10 +106,21 @@
           type: Object,
           notify: true,
           value: {}
+        },
+        comboBoxSymptomsInputValue: {
+          type: String
         }
       },
 
-      // Methods
+      attached: function () {
+
+      },
+
+      detached: function () {
+
+      },
+
+      // this_loadSymptomsListFromSystem(this.user.serial)
       _makeNewIdentifiedSymptomsObject: function () {
         this.identifiedSymptomsObject = {
           serial: null,

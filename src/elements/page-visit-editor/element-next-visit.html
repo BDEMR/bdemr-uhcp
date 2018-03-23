@@ -66,6 +66,20 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         isNextVisitValid: {
           type: Boolean,
           notify: true,
@@ -147,6 +161,14 @@
           notify: true,
           value: false
         }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       },
 
       _loadNextVisit: function (nextVisitSerial) {

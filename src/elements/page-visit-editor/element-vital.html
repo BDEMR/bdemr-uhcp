@@ -253,6 +253,20 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         selectedVitalIndex: {
           type: Number,
           value: -1,
@@ -307,6 +321,45 @@
           type: Array,
           value: []
         },
+        isBPAdded: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        isHRAdded: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        isBMIAdded: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        isSpO2Added: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        isRRAdded: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        isTempAdded: {
+          type: Boolean,
+          notify: true,
+          value: false
+        }
+
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       },
       // Methods
       _isAllVitalsAdded: function (isBPAdded, isHRAdded, isBMIAdded, isRRAdded, isSpO2Added, isTempAdded) {

@@ -79,6 +79,20 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         examinationDataList: {
           type: Array,
           notify: true,
@@ -101,6 +115,14 @@
           notify: true,
           value: {}
         }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       },
 
       // Methods

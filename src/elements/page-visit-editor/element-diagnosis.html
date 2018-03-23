@@ -67,6 +67,20 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         diagnosis: {
           type: Object,
           notify: true,
@@ -86,6 +100,14 @@
           notify: true,
           value: []
         }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       },
 
       // Methods

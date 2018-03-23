@@ -259,7 +259,50 @@ link rel="import" href="../../behaviors/common-computes.html">
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        }
+      },
+      _checkUserAccess: function (accessId) {
+        if (accessId === 'none') {
+          return true;
+        } else {
+          if (this.organization) {
 
+            if (this.organization.isCurrentUserAnAdmin) {
+              return true;
+            } else if (this.organization.isCurrentUserAMember) {
+              if (this.organization.userActiveRole) {
+                const { privilegeList } = this.organization.userActiveRole;
+                if (privilegeList.length !== 0) {
+                  for (let privilege of Array.from(privilegeList)) {
+                    if (privilege.serial === accessId) {
+                      return true;
+                    }
+                  }
+                }
+              } else {
+                return true;
+              }
+              return false;
+            } else {
+              return false;
+            }
+          } else {
+            return true;
+          }
+        }
       }
     });
   </script>

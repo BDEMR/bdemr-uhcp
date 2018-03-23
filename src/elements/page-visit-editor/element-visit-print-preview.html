@@ -464,7 +464,28 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       }
     });
   </script>

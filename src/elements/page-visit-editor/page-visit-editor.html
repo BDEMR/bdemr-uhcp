@@ -13,8 +13,7 @@
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower-assets/paper-input/paper-input.html"
-<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html" <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
 <link rel="import" href="../../bower-assets/paper-button/paper-button.html">
 
 <!-- ELEMENTS -->
@@ -26,6 +25,7 @@
 <link rel="import" href="element-vital.html">
 <link rel="import" href="element-test-advised.html">
 <link rel="import" href="element-diagnosis.html">
+<link rel="import" href="element-notes.html">
 <link rel="import" href="element-next-visit.html">
 <link rel="import" href="element-refferal.html">
 <link rel="import" href="element-invoice.html">
@@ -806,11 +806,13 @@
           <!-- visit content - start -->
           <div class="custom-card-content">
             <!-- Patient Details start -->
-            <element-patient-details patient="[[patient]]"></element-patient-details>
+            <element-patient-details patient="[[patient]]">
+            </element-patient-details>
             <!-- Patient Details end -->
 
             <!-- visit details - start -->
-            <element-visit-details visit="{{visit}}"></element-visit-details>
+            <element-visit-details visit="{{visit}}" user="[[user]]">
+            </element-visit-details>
             <!-- visit details - end -->
           </div>
 
@@ -819,39 +821,48 @@
             <div class="content left">
 
               <!-- Card - Symptoms - start -->
-              <element-symptoms></element-symptoms>
+              <element-symptoms patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-symptoms>
               <!-- Card - Symptoms - end -->
 
               <!-- Card - Examination - start -->
-              <element-examination></element-examination>
+              <element-examination patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-examination>
               <!-- Card - Examination - end -->
 
               <!-- Card - Vitals - start -->
-              <element-vital></element-vital>
+              <element-vital patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-vital>
               <!-- Card - Vitals - end -->
 
               <!-- Card - Test Advised - start -->
-              <element-test-advised></element-test-advised>
+              <element-test-advised patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-test-advised>
               <!-- Card - Test Advised - end -->
 
               <!-- Card - Diagnosis - start -->
-              <element-diagnosis></element-diagnosis>
+              <element-diagnosis patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-diagnosis>
               <!-- Card - Diagnosis - end -->
 
               <!-- Card - Notes - start -->
-              
+              <element-notes patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-notes>
               <!-- Card - Notes - end -->
 
               <!-- Card - Next Visit - start -->
-              <element-next-visit></element-next-visit>
+              <element-next-visit patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-next-visit>
               <!-- Card - Next Visit - end -->
 
               <!-- Card - Referral start -->
-              <element-refferal></element-refferal>
+              <element-refferal patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-refferal>
               <!-- Card - Referral end -->
 
               <!-- Card :: Invoice - start -->
-              <element-invoice></element-invoice>
+              <element-invoice patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-invoice>
               <!-- Card :: Invoice - end -->
 
             </div>
@@ -864,12 +875,14 @@
 
               <!-- Card :: Prescription - start -->
 
-              <element-prescription></element-prescription>
+              <element-prescription patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-prescription>
 
               <!-- Card :: Prescription - end -->
 
               <!-- Card :: Patient Stay - start -->
-              <element-patient-stay></element-patient-stay>
+              <element-patient-stay patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]">
+              </element-patient-stay>
               <!-- Card :: Patient Stay - end -->
 
             </div>
@@ -968,9 +981,9 @@
       </div>
     </paper-dialog>
 
-    
 
-    
+
+
 
     <!-- local DOM -->
   </template>

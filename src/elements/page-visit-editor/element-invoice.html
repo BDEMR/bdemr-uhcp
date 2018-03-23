@@ -96,11 +96,33 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         isInvoiceValid: {
           type: Boolean,
           notify: false,
           value: false
         }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       },
 
       // Methods

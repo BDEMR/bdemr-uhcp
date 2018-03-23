@@ -98,14 +98,32 @@
         patient: {
           type: Object,
           observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
         }
       },
 
-      patientValueChanged: function (value) {
-        console.log('patient',value)
+      attached: function () {
+
       },
 
-      editPatientBtnPressed: function(){
+      detached: function () {
+
+      },
+
+      patientValueChanged: function (value) {
+        console.log('patient', value)
+      },
+
+      editPatientBtnPressed: function () {
         this.domHost.domHost.navigateToPage("#/patient-editor/patient:" + this.patient.serial)
       }
     });

@@ -130,7 +130,20 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         referral: {
           type: Object,
           value: function () {
@@ -149,6 +162,14 @@
             return ["Cardiology", "General Surgery", "Haemotology", "Neuro surgery", "Neuro medicine", "Oncology", "Oral-maxillo-facial surgery", "Physical medicine", "Psychiatry", "Respiratory medicine", "Rapid access clinic", "Radiology"];
           }
         }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       },
 
       // Methods

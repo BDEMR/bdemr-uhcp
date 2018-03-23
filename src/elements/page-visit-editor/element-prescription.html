@@ -413,6 +413,25 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
+
+        selectedMedicinePage: {
+          type: Number,
+          value: 0
+        },
         isPrescriptionValid: {
           type: Boolean,
           notify: false,
@@ -592,10 +611,48 @@
         selectedCurrentMedicineData: {
           type: Object,
           value: null
+        },
+        computedEndDate: {
+          type: String,
+          computed: '_showComputedEndDate(duplicateMedicineEditablePart.endDateTimeStamp)'
         }
       },
-      
-      // Methods
+
+      observers: [
+        '_computeQuantityPerPrescription(medicine.dose, medicine.timesPerInterval, intervalInDays, medicine.endDateTimeStamp, medicine.startDateTimeStamp)',
+
+        '_computeIntervalInHours(medicine.timesPerInterval, intervalInDays)'
+      ],
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
+      },
+
+      patientValueChanged: function (patient) {
+        this._resetMedicineForm()
+        this._makeDuplicateMedicineEditablePart()
+        this._listCurrentMedications(this.patient)
+        this.matchingPrescribedMedicineList = []
+      },
+
+      userChanged: function () {
+        if (this.user) {
+          this._listFavoriteMedicine(this.user.serial)
+        }
+      },
+
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+      },
+
+      ready: function () {
+        this.loadMedicineList()
+      },
+
       doseSelected: function (e) {
         if (e.which === 13) {
           return this.medicine.doseDirection = e.target.value;
@@ -976,7 +1033,7 @@
         this.endDateTimeTypeSelectedIndex = 0;
         this.endDateTimeTypeArgument2SelectedIndex = 0;
         this.showCustomDoseDropdown = false;
-        return this.directionSelectedIndex = 0;
+        this.directionSelectedIndex = 0;
       },
       _checkValidity: function (inputsToValidate, cbfn) {
         var i, isValid, item, len, status, validationStatusList;
@@ -1773,7 +1830,15 @@
         ref = e.model, dose = ref.dose, subDose = ref.subDose;
         this._fillCommons(dose, subDose);
         return this._fillMinOrMax(dose, subDose, 'max');
+      },
+
+      loadMedicineList: function () {
+        this.domHost.domHost.getStaticData('pccMedicineList', (medicineCompositionList) => {
+          this.medicineCompositionList = medicineCompositionList;
+          this._loadDefaultMedicineCompositionList()
+        });
       }
+
     });
   </script>
 </dom-module>

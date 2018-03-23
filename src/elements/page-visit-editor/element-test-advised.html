@@ -161,6 +161,20 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
+        patient: {
+          type: Object,
+          observer: 'patientValueChanged'
+        },
+        user: {
+          type: Object
+        },
+        visit: {
+          type: Object,
+          observer: 'visitValueChanged'
+        },
+        organization: {
+          type: Object
+        },
         favoriteInvestigaitonList: {
           type: Array,
           notify: true,
@@ -180,6 +194,9 @@
           type: Array,
           notify: true,
           value: []
+        },
+        testAdvised: {
+          type: Object
         },
         testAdvisedObject: {
           type: Object,
@@ -215,6 +232,14 @@
           value: [],
           notify: true
         }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
       },
 
       // Methods
