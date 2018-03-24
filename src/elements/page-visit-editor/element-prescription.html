@@ -413,13 +413,8 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -646,7 +641,8 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+        
+        if (!visit) return
         if (!visit.serial) {
           this._makeNewPrescription()
         }
@@ -801,11 +797,11 @@
             return _this.prescription.serial === serial;
           };
         })(this));
-        return this.domHost.showToast('Prescription Saved.');
+        return this.domHost.domHost.showToast('Prescription Saved.');
       },
       _notifyInvalidPrescription: function () {
         this.isPrescriptionValid = false;
-        return this.domHost.showModalDialog('Invalid Prescription Provided');
+        return this.domHost.domHost.showModalDialog('Invalid Prescription Provided');
       },
       _loadPrescription: function (prescriptionIdentifier) {
         var list;
@@ -832,7 +828,7 @@
         repeater = this.$$('#prescribed-medicine-list-repeater');
         index = e.model.index;
         medicine = this.matchingPrescribedMedicineList[index];
-        return this.domHost.showModalPrompt('Are you sure?', (function (_this) {
+        return this.domHost.domHost.showModalPrompt('Are you sure?', (function (_this) {
           return function (answer) {
             var id;
             if (answer === true) {
@@ -846,7 +842,7 @@
                 serial: medicine.serial
               });
               _this.splice('matchingPrescribedMedicineList', index, 1);
-              return _this.domHost.showToast('Medicine Deleted!');
+              return _this.domHost.domHost.showToast('Medicine Deleted!');
             }
           };
         })(this));
@@ -900,7 +896,7 @@
         duplicateMedicine.data.endDateTimeStamp = this.duplicateMedicineEditablePart.endDateTimeStamp;
         duplicateMedicine.data.startDateTimeStamp = this.duplicateMedicineEditablePart.startDateTimeStamp;
         app.db.insert('patient-medications', duplicateMedicine);
-        this.domHost.showToast('Medicine Added.');
+        this.domHost.domHost.showToast('Medicine Added.');
         return this._makeDuplicateMedicineEditablePart();
       },
       _makeDuplicatedMedicineFromCurrent: function () {
@@ -960,7 +956,7 @@
           medicine.prescriptionSerial = this.prescription.serial;
         }
         app.db.insert('patient-medications', medicine);
-        this.domHost.showToast('Medicine Added.');
+        this.domHost.domHost.showToast('Medicine Added.');
         this.selectedCurrentMedicineData.data.status = 'stopped';
         this._saveMedicine(this.selectedCurrentMedicineData);
         this.selectedCurrentMedicineData = {};
@@ -978,7 +974,7 @@
         medicine.data.status = 'stopped';
         medicine.lastModifiedDatetimeStamp = lib.datetime.now();
         this._saveMedicine(medicine);
-        this.domHost.showToast('Medicine Stopped!');
+        this.domHost.domHost.showToast('Medicine Stopped!');
         return this._listCurrentMedications(this.patient.serial);
       },
       addFavMedicineAsNewMedicineBtnPressed: function (e) {
@@ -987,7 +983,7 @@
         repeater = this.$$('#favorite-medicine-list-repeater');
         index = repeater.indexForElement(el);
         favMedicine = this.matchingFavoriteMedicineList[index];
-        params = this.domHost.getPageParams();
+        params = this.domHost.domHost.getPageParams();
         this._savePrescription();
         this._makeDuplicatedMedicineFromFavorite(favMedicine);
         return this._listPrescribedMedications(this.prescription.serial);
@@ -998,7 +994,7 @@
         repeater = this.$$('#favorite-medicine-list-repeater');
         index = repeater.indexForElement(el);
         medicine = this.matchingFavoriteMedicineList[index];
-        return this.domHost.showModalPrompt('Are you sure?', (function (_this) {
+        return this.domHost.domHost.showModalPrompt('Are you sure?', (function (_this) {
           return function (answer) {
             var id;
             if (answer === true) {
@@ -1011,7 +1007,7 @@
               app.db.insert('favorite-medicine-list--deleted', {
                 serial: medicine.serial
               });
-              _this.domHost.showToast('Favorite Medicine Deleted!');
+              _this.domHost.domHost.showToast('Favorite Medicine Deleted!');
               return _this._listFavoriteMedicine(_this.user.serial);
             }
           };
@@ -1082,13 +1078,13 @@
         return this._resetMedicineForm();
       },
       arrowBackButtonPressed: function (e) {
-        this.domHost.setSelectedVisitSerial('new');
-        return this.domHost.navigateToPage('#/patient-manager');
+        this.domHost.domHost.setSelectedVisitSerial('new');
+        return this.domHost.domHost.navigateToPage('#/patient-manager');
       },
       makeNewVisitButtonPressed: function (e) {
-        this.domHost.setSelectedVisitSerial('new');
-        this.domHost.selectedPatientPageIndex = 1;
-        return this.domHost.selectedPatientPageIndex = 0;
+        this.domHost.domHost.setSelectedVisitSerial('new');
+        this.domHost.domHost.selectedPatientPageIndex = 1;
+        return this.domHost.domHost.selectedPatientPageIndex = 0;
       },
       toggleGuideline: function (e) {
         return this.$.guidelineContainer.toggle();
@@ -1552,7 +1548,7 @@
       },
       saveMedicineButtonClicked: function (e) {
         var inputsToValidate, params;
-        params = this.domHost.getPageParams();
+        params = this.domHost.domHost.getPageParams();
         if (this.medicineFormSelectedIndex === this.medicineFormList.length - 1) {
           inputsToValidate = ['brandName', 'strength', 'custom-form', 'custom-dose-unit', 'custom-route'];
         } else {
@@ -1578,12 +1574,12 @@
               }
               medicine.lastModifiedDatetimeStamp = lib.datetime.now();
               app.db.insert('patient-medications', medicine);
-              _this.domHost.showToast("Medicine Added!");
+              _this.domHost.domHost.showToast("Medicine Added!");
               _this._addToInvoice(medicine.data.brandName, _this.visit.serial);
               _this._resetMedicineForm();
               return _this._listPrescribedMedications(_this.prescription.serial);
             } else {
-              return _this.domHost.showModalDialog("Enter Required Inputs");
+              return _this.domHost.domHost.showModalDialog("Enter Required Inputs");
             }
           };
         })(this));
@@ -1603,7 +1599,7 @@
       },
       saveAndAddAsFavoriteMedicinePressed: function (e) {
         var inputsToValidate, params;
-        params = this.domHost.getPageParams();
+        params = this.domHost.domHost.getPageParams();
         if (this.medicineFormSelectedIndex === this.medicineFormList.length - 1) {
           inputsToValidate = ['genericName', 'brandName', 'manufacturer', 'strength', 'custom-form', 'custom-dose-unit', 'custom-route'];
         } else {
@@ -1633,9 +1629,9 @@
               _this._resetMedicineForm();
               _this._listPrescribedMedications(_this.prescription.serial);
               _this._listFavoriteMedicine(_this.user.serial);
-              return _this.domHost.showToast('Added & Saved As a Favorite!');
+              return _this.domHost.domHost.showToast('Added & Saved As a Favorite!');
             } else {
-              return _this.domHost.showModalDialog("Enter Required Inputs");
+              return _this.domHost.domHost.showModalDialog("Enter Required Inputs");
             }
           };
         })(this));

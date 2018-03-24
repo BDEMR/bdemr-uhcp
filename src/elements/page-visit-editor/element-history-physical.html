@@ -86,13 +86,8 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -121,7 +116,8 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+
+        if (!visit) return
         if (visit.serial) {
           if (visit.historyAndPhysicalRecordSerial) {
             this.historyAndPhysical_navigatedIn();
@@ -136,7 +132,7 @@
 
             this.recordPartTitle = 'History and Physical Record';
 
-            this.domHost.getStaticData('dynamicElementDefinitionPreoperativeAssessment', def => {
+            this.domHost.domHost.getStaticData('dynamicElementDefinitionPreoperativeAssessment', def => {
 
               this.recordPartDef = def;
 
@@ -171,7 +167,7 @@
       },
 
       historyAndPhysicalRecordCreate(e) {
-        const params = this.domHost.getPageParams();
+        const params = this.domHost.domHost.getPageParams();
         if (params['visit'] === 'new') {
           this._saveVisit();
         }
@@ -196,7 +192,7 @@
 
         this._saveHistoryAndPhysicalRecord();
         this._loadHistoryAndPhysicalRecord();
-        this.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
+        this.domHost.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
         return window.location.reload();
       },
 
@@ -214,12 +210,12 @@
         // console.log record
 
         sessionStorage.setItem('HISTORY-AND-PHYSICAL-IN-CLIPBOARD', JSON.stringify(record));
-        this.domHost.showModalDialog("This record has been copied to clipboard");
+        this.domHost.domHost.showModalDialog("This record has been copied to clipboard");
         return this._loadRecordInClipboard();
       },
 
       pasteRecordPressed(e) {
-        const params = this.domHost.getPageParams();
+        const params = this.domHost.domHost.getPageParams();
         if (params['visit'] === 'new') {
           this._saveVisit();
         }
@@ -242,24 +238,24 @@
         this.recordInClipboard = null;
         sessionStorage.removeItem('HISTORY-AND-PHYSICAL-IN-CLIPBOARD');
 
-        this.domHost.showModalDialog("Successfully Imported. Reloading Interface.");
+        this.domHost.domHost.showModalDialog("Successfully Imported. Reloading Interface.");
 
-        this.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
+        this.domHost.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
         return window.location.reload();
       },
 
       _updateVisitForHistoryAndPhysicalRecord(historyAndPhysicalRecordIdentifier) { },
 
       historyAndPhysicalRecordPrint(e) {
-        return this.domHost.navigateToPage(`#/print-history-and-physical-record/record:${this.historyAndPhysicalRecord.serial}`);
+        return this.domHost.domHost.navigateToPage(`#/print-history-and-physical-record/record:${this.historyAndPhysicalRecord.serial}`);
       },
 
       historyAndPhysicalRecordEdit(e) {
-        return this.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
+        return this.domHost.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
       },
 
       historyAndPhysicalRecordRemove(e) {
-        return this.domHost.showModalPrompt('Are you sure?', answer => {
+        return this.domHost.domHost.showModalPrompt('Are you sure?', answer => {
           if (answer) {
             app.db.remove('history-and-physical-record', this.historyAndPhysicalRecord._id);
             return this._loadHistoryAndPhysicalRecord();
@@ -281,17 +277,17 @@
 
       _saveVisitPrescription() {
         app.db.upsert('visit-prescription', this.prescription, ({ serial }) => this.prescription.serial === serial);
-        return this.domHost.showToast('Record Saved');
+        return this.domHost.domHost.showToast('Record Saved');
       },
 
       _saveVisitTestAdvised() {
         app.db.upsert('visit-advised-test', this.testAdvised, ({ serial }) => this.testAdvised.serial === serial);
-        return this.domHost.showToast('Record Saved');
+        return this.domHost.domHost.showToast('Record Saved');
       },
 
       _saveHistoryAndPhysicalRecord() {
         app.db.upsert('history-and-physical-record', this.historyAndPhysicalRecord, ({ serial }) => this.historyAndPhysicalRecord.serial === serial);
-        return this.domHost.showToast('Record Saved');
+        return this.domHost.domHost.showToast('Record Saved');
       }
     });
   </script>

@@ -79,12 +79,10 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
+        patient: Object,
         user: {
-          type: Object
+          type: Object,
+          observer: 'userValueChanged'
         },
         visit: {
           type: Object,
@@ -117,7 +115,8 @@
         }
       },
 
-      ready() {
+      userValueChanged(user) {
+        if (!user) return
         this._loadExaminationList(this.user.serial);
       },
 
@@ -130,7 +129,8 @@
       },
 
       visitValueChanged(visit) {
-        console.log('visit:', visit);
+
+        if (!visit) return
         if (!visit.serial) {
           this._makeNewExaminationObject()
         }
@@ -143,7 +143,7 @@
 
       // Methods
       _loadExaminationList(userIdentifier) {
-        return this.domHost.getStaticData('examinationList', (function (_this) {
+        return this.domHost.domHost.getStaticData('examinationList', (function (_this) {
           return function (examinationList) {
             var customExaminationlist, customObject, examination, groupExamination, i, item, j, k, len, len1, len2, object, ref, results, singleExamination;
             for (i = 0, len = examinationList.length; i < len; i++) {
@@ -240,7 +240,7 @@
       },
       _notifyInvalidExamination: function () {
         this.isExaminationValid = false;
-        return this.domHost.showModalDialog('Invalid Examination Provided');
+        return this.domHost.domHost.showModalDialog('Invalid Examination Provided');
       },
       saveUserAddedCustomExamination(examinationName) {
         var object;
@@ -293,10 +293,10 @@
           });
           this.visit.examinationSerial = null;
           this._saveVisit();
-          return this.domHost.showToast('Deleted Successfully!');
+          return this.domHost.domHost.showToast('Deleted Successfully!');
         } else {
           this.saveExamination();
-          return this.domHost.showToast('Deleted Successfully!');
+          return this.domHost.domHost.showToast('Deleted Successfully!');
         }
       },
       comboBoxKeyUpExaminationValueChanged(e) {
@@ -426,7 +426,7 @@
             };
           })(this));
           this.set('comboBoxExaminationInputValue', '');
-          return this.domHost.showToast('Examination Updated!');
+          return this.domHost.domHost.showToast('Examination Updated!');
         }
       }
     });

@@ -161,12 +161,10 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
+        patient: Object,
         user: {
-          type: Object
+          type: Object,
+          observer: 'userValueChanged'
         },
         visit: {
           type: Object,
@@ -234,7 +232,8 @@
         }
       },
 
-      ready: function () {
+      userValueChanged(user) {
+        if (!user) return
         this._loadInvestigationList(this.user.serial)
         this._loadUserAddedInstitutionList(this.user.serial)
       },
@@ -250,7 +249,8 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+
+        if (!visit) return
         if (!visit.serial) {
           this._makeNewTestAdvisedObject()
         }
@@ -348,7 +348,7 @@
       },
       _loadInvestigationList: function (userIdentifier) {
         var customInvestigationlist, i, investigation, item, len;
-        this.domHost.getStaticData('investigationList', (function (_this) {
+        this.domHost.domHost.getStaticData('investigationList', (function (_this) {
           return function (investigationList) {
             var childList, groupInvestigation, i, investigation, item, len, object, parentList, results, singleInvestigation;
             childList = [];
@@ -552,7 +552,7 @@
       },
       _notifyInvalidTestAdvised: function () {
         this.isTestAdvisedValid = false;
-        return this.domHost.showModalDialog('Invalid Test Advised Provided');
+        return this.domHost.domHost.showModalDialog('Invalid Test Advised Provided');
       },
       _selectedAddedInvestigationtDeleteBtnPressed: function (e) {
         var advisedTestSerial, id, index, list;
@@ -572,10 +572,10 @@
           });
           this.visit.advisedTestSerial = null;
           this._saveVisit();
-          return this.domHost.showToast('Deleted Successfully!');
+          return this.domHost.domHost.showToast('Deleted Successfully!');
         } else {
           this.saveAdvisedTest();
-          return this.domHost.showToast('Deleted Successfully!');
+          return this.domHost.domHost.showToast('Deleted Successfully!');
         }
       },
       removeInvestigationMember: function (e) {
@@ -758,7 +758,7 @@
             };
           })(this));
           this.set('comboBoxInvestigationInputValue', '');
-          return this.domHost.showToast('Test Added.');
+          return this.domHost.domHost.showToast('Test Added.');
         }
       },
       showFavoriteInvestigationDialog: function () {

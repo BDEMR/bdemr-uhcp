@@ -66,13 +66,8 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -172,7 +167,8 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+
+        if (!visit && !user) return
         if (!visit.serial) {
           this._makeNewNextVisit()
         }
@@ -288,7 +284,7 @@
           this.nextVisit.data.priorityType = this.priorityValue;
           this._saveNextVisit(this.nextVisit);
           this._loadNextVisit(this.nextVisit.serial);
-          return this.domHost.showToast('Next Visit Saved!');
+          return this.domHost.domHost.showToast('Next Visit Saved!');
         }
       }
 

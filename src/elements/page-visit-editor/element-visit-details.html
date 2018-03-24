@@ -72,13 +72,8 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -97,9 +92,8 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+
         if (!visit.serial) {
-          this.()
         }
         if (visit.serial) {
 
@@ -107,7 +101,7 @@
       },
 
       makeNewVisitButtonPressed: function () {
-        this.domHost.domHost.setSelectedVisitSerial('new')
+        this.domHost.domHost.domHost.setSelectedVisitSerial('new')
       },
 
       printButtonPressed: function (e) {

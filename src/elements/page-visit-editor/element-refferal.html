@@ -130,13 +130,8 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -173,7 +168,8 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+
+        if (!visit) return
         if (!visit.serial) {
         }
         if (visit.serial) {
@@ -251,7 +247,7 @@
           return function (err, response) {
             var data, doctorSuggestionArray, item;
             if (response.hasError) {
-              return _this.domHost.showModalDialog(response.error.message);
+              return _this.domHost.domHost.showModalDialog(response.error.message);
             } else {
               data = response.data;
               if (data.length > 0) {
@@ -266,7 +262,7 @@
                 })();
                 return _this.$$("#doctorSearch").suggestions(doctorSuggestionArray);
               } else {
-                return _this.domHost.showToast('No Match Found');
+                return _this.domHost.domHost.showToast('No Match Found');
               }
             }
           };
@@ -291,7 +287,7 @@
           return function (err, response) {
             var item, organizationSuggestionArray;
             if (response.hasError) {
-              return _this.domHost.showModalDialog(response.error.message);
+              return _this.domHost.domHost.showModalDialog(response.error.message);
             } else {
               data = response.data.matchingOrganizationList;
               if (data.length > 0) {
@@ -306,7 +302,7 @@
                 })();
                 return _this.$$("#organizationSearch").suggestions(organizationSuggestionArray);
               } else {
-                return _this.domHost.showToast('No Match Found');
+                return _this.domHost.domHost.showToast('No Match Found');
               }
             }
           };

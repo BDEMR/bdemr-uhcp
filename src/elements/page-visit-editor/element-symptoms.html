@@ -78,12 +78,10 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
+        patient: Object,
         user: {
-          type: Object
+          type: Object,
+          observer: 'userValueChanged'
         },
         visit: {
           type: Object,
@@ -112,21 +110,27 @@
         }
       },
 
-      ready: function () {
-        this._loadSymptomsListFromSystem(this.user.serial)
+      ready() {
+
       },
 
-      attached: function () {
+      attached() {
         this.addedIdentifiedSymptomsList = []
         this.comboBoxSymptomsInputValue = ''
       },
 
-      detached: function () {
+      detached() {
 
       },
 
-      visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+      userValueChanged(user) {
+        if (!user) return
+        this._loadSymptomsListFromSystem(this.user.serial)
+      },
+
+      visitValueChanged(visit) {
+
+        if (!visit) return
         if (!visit.serial) {
           this._makeNewIdentifiedSymptomsObject()
         }
@@ -137,7 +141,7 @@
         }
       },
 
-      _makeNewIdentifiedSymptomsObject: function () {
+      _makeNewIdentifiedSymptomsObject() {
         this.identifiedSymptomsObject = {
           serial: null,
           lastModifiedDatetimeStamp: 0,
@@ -155,7 +159,7 @@
         };
         return this.isIdentifiedSymptomsValid = true;
       },
-      _loadIdentifiedSymptoms: function (symptomsIdentifier) {
+      _loadIdentifiedSymptoms(symptomsIdentifier) {
         var list;
         list = app.db.find('visit-identified-symptoms', function (arg) {
           var serial;
@@ -173,9 +177,9 @@
           return false;
         }
       },
-      _loadSymptomsListFromSystem: function (userIdentifier) {
+      _loadSymptomsListFromSystem(userIdentifier) {
         this.set('symptomsDataList', []);
-        return this.domHost.getStaticData('symptomsList', (function (_this) {
+        return this.domHost.domHost.getStaticData('symptomsList', (function (_this) {
           return function (symptomsList) {
             var customObject, customSymptomslist, i, item, j, len, len1, object;
             if (symptomsList.length !== 0) {
@@ -215,7 +219,7 @@
           };
         })(this));
       },
-      saveUserAddedCustomSymptoms: function (symptomName) {
+      saveUserAddedCustomSymptoms(symptomName) {
         var object;
         object = {
           serial: this.generateSerialForCustomSymptoms,
@@ -229,7 +233,7 @@
         };
         return app.db.insert('custom-symptoms-list', object);
       },
-      _duplicationSymptomsCheck: function (symptomName) {
+      _duplicationSymptomsCheck(symptomName) {
         var i, item, len, ref;
         ref = this.symptomsDataList;
         for (i = 0, len = ref.length; i < len; i++) {
@@ -239,11 +243,11 @@
           }
         }
       },
-      _notifyInvalidIdentifeidSymptoms: function () {
+      _notifyInvalidIdentifeidSymptoms() {
         this.isIdentifiedSymptomsValid = false;
-        return this.domHost.showModalDialog('Invalid Stymptoms Provided');
+        return this.domHost.domHost.showModalDialog('Invalid Stymptoms Provided');
       },
-      _selectedAddedIdentifiedSymtomsDeleteBtnPressed: function (e) {
+      _selectedAddedIdentifiedSymtomsDeleteBtnPressed(e) {
         var id, identifiedSymtomsSerial, index, list;
         index = e.model.index;
         this.splice('addedIdentifiedSymptomsList', index, 1);
@@ -261,13 +265,13 @@
           });
           this.visit.identifiedSymptomsSerial = null;
           this._saveVisit();
-          return this.domHost.showToast('Deleted Successfully!');
+          return this.domHost.domHost.showToast('Deleted Successfully!');
         } else {
           this.saveIdentifiedSymptoms();
-          return this.domHost.showToast('Deleted Successfully!');
+          return this.domHost.domHost.showToast('Deleted Successfully!');
         }
       },
-      comboBoxKeyUpSymptomsValueChanged: function (e) {
+      comboBoxKeyUpSymptomsValueChanged(e) {
         if (this.comboBoxSymptomsInputValue !== '') {
           if (e.which === 13) {
             if (typeof this.comboBoxSymptomsInputValue === 'object') {
@@ -290,7 +294,7 @@
           }
         }
       },
-      addSymptoms: function () {
+      addSymptoms() {
         if (this.comboBoxSymptomsInputValue !== '') {
           if (typeof this.comboBoxSymptomsInputValue === 'object') {
             this.push('addedIdentifiedSymptomsList', {
@@ -311,7 +315,7 @@
           return this.saveIdentifiedSymptoms();
         }
       },
-      saveIdentifiedSymptoms: function () {
+      saveIdentifiedSymptoms() {
         if (this.addedIdentifiedSymptomsList.length !== 0) {
           this.identifiedSymptomsObject.data.symptomsList = this.addedIdentifiedSymptomsList;
           if (this.visit.identifiedSymptomsSerial === null) {
@@ -329,7 +333,7 @@
             };
           })(this));
           this.set('comboBoxSymptomsInputValue', '');
-          return this.domHost.showToast('Symptoms Added.');
+          return this.domHost.domHost.showToast('Symptoms Added.');
         }
       }
     });

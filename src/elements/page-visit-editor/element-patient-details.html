@@ -95,16 +95,10 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
-          type: Object,
-          observer: 'visitValueChanged'
+          type: Object
         },
         organization: {
           type: Object
@@ -119,12 +113,8 @@
 
       },
 
-      patientValueChanged: function (value) {
-        console.log('patient', value)
-      },
-
       editPatientBtnPressed: function () {
-        this.domHost.domHost.navigateToPage("#/patient-editor/patient:" + this.patient.serial)
+        this.domHost.domHost.domHost.navigateToPage("#/patient-editor/patient:" + this.patient.serial)
       }
     });
   </script>

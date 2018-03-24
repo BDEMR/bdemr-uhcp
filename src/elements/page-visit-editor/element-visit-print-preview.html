@@ -464,13 +464,8 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -489,9 +484,9 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+
+        if (!visit) return;
         if (!visit.serial) {
-          this.()
         }
         if (visit.serial) {
 

@@ -67,13 +67,8 @@
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -107,7 +102,6 @@
       },
 
       attached: function () {
-
       },
 
       detached: function () {
@@ -115,7 +109,8 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+
+        if (!visit) return
         if (!visit.serial) {
           this._makeNewDiagnosis()
         }
@@ -150,7 +145,7 @@
         })(this));
       },
       _makeNewDiagnosis: function () {
-        return this.diagnosis = {
+        diagnosis = {
           serial: null,
           lastModifiedDatetimeStamp: lib.datetime.now(),
           createdDatetimeStamp: lib.datetime.now(),
@@ -164,6 +159,7 @@
             diagnosisList: []
           }
         };
+        this.set('diagnosis', diagnosis);
       },
       _saveDiagnosis: function () {
         if (this.visit.serial === null) {
@@ -189,7 +185,7 @@
         return this.comboBoxDiagnosisInputValue = '';
       },
       loadDiagnosisListData: function () {
-        return this.domHost.getStaticData('diagnosisList', (function (_this) {
+        return this.domHost.domHost.getStaticData('diagnosisList', (function (_this) {
           return function (diagnosisList) {
             var item, list;
             list = (function () {
@@ -239,7 +235,7 @@
               name: diagnosis
             });
             this._saveDiagnosis();
-            this.domHost.showToast('Diagnosis Added!');
+            this.domHost.domHost.showToast('Diagnosis Added!');
             return this.comboBoxDiagnosisInputValue = '';
           }
         }
@@ -258,7 +254,7 @@
           });
           this._saveDiagnosis();
           this._addToInvoice(diagnosis, this.visit.serial);
-          this.domHost.showToast('Diagnosis Added!');
+          this.domHost.domHost.showToast('Diagnosis Added!');
           return this.comboBoxDiagnosisInputValue = '';
         }
       },
@@ -267,7 +263,7 @@
         index = e.model.index;
         this.splice('diagnosis.data.diagnosisList', index, 1);
         this._saveDiagnosis();
-        return this.domHost.showToast('Diagnosis Deleted!');
+        return this.domHost.domHost.showToast('Diagnosis Deleted!');
       }
     });
   </script>

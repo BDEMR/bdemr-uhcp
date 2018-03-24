@@ -261,13 +261,8 @@ link rel="import" href="../../behaviors/common-computes.html">
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -286,7 +281,8 @@ link rel="import" href="../../behaviors/common-computes.html">
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
+
+        if (!visit) return
         if (!visit.serial) {
           this._loadOrganizationsIBelongTo()
           this._makeNewPatientStay()

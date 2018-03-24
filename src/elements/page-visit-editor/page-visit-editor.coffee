@@ -27,6 +27,16 @@ Polymer {
 
   properties:
 
+    user: Object
+
+    patient: Object
+
+    visit: 
+      type: Object
+      notify: true
+
+    organization: Object
+
     walletBalance:
       type: Number
       value: -1
@@ -35,11 +45,6 @@ Polymer {
       type: Object
       value: null
     
-    organization:
-      type: Object
-      notify: true
-      value: null
-
     printPrescriptionOnly:
       type: Boolean
       notify: true
@@ -101,21 +106,6 @@ Polymer {
       notify: false
       value: false
 
-    user:
-      type: Object
-      notify: true
-      value: null
-
-    patient:
-      type: Object
-      notify: true
-      value: null
-
-    visit:
-      type: Object
-      notify: true
-      value: null
-
     doctorInstitutionList:
       type: Array
       notify: true
@@ -151,11 +141,6 @@ Polymer {
 
     ## VIEW - HistoryAndPhysicalRecord - start
     record:
-      type: Object
-      notify: true
-      value: null
-
-    patient:
       type: Object
       notify: true
       value: null
@@ -198,9 +183,36 @@ Polymer {
     #####################################################################
 
 
-  # Util Functions - start
-  
-  # Util Functions - end
+  ready: ->
+
+    params = @domHost.getPageParams()
+
+    unless params['visit']
+      @_notifyInvalidVisit()
+      return
+    
+    @_loadOrganization()
+    @_loadUser()
+    @_loadPatient(params['patient'])
+
+    # load Wallets
+    @_loadVariousWallets => null
+
+    # Set SelectedVisitPageIndex
+    if params['selected']
+      @selectedVisitPageIndex = params['selected']
+    else
+      @selectedVisitPageIndex = 0
+
+    @_loadPriceList @organization.idOnServer, ()=> console.log 'Price List Loaded'
+
+    if params['visit'] is 'new'
+      @_makeNewVisit()
+    else
+      @_loadVisit params['visit']
+      @domHost.setSelectedVisitSerial params['visit']
+
+
     
   _loadOrganization: ->
     organization = @getCurrentOrganization()
@@ -211,7 +223,6 @@ Polymer {
 
   _loadUser:(cbfn)->
     list = app.db.find 'user'
-    console.log 'USER: ', list[0]
     if list.length is 1
       @user = list[0]
       @_getEmploymentList @user
@@ -255,11 +266,6 @@ Polymer {
       return honorifics + first + middle + last
 
     else return data
-
-  getDoctorSpeciality: () ->
-    unless @user.specializationList.length is 0
-      return @user.specializationList[0].specializationTitle
-    return 'not provided yet'
 
   
   _loadPatient: (patientIdentifier)->
@@ -421,34 +427,6 @@ Polymer {
     console.log @selectedVitalIndex
   # psedo lifecycle callback
     
-  navigatedIn: ->
-
-    params = @domHost.getPageParams()
-
-    unless params['visit']
-      @_notifyInvalidVisit()
-      return
-    
-    @_loadOrganization()
-    @_loadUser()
-    @_loadPatient(params['patient'])
-
-    # load Wallets
-    @_loadVariousWallets => null
-
-    # Set SelectedVisitPageIndex
-    if params['selected']
-      @selectedVisitPageIndex = params['selected']
-    else
-      @selectedVisitPageIndex = 0
-
-    @_loadPriceList @organization.idOnServer, ()=> console.log 'Price List Loaded'
-
-    if params['visit'] is 'new'
-      @_makeNewVisit()
-    else
-      @_loadVisit params['visit']
-      @domHost.setSelectedVisitSerial params['visit']
   
 
   navigatedOut: ->

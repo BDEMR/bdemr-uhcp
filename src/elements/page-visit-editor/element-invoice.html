@@ -98,13 +98,8 @@
         app.behaviors.local.invoiceMixin
       ],
       properties: {
-        patient: {
-          type: Object,
-          observer: 'patientValueChanged'
-        },
-        user: {
-          type: Object
-        },
+        patient: Object,
+        user: Object,
         visit: {
           type: Object,
           observer: 'visitValueChanged'
@@ -128,10 +123,9 @@
       },
 
       visitValueChanged: function (visit) {
-        console.log('visit:', visit);
-        if (!visit.serial) {
-          this.invoice = {}
-        }
+
+        if (!visit) return
+        if (!visit.serial) this.invoice = {}
         if (visit.serial) {
           if (visit.hasOwnProperty('invoiceSerial') && visit.invoiceSerial) {
             this._loadInvoice(visit.invoiceSerial);
@@ -163,7 +157,7 @@
       },
       createInvoicePressed: function () {
         var params;
-        params = this.domHost.getPageParams();
+        params = this.domHost.domHost.getPageParams();
         if (params['visit'] === 'new') {
           this.visit.serial = this.generateSerialForVisit();
           this.visit.lastModifiedDatetimeStamp = lib.datetime.now();
@@ -175,16 +169,16 @@
             };
           })(this));
         }
-        return this.domHost.navigateToPage('#/create-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:new');
+        return this.domHost.domHost.navigateToPage('#/create-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:new');
       },
       editInvoicePressed: function (e) {
-        return this.domHost.navigateToPage('#/create-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:' + this.invoice.serial);
+        return this.domHost.domHost.navigateToPage('#/create-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:' + this.invoice.serial);
       },
       printInvoicePressed: function () {
         var params;
-        params = this.domHost.getPageParams();
+        params = this.domHost.domHost.getPageParams();
         if (params['visit-invoice'] !== 'new') {
-          return this.domHost.navigateToPage('#/print-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:' + this.invoice.serial);
+          return this.domHost.domHost.navigateToPage('#/print-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:' + this.invoice.serial);
         }
       },
       _addToInvoice: function (itemName, visitSerial) {
@@ -233,8 +227,8 @@
       },
       finishButtonPressed: function () {
         var ref;
-        this.domHost.showSuccessToast('Visit Saved Successfully');
-        this.domHost.navigateToPreviousPage();
+        this.domHost.domHost.showSuccessToast('Visit Saved Successfully');
+        this.domHost.domHost.navigateToPreviousPage();
         if ((ref = this.invoice) != null ? ref.totalBilled : void 0) {
           return this.chargeOutdoorWalletButtonPressed();
         }

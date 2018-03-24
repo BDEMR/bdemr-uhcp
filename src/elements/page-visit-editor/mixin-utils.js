@@ -97,6 +97,14 @@ app.behaviors.local.visitUtilsMixin = {
 
   _formatDateTime(dateTime) {
     return lib.datetime.format((new Date(dateTime)), 'mmm d, yyyy h:MMTT');
+  },
+
+  getDoctorSpeciality() {
+    if (this.user.specializationList.length !== 0) {
+      return this.user.specializationList[0].specializationTitle;
+    }
+    return 'not provided yet';
   }
+
 
 };
