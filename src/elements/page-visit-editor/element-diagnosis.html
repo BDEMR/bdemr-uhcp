@@ -114,6 +114,18 @@
 
       },
 
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this._makeNewDiagnosis()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('diagnosisSerial') && visit.diagnosisSerial) {
+            this._loadDiagnosis(visit.diagnosisSerial);
+          }
+        }
+      },
+
       // Methods
       _loadDiagnosis: function (diagnosisSerialIdentifier) {
         return lib.util.delay(5, (function (_this) {
@@ -201,13 +213,13 @@
       comboBoxKeyUpRecordTitleValueChanged: function (e) {
         if (this.visit.recordTitle !== '' || this.visit.recordTitle !== null) {
           if (e.which === 13) {
-            return this._saveVisit();
+            this._saveVisit();
           }
         }
       },
       recordTitleValueChanged: function () {
         if (this.visit.recordTitle !== '' || this.visit.recordTitle !== null) {
-          return this._saveVisit();
+          this._saveVisit();
         }
       },
       openVisitSettingsDialog: function (e) {

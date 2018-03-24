@@ -248,6 +248,7 @@ link rel="import" href="../../behaviors/common-computes.html">
 
   </template>
   <script src="mixin-utils.js"></script>
+  <script src="../mixin/mixin-patient-stay.coffee-compiled.js "></script>
   <script>
     Polymer({
       is: 'element-patient-stay',
@@ -256,6 +257,7 @@ link rel="import" href="../../behaviors/common-computes.html">
         app.behaviors.dbUsing,
         app.behaviors.translating,
         app.behaviors.apiCalling,
+        app.behaviors.local.patientStayMixin,
         app.behaviors.local.visitUtilsMixin
       ],
       properties: {
@@ -272,6 +274,27 @@ link rel="import" href="../../behaviors/common-computes.html">
         },
         organization: {
           type: Object
+        }
+      },
+
+      attached: function () {
+
+      },
+
+      detached: function () {
+
+      },
+
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this._loadOrganizationsIBelongTo()
+          this._makeNewPatientStay()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('patientStaySerial') && visit.patientStaySerial) {
+            this._loadVisitPatientStay(visit.patientStaySerial);
+          }
         }
       },
       _checkUserAccess: function (accessId) {
@@ -304,6 +327,7 @@ link rel="import" href="../../behaviors/common-computes.html">
           }
         }
       }
+
     });
   </script>
 </dom-module>

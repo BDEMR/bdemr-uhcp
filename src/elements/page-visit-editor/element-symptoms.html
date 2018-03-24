@@ -125,6 +125,18 @@
 
       },
 
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this._makeNewIdentifiedSymptomsObject()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('identifiedSymptomsSerial') && visit.identifiedSymptomsSerial) {
+            this._loadIdentifiedSymptoms(visit.identifiedSymptomsSerial);
+          }
+        }
+      },
+
       _makeNewIdentifiedSymptomsObject: function () {
         this.identifiedSymptomsObject = {
           serial: null,

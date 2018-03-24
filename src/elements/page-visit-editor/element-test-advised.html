@@ -249,7 +249,29 @@
 
       },
 
-      // Methods
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this._makeNewTestAdvisedObject()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('advisedTestSerial') && visit.advisedTestSerial) {
+            this._loadAdvisedTest(visit.advisedTestSerial);
+          }
+        }
+      },
+
+      _checkForTestResults(data) {
+        if (data.hasTestResults) {
+          const list = app.db.find('patient-test-results', ({ serial }) => serial === data.testResultsSerial);
+          if (list.length === 1) {
+            return true;
+          }
+          return false;
+        }
+
+        return false;
+      },
       _makeNewTestAdvisedObject: function () {
         this.testAdvisedObject = {
           serial: null,

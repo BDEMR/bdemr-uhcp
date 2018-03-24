@@ -117,20 +117,32 @@
         }
       },
 
-      ready: function () {
+      ready() {
         this._loadExaminationList(this.user.serial);
       },
 
-      attached: function () {
+      attached() {
         this.comboBoxExaminationInputValue = ''
       },
 
-      detached: function () {
+      detached() {
 
       },
 
+      visitValueChanged(visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this._makeNewExaminationObject()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('examinationSerial') && visit.examinationSerial) {
+            this._loadExamination(visit.examinationSerial);
+          }
+        }
+      },
+
       // Methods
-      _loadExaminationList: function (userIdentifier) {
+      _loadExaminationList(userIdentifier) {
         return this.domHost.getStaticData('examinationList', (function (_this) {
           return function (examinationList) {
             var customExaminationlist, customObject, examination, groupExamination, i, item, j, k, len, len1, len2, object, ref, results, singleExamination;
@@ -190,7 +202,7 @@
           };
         })(this));
       },
-      _makeNewExaminationObject: function () {
+      _makeNewExaminationObject() {
         this.examinationObject = {
           serial: null,
           lastModifiedDatetimeStamp: 0,
@@ -208,7 +220,7 @@
         };
         return this.isExaminationValid = true;
       },
-      _loadExamination: function (examinationIdentifier) {
+      _loadExamination(examinationIdentifier) {
         var list;
         list = app.db.find('visit-examination', function (arg) {
           var serial;
@@ -230,7 +242,7 @@
         this.isExaminationValid = false;
         return this.domHost.showModalDialog('Invalid Examination Provided');
       },
-      saveUserAddedCustomExamination: function (examinationName) {
+      saveUserAddedCustomExamination(examinationName) {
         var object;
         object = {
           serial: this.generateSerialForCustomExamination,
@@ -246,7 +258,7 @@
         app.db.insert('custom-examination-list', object);
         return this._addToInvoice(object.data.name(this.visit.serial));
       },
-      removeExaminationMember: function (e) {
+      removeExaminationMember(e) {
         var el, index, memberIndex, repeater, string;
         el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
         el.opened = false;
@@ -257,13 +269,13 @@
         this.splice(string, memberIndex, 1);
         return this.saveExamination();
       },
-      checkExaminationMember: function (e) {
+      checkExaminationMember(e) {
         var addedExaminationList;
         addedExaminationList = this.addedExaminationList;
         this.set('addedExaminationList', addedExaminationList);
         return this.saveExamination();
       },
-      _selectedAddedExaminationDeleteBtnPressed: function (e) {
+      _selectedAddedExaminationDeleteBtnPressed(e) {
         var examinationSerial, id, index, list;
         index = e.model.index;
         this.splice('addedExaminationList', index, 1);
@@ -287,7 +299,7 @@
           return this.domHost.showToast('Deleted Successfully!');
         }
       },
-      comboBoxKeyUpExaminationValueChanged: function (e) {
+      comboBoxKeyUpExaminationValueChanged(e) {
         var i, index, item, len, modifiedList, modifiedObject, object, ref;
         if (this.comboBoxExaminationInputValue !== '') {
           if (e.which === 13) {
@@ -320,7 +332,7 @@
           }
         }
       },
-      openDialogForExaminationMember: function (e) {
+      openDialogForExaminationMember(e) {
         var el, repeater;
         this.customExaminationValue = '';
         el = this.locateParentNode(e.target, 'PAPER-ICON-BUTTON');
@@ -340,7 +352,7 @@
         this.saveExamination();
         return this.$$('#dialogExaminationMemberValue').close();
       },
-      addExamination: function () {
+      addExamination() {
         var i, index, item, len, modifiedList, modifiedObject, object, ref;
         if (this.comboBoxExaminationInputValue !== '') {
           if (typeof this.comboBoxExaminationInputValue === 'object') {
@@ -373,7 +385,7 @@
           return this.saveExamination();
         }
       },
-      filterExaminationList: function (examinationList) {
+      filterExaminationList(examinationList) {
         var i, item, j, len, len1, modifiedAddedExaminationList, modifiedObject, modifiedValueList, object, ref;
         modifiedAddedExaminationList = [];
         for (i = 0, len = examinationList.length; i < len; i++) {
@@ -396,7 +408,7 @@
         }
         return modifiedAddedExaminationList;
       },
-      saveExamination: function () {
+      saveExamination() {
         if (this.addedExaminationList.length !== 0) {
           this.examinationObject.data.examinationValueList = this.filterExaminationList(this.addedExaminationList);
           if (this.visit.examinationSerial === null) {

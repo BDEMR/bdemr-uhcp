@@ -172,6 +172,17 @@
 
       },
 
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('referralSerial') && visit.referralSerial) {
+            this._loadReferral(visit.referralSerial);
+          }
+        }
+      },
+
       // Methods
       _loadReferral: function (referralSerialIdentifier) {
         return lib.util.delay(5, (function (_this) {

@@ -647,11 +647,36 @@
 
       visitValueChanged: function (visit) {
         console.log('visit:', visit);
+        if (!visit.serial) {
+          this._makeNewPrescription()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('prescriptionSerial') && visit.prescriptionSerial) {
+            this._loadPrescription(visit.prescriptionSerial);
+            this.medicine.timesPerInterval = 1;
+          }
+        }
       },
 
       ready: function () {
         this.loadMedicineList()
       },
+
+      _loadVisitPrescription(prescriptionSerial) {
+        const list = app.db.find('visit-prescription', ({ serial }) => serial === prescriptionSerial);
+        if (list.length === 1) {
+          this.isPrescriptionValid = true;
+          this.isFullVisitValid = true;
+          this.prescription = list[0];
+          this._listPrescribedMedications(this.prescription.serial);
+          // console.log "PrescriptionObj:",  @prescription
+          return true;
+        } else {
+          this.isPrescriptionValid = false;
+          return false;
+        }
+      },
+
 
       doseSelected: function (e) {
         if (e.which === 13) {

@@ -118,6 +118,180 @@
 
       patientValueChanged: function (patient) {
         this.historyAndPhysicalRecord = {}
+      },
+
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (visit.serial) {
+          if (visit.historyAndPhysicalRecordSerial) {
+            this.historyAndPhysical_navigatedIn();
+
+            this.set('recordPartName', 'history-and-physical-record');
+
+            this.recordDatabaseCollectionName = 'history-and-physical-record';
+
+            this.record = this._getRecord(this.visit.historyAndPhysicalRecordSerial, this.recordDatabaseCollectionName);
+
+            this.recordPartData = this.record;
+
+            this.recordPartTitle = 'History and Physical Record';
+
+            this.domHost.getStaticData('dynamicElementDefinitionPreoperativeAssessment', def => {
+
+              this.recordPartDef = def;
+
+              this.recordPartHtmlContent = this.generateHtmlContent(this.recordPartDef, this.recordPartData);
+
+              // console.log @recordPartHtmlContent
+
+              if (!this.delayRendering) {
+
+                return this.shouldRender = true;
+              }
+            });
+          }
+        }
+      },
+
+      historyAndPhysicalAvailableToPatientCheckBoxChanged(e) {
+        if (this.historyAndPhysicalRecord) {
+          if (e.target.checked) {
+            this.historyAndPhysicalRecord.availableToPatient = true;
+            return this._saveHistoryAndPhysicalRecord();
+          } else {
+            this.historyAndPhysicalRecord.availableToPatient = false;
+            return this._saveHistoryAndPhysicalRecord();
+          }
+        }
+      },
+
+      historyAndPhysical_navigatedIn() {
+        this._loadHistoryAndPhysicalRecord();
+        this._loadRecordInClipboard();
+      },
+
+      historyAndPhysicalRecordCreate(e) {
+        const params = this.domHost.getPageParams();
+        if (params['visit'] === 'new') {
+          this._saveVisit();
+        }
+        // console.log @visit.serial
+        this.historyAndPhysicalRecord = {
+          lastModifiedDatetimeStamp: lib.datetime.now(),
+          createdDatetimeStamp: lib.datetime.now(),
+          lastSyncedDatetimeStamp: 0,
+          createdByUserSerial: this.user.serial,
+          serial: this.generateSerialForHistoryAndPhysical(),
+          patientSerial: this.patient.serial,
+          visitSerial: this.visit.serial,
+          availableToPatient: true
+        };
+
+        this.visit.historyAndPhysicalRecordSerial = this.historyAndPhysicalRecord.serial;
+        this.visit.lastModifiedDatetimeStamp = lib.datetime.now();
+
+        // updated visit object for History and Physical
+        app.db.upsert('doctor-visit', this.visit, ({ serial }) => this.visit.serial === serial);
+
+
+        this._saveHistoryAndPhysicalRecord();
+        this._loadHistoryAndPhysicalRecord();
+        this.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
+        return window.location.reload();
+      },
+
+
+      _loadRecordInClipboard() {
+        let recordInClipboard = sessionStorage.getItem('HISTORY-AND-PHYSICAL-IN-CLIPBOARD');
+        if (recordInClipboard) {
+          recordInClipboard = JSON.parse(recordInClipboard);
+        }
+        return this.recordInClipboard = recordInClipboard;
+      },
+
+      historyAndPhysicalRecordCopy(e) {
+        const record = this.historyAndPhysicalRecord;
+        // console.log record
+
+        sessionStorage.setItem('HISTORY-AND-PHYSICAL-IN-CLIPBOARD', JSON.stringify(record));
+        this.domHost.showModalDialog("This record has been copied to clipboard");
+        return this._loadRecordInClipboard();
+      },
+
+      pasteRecordPressed(e) {
+        const params = this.domHost.getPageParams();
+        if (params['visit'] === 'new') {
+          this._saveVisit();
+        }
+
+        this.recordInClipboard.patientSerial = this.patient.serial;
+        this.recordInClipboard.visitSerial = this.visit.serial;
+        this.recordInClipboard.lastChangedDatetimeStamp = lib.datetime.now();
+        this.recordInClipboard.serial = this.generateSerialForRecord();
+
+        this.visit.historyAndPhysicalRecordSerial = this.recordInClipboard.serial;
+        this.historyAndPhysicalRecord = this.recordInClipboard;
+
+
+        // updated visit object for History and Physical
+        app.db.upsert('doctor-visit', this.visit, ({ serial }) => this.visit.serial === serial);
+
+        this._saveHistoryAndPhysicalRecord();
+        this._loadHistoryAndPhysicalRecord();
+
+        this.recordInClipboard = null;
+        sessionStorage.removeItem('HISTORY-AND-PHYSICAL-IN-CLIPBOARD');
+
+        this.domHost.showModalDialog("Successfully Imported. Reloading Interface.");
+
+        this.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
+        return window.location.reload();
+      },
+
+      _updateVisitForHistoryAndPhysicalRecord(historyAndPhysicalRecordIdentifier) { },
+
+      historyAndPhysicalRecordPrint(e) {
+        return this.domHost.navigateToPage(`#/print-history-and-physical-record/record:${this.historyAndPhysicalRecord.serial}`);
+      },
+
+      historyAndPhysicalRecordEdit(e) {
+        return this.domHost.navigateToPage(`#/record-history-and-physical/record:${this.historyAndPhysicalRecord.serial}`);
+      },
+
+      historyAndPhysicalRecordRemove(e) {
+        return this.domHost.showModalPrompt('Are you sure?', answer => {
+          if (answer) {
+            app.db.remove('history-and-physical-record', this.historyAndPhysicalRecord._id);
+            return this._loadHistoryAndPhysicalRecord();
+          }
+        });
+      },
+
+      _loadHistoryAndPhysicalRecord() {
+        const currentVisitSerial = this.visit.serial;
+        const list = app.db.find('history-and-physical-record', ({ visitSerial }) => visitSerial === currentVisitSerial);
+        if (list.length === 1) {
+          this.set('historyAndPhysicalRecord', list[0]);
+        } else {
+          this.set('historyAndPhysicalRecord', null);
+        }
+
+        return console.log('_loadHistoryAndPhysicalRecord', this.historyAndPhysicalRecord);
+      },
+
+      _saveVisitPrescription() {
+        app.db.upsert('visit-prescription', this.prescription, ({ serial }) => this.prescription.serial === serial);
+        return this.domHost.showToast('Record Saved');
+      },
+
+      _saveVisitTestAdvised() {
+        app.db.upsert('visit-advised-test', this.testAdvised, ({ serial }) => this.testAdvised.serial === serial);
+        return this.domHost.showToast('Record Saved');
+      },
+
+      _saveHistoryAndPhysicalRecord() {
+        app.db.upsert('history-and-physical-record', this.historyAndPhysicalRecord, ({ serial }) => this.historyAndPhysicalRecord.serial === serial);
+        return this.domHost.showToast('Record Saved');
       }
     });
   </script>

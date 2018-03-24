@@ -368,7 +368,81 @@
       detached: function () {
 
       },
-      // Methods
+
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this._makeBloodPressure()
+          this._makePulseRate()
+          this._makeBmi()
+          this._makeRespiratoryRate()
+          this._makeOxygenSaturation()
+          this._makeTemperature()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('vitalSerial')) {
+            if (visit.vitalSerial.bp) {
+              this._loadVitalsForVisit(visit.vitalSerial.bp, 'Blood Pressure');
+            }
+            if (visit.vitalSerial.hr) {
+              this._loadVitalsForVisit(visit.vitalSerial.hr, 'Heart Rate');
+            }
+            if (visit.vitalSerial.bmi) {
+              this._loadVitalsForVisit(visit.vitalSerial.bmi, 'BMI');
+            }
+            if (visit.vitalSerial.rr) {
+              this._loadVitalsForVisit(visit.vitalSerial.rr, 'Respirtory Rate');
+            }
+            if (visit.vitalSerial.spo2) {
+              this._loadVitalsForVisit(visit.vitalSerial.spo2, 'Spo2');
+            }
+            if (visit.vitalSerial.temp) {
+              this._loadVitalsForVisit(visit.vitalSerial.temp, 'Temperature');
+            }
+          }
+        }
+      },
+
+      _loadVitalsForVisit(vitalIdentifier, vitalType) {
+
+        if (vitalType === 'Blood Pressure') {
+          this.loadIdentifiedVitalData(vitalIdentifier, vitalType, 'patient-vitals-blood-pressure');
+          return this.isBPAdded = true;
+
+        } else if (vitalType === 'Heart Rate') {
+          this.loadIdentifiedVitalData(vitalIdentifier, vitalType, 'patient-vitals-pulse-rate');
+          return this.isHRAdded = true;
+
+        } else if (vitalType === 'BMI') {
+          this.loadIdentifiedVitalData(vitalIdentifier, vitalType, 'patient-vitals-bmi');
+          return this.isBMIAdded = true;
+
+        } else if (vitalType === 'Respirtory Rate') {
+          this.loadIdentifiedVitalData(vitalIdentifier, vitalType, 'patient-vitals-respiratory-rate');
+          return this.isRRAdded = true;
+
+        } else if (vitalType === 'Spo2') {
+          this.loadIdentifiedVitalData(vitalIdentifier, vitalType, 'patient-vitals-spo2');
+          return this.isSpO2Added = true;
+
+        } else if (vitalType === 'Temperature') {
+          this.loadIdentifiedVitalData(vitalIdentifier, vitalType, 'patient-vitals-temperature');
+          return this.isTempAdded = true;
+        }
+      },
+
+      loadIdentifiedVitalData(vitalIdentifier, vitalType, collectionName) {
+        const list = app.db.find(collectionName, ({ serial }) => serial === vitalIdentifier);
+
+        if (list.length === 1) {
+          const vitalData = list[0];
+          console.log(vitalType, ': ', vitalData);
+          this._addToVitalList(vitalData, vitalType);
+          return true;
+        } else {
+          return false;
+        }
+      },
       _isAllVitalsAdded: function (isBPAdded, isHRAdded, isBMIAdded, isRRAdded, isSpO2Added, isTempAdded) {
         if ((isBPAdded === true) && (isHRAdded === true) && (isBMIAdded === true) && (isRRAdded === true) && (isSpO2Added === true) && (isTempAdded === true)) {
           return true;
@@ -650,7 +724,7 @@
           this.isTempAdded = false;
           this.visit.vitalSerial.temp = null;
         }
-        return this._saveVisit();
+        this._saveVisit();
       },
       updateVisitForVital: function (vitalSerial, vitalType) {
         console.log('VitalSerial: ', vitalSerial, "and vitalType: ", vitalType);
@@ -673,7 +747,7 @@
           this.visit.vitalSerial.temp = vitalSerial;
           this.isTempAdded = true;
         }
-        return this._saveVisit();
+        this._saveVisit();
       },
       addBloodPressureButtonClicked: function () {
         var diastolic, systolic;

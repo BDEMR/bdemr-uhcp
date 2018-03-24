@@ -85,6 +85,7 @@
     </div>
   </template>
   <script src="mixin-utils.js"></script>
+  <script src="invoice-module.coffee-compiled.js"></script>
   <script>
     Polymer({
       is: 'element-invoice',
@@ -93,7 +94,8 @@
         app.behaviors.dbUsing,
         app.behaviors.translating,
         app.behaviors.apiCalling,
-        app.behaviors.local.visitUtilsMixin
+        app.behaviors.local.visitUtilsMixin,
+        app.behaviors.local.invoiceMixin
       ],
       properties: {
         patient: {
@@ -125,8 +127,32 @@
 
       },
 
-      // Methods
-      _getServiceRendered: function (index) {
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this.invoice = {}
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('invoiceSerial') && visit.invoiceSerial) {
+            this._loadInvoice(visit.invoiceSerial);
+          }
+        }
+      },
+
+      _loadInvoice(invoiceIndentifier) {
+        const list = app.db.find('visit-invoice', ({ serial }) => serial === invoiceIndentifier);
+
+        if (list.length === 1) {
+          this.isInvoiceValid = true;
+          this.set('invoice', list[0]);
+          console.log('Invoice:', this.invoice);
+          return this.isInvoiceValid = true;
+        } else {
+          this.isInvoiceValid = false;
+          return false;
+        }
+      },
+      _getServiceRendered(index) {
         var optionList;
         optionList = ['Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom'];
         if (index === 5) {

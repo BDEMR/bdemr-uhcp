@@ -93,6 +93,10 @@ app.behaviors.local.visitUtilsMixin = {
     }
 
     return age;
+  },
+
+  _formatDateTime(dateTime) {
+    return lib.datetime.format((new Date(dateTime)), 'mmm d, yyyy h:MMTT');
   }
 
 };

@@ -96,16 +96,28 @@
         }
       },
 
-      attached: function () {
+      attached() {
 
       },
 
-      detached: function () {
+      detached() {
 
+      },
+
+      visitValueChanged(visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this._makeNewNote()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('doctorNotesSerial') && visit.doctorNotesSerial) {
+            this._loadVisitNote(visit.doctorNotesSerial);
+          }
+        }
       },
 
       // Methods
-      _makeNewNote: function () {
+      _makeNewNote() {
         this.doctorNotes = {
           serial: null,
           lastModifiedDatetimeStamp: 0,
@@ -122,7 +134,7 @@
         };
         return this.isNoteValid = true;
       },
-      _saveNote: function (data) {
+      _saveNote(data) {
         data.lastModifiedDatetimeStamp = lib.datetime.now();
         return app.db.upsert('visit-note', data, (function (_this) {
           return function (arg) {
@@ -132,7 +144,7 @@
           };
         })(this));
       },
-      _addNotePressed: function () {
+      _addNotePressed() {
         if (this.doctorNotesMessage !== '') {
           this.push('doctorNotes.data.messageList', this.doctorNotesMessage);
           if (this.doctorNotes.serial === null) {
@@ -149,7 +161,7 @@
           return this.domHost.showToast('Note Saved.');
         }
       },
-      _loadVisitNote: function (doctorNotesSerialIdentifier) {
+      _loadVisitNote(doctorNotesSerialIdentifier) {
         var list;
         list = app.db.find('visit-note', function (arg) {
           var serial;
@@ -167,7 +179,7 @@
           return false;
         }
       },
-      _onDoctorNoteDeletedButtonPressed: function (e) {
+      _onDoctorNoteDeletedButtonPressed(e) {
         var index;
         index = e.model.index;
         return this.domHost.showModalPrompt('Are you sure?', (function (_this) {

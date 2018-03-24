@@ -171,6 +171,18 @@
 
       },
 
+      visitValueChanged: function (visit) {
+        console.log('visit:', visit);
+        if (!visit.serial) {
+          this._makeNewNextVisit()
+        }
+        if (visit.serial) {
+          if (visit.hasOwnProperty('nextVisitSerial') && visit.nextVisitSerial) {
+            this._loadNextVisit(visit.nextVisitSerial);
+          }
+        }
+      },
+
       _loadNextVisit: function (nextVisitSerial) {
         const list = app.db.find('visit-next-visit', ({ serial }) => serial === nextVisitSerial);
         if (list.length === 1) {
