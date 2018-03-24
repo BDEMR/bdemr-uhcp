@@ -234,8 +234,15 @@
         }
       },
 
-      attached: function () {
+      ready: function () {
+        this._loadInvestigationList(this.user.serial)
+        this._loadUserAddedInstitutionList(this.user.serial)
+      },
 
+      attached: function () {
+        this.investigationDataList = [];
+        this.addedInvestigationList = [];
+        this.comboBoxInvestigationInputValue = '';
       },
 
       detached: function () {

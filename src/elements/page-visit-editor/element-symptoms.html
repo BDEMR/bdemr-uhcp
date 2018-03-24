@@ -112,15 +112,19 @@
         }
       },
 
-      attached: function () {
+      ready: function () {
+        this._loadSymptomsListFromSystem(this.user.serial)
+      },
 
+      attached: function () {
+        this.addedIdentifiedSymptomsList = []
+        this.comboBoxSymptomsInputValue = ''
       },
 
       detached: function () {
 
       },
 
-      // this_loadSymptomsListFromSystem(this.user.serial)
       _makeNewIdentifiedSymptomsObject: function () {
         this.identifiedSymptomsObject = {
           serial: null,

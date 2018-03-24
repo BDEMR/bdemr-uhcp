@@ -355,7 +355,14 @@
       },
 
       attached: function () {
-
+        tempUnitSelectedIndex = parseInt(lib.localStorage.getItem('lastSelectedTempUnit'))
+        if (tempUnitSelectedIndex) {
+          this.tempUnitSelectedIndex = tempUnitSelectedIndex
+        }
+        else {
+          this.tempUnitSelectedIndex = 0
+        }
+        this.addedVitalList = []
       },
 
       detached: function () {

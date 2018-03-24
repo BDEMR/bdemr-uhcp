@@ -1080,6 +1080,10 @@ Polymer {
   navigatedIn: ->
 
     params = @domHost.getPageParams()
+
+    unless params['visit']
+      @_notifyInvalidVisit()
+      return
     
     @_loadOrganization()
     @_loadUser()
@@ -1094,69 +1098,15 @@ Polymer {
     else
       @selectedVisitPageIndex = 0
 
+    @_loadPriceList @organization.idOnServer, ()=> console.log 'Price List Loaded'
+
+    if params['visit'] is 'new'
+      @_makeNewVisit()
+
   
   old_navigatedIn: ->
 
-    
-          
-
-          
-
-          # Reset Properties - History and Physical
-          @historyAndPhysicalRecord = {}
-
-          # Reset Properties - Prescription
-          
-          
-
-          # Reset Properties - Symptoms
-          @addedIdentifiedSymptomsList = []
-          @comboBoxSymptomsInputValue = ''
-
-          # Reset Properties - Examination
-          @comboBoxExaminationInputValue = ''
-
-
-          # Reset Properties - Vitals
-          tempUnitSelectedIndex = parseInt (lib.localStorage.getItem 'lastSelectedTempUnit')
-          if tempUnitSelectedIndex 
-            @tempUnitSelectedIndex = tempUnitSelectedIndex
-          else
-            @tempUnitSelectedIndex = 0
-
-          @addedVitalList = []
-
-
-          # Reset Properties - Test Advised
-          @investigationDataList = []
-          @addedInvestigationList = []
-          @comboBoxInvestigationInputValue = ''
-
-
-          # Preloaded Data - Prescription
-          
-
-          # Preloaded Data - Symptoms
-          @_loadSymptomsListFromSystem @user.serial
-
-          # Preloaded Data - Examination
-          @_loadExaminationList @user.serial
-
-          
-          # Preloaded Data - Test Advised
-          @_loadInvestigationList @user.serial
-          @_loadUserAddedInstitutionList @user.serial
-
-          # Preloaded Data - Diagnosis
-          @loadDiagnosisListData()
-          
-
           ## Load Visit Record
-          unless params['visit']
-            @_notifyInvalidVisit()
-            return
-
-          @_loadPriceList @organization.idOnServer, ()=> console.log 'Price List Loaded'
 
           if params['visit'] is 'new'
             @_makeNewVisit =>
