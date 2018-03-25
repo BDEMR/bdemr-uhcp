@@ -641,7 +641,7 @@
       },
 
       visitValueChanged: function (visit) {
-        
+
         if (!visit) return
         if (!visit.serial) {
           this._makeNewPrescription()
@@ -1081,11 +1081,7 @@
         this.domHost.domHost.setSelectedVisitSerial('new');
         return this.domHost.domHost.navigateToPage('#/patient-manager');
       },
-      makeNewVisitButtonPressed: function (e) {
-        this.domHost.domHost.setSelectedVisitSerial('new');
-        this.domHost.domHost.selectedPatientPageIndex = 1;
-        return this.domHost.domHost.selectedPatientPageIndex = 0;
-      },
+
       toggleGuideline: function (e) {
         return this.$.guidelineContainer.toggle();
       },

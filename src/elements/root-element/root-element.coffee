@@ -769,7 +769,7 @@ Polymer {
     return unless @currentPatientsDetails
 
     if @selectedPatientPageIndex is 0
-      @async ()=>
+      @async =>
         @selectedVisitSerial = localStorage.getItem("selectedVisitSerial")
         @navigateToPage '#/visit-editor/visit:' + @selectedVisitSerial + '/patient:' + @currentPatientsDetails.serial
     else

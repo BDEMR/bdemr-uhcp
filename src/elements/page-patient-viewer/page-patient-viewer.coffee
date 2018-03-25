@@ -706,8 +706,6 @@ Polymer {
 
     modifiedList = []
 
-    console.log 'finalList', finalList
-
     for visit in finalList
       recordList = [
         {

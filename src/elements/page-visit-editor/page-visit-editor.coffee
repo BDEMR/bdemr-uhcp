@@ -183,7 +183,7 @@ Polymer {
     #####################################################################
 
 
-  ready: ->
+  navigatedIn: ->
 
     params = @domHost.getPageParams()
 
