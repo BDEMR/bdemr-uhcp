@@ -383,16 +383,17 @@
           <div class="card-item p-8">
             <div class="type body-lead primary m-horizontal-4">Policy Info</div>
 
-            <div class="m-vertical-16"><paper-button class="btn btn-primary btn-sm" on-tap="openPolicyModalClicked">
-              <iron-icon icon="add"></iron-icon>&nbsp;
-              Add New Policy</paper-button></div>
+            <div class="m-vertical-16">
+              <paper-button class="btn btn-primary btn-sm" on-tap="openPolicyModalClicked">
+                <iron-icon icon="add"></iron-icon>&nbsp; Add New Policy</paper-button>
+            </div>
 
             <paper-item style="border-bottom: 1px solid #ccc">
-                <div class="flex type bold">Number</div>
-                <div class="flex-2 type bold">Insurance Company</div>
-                <div class="flex type bold">Start Date</div>
-                <div class="flex type bold">End Date</div>
-                <div class="flex type bold">Action</div>
+              <div class="flex type bold">Number</div>
+              <div class="flex-2 type bold">Insurance Company</div>
+              <div class="flex type bold">Start Date</div>
+              <div class="flex type bold">End Date</div>
+              <div class="flex type bold">Action</div>
             </paper-item>
             <template is="dom-if" if="[[!patient.policyList.length]]">
               <p class="layout vertical center type secondary">-- No Policy yet --</p>
@@ -492,11 +493,11 @@
           <h2>Add Policy</h2>
           <paper-dialog-scrollable>
             <div class="layout vertical p-16">
-            <paper-input required auto-validate error-message="input policy number" label="Policy Number" value="{{policy.number}}"></paper-input>
-            <paper-input required auto-validate error-message="input insurance provider name" label="Insurance Provider" value="{{policy.insuranceProvider}}"></paper-input>
-            <vaadin-date-picker required label="Policy Start Date" value="{{policy.startDate}}"></vaadin-date-picker>
-            <vaadin-date-picker required label="Policy End Date" value="{{policy.endDate}}"></vaadin-date-picker>
-          </div>
+              <paper-input required auto-validate error-message="input policy number" label="Policy Number" value="{{policy.number}}"></paper-input>
+              <paper-input required auto-validate error-message="input insurance provider name" label="Insurance Provider" value="{{policy.insuranceProvider}}"></paper-input>
+              <vaadin-date-picker required label="Policy Start Date" value="{{policy.startDate}}"></vaadin-date-picker>
+              <vaadin-date-picker required label="Policy End Date" value="{{policy.endDate}}"></vaadin-date-picker>
+            </div>
           </paper-dialog-scrollable>
           <div class="buttons">
             <paper-button dialog-dismiss>Cancel</paper-button>
@@ -508,7 +509,7 @@
       </div>
     </div>
 
-    
+
 
   </template>
   <script src="page-patient-editor.coffee-compiled.js"></script>

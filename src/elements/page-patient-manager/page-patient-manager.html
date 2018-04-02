@@ -30,25 +30,24 @@
     <!-- style -->
 
     <style is="custom-style" include="common-style">
-    
       .limiting-container {
         margin-top: 10px;
       }
-      
-      
+
+
       .more-optons {
         color: #777777;
       }
-      
-      
+
+
       .new-patient-fab {
         position: fixed;
         right: 24px;
         bottom: 128px;
         background-color: #43A047;
       }
-      
-      
+
+
       paper-button {
         margin: 3px;
       }
@@ -59,7 +58,7 @@
         border-bottom: 1px solid var(--paper-grey-200);
         background-color: var(--paper-grey-50);
       }
-  
+
       .card-custom-header .title {
         font-size: 20px;
         font-weight: 500;
@@ -77,28 +76,31 @@
         text-transform: uppercase;
         font-weight: 500;
       }
-      
+
       .modifier.online {
         color: #757575;
       }
-      
+
       .modifier.local-only {
         color: #039BE5;
       }
-      
+
       .modifier.locally-updated {
         color: #009688;
       }
-      
+
       .modifier.imported {
         color: #4CAF50;
       }
+
       #search-tab {
-        background-color:#43A047;
+        background-color: #43A047;
       }
+
       #log-tab {
-        background-color:var(--paper-teal-800);
+        background-color: var(--paper-teal-800);
       }
+
       .btn-add {
         min-width: 0;
         padding-top: 0.5em;
@@ -106,6 +108,7 @@
         background-color: #eceff1;
         color: rgba(0, 0, 0, .87);
       }
+
       .paper-input-custom ::content input {
         font-size: 18px !important;
         color: rgba(0, 0, 0, .87) !important;
@@ -115,6 +118,7 @@
         font-size: 18px !important;
         color: #737373 !important;
       }
+
       .preview-title {
         padding-left: 12px;
         padding-right: 12px;
@@ -139,9 +143,7 @@
         background-color: #5c4575;
       }
 
-      .custom-menu {
-
-      }
+      .custom-menu {}
 
       .p-8 {
         padding: 8px;
@@ -166,13 +168,12 @@
       .custom-img {
         border-radius: 50%;
       }
-      
     </style>
 
     <!-- local DOM -->
 
     <div class="tabs-container">
-      <paper-tabs  id="tabs" selected="{{selectedSearchViewIndex}}" scrollable noink='true' on-iron-select="onPageIndexChange">
+      <paper-tabs id="tabs" selected="{{selectedSearchViewIndex}}" scrollable noink='true' on-iron-select="onPageIndexChange">
         <paper-tab>[[$TRANSLATE('Search',LANG)]]</paper-tab>
         <paper-tab>[[$TRANSLATE('Imported/Local Patients',LANG)]]</paper-tab>
         <paper-tab>[[$TRANSLATE('Logs',LANG)]]</paper-tab>
@@ -191,12 +192,13 @@
             <!-- Card - Search - start -->
             <paper-card>
               <div class="p-8 preview-title">
-             
-                <paper-input class="flex paper-input-custom" value="{{searchFieldMainInput}}" label="Search Patient"></paper-input>
+
+                <paper-input class="flex paper-input-custom" value="{{searchFieldMainInput}}" label="Search Patient" on-keyup="searchOnlineEnterKeyPressed"></paper-input>
 
                 <div class="horizontal layout end-justifed center flex">
                   <paper-toggle-button class="flex" checked="{{isAdvancedSearchEnabled}}">Advanced Search</paper-toggle-button>
-                  <paper-button class="btn-add colored" raised on-tap="searchOnlineButtonPressed"><iron-icon icon="search" class="m-right-8"></iron-icon>SEARCH</paper-button>
+                  <paper-button class="btn-add colored" raised on-tap="searchOnlineButtonPressed">
+                    <iron-icon icon="search" class="m-right-8"></iron-icon>SEARCH</paper-button>
                 </div>
               </div>
 
@@ -267,7 +269,7 @@
 
             <!-- Card - Search Results - start -->
             <paper-card class="m-top-8">
-      
+
               <div class="card-custom-header">
                 <div class="layout horizontal center">
                   <template is="dom-if" if="[[hasSearchBeenPressed]]">
@@ -286,11 +288,11 @@
               <template is="dom-if" if="[[hasSearchBeenPressed]]">
                 <div class="p-0">
                   <paper-listbox>
-                    
+
                     <template id="patient-list-repeater" is="dom-repeat" items="[[matchingPatientList]]" as="patient">
                       <paper-item class="custom layout horizontal center wrap">
                         <div class="type caption secondary">[[patient.serial]]</div>
-                        
+
                         <div class="flex m-left-8">
                           <div class="type body capitalize">[[$getFullName(patient.name)]]</div>
                           <div class="type caption">[[patient.email]]</div>
@@ -318,7 +320,7 @@
                         <!-- <paper-icon-button icon="visibility" on-tap="viewPatientIconPressed" hidden="[[!patient.flags.isImported]]"></paper-icon-button> -->
 
                         <!-- <paper-button raised class="btn-add colored" on-tap="viewPatient" hidden="[[!patient.flags.isImported]]"><iron-icon icon="icons:visibility" class="m-right-8"></iron-icon>View</paper-button> -->
-              
+
                         <paper-menu-button horizontal-align="right" no-animations>
                           <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
                           <paper-menu class="dropdown-content">
@@ -339,9 +341,9 @@
                             <template is="dom-if" if="[[patient.flags.isImported]]">
                               <paper-item on-tap="importLatestPatientPressed">Import Latest from Cloud</paper-item>
                             </template>
-                        <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
-                          <paper-item on-tap="putInWaitlistTapped">Put in [[organization.name]]'s Waitlist</paper-item>
-                        </template>
+                            <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
+                              <paper-item on-tap="putInWaitlistTapped">Put in [[organization.name]]'s Waitlist</paper-item>
+                            </template>
 
 
                             <!-- export/import end -->
@@ -352,13 +354,13 @@
 
                           </paper-menu>
                         </paper-menu-button>
-                        
+
 
                       </paper-item>
                     </template>
 
                   </paper-listbox>
-                  
+
                 </div>
               </template>
 
@@ -380,12 +382,13 @@
             <!-- Card - Search - start -->
             <paper-card>
               <div class="p-8 preview-title">
-             
+
                 <paper-input class="flex paper-input-custom" value="{{searchFieldMainInput}}" label="Search Local Patient"></paper-input>
 
                 <div class="horizontal layout end-justifed center flex">
                   <paper-toggle-button class="flex" checked="{{isAdvancedSearchEnabled}}">Advanced Search</paper-toggle-button>
-                  <paper-button class="btn-add colored" raised on-tap="searchOfflineButtonPressed"><iron-icon icon="search" class="m-right-8"></iron-icon>SEARCH</paper-button>
+                  <paper-button class="btn-add colored" raised on-tap="searchOfflineButtonPressed">
+                    <iron-icon icon="search" class="m-right-8"></iron-icon>SEARCH</paper-button>
                 </div>
               </div>
 
@@ -456,7 +459,7 @@
 
             <!-- Card - Search Results - start -->
             <paper-card class="m-top-8">
-      
+
               <div class="card-custom-header">
                 <div class="layout horizontal center">
                   <template is="dom-if" if="[[hasSearchBeenPressed]]">
@@ -475,11 +478,11 @@
               <template is="dom-if" if="[[hasSearchBeenPressed]]">
                 <div class="p-0">
                   <paper-listbox>
-                    
+
                     <template id="patient-list-repeater" is="dom-repeat" items="[[matchingPatientList]]" as="patient">
                       <paper-item class="custom layout horizontal center">
                         <div class="type caption secondary">[[patient.serial]]</div>
-                        
+
                         <div class="flex m-left-8">
                           <div class="type body capitalize">[[$getFullName(patient.name)]]</div>
                           <div class="type caption">[[patient.email]]</div>
@@ -507,7 +510,7 @@
                         <!-- <paper-icon-button icon="visibility" on-tap="viewPatientIconPressed" hidden="[[!patient.flags.isImported]]"></paper-icon-button> -->
 
                         <!-- <paper-button raised class="btn-add colored" on-tap="viewPatientIconPressed" hidden="[[!patient.flags.isImported]]"><iron-icon icon="icons:visibility" class="m-right-8"></iron-icon>View</paper-button> -->
-              
+
                         <paper-menu-button horizontal-align="right" no-animations>
                           <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
                           <paper-menu class="dropdown-content">
@@ -528,9 +531,9 @@
                             <template is="dom-if" if="[[patient.flags.isImported]]">
                               <paper-item on-tap="importLatestPatientPressed">Import Latest from Cloud</paper-item>
                             </template>
-                        <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
-                          <paper-item on-tap="putInWaitlistTapped">Put in [[organization.name]]'s Waitlist</paper-item>
-                        </template>
+                            <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
+                              <paper-item on-tap="putInWaitlistTapped">Put in [[organization.name]]'s Waitlist</paper-item>
+                            </template>
 
 
                             <!-- export/import end -->
@@ -541,13 +544,13 @@
 
                           </paper-menu>
                         </paper-menu-button>
-                        
+
 
                       </paper-item>
                     </template>
 
                   </paper-listbox>
-                  
+
                 </div>
               </template>
             </paper-card>
@@ -559,7 +562,7 @@
           <section>
             <!-- Card - Visited Patient Log - start -->
             <paper-card>
-      
+
               <div class="card-custom-header">
                 <div class="layout horizontal center">
                   <div class="title flex">Visited Patient Log</div>
@@ -578,11 +581,11 @@
               </template>
 
               <paper-listbox>
-                
+
                 <template id="visited-patient-log-repeater" is="dom-repeat" items="[[matchingVisitedPatientLogList]]" as="patient">
                   <paper-item class="custom layout horizontal center">
                     <div class="type caption secondary">[[patient.patientSerial]]</div>
-                    
+
                     <div class="flex m-left-8">
                       <div class="type body capitalize">[[$getFullName(patient.patientName)]]</div>
                       <div class="type caption">
@@ -590,12 +593,13 @@
                         <span>[[$mkDateTime(patient.visitedDateTimeStamp)]]</span>
                       </div>
                     </div>
-          
-                    <paper-button raised class="btn-add" on-tap="viewPatientPressedFromLog"><iron-icon icon="visibility" class="m-right-8"></iron-icon>view</paper-button>
+
+                    <paper-button raised class="btn-add" on-tap="viewPatientPressedFromLog">
+                      <iron-icon icon="visibility" class="m-right-8"></iron-icon>view</paper-button>
 
                 </template>
               </paper-listbox>
-           
+
             </paper-card>
             <!-- Card - Visited Patient Log - end -->
           </section>
@@ -613,22 +617,24 @@
               </div>
 
               <paper-listbox>
-                
-                <template id="pending-pcc-record-for-existing-patient-repeater" is="dom-repeat" items="[[patientListForPendingPccRecords]]" as="patient">
+
+                <template id="pending-pcc-record-for-existing-patient-repeater" is="dom-repeat" items="[[patientListForPendingPccRecords]]"
+                  as="patient">
                   <paper-item class="custom layout horizontal center wrap">
-                    
+
                     <div class="flex m-left-8">
                       <div class="type caption secondary">[[patient.data.serial]]</div>
                       <div class="type body capitalize">[[$getFullName(patient.data.name)]]</div>
                       <div class="type caption-2">[[patient.data.phone]]</div>
                     </div>
-            
+
                     <paper-input label="Pin" value="{{patient.doctorAccessPin}}"></paper-input>
-              
-          
-                    
-          
-                    <paper-button raised class="btn-add" on-tap="savePendingPccRecords"><iron-icon icon="save" class="m-right-8"></iron-icon>save</paper-button>
+
+
+
+
+                    <paper-button raised class="btn-add" on-tap="savePendingPccRecords">
+                      <iron-icon icon="save" class="m-right-8"></iron-icon>save</paper-button>
 
                 </template>
               </paper-listbox>
@@ -642,10 +648,10 @@
 
     </div>
 
-    
+
 
     <paper-fab class="custom-menu-button" icon="add" on-tap="newPatientFabPressed"></paper-fab>
-     
+
 
 
   </template>

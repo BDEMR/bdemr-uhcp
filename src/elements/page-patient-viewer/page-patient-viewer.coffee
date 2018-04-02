@@ -331,8 +331,6 @@ Polymer {
     if list.length is 1
       @isPatientValid = true
       @patient = list[0]
-
-      console.log 'Patient', @patient
       return
     else
       @_notifyInvalidPatient()
@@ -357,7 +355,6 @@ Polymer {
       patientId: @patient.serial
     }
     @callApi '/bdemr-patient-file-search', data, (err, response)=>
-      console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -371,7 +368,6 @@ Polymer {
     index = repeater.indexForElement el
 
     diagnosis = @confirmedDiagnosisList[index]
-    console.log 'diagnosis', diagnosis
     @domHost.showModalPrompt 'Are you sure?', (answer)=>
       if answer is true
         id = (app.db.find 'visit-diagnosis', ({serial})-> serial is diagnosis.serial)[0]._id
@@ -399,7 +395,6 @@ Polymer {
   loadPatientPccRecords: (patientIdentifier) ->
     list = app.db.find 'pcc-records', ({patientSerial}) -> patientSerial is patientIdentifier
 
-    console.log list    
     if list.length > 0
       list.sort (left, right)->
         return -1 if left.createdDatetimeStamp > right.createdDatetimeStamp
@@ -413,7 +408,6 @@ Polymer {
   loadPatientNdrRecords: (patientIdentifier) ->
     list = app.db.find 'ndr-records', ({patientSerial}) -> patientSerial is patientIdentifier
 
-    console.log 'NDR records', list    
     if list.length > 0
       list.sort (left, right)->
         return -1 if left.createdDatetimeStamp > right.createdDatetimeStamp
@@ -427,7 +421,7 @@ Polymer {
     if @matchingPccRecordList.length > 0
       for item in @matchingPccRecordList
         for string in possibleDMStringList
-          if item.clinical.pregnancyInfo.glycemicStatus is string
+          if item.clinical?.pregnancyInfo?.glycemicStatus? is string
             localStorage.setItem("currentPatientGlycemicStatus", string)
             return
     else return
@@ -437,7 +431,6 @@ Polymer {
       patient: patient
       apiKey: @user.apiKey
     @callApi '/bdemr-patient-details-update', data, (err, response)=>
-      console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -512,8 +505,6 @@ Polymer {
     date = @formatDate d
 
     id = string + "-" +  date + "-" + recordTypeIdentifier + "-" + number
-
-    console.log 'ID --->', id
 
     return id
 
@@ -594,12 +585,9 @@ Polymer {
     @domHost.navigateToPage "#/patient-editor/patient:" + @patient.serial
 
   navigatedIn: ->
-    console.log @generatedRecordSpecificRandomPatientId 'BH'
     currentOrganization = @getCurrentOrganization()
     unless currentOrganization
       @domHost.navigateToPage "#/select-organization"
-
-    # console.log '@domHost.selectedPatientPageIndex:', @domHost.selectedPatientPageIndex
 
     params = @domHost.getPageParams()
 
@@ -706,8 +694,6 @@ Polymer {
 
     modifiedList = []
 
-    console.log 'finalList', finalList
-
     for visit in finalList
       recordList = [
         {
@@ -810,8 +796,6 @@ Polymer {
     visit = @matchingVisitList[index]
 
     visit = @matchingVisitList[index]
-
-    console.log "selected Visit Record:", visit
 
     if visit.recordTypeName is 'Test Results'
       if visit.testResults.serial
@@ -1825,8 +1809,6 @@ Polymer {
 
     @matchingOtherTestList = list
 
-    console.log 'matchingOtherTestList', @matchingOtherTestList
-
   addOtherTestItemClicked: ->
     @domHost.navigateToPage '#/other-test/patient:' + @patient.serial + '/test:new'
 
@@ -2013,38 +1995,6 @@ Polymer {
   toggleActivityLog: () ->
     elm = @$$ '#collapseActivityLog'
     elm.toggle()
-
-  # _updatePatientSerialForSync: (patientIdentifier)->
-  #   collectionList = app.db.find 'filterd-patient-serial-list-for-sync'
-
-  #   for collectionObject in collectionList
-
-  #     if collectionObject.patientSerialList.length isnt 0
-  #       for patient in collectionObject.patientSerialList
-  #         if patient.patientSerial is patientIdentifier
-  #           break
-  #         else
-  #           patientObject =
-  #             patientSerial: patientIdentifier
-  #             isSync: true
-
-  #           collectionObject.patientSerialList.push patientObject
-
-  #           app.db.upsert 'filterd-patient-serial-list-for-sync', collectionObject, ({_id})=> collectionObject._id is _id
-
-  #     else
-  #       patientObject =
-  #         patientSerial: patientIdentifier
-  #         isSync: true
-
-  #       collectionObject.patientSerialList.push patientObject
-
-  #       app.db.upsert 'filterd-patient-serial-list-for-sync', collectionObject, ({_id})=> collectionObject._id is _id
-
-
-  #   console.log app.db.find 'filterd-patient-serial-list-for-sync'
-
-
 
 
   _updatePatientSerialListByCollectionName: (collectionNameIdentifier)->
@@ -2465,7 +2415,6 @@ Polymer {
 
   fileItemClicked: (e)->
     index = e.model.fileIndex
-    console.log index
     file = @matchingFileList[index]
 
     data = { 
@@ -2475,7 +2424,6 @@ Polymer {
     }
 
     @callApi '/bdemr-patient-file-download', data, (err, response)=>
-      console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -2520,7 +2468,6 @@ Polymer {
       'History & Physical': { serverDb: 'history-and-physical-record', clientDb: '' }
       'PCC': { serverDb: 'bdemr--pcc-records', clientDb: '' }
 
-    console.log recordType
 
     unless recordType of typeMap
       @domHost.showModalDialog "This type of record can not be authorized!"
@@ -2546,8 +2493,6 @@ Polymer {
       data.masterType = 'pcc-records'
       data.pccType = pccType
 
-    console.log 'data', data
-
     
 
     @callApi '/bdemr-organization-authorize-particular-type-of-record', data, (err, response)=>
@@ -2571,8 +2516,6 @@ Polymer {
     repeater = @$$ '#visit-list-repeater'
     index = repeater.indexForElement el
     recordIndex = e.model.recordIndex
-
-    console.log 'recordIndex', recordIndex
 
     visit = @matchingVisitList[index]
     record = visit.recordList[recordIndex]
@@ -2691,7 +2634,6 @@ Polymer {
 
   deleteLeaveInfoClicked: (e)->
     index = e.model.index
-    console.log index
     @domHost.showModalPrompt 'Are you sure to Delete', (done)=>
       if done
         @splice 'leaveData.data', index, 1

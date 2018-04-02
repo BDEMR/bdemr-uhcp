@@ -251,6 +251,10 @@ Polymer {
     @searchContextDropdownSelectedIndex = 1
     @searchButtonPressed null
 
+  searchOnlineEnterKeyPressed: (e)->
+    return unless e.keyCode is 13
+    @searchOnlineButtonPressed()
+  
   _searchOnline: ->
     @matchingPatientList = []
     # console.log @searchFieldMainInput
@@ -429,7 +433,7 @@ Polymer {
         if patientList.length isnt 1
           return @domHost.showModalDialog 'Unknown error occurred.'
         patient = patientList[0]
-
+        console.log patient
         # patientPinObject = {patientSerial: serial, pin: pin}
         @_savePinForLocalPatient pin, patient.serial
         patient.flags = {
