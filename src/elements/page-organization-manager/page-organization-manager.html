@@ -24,17 +24,16 @@
     <!-- style -->
 
     <style is="custom-style" include="common-style">
-    
       .limiting-container {
         margin-top: 10px;
       }
-      
+
       .new-fab {
         position: fixed;
         right: 20px;
         bottom: 164px;
       }
-      
+
       paper-button {
         margin: 3px;
       }
@@ -66,7 +65,7 @@
         text-transform: uppercase;
         font-weight: 400;
       }
-      
+
       .modifier.type1 {
         background: #757575;
       }
@@ -78,6 +77,15 @@
         margin-right: 10px;
         color: #777777;
       }
+
+      .organization-menu paper-item {
+        border-bottom: 1px solid #eee;
+      }
+
+      .organization-menu paper-item:hover {
+        cursor: pointer;
+        font-style: bold;
+      }
     </style>
 
     <!-- local DOM -->
@@ -88,20 +96,20 @@
 
         <!-- Card - Current Organizations - start -->
         <paper-card class="m-top-8">
-  
+
           <div class="card-custom-header">
             <div class="layout horizontal center">
-              <div class="title flex">Currently you belong to [[organizationsIBelongToList.length]] organizations.</div>           
+              <div class="title flex">Currently you belong to [[organizationsIBelongToList.length]] organizations.</div>
             </div>
           </div>
 
           <template is="dom-if" if="[[organizationsIBelongToList.length]]">
             <div class="p-0">
               <paper-listbox>
-                
+
                 <template id="assistant-list-repeater" is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
                   <paper-item class="custom layout horizontal center">
-                    
+
                     <div class="flex m-left-8">
                       <div class="type body capitalize">[[organization.name]]</div>
                       <div class="type caption secondary">[[organization.idOnServer]]</div>
@@ -109,26 +117,26 @@
 
                     <div class="layout horizontal m-horizontal-4 wrap">
                       <div class="type caption">[[organization.address]]&nbsp;</div>
-                       <div class="type caption">([[organization.effectiveRegion]])</div>
+                      <div class="type caption">([[organization.effectiveRegion]])</div>
                     </div>
 
-                      <template is="dom-if" if="[[!organization.isClaimed]]">
-                        <div class="modifier type1">Unclaimed</div>
-                      </template>
+                    <template is="dom-if" if="[[!organization.isClaimed]]">
+                      <div class="modifier type1">Unclaimed</div>
+                    </template>
 
-                      <template is="dom-if" if="[[organization.isCurrentUserAnAdmin]]">
-                        <div class="modifier type1"> ✓ Admin</div>
-                      </template>
-          
+                    <template is="dom-if" if="[[organization.isCurrentUserAnAdmin]]">
+                      <div class="modifier type1"> ✓ Admin</div>
+                    </template>
+
                     <paper-menu-button horizontal-align="right" no-animations>
                       <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
-                      <paper-menu class="dropdown-content">
+                      <paper-menu class="dropdown-content organization-menu">
                         <paper-item on-tap="accessMedicineSalesStatisticsPressed">Medicine Sales Statistics</paper-item>
                         <template is="dom-if" if="[[organization.isCurrentUserAnAdmin]]">
                           <div hidden>[[organization]]</div>
                           <paper-item on-tap="accessRecordsPressed">Access Records</paper-item>
                           <paper-item on-tap="editOrganizationPressed">Edit Organization</paper-item>
-                          <paper-item on-tap="managePatientPressed">Manage Patients</paper-item>
+                          <paper-item on-tap="managePatientPressed">Manage Patient's Service Value</paper-item>
                           <paper-item on-tap="manageFocPressed">Manage FOC</paper-item>
                           <paper-item on-tap="manageUsersPressed">Manage Members</paper-item>
                           <paper-item on-tap="removeOrganizationPressed">Remove Organization</paper-item>
@@ -149,10 +157,10 @@
                 </template>
 
               </paper-listbox>
-              
+
             </div>
           </template>
-     
+
         </paper-card>
         <!-- Card - Current Organizations - end -->
 
@@ -161,10 +169,10 @@
         <br>
 
         <paper-card class="organization-info-cards">
-  
+
           <div class="card-custom-header">
             <div class="layout horizontal center">
-              <div class="title flex">Search existing organizations to join</div>           
+              <div class="title flex">Search existing organizations to join</div>
             </div>
           </div>
 
@@ -178,10 +186,10 @@
           <template is="dom-if" if="[[organizationSearchResultList.length]]">
             <div class="p-0">
               <paper-listbox>
-                
+
                 <template id="assistant-list-repeater" is="dom-repeat" items="[[organizationSearchResultList]]" as="organization">
                   <paper-item class="custom layout horizontal center">
-                    
+
                     <div class="flex m-left-8">
                       <div class="type body capitalize">[[organization.name]]</div>
                       <div class="type caption secondary">[[organization.idOnServer]]</div>
@@ -189,19 +197,19 @@
 
                     <div class="layout horizontal m-horizontal-4 wrap">
                       <div class="type caption">[[organization.address]]&nbsp;</div>
-                       <div class="type caption">([[organization.effectiveRegion]])</div>
+                      <div class="type caption">([[organization.effectiveRegion]])</div>
                     </div>
-          
+
                     <paper-menu-button horizontal-align="right" no-animations>
                       <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
                       <paper-menu class="dropdown-content">
 
-                      <template is="dom-if" if="[[!organization.isCurrentUserAMember]]">
-                        <div hidden>[[organization]]</div>
-                        <paper-item on-tap="joinOrganizationTapped">Join as a user</paper-item>
-                      </template>
+                        <template is="dom-if" if="[[!organization.isCurrentUserAMember]]">
+                          <div hidden>[[organization]]</div>
+                          <paper-item on-tap="joinOrganizationTapped">Join as a user</paper-item>
+                        </template>
 
-                      <!-- <template is="dom-if" if="[[!organization.isClaimed]]">
+                        <!-- <template is="dom-if" if="[[!organization.isClaimed]]">
                         <div hidden>[[organization]]</div>
                         <paper-item on-tap="claimOrganizationTapped">Claim Ownership</paper-item>
                       </template> -->
@@ -213,7 +221,7 @@
                 </template>
 
               </paper-listbox>
-              
+
             </div>
           </template>
         </paper-card>
@@ -225,14 +233,14 @@
 
 
 
-        
+
         <paper-fab class="new-fab" icon="add" on-tap="newOrganizationFabPressed"></paper-fab>
 
       </div>
 
     </div>
 
-    
+
 
   </template>
   <script src="page-organization-manager.coffee-compiled.js"></script>

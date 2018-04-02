@@ -568,23 +568,6 @@
       }
     </style>
 
-    <!-- local DOM -->
-
-    <!-- <div class="tabs-container horizontal layout">
-      <paper-tabs class="flex main-tabs" selected="{{selectedSubViewIndex}}" scrollable noink='true'>
-        <paper-button class="m-left-8b" raised style="background: #02F7C2; color: black" on-tap="createNewVisitPressed">+NEW VISIT</paper-button>
-        <paper-tab>[[$TRANSLATE('Demography',LANG)]]</paper-tab>
-        <paper-tab>[[$TRANSLATE('Confirmed Diagnosis',LANG)]]</paper-tab>
-        <paper-tab>[[$TRANSLATE('Medicine',LANG)]]</paper-tab>
-        <paper-tab>[[$TRANSLATE('Vitals',LANG)]]</paper-tab>
-        <paper-tab>[[$TRANSLATE('Visits & Report',LANG)]]</paper-tab>
-        <paper-tab>[[$TRANSLATE('Test Results',LANG)]]</paper-tab>
-        <paper-tab>[[$TRANSLATE('Doctor Patient Notes',LANG)]]</paper-tab>
-        <paper-tab>[[$TRANSLATE('Patient Gallery',LANG)]]</paper-tab>
-        <paper-tab>[[$TRANSLATE('Activity Log',LANG)]]</paper-tab>
-      </paper-tabs>
-    </div> -->
-
 
     <div class="master-container">
 
@@ -600,9 +583,11 @@
                 <iron-image class="profile-image m-right-8" src$="[[$getProfileImage(patient.profileImage)]]" preload sizing="cover"></iron-image>
 
                 <div class="flex">
-                  <div class="m-horizontal-4 horizontal layout">
+                  <div class="m-horizontal-4 horizontal layout center">
                     <div class="type body-lead capitalize">{{$getFullName(patient.name)}}</div>
-                    <div class="m-left-8 type caption bg-gray">{{patient.serial}}</div>
+                    <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
+                      <div class="m-left-8 type caption bg-gray">[[policy.insuranceProvider]]-[[policy.number]]</div>
+                    </template>
                   </div>
                   <div class="horizontal layout wrap type caption-2 secondary">
 
@@ -669,7 +654,7 @@
                 <div class="type body">
 
                   <div class="type body-lead sub-header">Basic details</div>
-                  <div class="horizontal layout wrap p-12">
+                  <div class="vertical layout wrap p-12">
 
                     <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.nationalIdCardNumber)]]">
                       <strong>National ID: </strong>
@@ -715,10 +700,6 @@
                       <strong>Expenditure: </strong>
                       <span>{{patient.expenditure}}</span>
                     </div>
-                    <div class="m-horizontal-4" hidden$="[[_isEmptyString(patient.profession)]]">
-                      <strong>Profession: </strong>
-                      <span>{{patient.profession}}</span>
-                    </div>
                   </div>
 
                   <div class="type body-lead m-top-8 sub-header">Address</div>
@@ -762,6 +743,71 @@
                     </div>
 
                   </div>
+
+
+                  <!-- Policy Info start -->
+                  <div class="type body-lead m-top-8 sub-header">Policy Info</div>
+                  <div class="p-12">
+                    <paper-item style="border-bottom: 1px solid #ccc">
+                      <div class="flex type bold">Number</div>
+                      <div class="flex-2 type bold">Insurance Company</div>
+                      <div class="flex type bold">Start Date</div>
+                      <div class="flex type bold">End Date</div>
+                      <div class="flex type bold">Action</div>
+                    </paper-item>
+                    <template is="dom-if" if="[[!patient.policyList.length]]">
+                      <p class="layout vertical center type secondary">-- No Policy yet --</p>
+                    </template>
+                    <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
+                      <paper-item>
+                        <div class="flex">[[policy.number]]</div>
+                        <div class="flex-2">[[policy.insuranceProvider]]</div>
+                        <div class="flex">[[policy.startDate]]</div>
+                        <div class="flex">[[policy.endDate]]</div>
+                        <div class="flex">
+                          <paper-icon-button icon="create" on-tap="editPolicyClicked"></paper-icon-button>
+                          <paper-icon-button icon="delete" on-tap="deletePolicyClicked"></paper-icon-button>
+                        </div>
+                      </paper-item>
+                    </template>
+                  </div>
+                  <!-- Policy Info End -->
+
+                  <!-- Employment Info start -->
+                  <div class="type body-lead m-top-8 sub-header">Employment Info</div>
+                  <div class="card-item vertical layout p-12">
+                    <div class="m-horizontal-4">
+                      <strong>Designation: </strong>
+                      <span>[[patient.employmentInfo.currentPosition]]</span>
+                    </div>
+                    <div class="m-horizontal-4">
+                      <strong>Department</strong>
+                      <span>[[patient.employmentInfo.department]]</span>
+                    </div>
+                    <div class="m-horizontal-4">
+                      <strong>Salary</strong>
+                      <span>[[patient.employmentInfo.salary]]</span>
+                    </div>
+                    <div class="m-horizontal-4">
+                      <strong>Joining Date</strong>
+                      <span>[[patient.employmentInfo.joiningDate]]</span>
+                    </div>
+                    <div class="m-horizontal-4">
+                      <strong>Termination Date</strong>
+                      <span>[[patient.employmentInfo.terminationDate]]</span>
+                    </div>
+                    <div class="m-horizontal-4">
+                      <strong>Institution Name</strong>
+                      <span>[[patient.employmentInfo.institutionName]]</span>
+                    </div>
+                    <div class="m-horizontal-4">
+                      <strong>Institution Address</strong>
+                      <span>[[patient.employmentInfo.institutionAddres]]</span>
+                    </div>
+
+                  </div>
+                  <!-- Employment Info end -->
+
 
 
                 </div>
@@ -2151,7 +2197,7 @@
                             </template>
                           </paper-listbox>
                         </section>
-                        
+
                         <!-- by month view -->
                         <section>
                           <paper-listbox>
@@ -2176,7 +2222,7 @@
                           </paper-listbox>
                         </section>
 
-                        
+
                       </iron-pages>
 
                     </div>
