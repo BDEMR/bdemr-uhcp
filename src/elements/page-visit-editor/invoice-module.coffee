@@ -82,27 +82,6 @@ app.behaviors.local.invoiceMixin =
     @_updateVisit @invoice.serial
     @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:g"
 
-  _chargeWalletContextual: (context)->
-    chargeDoc = {
-      patientId: @patient.idOnServer
-      amount: @invoice.totalBilled
-      notes: "Invoice Bill"
-      organizationId: @organization.idOnServer
-      context
-    }
-
-    @_chargeOrganizationPatient chargeDoc, (err)=>
-      if (err)
-        @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
-      else
-        @domHost.showModalDialog "Successfully Charged"
-  
-  chargeIndoorWalletButtonPressed: ->
-    @_chargeWalletContextual 'indoor'
-
-  chargeOutdoorWalletButtonPressed: ->
-    @_chargeWalletContextual 'outdoor'
-
   
   itemUnitPriceChanged: (e)->
     value = parseInt e.target.value
