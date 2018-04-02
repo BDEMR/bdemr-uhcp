@@ -114,7 +114,7 @@ app.behaviors.pageLike = [
           return cbfn response.error
         return cbfn()
 
-    _chargeOrganizationPatient: ({patientId, amount, notes, context, organizationId, cbfn})->
+    _chargeOrganizationPatient: ({patientId, amount, notes, context, organizationId}, cbfn)->
       query = {
         apiKey: (app.db.find 'user')[0].apiKey
         amountInBdt: amount
@@ -124,8 +124,6 @@ app.behaviors.pageLike = [
         userIdOverride: patientId
       }
       this.domHost.callApi '/bdemr-wallet-charge-user', query, (err, response)=>
-        if (err)
-          return cbfn err
         if response.hasError
           return cbfn response.error
         return cbfn()
