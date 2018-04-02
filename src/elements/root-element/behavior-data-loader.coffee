@@ -37,7 +37,7 @@ app.behaviors.local['root-element'].dataLoader =
       # }
       {
         name: 'investigationList'
-        url: 'static-data/investigation-list.json'
+        url: 'static-data/uhcp-investigation-list.json'
       }
       {
         name: 'symptomsList'
@@ -104,7 +104,7 @@ app.behaviors.local['root-element'].dataLoader =
     staticDataListProduction = [
       {
         name: 'investigationList'
-        url: 'https://bdemr.b-cdn.net/investigation-list-8-11-2017.json'
+        url: 'https://bdemr.b-cdn.net/uhcp-investigation-list-2-4-2018.json'
       }
       {
         name: 'symptomsList'
@@ -148,7 +148,7 @@ app.behaviors.local['root-element'].dataLoader =
       }
       {
         name: 'uhcpInvoicePriceList'
-        url: 'https://bdemr.b-cdn.net/uhcp-invoice-price-list-19-3-2018.json'
+        url: 'https://bdemr.b-cdn.net/uhcp-invoice-price-list-2-4-2018.json'
       }
     ]
 

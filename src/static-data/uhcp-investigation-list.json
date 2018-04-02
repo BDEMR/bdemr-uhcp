@@ -1,0 +1,7292 @@
+[
+  {
+    "name": "Blood Transfusion Charge (Indoor)",
+    "investigationList": [
+      {
+        "name": "Blood Transfusion Charge (Indoor)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Blood Transfusion Charge (Outdoor)",
+    "investigationList": [
+      {
+        "name": "Blood Transfusion Charge (Outdoor)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Cross matching",
+    "investigationList": [
+      {
+        "name": "Cross matching",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Service per unit whole blood screening",
+    "investigationList": [
+      {
+        "name": "Service per unit whole blood screening",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Ascitic Fluid for Biochemistry",
+    "investigationList": [
+      {
+        "name": "Ascitic Fluid for Biochemistry",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "B.Flim /PBF",
+    "investigationList": [
+      {
+        "name": "B.Flim /PBF",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "BT (Bleeding Time)",
+    "investigationList": [
+      {
+        "name": "BT (Bleeding Time)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bile Pigment",
+    "investigationList": [
+      {
+        "name": "Bile Pigment",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bile Salt",
+    "investigationList": [
+      {
+        "name": "Bile Salt",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "C/E count",
+    "investigationList": [
+      {
+        "name": "C/E count",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CBC",
+    "investigationList": [
+      {
+        "name": "CBC",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CP",
+    "investigationList": [
+      {
+        "name": "CP",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT (Clotting Time)",
+    "investigationList": [
+      {
+        "name": "CT (Clotting Time)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Complete Urine Count (CUC)",
+    "investigationList": [
+      {
+        "name": "Complete Urine Count (CUC)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "DC",
+    "investigationList": [
+      {
+        "name": "DC",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ESR",
+    "investigationList": [
+      {
+        "name": "ESR",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "FNAC",
+    "investigationList": [
+      {
+        "name": "FNAC",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HCT/PCV",
+    "investigationList": [
+      {
+        "name": "HCT/PCV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Hb% (Haemoglobin)",
+    "investigationList": [
+      {
+        "name": "Hb% (Haemoglobin)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Hb-Electro phoresis",
+    "investigationList": [
+      {
+        "name": "Hb-Electro phoresis",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "L. E. Cell",
+    "investigationList": [
+      {
+        "name": "L. E. Cell",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MCH",
+    "investigationList": [
+      {
+        "name": "MCH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MCHC",
+    "investigationList": [
+      {
+        "name": "MCHC",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MCV",
+    "investigationList": [
+      {
+        "name": "MCV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MP (Malirial Parasite)",
+    "investigationList": [
+      {
+        "name": "MP (Malirial Parasite)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "PCV",
+    "investigationList": [
+      {
+        "name": "PCV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Paps Smear",
+    "investigationList": [
+      {
+        "name": "Paps Smear",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Platelet",
+    "investigationList": [
+      {
+        "name": "Platelet",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Protein Electrophoresis",
+    "investigationList": [
+      {
+        "name": "Protein Electrophoresis",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "RBC (T)",
+    "investigationList": [
+      {
+        "name": "RBC (T)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "RC (Reticulocyte Count)",
+    "investigationList": [
+      {
+        "name": "RC (Reticulocyte Count)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Semen Analysis",
+    "investigationList": [
+      {
+        "name": "Semen Analysis",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Sputum M/E",
+    "investigationList": [
+      {
+        "name": "Sputum M/E",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Stool OBT",
+    "investigationList": [
+      {
+        "name": "Stool OBT",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Stool R/M/E",
+    "investigationList": [
+      {
+        "name": "Stool R/M/E",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Stool R/S",
+    "investigationList": [
+      {
+        "name": "Stool R/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "TC",
+    "investigationList": [
+      {
+        "name": "TC",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine RME (CUC)",
+    "investigationList": [
+      {
+        "name": "Urine RME (CUC)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine for Bence Jones Protein",
+    "investigationList": [
+      {
+        "name": "Urine for Bence Jones Protein",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine for Cannabinoids",
+    "investigationList": [
+      {
+        "name": "Urine for Cannabinoids",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine for Opiates",
+    "investigationList": [
+      {
+        "name": "Urine for Opiates",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urobilinogen",
+    "investigationList": [
+      {
+        "name": "Urobilinogen",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "B-hcG",
+    "investigationList": [
+      {
+        "name": "B-hcG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ACTH",
+    "investigationList": [
+      {
+        "name": "ACTH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Cortisol",
+    "investigationList": [
+      {
+        "name": "Cortisol",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "DHEA",
+    "investigationList": [
+      {
+        "name": "DHEA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "DHEA-S",
+    "investigationList": [
+      {
+        "name": "DHEA-S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ABF & CUS",
+    "investigationList": [
+      {
+        "name": "ABF & CUS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ABF (2 hrs. after breakfast)",
+    "investigationList": [
+      {
+        "name": "ABF (2 hrs. after breakfast)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ACR (Urine -Alb. Creatine Ratio)",
+    "investigationList": [
+      {
+        "name": "ACR (Urine -Alb. Creatine Ratio)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AD ((2 hrs. after Dinner)",
+    "investigationList": [
+      {
+        "name": "AD ((2 hrs. after Dinner)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AG & CUS",
+    "investigationList": [
+      {
+        "name": "AG & CUS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AG (2 hrs. after 75 gm. glucose)",
+    "investigationList": [
+      {
+        "name": "AG (2 hrs. after 75 gm. glucose)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AL (2 hrs. after lunch)",
+    "investigationList": [
+      {
+        "name": "AL (2 hrs. after lunch)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Acid Phos (Prost)",
+    "investigationList": [
+      {
+        "name": "Acid Phos (Prost)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Acid Phos (Total)",
+    "investigationList": [
+      {
+        "name": "Acid Phos (Total)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Alb:Glob (A:G)/AG Ratio",
+    "investigationList": [
+      {
+        "name": "Alb:Glob (A:G)/AG Ratio",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Albumin (Alb)",
+    "investigationList": [
+      {
+        "name": "Albumin (Alb)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Alkaline Phosphatase (ALP) /Alk.Phos.",
+    "investigationList": [
+      {
+        "name": "Alkaline Phosphatase (ALP) /Alk.Phos.",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "BD (Before Dinner)",
+    "investigationList": [
+      {
+        "name": "BD (Before Dinner)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "BL ( Before Lunch)",
+    "investigationList": [
+      {
+        "name": "BL ( Before Lunch)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bili (Direct)",
+    "investigationList": [
+      {
+        "name": "Bili (Direct)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bili (Direct+Indirect)",
+    "investigationList": [
+      {
+        "name": "Bili (Direct+Indirect)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bili (Indirect)",
+    "investigationList": [
+      {
+        "name": "Bili (Indirect)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bili (Total)",
+    "investigationList": [
+      {
+        "name": "Bili (Total)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bun",
+    "investigationList": [
+      {
+        "name": "Bun",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CCR",
+    "investigationList": [
+      {
+        "name": "CCR",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CK. MB",
+    "investigationList": [
+      {
+        "name": "CK. MB",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CPK/CK",
+    "investigationList": [
+      {
+        "name": "CPK/CK",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CUS (Corresponding Urine Sugar)",
+    "investigationList": [
+      {
+        "name": "CUS (Corresponding Urine Sugar)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Calcium (Ca++)",
+    "investigationList": [
+      {
+        "name": "Calcium (Ca++)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Chloride (Cl-)",
+    "investigationList": [
+      {
+        "name": "Chloride (Cl-)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Cholesterol (Total)",
+    "investigationList": [
+      {
+        "name": "Cholesterol (Total)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Creatinine",
+    "investigationList": [
+      {
+        "name": "Creatinine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Cytology",
+    "investigationList": [
+      {
+        "name": "Cytology",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Electrolyte",
+    "investigationList": [
+      {
+        "name": "Electrolyte",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "FBS & CUS",
+    "investigationList": [
+      {
+        "name": "FBS & CUS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "FBS (Fasting blood sugar)",
+    "investigationList": [
+      {
+        "name": "FBS (Fasting blood sugar)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Folate",
+    "investigationList": [
+      {
+        "name": "Folate",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "GGT (Gamma GT)",
+    "investigationList": [
+      {
+        "name": "GGT (Gamma GT)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Globulin (Glob)",
+    "investigationList": [
+      {
+        "name": "Globulin (Glob)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HDL -Cholestrol",
+    "investigationList": [
+      {
+        "name": "HDL -Cholestrol",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HbA1c (Glycated Haemoglobin)",
+    "investigationList": [
+      {
+        "name": "HbA1c (Glycated Haemoglobin)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Iron Profile (S.TIBC, Feritin, Iron)",
+    "investigationList": [
+      {
+        "name": "Iron Profile (S.TIBC, Feritin, Iron)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "LDH",
+    "investigationList": [
+      {
+        "name": "LDH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "LDL-Cholestrol",
+    "investigationList": [
+      {
+        "name": "LDL-Cholestrol",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "LFT ( Bili + SGPT + SGOT+Alk. Phos",
+    "investigationList": [
+      {
+        "name": "LFT ( Bili + SGPT + SGOT+Alk. Phos",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Lipase",
+    "investigationList": [
+      {
+        "name": "Lipase",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Lipid Profile",
+    "investigationList": [
+      {
+        "name": "Lipid Profile",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Magnesium(Mg++)",
+    "investigationList": [
+      {
+        "name": "Magnesium(Mg++)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "OGTT (3 Sample)",
+    "investigationList": [
+      {
+        "name": "OGTT (3 Sample)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "OGTT (3 Sample) and CUS ( 3 Sample)",
+    "investigationList": [
+      {
+        "name": "OGTT (3 Sample) and CUS ( 3 Sample)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Osmolality",
+    "investigationList": [
+      {
+        "name": "Osmolality",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "P. Amylase",
+    "investigationList": [
+      {
+        "name": "P. Amylase",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Potasium (K++)",
+    "investigationList": [
+      {
+        "name": "Potasium (K++)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "RBS & CUS",
+    "investigationList": [
+      {
+        "name": "RBS & CUS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "RBS (Random blood sugar)",
+    "investigationList": [
+      {
+        "name": "RBS (Random blood sugar)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Amylase",
+    "investigationList": [
+      {
+        "name": "S. Amylase",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Ferritin",
+    "investigationList": [
+      {
+        "name": "S. Ferritin",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Iron",
+    "investigationList": [
+      {
+        "name": "S. Iron",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Lithium (Li+)",
+    "investigationList": [
+      {
+        "name": "S. Lithium (Li+)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Phosphorus/Inorganic Phosphorus",
+    "investigationList": [
+      {
+        "name": "S. Phosphorus/Inorganic Phosphorus",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "SGOT (S. AST )",
+    "investigationList": [
+      {
+        "name": "SGOT (S. AST )",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "SGPT (S. ALT)",
+    "investigationList": [
+      {
+        "name": "SGPT (S. ALT)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Sodium (Na+)",
+    "investigationList": [
+      {
+        "name": "Sodium (Na+)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "T. CO2",
+    "investigationList": [
+      {
+        "name": "T. CO2",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "TIBC (Total Iron Binding Capacity)",
+    "investigationList": [
+      {
+        "name": "TIBC (Total Iron Binding Capacity)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Total Protein",
+    "investigationList": [
+      {
+        "name": "Total Protein",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Triglyceride (TG)",
+    "investigationList": [
+      {
+        "name": "Triglyceride (TG)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Troponin I",
+    "investigationList": [
+      {
+        "name": "Troponin I",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "UTP",
+    "investigationList": [
+      {
+        "name": "UTP",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "UTV",
+    "investigationList": [
+      {
+        "name": "UTV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urea",
+    "investigationList": [
+      {
+        "name": "Urea",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Uric Acid",
+    "investigationList": [
+      {
+        "name": "Uric Acid",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Amylase",
+    "investigationList": [
+      {
+        "name": "Urine Amylase",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Cal",
+    "investigationList": [
+      {
+        "name": "Urine Cal",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Creatinine",
+    "investigationList": [
+      {
+        "name": "Urine Creatinine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Electrolytes",
+    "investigationList": [
+      {
+        "name": "Urine Electrolytes",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Glucose",
+    "investigationList": [
+      {
+        "name": "Urine Glucose",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Magnisium",
+    "investigationList": [
+      {
+        "name": "Urine Magnisium",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Phosphate",
+    "investigationList": [
+      {
+        "name": "Urine Phosphate",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Pottasium",
+    "investigationList": [
+      {
+        "name": "Urine Pottasium",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Sodium",
+    "investigationList": [
+      {
+        "name": "Urine Sodium",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Uric Acid",
+    "investigationList": [
+      {
+        "name": "Urine Uric Acid",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine for Micro Albumin",
+    "investigationList": [
+      {
+        "name": "Urine for Micro Albumin",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine sodium",
+    "investigationList": [
+      {
+        "name": "Urine sodium",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vit B12",
+    "investigationList": [
+      {
+        "name": "Vit B12",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vitamin A",
+    "investigationList": [
+      {
+        "name": "Vitamin A",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vitamin C",
+    "investigationList": [
+      {
+        "name": "Vitamin C",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vitamin E",
+    "investigationList": [
+      {
+        "name": "Vitamin E",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "e GFR",
+    "investigationList": [
+      {
+        "name": "e GFR",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Endoscopy",
+    "investigationList": [
+      {
+        "name": "Endoscopy",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Endoscopy 960",
+    "investigationList": [
+      {
+        "name": "Endoscopy 960",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "FSH",
+    "investigationList": [
+      {
+        "name": "FSH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Free T3 (FT3)",
+    "investigationList": [
+      {
+        "name": "Free T3 (FT3)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Free T4 (FT4)",
+    "investigationList": [
+      {
+        "name": "Free T4 (FT4)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "GH",
+    "investigationList": [
+      {
+        "name": "GH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "GH (Growth Hormone)",
+    "investigationList": [
+      {
+        "name": "GH (Growth Hormone)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Glucagon",
+    "investigationList": [
+      {
+        "name": "Glucagon",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HGH",
+    "investigationList": [
+      {
+        "name": "HGH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HGH (Human Growth Hormone) Basal",
+    "investigationList": [
+      {
+        "name": "HGH (Human Growth Hormone) Basal",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HGH (Human Growth Hormone) Post-",
+    "investigationList": [
+      {
+        "name": "HGH (Human Growth Hormone) Post-",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Insulin",
+    "investigationList": [
+      {
+        "name": "Insulin",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "LH",
+    "investigationList": [
+      {
+        "name": "LH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Oestrogen",
+    "investigationList": [
+      {
+        "name": "Oestrogen",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Parathoromome Level",
+    "investigationList": [
+      {
+        "name": "Parathoromome Level",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Parathyroid Hormone (P.T.H )",
+    "investigationList": [
+      {
+        "name": "Parathyroid Hormone (P.T.H )",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Progesterone",
+    "investigationList": [
+      {
+        "name": "Progesterone",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Prolactin",
+    "investigationList": [
+      {
+        "name": "Prolactin",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "SHBG",
+    "investigationList": [
+      {
+        "name": "SHBG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "T3",
+    "investigationList": [
+      {
+        "name": "T3",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "T4",
+    "investigationList": [
+      {
+        "name": "T4",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "TSH",
+    "investigationList": [
+      {
+        "name": "TSH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Testosterone",
+    "investigationList": [
+      {
+        "name": "Testosterone",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Testosterone Free",
+    "investigationList": [
+      {
+        "name": "Testosterone Free",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "VMA",
+    "investigationList": [
+      {
+        "name": "VMA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ABF & CUS",
+    "investigationList": [
+      {
+        "name": "ABF & CUS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ABF (2 hrs. after breakfast)",
+    "investigationList": [
+      {
+        "name": "ABF (2 hrs. after breakfast)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ACR (Urine -Alb. Creatine Ratio)",
+    "investigationList": [
+      {
+        "name": "ACR (Urine -Alb. Creatine Ratio)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AD ((2 hrs. after Dinner)",
+    "investigationList": [
+      {
+        "name": "AD ((2 hrs. after Dinner)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AG & CUS",
+    "investigationList": [
+      {
+        "name": "AG & CUS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AG (2 hrs. after 75 gm. glucose)",
+    "investigationList": [
+      {
+        "name": "AG (2 hrs. after 75 gm. glucose)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AL (2 hrs. after lunch)",
+    "investigationList": [
+      {
+        "name": "AL (2 hrs. after lunch)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Acid Phos (Prost)",
+    "investigationList": [
+      {
+        "name": "Acid Phos (Prost)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Acid Phos (Total)",
+    "investigationList": [
+      {
+        "name": "Acid Phos (Total)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Alb:Glob (A:G)/AG Ratio",
+    "investigationList": [
+      {
+        "name": "Alb:Glob (A:G)/AG Ratio",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Albumin (Alb)",
+    "investigationList": [
+      {
+        "name": "Albumin (Alb)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Alkaline Phosphatase (ALP) /Alk.Phos.",
+    "investigationList": [
+      {
+        "name": "Alkaline Phosphatase (ALP) /Alk.Phos.",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "BD (Before Dinner)",
+    "investigationList": [
+      {
+        "name": "BD (Before Dinner)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "BL ( Before Lunch)",
+    "investigationList": [
+      {
+        "name": "BL ( Before Lunch)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bili (Direct)",
+    "investigationList": [
+      {
+        "name": "Bili (Direct)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bili (Direct+Indirect)",
+    "investigationList": [
+      {
+        "name": "Bili (Direct+Indirect)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bili (Indirect)",
+    "investigationList": [
+      {
+        "name": "Bili (Indirect)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bili (Total)",
+    "investigationList": [
+      {
+        "name": "Bili (Total)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Bun",
+    "investigationList": [
+      {
+        "name": "Bun",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CCR",
+    "investigationList": [
+      {
+        "name": "CCR",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CK. MB",
+    "investigationList": [
+      {
+        "name": "CK. MB",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CPK/CK",
+    "investigationList": [
+      {
+        "name": "CPK/CK",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CUS (Corresponding Urine Sugar)",
+    "investigationList": [
+      {
+        "name": "CUS (Corresponding Urine Sugar)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Calcium (Ca++)",
+    "investigationList": [
+      {
+        "name": "Calcium (Ca++)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Chloride (Cl-)",
+    "investigationList": [
+      {
+        "name": "Chloride (Cl-)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Cholesterol (Total)",
+    "investigationList": [
+      {
+        "name": "Cholesterol (Total)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Creatinine",
+    "investigationList": [
+      {
+        "name": "Creatinine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Cytology",
+    "investigationList": [
+      {
+        "name": "Cytology",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Electrolyte",
+    "investigationList": [
+      {
+        "name": "Electrolyte",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "FBS & CUS",
+    "investigationList": [
+      {
+        "name": "FBS & CUS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "FBS (Fasting blood sugar)",
+    "investigationList": [
+      {
+        "name": "FBS (Fasting blood sugar)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Folate",
+    "investigationList": [
+      {
+        "name": "Folate",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "GGT (Gamma GT)",
+    "investigationList": [
+      {
+        "name": "GGT (Gamma GT)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Globulin (Glob)",
+    "investigationList": [
+      {
+        "name": "Globulin (Glob)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HDL -Cholestrol",
+    "investigationList": [
+      {
+        "name": "HDL -Cholestrol",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HbA1c (Glycated Haemoglobin)",
+    "investigationList": [
+      {
+        "name": "HbA1c (Glycated Haemoglobin)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Iron Profile (S.TIBC, Feritin, Iron)",
+    "investigationList": [
+      {
+        "name": "Iron Profile (S.TIBC, Feritin, Iron)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "LDH",
+    "investigationList": [
+      {
+        "name": "LDH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "LDL-Cholestrol",
+    "investigationList": [
+      {
+        "name": "LDL-Cholestrol",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "LFT ( Bili + SGPT + SGOT+Alk. Phos",
+    "investigationList": [
+      {
+        "name": "LFT ( Bili + SGPT + SGOT+Alk. Phos",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Lipase",
+    "investigationList": [
+      {
+        "name": "Lipase",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Lipid Profile",
+    "investigationList": [
+      {
+        "name": "Lipid Profile",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Magnesium(Mg++)",
+    "investigationList": [
+      {
+        "name": "Magnesium(Mg++)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "OGTT (3 Sample)",
+    "investigationList": [
+      {
+        "name": "OGTT (3 Sample)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "OGTT (3 Sample) and CUS ( 3 Sample)",
+    "investigationList": [
+      {
+        "name": "OGTT (3 Sample) and CUS ( 3 Sample)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Osmolality",
+    "investigationList": [
+      {
+        "name": "Osmolality",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "P. Amylase",
+    "investigationList": [
+      {
+        "name": "P. Amylase",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Potasium (K++)",
+    "investigationList": [
+      {
+        "name": "Potasium (K++)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "RBS & CUS",
+    "investigationList": [
+      {
+        "name": "RBS & CUS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "RBS (Random blood sugar)",
+    "investigationList": [
+      {
+        "name": "RBS (Random blood sugar)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Amylase",
+    "investigationList": [
+      {
+        "name": "S. Amylase",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Ferritin",
+    "investigationList": [
+      {
+        "name": "S. Ferritin",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Iron",
+    "investigationList": [
+      {
+        "name": "S. Iron",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Lithium (Li+)",
+    "investigationList": [
+      {
+        "name": "S. Lithium (Li+)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S. Phosphorus/Inorganic Phosphorus",
+    "investigationList": [
+      {
+        "name": "S. Phosphorus/Inorganic Phosphorus",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "SGOT (S. AST )",
+    "investigationList": [
+      {
+        "name": "SGOT (S. AST )",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "SGPT (S. ALT)",
+    "investigationList": [
+      {
+        "name": "SGPT (S. ALT)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Sodium (Na+)",
+    "investigationList": [
+      {
+        "name": "Sodium (Na+)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "T. CO2",
+    "investigationList": [
+      {
+        "name": "T. CO2",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "TIBC (Total Iron Binding Capacity)",
+    "investigationList": [
+      {
+        "name": "TIBC (Total Iron Binding Capacity)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Total Protein",
+    "investigationList": [
+      {
+        "name": "Total Protein",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Triglyceride (TG)",
+    "investigationList": [
+      {
+        "name": "Triglyceride (TG)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Troponin I",
+    "investigationList": [
+      {
+        "name": "Troponin I",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "UTP",
+    "investigationList": [
+      {
+        "name": "UTP",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "UTV",
+    "investigationList": [
+      {
+        "name": "UTV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urea",
+    "investigationList": [
+      {
+        "name": "Urea",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Uric Acid",
+    "investigationList": [
+      {
+        "name": "Uric Acid",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Amylase",
+    "investigationList": [
+      {
+        "name": "Urine Amylase",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Cal",
+    "investigationList": [
+      {
+        "name": "Urine Cal",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Creatinine",
+    "investigationList": [
+      {
+        "name": "Urine Creatinine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Electrolytes",
+    "investigationList": [
+      {
+        "name": "Urine Electrolytes",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Glucose",
+    "investigationList": [
+      {
+        "name": "Urine Glucose",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Magnisium",
+    "investigationList": [
+      {
+        "name": "Urine Magnisium",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Phosphate",
+    "investigationList": [
+      {
+        "name": "Urine Phosphate",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Pottasium",
+    "investigationList": [
+      {
+        "name": "Urine Pottasium",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Sodium",
+    "investigationList": [
+      {
+        "name": "Urine Sodium",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine Uric Acid",
+    "investigationList": [
+      {
+        "name": "Urine Uric Acid",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine for Micro Albumin",
+    "investigationList": [
+      {
+        "name": "Urine for Micro Albumin",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine sodium",
+    "investigationList": [
+      {
+        "name": "Urine sodium",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vit B12",
+    "investigationList": [
+      {
+        "name": "Vit B12",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vitamin A",
+    "investigationList": [
+      {
+        "name": "Vitamin A",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vitamin C",
+    "investigationList": [
+      {
+        "name": "Vitamin C",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vitamin E",
+    "investigationList": [
+      {
+        "name": "Vitamin E",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "e GFR",
+    "investigationList": [
+      {
+        "name": "e GFR",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "FSH",
+    "investigationList": [
+      {
+        "name": "FSH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Free T3 (FT3)",
+    "investigationList": [
+      {
+        "name": "Free T3 (FT3)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Free T4 (FT4)",
+    "investigationList": [
+      {
+        "name": "Free T4 (FT4)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "GH",
+    "investigationList": [
+      {
+        "name": "GH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "GH (Growth Hormone)",
+    "investigationList": [
+      {
+        "name": "GH (Growth Hormone)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Glucagon",
+    "investigationList": [
+      {
+        "name": "Glucagon",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HGH",
+    "investigationList": [
+      {
+        "name": "HGH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HGH (Human Growth Hormone) Basal",
+    "investigationList": [
+      {
+        "name": "HGH (Human Growth Hormone) Basal",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HGH (Human Growth Hormone) Post-",
+    "investigationList": [
+      {
+        "name": "HGH (Human Growth Hormone) Post-",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Insulin",
+    "investigationList": [
+      {
+        "name": "Insulin",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "LH",
+    "investigationList": [
+      {
+        "name": "LH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Oestrogen",
+    "investigationList": [
+      {
+        "name": "Oestrogen",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Parathoromome Level",
+    "investigationList": [
+      {
+        "name": "Parathoromome Level",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Parathyroid Hormone (P.T.H )",
+    "investigationList": [
+      {
+        "name": "Parathyroid Hormone (P.T.H )",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Progesterone",
+    "investigationList": [
+      {
+        "name": "Progesterone",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Prolactin",
+    "investigationList": [
+      {
+        "name": "Prolactin",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "SHBG",
+    "investigationList": [
+      {
+        "name": "SHBG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "T3",
+    "investigationList": [
+      {
+        "name": "T3",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "T4",
+    "investigationList": [
+      {
+        "name": "T4",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "TSH",
+    "investigationList": [
+      {
+        "name": "TSH",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Testosterone",
+    "investigationList": [
+      {
+        "name": "Testosterone",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Testosterone Free",
+    "investigationList": [
+      {
+        "name": "Testosterone Free",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "VMA",
+    "investigationList": [
+      {
+        "name": "VMA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ALPHA-FETOPROTEIN(AFP)",
+    "investigationList": [
+      {
+        "name": "ALPHA-FETOPROTEIN(AFP)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ANA- Profile (Western Blot)",
+    "investigationList": [
+      {
+        "name": "ANA- Profile (Western Blot)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ANA- Profile (ANA,DNA & ENA PROFILE)",
+    "investigationList": [
+      {
+        "name": "ANA- Profile (ANA,DNA & ENA PROFILE)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ANA-Screening/ANF",
+    "investigationList": [
+      {
+        "name": "ANA-Screening/ANF",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "APTT(Activated partial thromboplastin time)",
+    "investigationList": [
+      {
+        "name": "APTT(Activated partial thromboplastin time)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "APTT(Activated partial thromboplastin time)",
+    "investigationList": [
+      {
+        "name": "APTT(Activated partial thromboplastin time)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ASO titre",
+    "investigationList": [
+      {
+        "name": "ASO titre",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti -Dengue (igG+igM)",
+    "investigationList": [
+      {
+        "name": "Anti -Dengue (igG+igM)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti Hbe",
+    "investigationList": [
+      {
+        "name": "Anti Hbe",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti Phospholipid IgG",
+    "investigationList": [
+      {
+        "name": "Anti Phospholipid IgG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti Phospholipid IgM",
+    "investigationList": [
+      {
+        "name": "Anti Phospholipid IgM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti Toxoplasma IgG",
+    "investigationList": [
+      {
+        "name": "Anti Toxoplasma IgG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti Toxoplasma IgM",
+    "investigationList": [
+      {
+        "name": "Anti Toxoplasma IgM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti CCP Ab",
+    "investigationList": [
+      {
+        "name": "Anti CCP Ab",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti -Dengue igG Screening",
+    "investigationList": [
+      {
+        "name": "Anti -Dengue igG Screening",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti -Dengue igM Screening",
+    "investigationList": [
+      {
+        "name": "Anti -Dengue igM Screening",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti -Dengue( igG) Elisa",
+    "investigationList": [
+      {
+        "name": "Anti -Dengue( igG) Elisa",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti -Dengue (igM) Elisa",
+    "investigationList": [
+      {
+        "name": "Anti -Dengue (igM) Elisa",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti Ds DNA",
+    "investigationList": [
+      {
+        "name": "Anti Ds DNA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti-H-Pylori,IgG",
+    "investigationList": [
+      {
+        "name": "Anti-H-Pylori,IgG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti-HAV IgM",
+    "investigationList": [
+      {
+        "name": "Anti-HAV IgM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- HBC (Total)",
+    "investigationList": [
+      {
+        "name": "Anti- HBC (Total)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- HBC, IgM",
+    "investigationList": [
+      {
+        "name": "Anti- HBC, IgM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- HBs (Qn)",
+    "investigationList": [
+      {
+        "name": "Anti- HBs (Qn)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti-HCV",
+    "investigationList": [
+      {
+        "name": "Anti-HCV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti-HCV(Western Blot)",
+    "investigationList": [
+      {
+        "name": "Anti-HCV(Western Blot)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- HEV, IgM",
+    "investigationList": [
+      {
+        "name": "Anti- HEV, IgM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- HEV, IgG",
+    "investigationList": [
+      {
+        "name": "Anti- HEV, IgG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti-HIV (1+2+0)",
+    "investigationList": [
+      {
+        "name": "Anti-HIV (1+2+0)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti-HIV (1+2+0)ElISA",
+    "investigationList": [
+      {
+        "name": "Anti-HIV (1+2+0)ElISA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- Mucobact TB Complex IgA",
+    "investigationList": [
+      {
+        "name": "Anti- Mucobact TB Complex IgA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- Mucobact TB Complex IgG",
+    "investigationList": [
+      {
+        "name": "Anti- Mucobact TB Complex IgG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- Mucobact TB Complex IgM",
+    "investigationList": [
+      {
+        "name": "Anti- Mucobact TB Complex IgM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti RNP ",
+    "investigationList": [
+      {
+        "name": "Anti RNP ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti-Rubella IgG",
+    "investigationList": [
+      {
+        "name": "Anti-Rubella IgG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti-Rubella IgM",
+    "investigationList": [
+      {
+        "name": "Anti-Rubella IgM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti- Thyroid Antibody ",
+    "investigationList": [
+      {
+        "name": "Anti- Thyroid Antibody ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti -TB Complex IgA",
+    "investigationList": [
+      {
+        "name": "Anti -TB Complex IgA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti -TB Complex IgG",
+    "investigationList": [
+      {
+        "name": "Anti -TB Complex IgG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti -TB Complex IgM",
+    "investigationList": [
+      {
+        "name": "Anti -TB Complex IgM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti Thyroglobulin Antibody",
+    "investigationList": [
+      {
+        "name": "Anti Thyroglobulin Antibody",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Anti Thyroid Microsmal Antibody",
+    "investigationList": [
+      {
+        "name": "Anti Thyroid Microsmal Antibody",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Blood Group & Rh Factor",
+    "investigationList": [
+      {
+        "name": "Blood Group & Rh Factor",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "C3",
+    "investigationList": [
+      {
+        "name": "C3",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "C4",
+    "investigationList": [
+      {
+        "name": "C4",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CA-15.3",
+    "investigationList": [
+      {
+        "name": "CA-15.3",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CA-19.9 (Colon)",
+    "investigationList": [
+      {
+        "name": "CA-19.9 (Colon)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CA-125(Ovary)",
+    "investigationList": [
+      {
+        "name": "CA-125(Ovary)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CEA (CARCINO-EMBRYONIC ANTI)",
+    "investigationList": [
+      {
+        "name": "CEA (CARCINO-EMBRYONIC ANTI)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CRP(C-Reactive protein)",
+    "investigationList": [
+      {
+        "name": "CRP(C-Reactive protein)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Combs test (D)",
+    "investigationList": [
+      {
+        "name": "Combs test (D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Combs test (D+ Ind)",
+    "investigationList": [
+      {
+        "name": "Combs test (D+ Ind)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Cortisol (with ACTH)",
+    "investigationList": [
+      {
+        "name": "Cortisol (with ACTH)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Combs test (Ind)",
+    "investigationList": [
+      {
+        "name": "Combs test (Ind)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "D.Dimer",
+    "investigationList": [
+      {
+        "name": "D.Dimer",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Dengue NSI",
+    "investigationList": [
+      {
+        "name": "Dengue NSI",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Digoxin level",
+    "investigationList": [
+      {
+        "name": "Digoxin level",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ENA-profile",
+    "investigationList": [
+      {
+        "name": "ENA-profile",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "FDP(Fibrinogen degradation product)",
+    "investigationList": [
+      {
+        "name": "FDP(Fibrinogen degradation product)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Febrile Antigens",
+    "investigationList": [
+      {
+        "name": "Febrile Antigens",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HBeAg",
+    "investigationList": [
+      {
+        "name": "HBeAg",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HBsAg",
+    "investigationList": [
+      {
+        "name": "HBsAg",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HBV-DNA (Qn)",
+    "investigationList": [
+      {
+        "name": "HBV-DNA (Qn)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HCV genotyping",
+    "investigationList": [
+      {
+        "name": "HCV genotyping",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HCV-RNA (Qualitative)",
+    "investigationList": [
+      {
+        "name": "HCV-RNA (Qualitative)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "INR (P.Time)",
+    "investigationList": [
+      {
+        "name": "INR (P.Time)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "HCV-RNA (Quantitative)",
+    "investigationList": [
+      {
+        "name": "HCV-RNA (Quantitative)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ICT For Dengu",
+    "investigationList": [
+      {
+        "name": "ICT For Dengu",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ICT For Maliria",
+    "investigationList": [
+      {
+        "name": "ICT For Maliria",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ICT For Filaria",
+    "investigationList": [
+      {
+        "name": "ICT For Filaria",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ICT For Chikungunia",
+    "investigationList": [
+      {
+        "name": "ICT For Chikungunia",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "IgA(IT)",
+    "investigationList": [
+      {
+        "name": "IgA(IT)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "IgG(IT)",
+    "investigationList": [
+      {
+        "name": "IgG(IT)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "IgM(IT)",
+    "investigationList": [
+      {
+        "name": "IgM(IT)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Immunogobulin Electrophoresis (IEF)",
+    "investigationList": [
+      {
+        "name": "Immunogobulin Electrophoresis (IEF)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "P.Time(Prothombin Time)",
+    "investigationList": [
+      {
+        "name": "P.Time(Prothombin Time)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "PSA (Total + free))",
+    "investigationList": [
+      {
+        "name": "PSA (Total + free))",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "RPR(VDRL)",
+    "investigationList": [
+      {
+        "name": "RPR(VDRL)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Rh-Antibody titre",
+    "investigationList": [
+      {
+        "name": "Rh-Antibody titre",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "RA/RF",
+    "investigationList": [
+      {
+        "name": "RA/RF",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Rose Waaler",
+    "investigationList": [
+      {
+        "name": "Rose Waaler",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S.Fibrinogen",
+    "investigationList": [
+      {
+        "name": "S.Fibrinogen",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "S.IgE",
+    "investigationList": [
+      {
+        "name": "S.IgE",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "TPHA",
+    "investigationList": [
+      {
+        "name": "TPHA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Triple Antigens",
+    "investigationList": [
+      {
+        "name": "Triple Antigens",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine for Pregnancy test",
+    "investigationList": [
+      {
+        "name": "Urine for Pregnancy test",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vitamin D3 (total)",
+    "investigationList": [
+      {
+        "name": "Vitamin D3 (total)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Weil -Felix",
+    "investigationList": [
+      {
+        "name": "Weil -Felix",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Widal Test",
+    "investigationList": [
+      {
+        "name": "Widal Test",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "p-ANCA",
+    "investigationList": [
+      {
+        "name": "p-ANCA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "c-ANCA",
+    "investigationList": [
+      {
+        "name": "c-ANCA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Torch",
+    "investigationList": [
+      {
+        "name": "Torch",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Blood C/S",
+    "investigationList": [
+      {
+        "name": "Blood C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "AFB Stain",
+    "investigationList": [
+      {
+        "name": "AFB Stain",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CSF C/S",
+    "investigationList": [
+      {
+        "name": "CSF C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Cervical Swab C/S",
+    "investigationList": [
+      {
+        "name": "Cervical Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Conjunctival Swab C/S",
+    "investigationList": [
+      {
+        "name": "Conjunctival Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Ear Swab C/S",
+    "investigationList": [
+      {
+        "name": "Ear Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Fungus C/S of Skin ,Nail,Sputum,HV)",
+    "investigationList": [
+      {
+        "name": "Fungus C/S of Skin ,Nail,Sputum,HV)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Gram stain",
+    "investigationList": [
+      {
+        "name": "Gram stain",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "High Vaginal Swab C/S",
+    "investigationList": [
+      {
+        "name": "High Vaginal Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "PUS c/s",
+    "investigationList": [
+      {
+        "name": "PUS c/s",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Prostatic Gram Stain",
+    "investigationList": [
+      {
+        "name": "Prostatic Gram Stain",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Pleural Fluid C/S",
+    "investigationList": [
+      {
+        "name": "Pleural Fluid C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Prostatic Smear",
+    "investigationList": [
+      {
+        "name": "Prostatic Smear",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Skin/Nail Scraping for M/E",
+    "investigationList": [
+      {
+        "name": "Skin/Nail Scraping for M/E",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Sputam C/S",
+    "investigationList": [
+      {
+        "name": "Sputam C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Sputam for Fungal C/S",
+    "investigationList": [
+      {
+        "name": "Sputam for Fungal C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Sputam for malignant Cell",
+    "investigationList": [
+      {
+        "name": "Sputam for malignant Cell",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Stool C/S",
+    "investigationList": [
+      {
+        "name": "Stool C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "stool C/S vibrio cholerae",
+    "investigationList": [
+      {
+        "name": "stool C/S vibrio cholerae",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Throat Swab C/S",
+    "investigationList": [
+      {
+        "name": "Throat Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Tongue Swab C/S",
+    "investigationList": [
+      {
+        "name": "Tongue Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine C/S",
+    "investigationList": [
+      {
+        "name": "Urine C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Urine for AFB",
+    "investigationList": [
+      {
+        "name": "Urine for AFB",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Uroflowmetry (700)",
+    "investigationList": [
+      {
+        "name": "Uroflowmetry (700)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Vaginal Swab C/S",
+    "investigationList": [
+      {
+        "name": "Vaginal Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Wound Swab C/S",
+    "investigationList": [
+      {
+        "name": "Wound Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Nasal Swab C/S",
+    "investigationList": [
+      {
+        "name": "Nasal Swab C/S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (ABF)",
+    "investigationList": [
+      {
+        "name": "Reflow (ABF)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (AD)",
+    "investigationList": [
+      {
+        "name": "Reflow (AD)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (AG)",
+    "investigationList": [
+      {
+        "name": "Reflow (AG)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (AL)",
+    "investigationList": [
+      {
+        "name": "Reflow (AL)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (BD)",
+    "investigationList": [
+      {
+        "name": "Reflow (BD)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (BL)",
+    "investigationList": [
+      {
+        "name": "Reflow (BL)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (FBS)",
+    "investigationList": [
+      {
+        "name": "Reflow (FBS)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (RBS)",
+    "investigationList": [
+      {
+        "name": "Reflow (RBS)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (ABF)",
+    "investigationList": [
+      {
+        "name": "Reflow (ABF)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (AD)",
+    "investigationList": [
+      {
+        "name": "Reflow (AD)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (AG)",
+    "investigationList": [
+      {
+        "name": "Reflow (AG)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (AL)",
+    "investigationList": [
+      {
+        "name": "Reflow (AL)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (BD)",
+    "investigationList": [
+      {
+        "name": "Reflow (BD)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (BL)",
+    "investigationList": [
+      {
+        "name": "Reflow (BL)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (FBS)",
+    "investigationList": [
+      {
+        "name": "Reflow (FBS)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Reflow (RBS)",
+    "investigationList": [
+      {
+        "name": "Reflow (RBS)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH SCAPULA B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH SCAPULA B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH SHOULDER JOINT B",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH SHOULDER JOINT B",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH T,M JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH T,M JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH WRIST JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH WRIST JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CERVICLE SPINE A/P VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CERVICLE SPINE A/P VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CERVICLE SPINE B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY CERVICLE SPINE B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CERVICLE SPINE BOTH OE",
+    "investigationList": [
+      {
+        "name": "X-RAY CERVICLE SPINE BOTH OE",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CERVICLE SPINE L.T OBLI",
+    "investigationList": [
+      {
+        "name": "X-RAY CERVICLE SPINE L.T OBLI",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CERVICLE SPINE LT.LAT.",
+    "investigationList": [
+      {
+        "name": "X-RAY CERVICLE SPINE LT.LAT.",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CERVICLE SPINE RT.LAT.",
+    "investigationList": [
+      {
+        "name": "X-RAY CERVICLE SPINE RT.LAT.",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CERVICLE SPINE RT.OBLI",
+    "investigationList": [
+      {
+        "name": "X-RAY CERVICLE SPINE RT.OBLI",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CHEST  P/A VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CHEST  P/A VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY COCCYX B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY COCCYX B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR A/P & BOTH LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR A/P & BOTH LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR A/P VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR A/P VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR APICAL VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR APICAL VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR LT.LAT VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR LT.LAT VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR P/A & BOTH LAT .VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR P/A & BOTH LAT .VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR P/A & BOTH OBLIQUE ",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR P/A & BOTH OBLIQUE ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR P/A & Lt OBLIQUE VII",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR P/A & Lt OBLIQUE VII",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR P/A VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR P/A VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR P/A VIEW 100%",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR P/A VIEW 100%",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR A/P & LT.LAT VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR A/P & LT.LAT VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR A/P & RT.LAT VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR A/P & RT.LAT VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR  RT.LAT VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR  RT.LAT VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR RT. OBLIQUE VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR RT. OBLIQUE VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY DORSAL SPINE A/P VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY DORSAL SPINE A/P VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY DORSAL SPINE B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY DORSAL SPINE B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  DORSAL SPINE LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  DORSAL SPINE LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  DORSAL SPINE LT.LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  DORSAL SPINE LT.LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  DORSAL SPINE RT.LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  DORSAL SPINE RT.LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  DORSO-LUMBER A/P VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  DORSO-LUMBER A/P VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  DORSO-LUMBER SPINE B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  DORSO-LUMBER SPINE B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  DORSO-LUMBER SPINE LA",
+    "investigationList": [
+      {
+        "name": "X-RAY  DORSO-LUMBER SPINE LA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  DOUBLE CONTRAST EXAM",
+    "investigationList": [
+      {
+        "name": "X-RAY  DOUBLE CONTRAST EXAM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  FISTULOGRAM",
+    "investigationList": [
+      {
+        "name": "X-RAY  FISTULOGRAM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  FOR BONE AGE",
+    "investigationList": [
+      {
+        "name": "X-RAY  FOR BONE AGE",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  FOR SKELETAL SURVY ",
+    "investigationList": [
+      {
+        "name": "X-RAY  FOR SKELETAL SURVY ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  I .V.U",
+    "investigationList": [
+      {
+        "name": "X-RAY  I .V.U",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  I .V.U",
+    "investigationList": [
+      {
+        "name": "X-RAY  I .V.U",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  I .V.C",
+    "investigationList": [
+      {
+        "name": "X-RAY  I .V.C",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  IVU WITH MCU",
+    "investigationList": [
+      {
+        "name": "X-RAY  IVU WITH MCU",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  KUB 100%",
+    "investigationList": [
+      {
+        "name": "X-RAY  KUB 100%",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  L/S SPINE B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  L/S SPINE B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  L/S SPINE BOTH OBLIQUE",
+    "investigationList": [
+      {
+        "name": "X-RAY  L/S SPINE BOTH OBLIQUE",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LARGE BOWELENEMA ",
+    "investigationList": [
+      {
+        "name": "X-RAY  LARGE BOWELENEMA ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LORDOTIC VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  LORDOTIC VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.ACROMIO-CLAVICULAF",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.ACROMIO-CLAVICULAF",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT.ANKLE JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT.ANKLE JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT ARM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT ARM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT. CALCANIUM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT. CALCANIUM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT. CALCANIUM LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT. CALCANIUM LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT. CLAVICLE A/P",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT. CLAVICLE A/P",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT.DECUBITUS VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT.DECUBITUS VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT.ELBOW&ARM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT.ELBOW&ARM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT.ELBOW& FOREARM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT.ELBOW& FOREARM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT. ELBOW JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT. ELBOW JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT. FEMUR B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT. FEMUR B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT. FOOT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT. FOOT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  LT. FOOT & ANKLE JT.B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  LT. FOOT & ANKLE JT.B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.FOREARM&WRIST BV",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.FOREARM&WRIST BV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.FOREARM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.FOREARM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.FOREARM WITH WRIST1",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.FOREARM WITH WRIST1",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. HAND B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. HAND B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. HEEL B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. HEEL B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. HIP JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. HIP JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.HUMERUS B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.HUMERUS B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.INDEX FINGER B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.INDEX FINGER B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.KNEE JIONT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.KNEE JIONT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. LEG B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. LEG B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. LITTLE FINGER B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. LITTLE FINGER B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.MANDIBLE B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.MANDIBLE B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.MIDDLE FINGER B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.MIDDLE FINGER B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.OBLIQUE VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.OBLIQUE VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.PATTELA SKYLINE VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.PATTELA SKYLINE VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.RADIUS ULNA B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.RADIUS ULNA B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.RING FINGER B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.RING FINGER B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. S.I JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. S.I JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.SCAPULA A/P VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.SCAPULA A/P VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.SCAPULA B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.SCAPULA B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. SHOUDER JOINT A/P ",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. SHOUDER JOINT A/P ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. SHOUDER JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. SHOUDER JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. SHOUDER JOINT AXIL",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. SHOUDER JOINT AXIL",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. SHOUDER JOINT SWII",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. SHOUDER JOINT SWII",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. SHOUDER JT.30 ABDL",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. SHOUDER JT.30 ABDL",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. STERNOCLAVICULAR",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. STERNOCLAVICULAR",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.T.M JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.T.M JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT. THIGH B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT. THIGH B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.THUMB B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.THUMB B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.TIBIA FIBULA B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.TIBIA FIBULA B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.WRIST JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.WRIST JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LUMBO-SACRAL SPINE A/P",
+    "investigationList": [
+      {
+        "name": "X-RAY LUMBO-SACRAL SPINE A/P",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LUMBO-SACRAL SPINE B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LUMBO-SACRAL SPINE B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LUMBO-SACRAL SPINE LA",
+    "investigationList": [
+      {
+        "name": "X-RAY LUMBO-SACRAL SPINE LA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LUMBO-SACRAL SPINE LT",
+    "investigationList": [
+      {
+        "name": "X-RAY LUMBO-SACRAL SPINE LT",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LUMBO-SACRAL SPINE RT",
+    "investigationList": [
+      {
+        "name": "X-RAY LUMBO-SACRAL SPINE RT",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY MAMOGRAM(BOTH BREAST)",
+    "investigationList": [
+      {
+        "name": "X-RAY MAMOGRAM(BOTH BREAST)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY MAMOGRAM LT. BREAST",
+    "investigationList": [
+      {
+        "name": "X-RAY MAMOGRAM LT. BREAST",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY MAMOGRAM RT.BREAST",
+    "investigationList": [
+      {
+        "name": "X-RAY MAMOGRAM RT.BREAST",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY MANDIBLE P/A VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY MANDIBLE P/A VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY MASTOID TOWNS VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY MASTOID TOWNS VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY NASAL BONE LAT .VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY NASAL BONE LAT .VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  NASOPHARYNX LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  NASOPHARYNX LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY NECK B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY NECK B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY OCG",
+    "investigationList": [
+      {
+        "name": "X-RAY OCG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY P.N.S B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY P.N.S B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY P.N.S O/M VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY P.N.S O/M VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY P/A RT+LT LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY P/A RT+LT LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY PELVIS A/P 100%",
+    "investigationList": [
+      {
+        "name": "X-RAY PELVIS A/P 100%",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY PELVIS A/P VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY PELVIS A/P VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY PELVIS B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY PELVIS B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY PELVIS BOTH HIP A/P",
+    "investigationList": [
+      {
+        "name": "X-RAY PELVIS BOTH HIP A/P",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY PER-OPERATIVE CHOLANO",
+    "investigationList": [
+      {
+        "name": "X-RAY PER-OPERATIVE CHOLANO",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.ACROMIO-CLAVICULAN",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.ACROMIO-CLAVICULAN",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.ANKLE JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.ANKLE JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.ARM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.ARM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. CALCANIUM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. CALCANIUM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. CALCANIUM LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. CALCANIUM LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  RT. CLAVICLE A/P",
+    "investigationList": [
+      {
+        "name": "X-RAY  RT. CLAVICLE A/P",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  RT.DECUBITUS VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY  RT.DECUBITUS VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.ELBOW&ARM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.ELBOW&ARM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.ELBOW& FOREARM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.ELBOW& FOREARM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. ELBOW JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. ELBOW JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  RT. FEMUR B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  RT. FEMUR B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  RT. FEMUR B/V 100%",
+    "investigationList": [
+      {
+        "name": "X-RAY  RT. FEMUR B/V 100%",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. FOOT&ANKLE JOINT I",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. FOOT&ANKLE JOINT I",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY  RT. FOOT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY  RT. FOOT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.FOREARM&WRIST BV",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.FOREARM&WRIST BV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.FOREARM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.FOREARM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.FOREARM&WRIST ",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.FOREARM&WRIST ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.GREAT TOE",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.GREAT TOE",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. HAND B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. HAND B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. HEEL B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. HEEL B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. HIP JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. HIP JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.HUMERUS B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.HUMERUS B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.INDEX FINGER B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.INDEX FINGER B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.KNEE JIONT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.KNEE JIONT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. LEG B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. LEG B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. LITTLE FINGER B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. LITTLE FINGER B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.MANDIBLE B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.MANDIBLE B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.MIDDLE FINGER B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.MIDDLE FINGER B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.PATTELA SKYLINE VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.PATTELA SKYLINE VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.RADIUS ULNA B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.RADIUS ULNA B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.RING FINGER B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.RING FINGER B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. S.I JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. S.I JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.SCAPULA A/P VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.SCAPULA A/P VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.SCAPULA B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.SCAPULA B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. SHOUDER JOINT A/P ",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. SHOUDER JOINT A/P ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. SHOUDER JOINT AXII",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. SHOUDER JOINT AXII",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. SHOUDER JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. SHOUDER JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. SHOUDER JOINT SWI",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. SHOUDER JOINT SWI",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. STERNOCLAVICLE JOI",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. STERNOCLAVICLE JOI",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.T.M JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.T.M JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. THIGH B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. THIGH B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. THIGH B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. THIGH B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. THIGH B/V 100%",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. THIGH B/V 100%",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. THIGH B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. THIGH B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.TIBIA FIBULA B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.TIBIA FIBULA B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT.WRIST JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY RT.WRIST JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SACRAM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY SACRAM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SAILOGRAM (SINGLE GLAW)",
+    "investigationList": [
+      {
+        "name": "X-RAY SAILOGRAM (SINGLE GLAW)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SELLA TURCICA LAT.VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY SELLA TURCICA LAT.VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SKULL B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY SKULL B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SKULL  LATERAL VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY SKULL  LATERAL VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SKULL TOWNES VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY SKULL TOWNES VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SMALL BOWEL ENEMA",
+    "investigationList": [
+      {
+        "name": "X-RAY SMALL BOWEL ENEMA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SOFT TISSUE NECK B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY SOFT TISSUE NECK B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY SOFT TISSUE NECK LAT.V",
+    "investigationList": [
+      {
+        "name": "X-RAY SOFT TISSUE NECK LAT.V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY STERNUM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY STERNUM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY STERNUM LAT. VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY STERNUM LAT. VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY STERNUM OBLIQUE & LAT",
+    "investigationList": [
+      {
+        "name": "X-RAY STERNUM OBLIQUE & LAT",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY STYLOID PROCESS",
+    "investigationList": [
+      {
+        "name": "X-RAY STYLOID PROCESS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY T-TUBE CHOLANGIOGRAM",
+    "investigationList": [
+      {
+        "name": "X-RAY T-TUBE CHOLANGIOGRAM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY THORACIC SPINE AP&LA",
+    "investigationList": [
+      {
+        "name": "X-RAY THORACIC SPINE AP&LA",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY THORACIC SPINE AP VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY THORACIC SPINE AP VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY THORACIC SPINE AP,LAT",
+    "investigationList": [
+      {
+        "name": "X-RAY THORACIC SPINE AP,LAT",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY THORACIC SPINE B-V",
+    "investigationList": [
+      {
+        "name": "X-RAY THORACIC SPINE B-V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY THORACIC SPINE LAT VIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY THORACIC SPINE LAT VIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY THORACO-LUBMER SPINE",
+    "investigationList": [
+      {
+        "name": "X-RAY THORACO-LUBMER SPINE",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY THORACO-LUBMER SPINE",
+    "investigationList": [
+      {
+        "name": "X-RAY THORACO-LUBMER SPINE",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RT. HYSTEROSALPHINGOGRAM(HSG)",
+    "investigationList": [
+      {
+        "name": "X-RAY RT. HYSTEROSALPHINGOGRAM(HSG)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY KUB",
+    "investigationList": [
+      {
+        "name": "X-RAY KUB",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RETROGRADE PYELOGRAI",
+    "investigationList": [
+      {
+        "name": "X-RAY RETROGRADE PYELOGRAI",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY RETROGRADE URETHROGRAM(R.G)",
+    "investigationList": [
+      {
+        "name": "X-RAY RETROGRADE URETHROGRAM(R.G)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY (DENTAL) 1FLIM",
+    "investigationList": [
+      {
+        "name": "X-RAY (DENTAL) 1FLIM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY (DENTAL) 2FLIM",
+    "investigationList": [
+      {
+        "name": "X-RAY (DENTAL) 2FLIM",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY OPG",
+    "investigationList": [
+      {
+        "name": "X-RAY OPG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY CXR P/A & RT.OBLIQUEVI",
+    "investigationList": [
+      {
+        "name": "X-RAY CXR P/A & RT.OBLIQUEVI",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY ORBIT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY ORBIT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-AY ABDOMEN A/P (SUPINE)",
+    "investigationList": [
+      {
+        "name": "X-AY ABDOMEN A/P (SUPINE)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY LT.GREAT TOE B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY LT.GREAT TOE B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY THORACIC SPINE BOTH C",
+    "investigationList": [
+      {
+        "name": "X-RAY THORACIC SPINE BOTH C",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY ABDOMEN A/PVIEW",
+    "investigationList": [
+      {
+        "name": "X-RAY ABDOMEN A/PVIEW",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY ABDOMEN E/P",
+    "investigationList": [
+      {
+        "name": "X-RAY ABDOMEN E/P",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-AY ABDOMEN ERRECT POST",
+    "investigationList": [
+      {
+        "name": "X-AY ABDOMEN ERRECT POST",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY ABDOMEN E/P (100%)",
+    "investigationList": [
+      {
+        "name": "X-RAY ABDOMEN E/P (100%)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BA-MEAL STOMACH&DU",
+    "investigationList": [
+      {
+        "name": "X-RAY BA-MEAL STOMACH&DU",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BA-ENEMA DOUBLE CONT",
+    "investigationList": [
+      {
+        "name": "X-RAY BA-ENEMA DOUBLE CONT",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BA-MEAL FOLLOW OF G.I",
+    "investigationList": [
+      {
+        "name": "X-RAY BA-MEAL FOLLOW OF G.I",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BA-SWALLOW OESOPHAG",
+    "investigationList": [
+      {
+        "name": "X-RAY BA-SWALLOW OESOPHAG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BARIUM CLEARANCE OF T",
+    "investigationList": [
+      {
+        "name": "X-RAY BARIUM CLEARANCE OF T",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BARIUM MEAL IN T-POSIT",
+    "investigationList": [
+      {
+        "name": "X-RAY BARIUM MEAL IN T-POSIT",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH ANKLE JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH ANKLE JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH CANIUM B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH CANIUM B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH FOOT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH FOOT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH HAND B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH HAND B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH HEEL B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH HEEL B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH HIP & S.I JOINT A/P",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH HIP & S.I JOINT A/P",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH HIP JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH HIP JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH KNEE JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH KNEE JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH LEG B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH LEG B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH PATTELA B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH PATTELA B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "X-RAY BOTH  S.I JOINT B/V",
+    "investigationList": [
+      {
+        "name": "X-RAY BOTH  S.I JOINT B/V",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Memography (Both Breast)",
+    "investigationList": [
+      {
+        "name": "Memography (Both Breast)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Memography (Single Breast)",
+    "investigationList": [
+      {
+        "name": "Memography (Single Breast)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Abdominal Angiogram",
+    "investigationList": [
+      {
+        "name": "CT Abdominal Angiogram",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Angiogram Of Cerebal",
+    "investigationList": [
+      {
+        "name": "CT Angiogram Of Cerebal",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Aortagram",
+    "investigationList": [
+      {
+        "name": "CT Aortagram",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Calcium Screning",
+    "investigationList": [
+      {
+        "name": "CT Calcium Screning",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Coronary Angiogram",
+    "investigationList": [
+      {
+        "name": "CT Coronary Angiogram",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Guided FNAC",
+    "investigationList": [
+      {
+        "name": "CT Guided FNAC",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Myelogram",
+    "investigationList": [
+      {
+        "name": "CT Myelogram",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Periphnral Angiogram",
+    "investigationList": [
+      {
+        "name": "CT Periphnral Angiogram",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Pulmonary Angiogram",
+    "investigationList": [
+      {
+        "name": "CT Pulmonary Angiogram",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Renal Angiogram",
+    "investigationList": [
+      {
+        "name": "CT Renal Angiogram",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of any joint",
+    "investigationList": [
+      {
+        "name": "CT Scan of any joint",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of any part of spine",
+    "investigationList": [
+      {
+        "name": "CT Scan of any part of spine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Chest /HRCT",
+    "investigationList": [
+      {
+        "name": "CT Scan of Chest /HRCT",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Kidney",
+    "investigationList": [
+      {
+        "name": "CT Scan of Kidney",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Lambo Sacral Spine",
+    "investigationList": [
+      {
+        "name": "CT Scan of Lambo Sacral Spine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Neck",
+    "investigationList": [
+      {
+        "name": "CT Scan of Neck",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Whole Abdomen /KUB",
+    "investigationList": [
+      {
+        "name": "CT Scan of Whole Abdomen /KUB",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Brain ",
+    "investigationList": [
+      {
+        "name": "CT Scan of Brain ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Brain + orbit",
+    "investigationList": [
+      {
+        "name": "CT Scan of Brain + orbit",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Lower Abdomen  ",
+    "investigationList": [
+      {
+        "name": "CT Scan of Lower Abdomen  ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of orbit",
+    "investigationList": [
+      {
+        "name": "CT Scan of orbit",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of PNS",
+    "investigationList": [
+      {
+        "name": "CT Scan of PNS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Rt. Shoulder jt",
+    "investigationList": [
+      {
+        "name": "CT Scan of Rt. Shoulder jt",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Liver & FNSC",
+    "investigationList": [
+      {
+        "name": "CT Scan of Liver & FNSC",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Pelvis",
+    "investigationList": [
+      {
+        "name": "CT Scan of Pelvis",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of Petrmastoids Region",
+    "investigationList": [
+      {
+        "name": "CT Scan of Petrmastoids Region",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of temporal Lobe, lAC Mas",
+    "investigationList": [
+      {
+        "name": "CT Scan of temporal Lobe, lAC Mas",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan of upper Abdomen /HBS",
+    "investigationList": [
+      {
+        "name": "CT Scan of upper Abdomen /HBS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "CT Scan screening two ",
+    "investigationList": [
+      {
+        "name": "CT Scan screening two ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Screening two or more part",
+    "investigationList": [
+      {
+        "name": "MRI Screening two or more part",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Ankle joint R/l",
+    "investigationList": [
+      {
+        "name": "MRI Ankle joint R/l",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Brain",
+    "investigationList": [
+      {
+        "name": "MRI Brain",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Breast R/l",
+    "investigationList": [
+      {
+        "name": "MRI Breast R/l",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI cervical spine",
+    "investigationList": [
+      {
+        "name": "MRI cervical spine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Dorsal/ Thoracis spine",
+    "investigationList": [
+      {
+        "name": "MRI Dorsal/ Thoracis spine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Hip Joint",
+    "investigationList": [
+      {
+        "name": "MRI Hip Joint",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Knee joint R/L",
+    "investigationList": [
+      {
+        "name": "MRI Knee joint R/L",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Lower Abdomen",
+    "investigationList": [
+      {
+        "name": "MRI Lower Abdomen",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Lumbo Sacral Spine",
+    "investigationList": [
+      {
+        "name": "MRI Lumbo Sacral Spine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI MRCP",
+    "investigationList": [
+      {
+        "name": "MRI MRCP",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Neck/Nasopharynx",
+    "investigationList": [
+      {
+        "name": "MRI Neck/Nasopharynx",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Of Brain & MRA of Brain",
+    "investigationList": [
+      {
+        "name": "MRI Of Brain & MRA of Brain",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI of Brain & orbits",
+    "investigationList": [
+      {
+        "name": "MRI of Brain & orbits",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI MRA of Brain",
+    "investigationList": [
+      {
+        "name": "MRI MRA of Brain",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI MRV of Brain",
+    "investigationList": [
+      {
+        "name": "MRI MRV of Brain",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI MRA Brain/Carotid/Others",
+    "investigationList": [
+      {
+        "name": "MRI MRA Brain/Carotid/Others",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI of Brain + MRV",
+    "investigationList": [
+      {
+        "name": "MRI of Brain + MRV",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI of face",
+    "investigationList": [
+      {
+        "name": "MRI of face",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI of L/S Spine with Screening ",
+    "investigationList": [
+      {
+        "name": "MRI of L/S Spine with Screening ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI orbits",
+    "investigationList": [
+      {
+        "name": "MRI orbits",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI P.N.S",
+    "investigationList": [
+      {
+        "name": "MRI P.N.S",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Pelvis",
+    "investigationList": [
+      {
+        "name": "MRI Pelvis",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Shoulder jt R/L",
+    "investigationList": [
+      {
+        "name": "MRI Shoulder jt R/L",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI TM jt",
+    "investigationList": [
+      {
+        "name": "MRI TM jt",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Upper Abdomen./HBS",
+    "investigationList": [
+      {
+        "name": "MRI Upper Abdomen./HBS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI urogram",
+    "investigationList": [
+      {
+        "name": "MRI urogram",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Whole Abdomen /KUB",
+    "investigationList": [
+      {
+        "name": "MRI Whole Abdomen /KUB",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Whole Body ",
+    "investigationList": [
+      {
+        "name": "MRI Whole Body ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI Whole Spine",
+    "investigationList": [
+      {
+        "name": "MRI Whole Spine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "MRI screening of each part of spine",
+    "investigationList": [
+      {
+        "name": "MRI screening of each part of spine",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "DGB/Diabetic Guide Book",
+    "investigationList": [
+      {
+        "name": "DGB/Diabetic Guide Book",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Breasts (B & W)",
+    "investigationList": [
+      {
+        "name": "USG Breasts (B & W)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Breasts (2D)",
+    "investigationList": [
+      {
+        "name": "USG Breasts (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Breasts (4D)",
+    "investigationList": [
+      {
+        "name": "USG Breasts (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Lower Abdomen (B & W)",
+    "investigationList": [
+      {
+        "name": "USG Lower Abdomen (B & W)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Lower Abdomen (2D)",
+    "investigationList": [
+      {
+        "name": "USG Lower Abdomen (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Lower Abdomen (4D)",
+    "investigationList": [
+      {
+        "name": "USG Lower Abdomen (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Thyroid (B&W)",
+    "investigationList": [
+      {
+        "name": "USG Thyroid (B&W)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Thyroid (2D)",
+    "investigationList": [
+      {
+        "name": "USG Thyroid (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Thyroid (2D)",
+    "investigationList": [
+      {
+        "name": "USG Thyroid (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Whole Abdomen (B & W)",
+    "investigationList": [
+      {
+        "name": "USG Whole Abdomen (B & W)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Whole Abdomen (2D)",
+    "investigationList": [
+      {
+        "name": "USG Whole Abdomen (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG Whole Abdomen (4D)",
+    "investigationList": [
+      {
+        "name": "USG Whole Abdomen (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Double Breast (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of Double Breast (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of HBS & Pancreas (B & W)",
+    "investigationList": [
+      {
+        "name": "USG of HBS & Pancreas (B & W)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of HBS & Pancreas (2D)",
+    "investigationList": [
+      {
+        "name": "USG of HBS & Pancreas (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of HBS & Pancreas (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of HBS & Pancreas (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of HBs (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of HBs (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of KUB & Prostate (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of KUB & Prostate (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of KUB (B & W)",
+    "investigationList": [
+      {
+        "name": "USG of KUB (B & W)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Lower Abdomen (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of Lower Abdomen (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Pelvic Organs (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of Pelvic Organs (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG KUB & Pelvic Organ (2D) ",
+    "investigationList": [
+      {
+        "name": "USG KUB & Pelvic Organ (2D) ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG KUB & Pelvic Organ (4D) ",
+    "investigationList": [
+      {
+        "name": "USG KUB & Pelvic Organ (4D) ",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Pregnancy Profile (B & W)",
+    "investigationList": [
+      {
+        "name": "USG of Pregnancy Profile (B & W)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Pregnancy Profile (2D)",
+    "investigationList": [
+      {
+        "name": "USG of Pregnancy Profile (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Pregnancy Profile (4D)",
+    "investigationList": [
+      {
+        "name": "USG of Pregnancy Profile (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Pregnancy Profile (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of Pregnancy Profile (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Scrotum testes",
+    "investigationList": [
+      {
+        "name": "USG of Scrotum testes",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Scrotum testes (2D)",
+    "investigationList": [
+      {
+        "name": "USG of Scrotum testes (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Scrotum testes (4D)",
+    "investigationList": [
+      {
+        "name": "USG of Scrotum testes (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Single Breast (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of Single Breast (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of TVS",
+    "investigationList": [
+      {
+        "name": "USG of TVS",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of TVS (2D)",
+    "investigationList": [
+      {
+        "name": "USG of TVS (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of TVS (4D)",
+    "investigationList": [
+      {
+        "name": "USG of TVS (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Testis (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of Testis (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Thyroid (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of Thyroid (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Thyroid (2D)",
+    "investigationList": [
+      {
+        "name": "USG of Thyroid (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Thyroid (4D)",
+    "investigationList": [
+      {
+        "name": "USG of Thyroid (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Upper Abdomen (B & W)",
+    "investigationList": [
+      {
+        "name": "USG of Upper Abdomen (B & W)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Upper Abdomen (2D)",
+    "investigationList": [
+      {
+        "name": "USG of Upper Abdomen (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Upper Abdomen (4D)",
+    "investigationList": [
+      {
+        "name": "USG of Upper Abdomen (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Whole Abdomen (Colour)",
+    "investigationList": [
+      {
+        "name": "USG of Whole Abdomen (Colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Whole Abdomen (2D)",
+    "investigationList": [
+      {
+        "name": "USG of Whole Abdomen (2D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "USG of Whole Abdomen (4D)",
+    "investigationList": [
+      {
+        "name": "USG of Whole Abdomen (4D)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Color Dopler of Both Leg",
+    "investigationList": [
+      {
+        "name": "Color Dopler of Both Leg",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Color Dopler of Carotid Vessel both",
+    "investigationList": [
+      {
+        "name": "Color Dopler of Carotid Vessel both",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Color Dopler of Single Leg",
+    "investigationList": [
+      {
+        "name": "Color Dopler of Single Leg",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Color Dopler study of both Lower Limb",
+    "investigationList": [
+      {
+        "name": "Color Dopler study of both Lower Limb",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Color Dopler of Both Leg",
+    "investigationList": [
+      {
+        "name": "Color Dopler of Both Leg",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Color Dopler of Carotid Vessel both",
+    "investigationList": [
+      {
+        "name": "Color Dopler of Carotid Vessel both",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Color Dopler of Single Leg",
+    "investigationList": [
+      {
+        "name": "Color Dopler of Single Leg",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "Color Dopler study of both Lower Limb",
+    "investigationList": [
+      {
+        "name": "Color Dopler study of both Lower Limb",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ECG",
+    "investigationList": [
+      {
+        "name": "ECG",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ECHO(2D ,Black & White)",
+    "investigationList": [
+      {
+        "name": "ECHO(2D ,Black & White)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  },
+  {
+    "name": "ECHO(colour)",
+    "investigationList": [
+      {
+        "name": "ECHO(colour)",
+        "unitList": [],
+        "referenceRange": ""
+      }
+    ]
+  }
+]
