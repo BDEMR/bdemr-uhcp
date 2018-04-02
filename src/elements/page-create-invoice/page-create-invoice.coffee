@@ -84,6 +84,42 @@ Polymer {
     return false if array is undefined or array is null 
     if array.length then return true else return false
 
+  _getPatientServiceBalance: (patientId, cbfn)->
+    data = {
+      patientId: patientId
+      apiKey: @user.apiKey
+    }
+    @callApi '/bdemr-uhcp--get-patient-service-value', data, (err, response)=>
+      if response.hasError
+        @domHost.showToast response.error.message
+      else
+        cbfn response.data
+
+  _deductServiceValueToPatient: ({patientId, outdoorBalanceToDeduct, indoorBalanceToDeduct}, cbfn)->
+    @_getPatientServiceBalance patientId, ({outdoorBalance, indoorBalance})=>
+      newOutdoorBalance = outdoorBalance - outdoorBalanceToDeduct
+      newIndoorBalance = indoorBalance - indoorBalanceToDeduct
+      if newOutdoorBalance < 0
+        @domHost.showModalDialog 'Do not have sufficient OPD Balance'
+        return cbfn(err=true)
+      if newIndoorBalance < 0
+        @domHost.showModalDialog 'Do not have sufficient IPD Balance'
+        return cbfn(err=true)
+
+      data = { 
+        apiKey: @user.apiKey
+        targetUserId: patientId
+        outdoorBalance: parseInt(newOutdoorBalance)
+        indoorBalance: parseInt(newIndoorBalance)
+      }
+      @callApi '/bdemr-uhcp--add-service-value-to-patient', data, (err, response)=>
+        if response.hasError
+          @domHost.showModalDialog response.error.message
+          return cbfn(err=true)
+        else
+          @domHost.showToast 'Value Deducted Successfully'
+          return cbfn()
+
   navigatedIn: ->
 
     params = @domHost.getPageParams()
@@ -504,27 +540,9 @@ Polymer {
   saveInvoiceButtonClicked: ()->
     @_saveInvoice()
 
-  _chargeWalletContextual: (context)->
-    chargeDoc = {
-      patientId: @patient.idOnServer
-      amount: @invoice.totalAmountReceieved
-      purpose: "Invoice Bill"
-      organizationId: @organization.idOnServer
-      context
-    }
-
-    @_chargePatientContextual chargeDoc, (err)=>
-      if (err)
-        @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
-      else
-        @domHost.showModalDialog "Successfully Charged"
-  
-  chargeIndoorWalletButtonPressed: ->
-    @_chargeWalletContextual 'indoor'
 
   chargeOutdoorWalletButtonPressed: ->
-    @_chargeWalletContextual 'outdoor'
-
+    @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, ()=> console.log 'deduction successful'
 
   getDoctorSpeciality: () ->
     unless @user.specializationList.length is 0

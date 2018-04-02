@@ -873,10 +873,10 @@
                   </div>
                   <div class="layout horizontal m-4">
                     <div class="type secondary caption-2">OPD:
-                      <span class="type caption bold bg-gray">[[patientOrganizationWallet.outdoorBalance]]</span>
+                      <span class="type caption bold bg-gray">[[patientServiceBalance.outdoorBalance]]</span>
                     </div>
                     <div class="type secondary caption-2 m-left-8">IPD:
-                      <span class="type caption bold bg-gray">[[patientOrganizationWallet.indoorBalance]]</span>
+                      <span class="type caption bold bg-gray">[[patientServiceBalance.indoorBalance]]</span>
                     </div>
                   </div>
                 </div>
@@ -1478,11 +1478,11 @@
                         </tr>
                         <tr>
                           <td>Available Outdoor Balance</td>
-                          <td>[[patientOrganizationWallet.outdoorBalance]]</td>
+                          <td>[[patientServiceBalance.outdoorBalance]]</td>
                         </tr>
                         <tr>
                           <th>Balance After Deduction</th>
-                          <th>[[calculatedOutDoorBalanceAfterDeduction(patientOrganizationWallet.outdoorBalance, invoice.totalBilled)]]</th>
+                          <th>[[calculatedOutDoorBalanceAfterDeduction(patientServiceBalance.outdoorBalance, invoice.totalBilled)]]</th>
                         </tr>
                       </tfoot>
                     </table>

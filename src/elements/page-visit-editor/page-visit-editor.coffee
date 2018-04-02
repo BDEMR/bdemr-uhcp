@@ -38,7 +38,7 @@ Polymer {
       type: Number
       value: -1
 
-    patientOrganizationWallet:
+    patientServiceBalance:
       type: Object
       value: null
     
@@ -886,6 +886,42 @@ Polymer {
       age--
 
     return age
+
+  _getPatientServiceBalance: (patientId, cbfn)->
+    data = {
+      patientId: patientId
+      apiKey: @user.apiKey
+    }
+    @callApi '/bdemr-uhcp--get-patient-service-value', data, (err, response)=>
+      if response.hasError
+        @domHost.showToast response.error.message
+      else
+        cbfn response.data
+
+  _deductServiceValueToPatient: ({patientId, outdoorBalanceToDeduct, indoorBalanceToDeduct}, cbfn)->
+    @_getPatientServiceBalance patientId, ({outdoorBalance, indoorBalance})=>
+      newOutdoorBalance = outdoorBalance - outdoorBalanceToDeduct
+      newIndoorBalance = indoorBalance - indoorBalanceToDeduct
+      if newOutdoorBalance < 0
+        @domHost.showModalDialog 'Do not have sufficient OPD Balance'
+        return cbfn(err=true)
+      if newIndoorBalance < 0
+        @domHost.showModalDialog 'Do not have sufficient IPD Balance'
+        return cbfn(err=true)
+
+      data = { 
+        apiKey: @user.apiKey
+        targetUserId: patientId
+        outdoorBalance: parseInt(newOutdoorBalance)
+        indoorBalance: parseInt(newIndoorBalance)
+      }
+      @callApi '/bdemr-uhcp--add-service-value-to-patient', data, (err, response)=>
+        if response.hasError
+          @domHost.showModalDialog response.error.message
+          return cbfn(err=true)
+        else
+          @domHost.showToast 'Value Deducted Successfully'
+          return cbfn()
   # Util Functions - end
     
 
@@ -4607,18 +4643,9 @@ Polymer {
         return true
 
   _loadVariousWallets: ->
-    @_loadPatientWallet @patient.idOnServer, ()=>
-      # console.log 'PATIENT-WALLET:',@patientWalletBalance
-      @_loadPatientOrganizationWallet @organization.idOnServer, @patient.idOnServer, (patientOrganizationWallet)=>
-        unless patientOrganizationWallet
-          this.domHost.set('patientOrganizationWalletIndoorBalance', 0)
-          this.domHost.set('patientOrganizationWalletOutdoorBalance', 0)
-          return
-        this.domHost.set('patientOrganizationWalletIndoorBalance', patientOrganizationWallet.indoorBalance)
-        this.domHost.set('patientOrganizationWalletOutdoorBalance', patientOrganizationWallet.outdoorBalance)
-        # console.log 'PATIENT-ORGANIZATION-WALLET', patientOrganizationWallet
-        @set 'patientOrganizationWallet', patientOrganizationWallet
-        console.log patientOrganizationWallet
+    @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
+      @set 'patientServiceBalance', patientServiceBalance
+      console.log patientServiceBalance
 
 
   onVitalIndexChange: ()->
@@ -5504,9 +5531,15 @@ Polymer {
 
   finishButtonPressed: ->
     @domHost.showSuccessToast 'Visit Saved Successfully'
-    @domHost.navigateToPreviousPage()
     if @invoice?.totalBilled
-      @chargeOutdoorWalletButtonPressed()
+      @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (err)=>
+        if err
+          console.log 'something went wrong with balance deduction'
+        else
+          @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
+            @set 'patientServiceBalance', patientServiceBalance
+            @makeNewVisitButtonPressed()
+
     
       
 }
