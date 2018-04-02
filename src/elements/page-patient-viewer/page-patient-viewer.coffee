@@ -330,7 +330,9 @@ Polymer {
     list = app.db.find 'patient-list', ({serial})-> serial is patientIdentifier
     if list.length is 1
       @isPatientValid = true
-      @patient = list[0]
+      patient = list[0]
+      patient.employmentInfo = patient.employmentDetailsList[0] or {}
+      @set 'patient', patient
       return
     else
       @_notifyInvalidPatient()
