@@ -95,9 +95,10 @@ Polymer {
       @_searchOnline @searchFieldMainInput
 
   _searchOnline: (searchQuery)->
+    return unless searchQuery
     @callApi '/bdemr-patient-search', {apiKey: @user.apiKey, searchQuery: searchQuery}, (err, response)=>
       if response.hasError
-        @domHost.showModalDialog response.error.message
+        @domHost.showToast response.error.message
       else if response.data.length is 0
         @domHost.showToast 'No Patient Found with that Search'
         @searchFieldMainInput = ""
@@ -116,13 +117,16 @@ Polymer {
             patient.flags.isImported = true
             patient._tempLocalDbId = localPatientList[0]._id
         
-        userSuggestionArray = ({text:"#{item.name}--#{item.email}--#{item.phone}", value:item} for item in matchingPatientList)
+        matchingPatientList.forEach (item)=>
+          item.name = @$getFullName item.name
+          return item
+
+        userSuggestionArray = (item for item in matchingPatientList)
         # Populating Suggestion Array for Autocomplete
         @$$("#userSearch").suggestions userSuggestionArray
 
   userSelected: (e)->
-    e.stopPropagation()
-    patient = e.detail.value
+    patient = e.detail.option
     @searchFieldMainInput = ""
     patient.organizationId = @organization.idOnServer
     @addPatient patient

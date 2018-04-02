@@ -210,8 +210,7 @@
                 <strong>[[$add(outdoorBalance,indoorBalance)]]</strong> BDT. This amount will be added to the patient you select.
                 You currently have
                 <strong>[[walletBalance]]</strong> BDT in your wallet. You can
-                <paper-button class="primary" on-tap="addBalanceTapped"
-                  data-amount="5000">Add More Money</paper-button> to your wallet.
+                <paper-button class="primary" on-tap="addBalanceTapped" data-amount="5000">Add More Money</paper-button> to your wallet.
               </div>
             </div>
           </paper-card>
@@ -221,7 +220,16 @@
             <div class="card-content">
               <paper-autocomplete class="flex" id="userSearch" text="{{searchFieldMainInput}}" label="Search with Patient Name, phone, Email, NID or Hospital Number"
                 on-autocomplete-selected="userSelected" on-keyup="onlineSearchEnterKeyPressed" error-message="Input Required"
-                required></paper-autocomplete>
+                text-property="name" value-property="idOnServer" required>
+                <template autocomplete-custom-template>
+                  <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+                    <div class="type bold">[[item.name]]</div>
+                    <div class="type secondary m-left-8">([[item.phone]])</div>
+                    <div class="type secondary m-left-8">[[item.email]]</div>
+                    <paper-ripple></paper-ripple>
+                  </paper-item>
+                </template>
+              </paper-autocomplete>
               <br>
               <template is="dom-if" if="[[!matchingPatientList.length]]">
                 <div class="layout vertical center type secondary">-- No Patient Data--</div>

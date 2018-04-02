@@ -4618,6 +4618,7 @@ Polymer {
         this.domHost.set('patientOrganizationWalletOutdoorBalance', patientOrganizationWallet.outdoorBalance)
         # console.log 'PATIENT-ORGANIZATION-WALLET', patientOrganizationWallet
         @set 'patientOrganizationWallet', patientOrganizationWallet
+        console.log patientOrganizationWallet
 
 
   onVitalIndexChange: ()->
