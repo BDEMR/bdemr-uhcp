@@ -18,30 +18,27 @@ Polymer {
       notify: true
       value: null
 
-    isOrganizationValid: 
-      type: Boolean
-      notify: true
-      value: false
-
-    organization:
-      type: Object
-      notify: true
-      value: null
-
     matchingPatientList:
       type: Array
       value: -> []
 
     indoorBalance:
       type: Number
-      value: 800
+      value: 0
 
     outdoorBalance:
       type: Number
-      value: 200
+      value: 25000
+
+    selectedPatient:
+      type: Object
+      value: -> null
 
   $add: (a, b)-> parseInt(a) + parseInt(b)
 
+  navigatedIn: ->
+    @_loadUser()
+  
   _loadUser:()->
     userList = app.db.find 'user'
     if userList.length is 1
@@ -53,37 +50,6 @@ Polymer {
   _notifyInvalidOrganization: ->
     @isOrganizationValid = false
     @domHost.showModalDialog 'Invalid Organization Provided'
-
-  navigatedIn: ->
-    @_loadUser()
-    @_loadWallet()
-    
-    params = @domHost.getPageParams()
-    if params['organization']
-      @_loadOrganization params['organization']
-    else
-      @_notifyInvalidOrganization()
-    
-  navigatedOut: ->
-    @organization = null
-    @isOrganizationValid = false
-
-  _loadOrganization: (idOnServer)->
-    data = { 
-      apiKey: @user.apiKey
-      idList: [ idOnServer ]
-    }
-    @callApi '/bdemr-organization-list-organizations-by-ids', data, (err, response)=>
-      if response.hasError
-        @domHost.showModalDialog response.error.message
-      else
-        unless response.data.matchingOrganizationList.length is 1
-          @domHost.showModalDialog "Invalid Organization"
-          return
-        @set 'organization', response.data.matchingOrganizationList[0]
-
-        @set 'isOrganizationValid', true
-        @_loadPatientList()
 
   searchOnlineButtonPressed: (e)->
     @searchContextDropdownSelectedIndex = 1
@@ -127,54 +93,62 @@ Polymer {
 
   userSelected: (e)->
     patient = e.detail.option
+    @set 'selectedPatient', patient
+    @updatePatientCurrentBalanceView()
     @searchFieldMainInput = ""
-    patient.organizationId = @organization.idOnServer
-    @addPatient patient
-
-  addPatient: (patient)->
-    data = { 
+    
+  updatePatientCurrentBalanceView: ->
+    @getPatientServiceBalance @selectedPatient.idOnServer, (balaneInfo)=>
+      patientCurrentServiceValue = balaneInfo or {}
+      modifiedPatient = Object.assign @selectedPatient, patientCurrentServiceValue
+      @set 'selectedPatient', {}
+      @set 'selectedPatient', modifiedPatient
+  
+  addFundsToPatientButtonPressed: (e)->
+    unless @selectedPatient
+      @domHost.showToast 'Please search and select a patient to add funds'
+      return
+    @addServiceValueToPatient @selectedPatient
+  
+  
+  getPatientServiceBalance: (patientId, cbfn)->
+    data = {
+      patientId
       apiKey: @user.apiKey
-      organizationId: @organization.idOnServer
-      targetUserId: patient.idOnServer
-      outdoorBalance: @outdoorBalance
-      indoorBalance: @indoorBalance
     }
-    @callApi '/bdemr-organization-add-patient', data, (err, response)=>
-      if response.hasError
-        @domHost.showModalDialog response.error.message
-      else
-        @domHost.showToast 'Patient Added Successfully'
-        @_loadPatientList()
-        @_loadWallet()
-
-  _loadPatientList: ->
-    data = { 
-      apiKey: @user.apiKey
-      organizationId: @organization.idOnServer
-      searchString: ""
-    }
-    @callApi '/bdemr-organization-list-patient', data, (err, response)=>
+    @callApi '/bdemr-uhcp--get-patient-service-value', data, (err, response)=>
       if response.hasError
         @domHost.showToast response.error.message
       else
-        console.log response.data.matchingPatientList
-        @set 'matchingPatientList', response.data.matchingPatientList
-
-  removePatientPressed: (e)->
-    {patient, index} = e.model
+        cbfn response.data
+  
+  addServiceValueToPatient: (patient)->
     data = { 
       apiKey: @user.apiKey
-      organizationId: @organization.idOnServer
-      targetUserId: patient.patientId
+      targetUserId: patient.idOnServer
+      outdoorBalance: parseInt(@outdoorBalance)
+      indoorBalance: parseInt(@indoorBalance)
     }
-    @callApi '/bdemr-organization-remove-patient', data, (err, response)=>
+    @callApi '/bdemr-uhcp--add-service-value-to-patient', data, (err, response)=>
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
-        @splice 'matchingPatientList', index, 1
+        @domHost.showToast 'Value Added Successfully'
+        @updatePatientCurrentBalanceView()
+  
+  removePatientPressed: (e)->
+    data = { 
+      apiKey: @user.apiKey
+      patientId: @selectedPatient.idOnServer
+    }
+    @callApi '/bdemr-uhcp--remove-patient-from-service', data, (err, response)=>
+      if response.hasError
+        @domHost.showModalDialog response.error.message
+      else
+        @set 'selectedPatient', {}
 
   viewPatientExpenseHistoryPressed: (e)->
-    { patient, index } = e.model
+    patient = @selectedPatient
     text = ["Outdoor Expenses:"]
     for expense in patient.outdoorTransactionHistory
       text.push (expense.notes + " - " + expense.amountInBdt + " BDT - " + @$mkDate(expense.createDatetimeStamp))
@@ -184,6 +158,8 @@ Polymer {
       text.push (expense.notes + " - " + expense.amountInBdt + " BDT - " + @$mkDate(expense.createDatetimeStamp))
     @domHost.showModalDialog text
 
-  ## Role Manager - end
+  navigatedOut: ->
+    @organization = null
+    @isOrganizationValid = false
 
 }
