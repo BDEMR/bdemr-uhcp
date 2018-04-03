@@ -4,17 +4,16 @@
     <!-- style -->
 
     <style is="custom-style" include="common-style">
-    
       .limiting-container {
         margin-top: 10px;
       }
-      
+
       .new-fab {
         position: fixed;
         right: 20px;
         bottom: 164px;
       }
-      
+
       paper-button {
         margin: 3px;
       }
@@ -46,7 +45,7 @@
         text-transform: uppercase;
         font-weight: 400;
       }
-      
+
       .modifier.type1 {
         background: #757575;
       }
@@ -58,6 +57,15 @@
         margin-right: 10px;
         color: #777777;
       }
+
+      .organization-menu paper-item {
+        border-bottom: 1px solid #eee;
+      }
+
+      .organization-menu paper-item:hover {
+        cursor: pointer;
+        font-style: bold;
+      }
     </style>
 
     <!-- local DOM -->
@@ -68,20 +76,20 @@
 
         <!-- Card - Current Organizations - start -->
         <paper-card class="m-top-8">
-  
+
           <div class="card-custom-header">
             <div class="layout horizontal center">
-              <div class="title flex">Currently you belong to [[organizationsIBelongToList.length]] organizations.</div>           
+              <div class="title flex">Currently you belong to [[organizationsIBelongToList.length]] organizations.</div>
             </div>
           </div>
 
           <template is="dom-if" if="[[organizationsIBelongToList.length]]">
             <div class="p-0">
               <paper-listbox>
-                
+
                 <template id="assistant-list-repeater" is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
                   <paper-item class="custom layout horizontal center">
-                    
+
                     <div class="flex m-left-8">
                       <div class="type body capitalize">[[organization.name]]</div>
                       <div class="type caption secondary">[[organization.idOnServer]]</div>
@@ -89,26 +97,26 @@
 
                     <div class="layout horizontal m-horizontal-4 wrap">
                       <div class="type caption">[[organization.address]]&nbsp;</div>
-                       <div class="type caption">([[organization.effectiveRegion]])</div>
+                      <div class="type caption">([[organization.effectiveRegion]])</div>
                     </div>
 
-                      <template is="dom-if" if="[[!organization.isClaimed]]">
-                        <div class="modifier type1">Unclaimed</div>
-                      </template>
+                    <template is="dom-if" if="[[!organization.isClaimed]]">
+                      <div class="modifier type1">Unclaimed</div>
+                    </template>
 
-                      <template is="dom-if" if="[[organization.isCurrentUserAnAdmin]]">
-                        <div class="modifier type1"> ✓ Admin</div>
-                      </template>
-          
+                    <template is="dom-if" if="[[organization.isCurrentUserAnAdmin]]">
+                      <div class="modifier type1"> ✓ Admin</div>
+                    </template>
+
                     <paper-menu-button horizontal-align="right" no-animations="">
                       <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
-                      <paper-menu class="dropdown-content">
+                      <paper-menu class="dropdown-content organization-menu">
                         <paper-item on-tap="accessMedicineSalesStatisticsPressed">Medicine Sales Statistics</paper-item>
                         <template is="dom-if" if="[[organization.isCurrentUserAnAdmin]]">
                           <div hidden="">[[organization]]</div>
                           <paper-item on-tap="accessRecordsPressed">Access Records</paper-item>
                           <paper-item on-tap="editOrganizationPressed">Edit Organization</paper-item>
-                          <paper-item on-tap="managePatientPressed">Manage Patients</paper-item>
+                          <paper-item on-tap="managePatientPressed">Manage Patient's Service Value</paper-item>
                           <paper-item on-tap="manageFocPressed">Manage FOC</paper-item>
                           <paper-item on-tap="manageUsersPressed">Manage Members</paper-item>
                           <paper-item on-tap="removeOrganizationPressed">Remove Organization</paper-item>
@@ -129,10 +137,10 @@
                 </template>
 
               </paper-listbox>
-              
+
             </div>
           </template>
-     
+
         </paper-card>
         <!-- Card - Current Organizations - end -->
 
@@ -141,10 +149,10 @@
         <br>
 
         <paper-card class="organization-info-cards">
-  
+
           <div class="card-custom-header">
             <div class="layout horizontal center">
-              <div class="title flex">Search existing organizations to join</div>           
+              <div class="title flex">Search existing organizations to join</div>
             </div>
           </div>
 
@@ -158,10 +166,10 @@
           <template is="dom-if" if="[[organizationSearchResultList.length]]">
             <div class="p-0">
               <paper-listbox>
-                
+
                 <template id="assistant-list-repeater" is="dom-repeat" items="[[organizationSearchResultList]]" as="organization">
                   <paper-item class="custom layout horizontal center">
-                    
+
                     <div class="flex m-left-8">
                       <div class="type body capitalize">[[organization.name]]</div>
                       <div class="type caption secondary">[[organization.idOnServer]]</div>
@@ -169,19 +177,19 @@
 
                     <div class="layout horizontal m-horizontal-4 wrap">
                       <div class="type caption">[[organization.address]]&nbsp;</div>
-                       <div class="type caption">([[organization.effectiveRegion]])</div>
+                      <div class="type caption">([[organization.effectiveRegion]])</div>
                     </div>
-          
+
                     <paper-menu-button horizontal-align="right" no-animations="">
                       <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
                       <paper-menu class="dropdown-content">
 
-                      <template is="dom-if" if="[[!organization.isCurrentUserAMember]]">
-                        <div hidden="">[[organization]]</div>
-                        <paper-item on-tap="joinOrganizationTapped">Join as a user</paper-item>
-                      </template>
+                        <template is="dom-if" if="[[!organization.isCurrentUserAMember]]">
+                          <div hidden="">[[organization]]</div>
+                          <paper-item on-tap="joinOrganizationTapped">Join as a user</paper-item>
+                        </template>
 
-                      <!-- <template is="dom-if" if="[[!organization.isClaimed]]">
+                        <!-- <template is="dom-if" if="[[!organization.isClaimed]]">
                         <div hidden>[[organization]]</div>
                         <paper-item on-tap="claimOrganizationTapped">Claim Ownership</paper-item>
                       </template> -->
@@ -193,7 +201,7 @@
                 </template>
 
               </paper-listbox>
-              
+
             </div>
           </template>
         </paper-card>
@@ -205,14 +213,14 @@
 
 
 
-        
+
         <paper-fab class="new-fab" icon="add" on-tap="newOrganizationFabPressed"></paper-fab>
 
       </div>
 
     </div>
 
-    
+
 
   </template>
   <script>(function(){Polymer({is:"page-organization-manager",behaviors:[app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling,app.behaviors.commonComputes,app.behaviors.dbUsing],properties:{organizationsIBelongToList:{type:Array,value:function(){return[]}},user:{type:Object,value:function(){return app.db.find("user")[0]}},organizationSearchResultList:{type:Array,value:function(){return[]}}},_updateOrganizationsIBelongToList:function(){var a;return a={apiKey:this.user.apiKey},this.callApi("/bdemr-organization-list-those-user-belongs-to",a,function(a){return function(n,i){return i.hasError?a.domHost.showModalDialog(i.error.message):void(a.organizationsIBelongToList=i.data.organizationObjectList)}}(this))},navigatedIn:function(){return this._updateOrganizationsIBelongToList()},newOrganizationFabPressed:function(a){return this.domHost.navigateToPage("#/organization-editor/organization:new")},_removeOrganization:function(a,n){var i;return i={apiKey:this.user.apiKey,organizationId:a},this.callApi("/bdemr-organization-remove",i,function(a){return function(i,o){return o.hasError?a.domHost.showModalDialog(o.error.message):n(o.data.wasRemoved)}}(this))},removeOrganizationPressed:function(a){var n;return n=a.model.organization,this.domHost.showModalPrompt("Are you sure?",function(a){return function(i){if(i)return a._removeOrganization(n.idOnServer,function(n){return n?a.domHost.showModalDialog("Removed Successfully"):a.domHost.showModalDialog("Failed to Remove"),a._updateOrganizationsIBelongToList()})}}(this))},editOrganizationPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/organization-editor/organization:"+n.idOnServer)},accessMedicineSalesStatisticsPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/organization-medicine-sales-statistics/organization:"+n.idOnServer)},accessRecordsPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/organization-records/organization:"+n.idOnServer)},managePatientPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/organization-manage-patient/organization:"+n.idOnServer)},manageUsersPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/organization-manage-users/organization:"+n.idOnServer)},manageFocPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/organization-manage-foc/organization:"+n.idOnServer)},searchOrganizationTapped:function(a){var n;return n={apiKey:this.user.apiKey,searchString:this.organizationSearchString},this.callApi("/bdemr-organization-search",n,function(a){return function(n,i){return i.hasError?a.domHost.showModalDialog(i.error.message):a.set("organizationSearchResultList",i.data.matchingOrganizationList)}}(this))},managePatientStayPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/organization-manage-patient-stay/organization:"+n.idOnServer)},manageWaitlistPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/organization-manage-waitlist/organization:"+n.idOnServer)},manageUnitPricePressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/manage-price-list/organization:"+n.idOnServer)},managePharmacyPressed:function(a){var n;return n=a.model.organization,this.domHost.navigateToPage("#/pharmacy-manager/organization:"+n.idOnServer)},joinOrganizationTapped:function(a){var n,i;return i=a.model.organization,n={apiKey:this.user.apiKey,organizationId:i.idOnServer},this.callApi("/bdemr-organization-join-as-a-user",n,function(a){return function(n,i){return i.hasError?a.domHost.showModalDialog(i.error.message):(a._updateOrganizationsIBelongToList(),a.searchOrganizationTapped(null))}}(this))},claimOrganizationTapped:function(a){var n,i;return i=a.model.organization,n={apiKey:this.user.apiKey,organizationId:i.idOnServer},this.callApi("/bdemr-organization-claim",n,function(a){return function(n,i){return i.hasError?a.domHost.showModalDialog(i.error.message):a.domHost.showModalDialog(i.data)}}(this))},leaveOrganizationPressed:function(a){var n;return n=a.model.organization,this.domHost.showModalPrompt("Are you sure?",function(a){return function(i){var o;if(i)return o={apiKey:a.user.apiKey,organizationId:n.idOnServer,targetUserId:a.user.idOnServer},a.callApi("/bdemr-organization-remove-user",o,function(n,i){return i.hasError?a.domHost.showModalDialog(i.error.message):a._updateOrganizationsIBelongToList()})}}(this))}})}).call(this);
