@@ -18,6 +18,9 @@ app.behaviors.local['root-element'].syncCall =
     @_syncPatients @syncVisitInvoice, ()->
       cbfn()
 
+  _syncOnlyPriceList: (cbfn)=>
+    @_syncOrganizationData @syncOrganizationPriceList, cbfn
+
   _sync: (navigateToAfterSyncing = null)->
     console.group 'Sync'
     @$$('#sync-dialog').toggle()
