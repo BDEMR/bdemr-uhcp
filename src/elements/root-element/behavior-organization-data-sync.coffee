@@ -24,7 +24,7 @@ app.behaviors.local['root-element'].organizationDataSync =
 
     # -------------- PHASE 1 -------------------
 
-    rawList = app.db.find collectionName
+    rawList = app.db.find collectionName, ({organizationId})=> organizationId is organization.idOnServer
 
     # console.log 'rawList', rawList
 
@@ -76,7 +76,7 @@ app.behaviors.local['root-element'].organizationDataSync =
             for item in serverToClientItemList
               unless item.lastModifiedDatetimeStamp
                 continue
-              app.db.upsert collectionName, item, ({serial, lastModifiedDatetimeStamp})-> item.serial is serial
+              app.db.upsert collectionName, item, ({serial, organizationId})-> item.serial is serial and organizationId is organization.idOnServer
 
             # self.notifySyncAction 'done', dataApi, apiActionId
             cbfn()
