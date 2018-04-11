@@ -1571,7 +1571,7 @@
               medicine.lastModifiedDatetimeStamp = lib.datetime.now();
               app.db.insert('patient-medications', medicine);
               _this.domHost.domHost.showToast("Medicine Added!");
-              _this._addToInvoice(medicine.data.brandName, _this.visit.serial);
+              _this.domHost._addToInvoice(medicine.data.brandName, _this.visit.serial);
               _this._resetMedicineForm();
               return _this._listPrescribedMedications(_this.prescription.serial);
             } else {

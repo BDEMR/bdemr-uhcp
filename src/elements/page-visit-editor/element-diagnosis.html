@@ -253,7 +253,7 @@
             name: diagnosis
           });
           this._saveDiagnosis();
-          this._addToInvoice(diagnosis, this.visit.serial);
+          this.domHost._addToInvoice(diagnosis, this.visit.serial);
           this.domHost.domHost.showToast('Diagnosis Added!');
           return this.comboBoxDiagnosisInputValue = '';
         }

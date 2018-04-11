@@ -256,7 +256,7 @@
           }
         };
         app.db.insert('custom-examination-list', object);
-        return this._addToInvoice(object.data.name(this.visit.serial));
+        return this.domHost._addToInvoice(object.data.name(this.visit.serial));
       },
       removeExaminationMember(e) {
         var el, index, memberIndex, repeater, string;
@@ -372,7 +372,7 @@
                 examinationValueList: modifiedList
               };
               this.unshift('addedExaminationList', modifiedObject);
-              this._addToInvoice(modifiedObject.name, this.visit.serial);
+              this.domHost._addToInvoice(modifiedObject.name, this.visit.serial);
             }
           } else {
             object = {

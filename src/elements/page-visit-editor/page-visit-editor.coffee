@@ -44,6 +44,11 @@ Polymer {
     patientOrganizationWallet:
       type: Object
       value: null
+
+    invoice:
+      type: Object
+      notify: true
+      value: -> {}
     
     printPrescriptionOnly:
       type: Boolean
@@ -279,13 +284,11 @@ Polymer {
 
   $findCreator: (creatorSerial)-> 'me'
 
-
   printFullVisitPressed: (e)->
     params = @domHost.getPageParams()
     # console.log @visit
 
     @domHost.navigateToPage '#/page-print-full-visit/patient:' + @patient.serial + '/visit:' + @visit.serial + '/record:' + @visit.historyAndPhysicalRecordSerial + '/prescription:' + @prescription.serial + '/test-adviced:' + @visit.advisedTestSerial + '/doctor-note:' + @visit.doctorNotesSerial + '/next-visit:' + @visit.nextVisitSerial + '/patient-stay:' + @visit.patientStaySerial + '/diagnosis:' + @visit.diagnosisSerial
-
 
 
   printPrescriptionPressed: (e)->
@@ -307,7 +310,24 @@ Polymer {
     item = @doctorSpecialityList[@doctorSpecialitySelectedIndex]
     @visit.doctorSpeciality = item
 
+  makeNewVisitButtonPressed: (e)->
+    this.domHost.setSelectedVisitSerial('new')
+    @domHost.modifyCurrentPagePath '#/visit-editor/visit:new/patient:' + @patient.serial
+    @domHost.reloadPage()
 
+  printButtonPressed: -> 
+    @set 'addedExaminationList2', []
+    @printPrescriptionOnly = @checkForPrintPreviewType()
+    # hack for addedExamination List not updated on print preview
+    lib.util.delay 200, () => 
+      @set 'addedExaminationList2', @addedExaminationList
+      lib.util.delay 200, () => 
+        console.log 'addedExaminationList2', @addedExaminationList2
+        window.print()
+      
+    
+  
+  
   _makeNewVisit: ()->
     visit =
       serial: null
@@ -317,6 +337,7 @@ Polymer {
       lastModifiedDatetimeStamp: 0
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organization: @organization.idOnServer
       doctorsPrivateNote: ''
       patientSerial: @patient.serial
       recordType: 'doctor-visit'
@@ -354,7 +375,6 @@ Polymer {
 
     @set 'visit', visit
 
-
   _saveVisit: ()->
     params = @domHost.getPageParams()
 
@@ -362,19 +382,19 @@ Polymer {
       @isThatNewVisit = false
       @visit.serial = @generateSerialForVisit()
       @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
-      @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
-      @domHost.setSelectedVisitSerial @visit.serial
+      
+    @visit.lastModifiedDatetimeStamp = lib.datetime.now()
+    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
+    @domHost.setSelectedVisitSerial @visit.serial
 
     
-
   _notifyInvalidPatient: ->
     @isPatientValid = false
     @domHost.showModalDialog 'Invalid Patient Provided'
 
   _notifyInvalidVisit: ->
     @isVisitValid = false
-    # @domHost.showModalDialog 'Invalid Visit Provided'
+    @domHost.showModalDialog 'Invalid Visit Provided'
 
   _loadVisit: (visitIdentifier, cbfn)->
     list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
@@ -501,8 +521,6 @@ Polymer {
       @_updatePatientSerialSyncByCollection 'history-and-physical-record', patientIdentifier, false
         
   ## --- Patient Specific Sync - End
-
-
   prescriptionAvailableToPatientCheckBoxChanged: (e)->
     if @prescription
       if e.target.checked
@@ -520,5 +538,38 @@ Polymer {
       else
         @testAdvised.availableToPatient = false
         @_saveVisitTestAdvised()
+
+  _addToInvoice: (itemName, visitSerial)->
+    invoiceElement = @$$("#invoiceElement")
+    return unless invoiceElement
+
+    matchedItem = (item for item in @priceList when item.name is itemName)[0]
+    if matchedItem
+      matchedItem.qty = 1
+
+    unless matchedItem
+      matchedItem = {
+        name: itemName
+        qty: 1
+        price: 0
+        actualCost: 0
+        category: "custom"
+        subCategory: ""
+        serial: null
+        organizationId: @organization.idOnServer
+        createdDatetimeStamp: lib.datetime.now()
+        lastModifiedDatetimeStamp: lib.datetime.now()
+        createdByUserSerial: @user.serial
+      }
+    if Object.keys(@invoice).length
+      @push 'invoice.data', matchedItem
+    else
+      invoiceElement._makeNewInvoice()
+      @push 'invoice.data', matchedItem
+    
+    invoiceElement._saveInvoice()
+    
+    console.log 'invoice:', @invoice
+    console.log 'visit:', @visit
 
 }

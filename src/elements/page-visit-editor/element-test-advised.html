@@ -637,7 +637,7 @@
       addInvestigation: function () {
         if (this.comboBoxInvestigationInputValue !== '') {
           if (typeof this.comboBoxInvestigationInputValue === 'object') {
-            this._addToInvoice(this.comboBoxInvestigationInputValue.name, this.visit.serial);
+            this.domHost._addToInvoice(this.comboBoxInvestigationInputValue.name, this.visit.serial);
             this.push('addedInvestigationList', this._makeNewAddedInvestigationObject(this.comboBoxInvestigationInputValue));
             this.addInvestigationAsFavorite(this.comboBoxInvestigationInputValue);
             return this.saveAdvisedTest();

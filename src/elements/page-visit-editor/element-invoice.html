@@ -111,8 +111,17 @@
           type: Boolean,
           notify: false,
           value: false
+        },
+        invoice: {
+          type: Object,
+          notify: true,
+          value: {}
         }
       },
+
+      observers: [
+        'calculateTotalPrice(invoice.data.splices)',
+      ],
 
       attached: function () {
 
@@ -146,15 +155,7 @@
           return false;
         }
       },
-      _getServiceRendered(index) {
-        var optionList;
-        optionList = ['Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom'];
-        if (index === 5) {
-          return this.invoice.customServiceRendered;
-        } else {
-          return optionList[index];
-        }
-      },
+
       createInvoicePressed: function () {
         var params;
         params = this.domHost.domHost.getPageParams();
@@ -181,47 +182,7 @@
           return this.domHost.domHost.navigateToPage('#/print-invoice/visit:' + this.visit.serial + '/patient:' + this.patient.serial + '/invoice:' + this.invoice.serial);
         }
       },
-      _addToInvoice: function (itemName, visitSerial) {
-        var item, matchedItem;
-        matchedItem = ((function () {
-          var i, len, ref, results;
-          ref = this.priceList;
-          results = [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            item = ref[i];
-            if (item.name === itemName) {
-              results.push(item);
-            }
-          }
-          return results;
-        }).call(this))[0];
-        if (matchedItem) {
-          matchedItem.qty = 1;
-        }
-        if (!matchedItem) {
-          matchedItem = {
-            name: itemName,
-            qty: 1,
-            price: 0,
-            actualCost: 0,
-            category: "custom",
-            subCategory: "",
-            serial: null,
-            organizationId: this.organization.idOnServer,
-            createdDatetimeStamp: lib.datetime.now(),
-            lastModifiedDatetimeStamp: lib.datetime.now(),
-            createdByUserSerial: this.user.serial
-          };
-        }
-        if (Object.keys(this.invoice).length) {
-          this.push('invoice.data', matchedItem);
-        } else {
-          this._makeNewInvoice();
-          this.push('invoice.data', matchedItem);
-        }
-        this._saveInvoice();
-        return console.log(this.invoice);
-      },
+
       calculatedOutDoorBalanceAfterDeduction: function (opdBalance, totalBilled) {
         return (parseInt(opdBalance)) - (parseInt(totalBilled));
       },
@@ -232,6 +193,108 @@
         if ((ref = this.invoice) != null ? ref.totalBilled : void 0) {
           return this.chargeOutdoorWalletButtonPressed();
         }
+      },
+
+      _makeNewInvoice() {
+        const invoice = {
+          serial: this.generateSerialForinvoice(),
+          referenceNumber: null,
+          createdDatetimeStamp: lib.datetime.now(),
+          createdByUserSerial: this.user.serial,
+          patientSerial: this.patient.serial,
+          patientName: this.patient.name,
+          patientPhone: this.patient.phone,
+          patientEmail: this.patient.email,
+          organizationId: this.organization.idOnServer,
+          organizationName: this.organization.name,
+          modificationHistory: [],
+          lastModifiedDatetimeStamp: null,
+          category: '',
+          totalBilled: 0,
+          paid: null,
+          lastPaid: null,
+          discount: null,
+          totalAmountReceieved: null,
+          flags: {
+            flagAsError: false,
+            markAsCompleted: false
+          },
+          data: [],
+          commission: {},
+          availableToPatient: true
+        };
+        return this.set('invoice', invoice);
+      },
+
+
+      _reduceInventoryItems(invoice) {
+        for (let item of invoice.data) {
+          if (item.category === 'custom') { continue; }
+          const doc = (app.db.find('organization-price-list', ({ serial }) => serial === item.serial))[0];
+          if (doc.qty) {
+            doc.qty -= item.qty;
+            app.db.update('organization-price-list', doc._id, doc);
+          }
+        }
+      },
+
+      _addModificationHistory() {
+        const modificationHistory = {
+          userSerial: this.user.serial,
+          lastModifiedDatetimeStamp: lib.datetime.now()
+        };
+        this.invoice.modificationHistory.push(modificationHistory);
+        this.invoice.lastModifiedDatetimeStamp = lib.datetime.now();
+      },
+
+      _updateVisit(invoiceSerial) {
+        if (this.visit.invoiceSerial === null) {
+          this.set('visit.invoiceSerial', invoiceSerial);
+        }
+        this.domHost._saveVisit();
+        // const params = this.domHost.domHost.getPageParams();
+        // if (params['visit'] === 'new') {
+        //   this.visit.serial = this.generateSerialForVisit();
+        // }
+        // if (this.visit.invoiceSerial === null) {
+        //   this.set('visit.invoiceSerial', invoiceSerial);
+        // }
+        // this.visit.lastModifiedDatetimeStamp = lib.datetime.now();
+        // app.db.upsert('doctor-visit', this.visit, ({ serial }) => this.visit.serial === serial);
+      },
+
+      _saveInvoice(markAsCompleted) {
+
+        if (markAsCompleted) {
+          this.invoice.flags.markAsCompleted = true;
+        }
+
+        this._addModificationHistory();
+
+        // check for inventory items and reduce
+        this._reduceInventoryItems(this.invoice);
+
+        app.db.upsert('visit-invoice', this.invoice, ({ serial }) => serial === this.invoice.serial);
+        this.domHost.domHost.showToast('Invoice Saved Successfully');
+        this._updateVisit(this.invoice.serial);
+        // return this.domHost.navigateToPage(`#/visit-editor/visit:${this.visit.serial}/patient:g`);
+      },
+
+
+      deleteInvoiceItem(e) {
+        this.splice('invoice.data', e.model.index, 1);
+        this._saveInvoice();
+      },
+
+      calculateTotalPrice() {
+        if (!Object.keys(this.invoice).length) { return; }
+        if (!this.invoice.data.length) {
+          this.set('invoice.totalBilled', 0);
+          return;
+        }
+        const price = this.invoice.data.reduce((total, item) => total + (parseInt((item.price * (item.qty || 1))))
+          , 0);
+        return this.set('invoice.totalBilled', price);
       }
     });
   </script>
