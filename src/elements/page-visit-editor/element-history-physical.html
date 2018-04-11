@@ -169,7 +169,7 @@
       historyAndPhysicalRecordCreate(e) {
         const params = this.domHost.domHost.getPageParams();
         if (params['visit'] === 'new') {
-          this._saveVisit();
+          this.domHost._saveVisit();
         }
         // console.log @visit.serial
         this.historyAndPhysicalRecord = {
@@ -217,7 +217,7 @@
       pasteRecordPressed(e) {
         const params = this.domHost.domHost.getPageParams();
         if (params['visit'] === 'new') {
-          this._saveVisit();
+          this.domHost._saveVisit();
         }
 
         this.recordInClipboard.patientSerial = this.patient.serial;

@@ -212,14 +212,14 @@
       },
       _saveReferral: function () {
         if (this.visit.serial === null) {
-          this._saveVisit();
+          this.domHost._saveVisit();
           this.referral.visitSerial = this.visit.serial;
         }
         if (this.referral.serial === null) {
           this.referral.serial = this.generateSerialForReferral();
           this.visit.referralSerial = this.referral.serial;
           this.referral.visitSerial = this.visit.serial;
-          this._saveVisit();
+          this.domHost._saveVisit();
         }
         console.log('referral', this.referral);
         this.referral.lastModifiedDatetimeStamp = lib.datetime.now();

@@ -264,7 +264,7 @@
             serial: this.identifiedSymptomsObject.serial
           });
           this.visit.identifiedSymptomsSerial = null;
-          this._saveVisit();
+          this.domHost._saveVisit();
           return this.domHost.domHost.showToast('Deleted Successfully!');
         } else {
           this.saveIdentifiedSymptoms();
@@ -321,7 +321,7 @@
           if (this.visit.identifiedSymptomsSerial === null) {
             this.identifiedSymptomsObject.serial = this.generateSerialForIdentifiedSymptoms();
             this.visit.identifiedSymptomsSerial = this.identifiedSymptomsObject.serial;
-            this._saveVisit();
+            this.domHost._saveVisit();
             this.identifiedSymptomsObject.visitSerial = this.visit.serial;
           }
           this.identifiedSymptomsObject.lastModifiedDatetimeStamp = lib.datetime.now();

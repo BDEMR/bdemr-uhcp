@@ -571,7 +571,7 @@
             serial: this.testAdvisedObject.serial
           });
           this.visit.advisedTestSerial = null;
-          this._saveVisit();
+          this.domHost._saveVisit();
           return this.domHost.domHost.showToast('Deleted Successfully!');
         } else {
           this.saveAdvisedTest();
@@ -746,7 +746,7 @@
           if (this.visit.advisedTestSerial === null) {
             this.testAdvisedObject.serial = this.generateSerialForTestAdvised();
             this.visit.advisedTestSerial = this.testAdvisedObject.serial;
-            this._saveVisit();
+            this.domHost._saveVisit();
             this.testAdvisedObject.visitSerial = this.visit.serial;
           }
           this.testAdvisedObject.lastModifiedDatetimeStamp = lib.datetime.now();

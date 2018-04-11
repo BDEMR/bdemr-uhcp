@@ -787,7 +787,7 @@
         if (this.visit.prescriptionSerial === null) {
           this.prescription.serial = this.generateSerialForPrescription();
           this.visit.prescriptionSerial = this.prescription.serial;
-          this._saveVisit();
+          this.domHost._saveVisit();
         }
         this.prescription.lastModifiedDatetimeStamp = lib.datetime.now();
         app.db.upsert('visit-prescription', this.prescription, (function (_this) {

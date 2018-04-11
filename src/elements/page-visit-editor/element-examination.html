@@ -292,7 +292,7 @@
             serial: examinationSerial
           });
           this.visit.examinationSerial = null;
-          this._saveVisit();
+          this.domHost._saveVisit();
           return this.domHost.domHost.showToast('Deleted Successfully!');
         } else {
           this.saveExamination();
@@ -414,7 +414,7 @@
           if (this.visit.examinationSerial === null) {
             this.examinationObject.serial = this.generateSerialForExamination();
             this.visit.examinationSerial = this.examinationObject.serial;
-            this._saveVisit();
+            this.domHost._saveVisit();
             this.examinationObject.visitSerial = this.visit.serial;
           }
           this.examinationObject.lastModifiedDatetimeStamp = lib.datetime.now();

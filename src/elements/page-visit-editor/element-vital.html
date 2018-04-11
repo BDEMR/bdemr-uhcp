@@ -720,7 +720,7 @@
           this.isTempAdded = false;
           this.visit.vitalSerial.temp = null;
         }
-        this._saveVisit();
+        this.domHost._saveVisit();
       },
       updateVisitForVital: function (vitalSerial, vitalType) {
         console.log('VitalSerial: ', vitalSerial, "and vitalType: ", vitalType);
@@ -743,7 +743,7 @@
           this.visit.vitalSerial.temp = vitalSerial;
           this.isTempAdded = true;
         }
-        this._saveVisit();
+        this.domHost._saveVisit();
       },
       addBloodPressureButtonClicked: function () {
         var diastolic, systolic;

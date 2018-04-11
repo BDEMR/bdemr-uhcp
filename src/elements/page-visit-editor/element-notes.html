@@ -149,7 +149,7 @@
           }
           if (this.visit.doctorNotesSerial === null) {
             this.visit.doctorNotesSerial = this.doctorNotes.serial;
-            this._saveVisit();
+            this.domHost._saveVisit();
           }
           this._saveNote(this.doctorNotes);
           this.doctorNotesMessage = '';

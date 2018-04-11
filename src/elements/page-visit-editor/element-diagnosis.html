@@ -163,14 +163,14 @@
       },
       _saveDiagnosis: function () {
         if (this.visit.serial === null) {
-          this._saveVisit();
+          this.domHost._saveVisit();
           this.diagnosis.visitSerial = this.visit.serial;
         }
         if (this.diagnosis.serial === null) {
           this.diagnosis.serial = this.generateSerialForDiagnosis();
           this.visit.diagnosisSerial = this.diagnosis.serial;
           this.diagnosis.visitSerial = this.visit.serial;
-          this._saveVisit();
+          this.domHost._saveVisit();
         }
         console.log('visit', this.visit);
         console.log('diagnosis', this.diagnosis);
@@ -209,13 +209,13 @@
       comboBoxKeyUpRecordTitleValueChanged: function (e) {
         if (this.visit.recordTitle !== '' || this.visit.recordTitle !== null) {
           if (e.which === 13) {
-            this._saveVisit();
+            this.domHost._saveVisit();
           }
         }
       },
       recordTitleValueChanged: function () {
         if (this.visit.recordTitle !== '' || this.visit.recordTitle !== null) {
-          this._saveVisit();
+          this.domHost._saveVisit();
         }
       },
       openVisitSettingsDialog: function (e) {

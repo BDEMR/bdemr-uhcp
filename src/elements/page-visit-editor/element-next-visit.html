@@ -277,7 +277,7 @@
           this.nextVisit.createdDatetimeStamp = lib.datetime.now();
           if (this.visit.nextVisitSerial === null) {
             this.visit.nextVisitSerial = this.nextVisit.serial;
-            this._saveVisit();
+            this.domHost._saveVisit();
           }
 
 

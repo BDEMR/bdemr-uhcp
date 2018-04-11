@@ -366,18 +366,7 @@ Polymer {
       app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
       @domHost.setSelectedVisitSerial @visit.serial
 
-    # UHCP dont charge patient for Visit
-    # if @visit.isPaidUp
-    #   fn()
-    # else
-    #   this._chargePatient @patient.idOnServer, 5, 'Payment BDEMR Doctor Generic', (err)=>
-    #     @visit.isPaidUp = true
-    #     if (err)
-    #       @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
-    #       return
-    #     fn()
-
-
+    
 
   _notifyInvalidPatient: ->
     @isPatientValid = false
@@ -521,7 +510,7 @@ Polymer {
         @_saveVisitPrescription()
       else
         @prescription.availableToPatient = false
-        @_saveVisitPrescription()
+        @d_saveVisitPrescription()
 
   testAdvisedAvailableToPatientCheckBoxChanged: (e)->
     if @testAdvised

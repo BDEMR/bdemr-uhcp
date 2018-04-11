@@ -501,7 +501,7 @@
         if (this.visit.serial) {
           this.visit.recordTitle = '';
           this.set('visit.recordTitle', this.visitHeaderTitleList[this.visitHeaderTitleSelectedIndex]);
-          return this._saveVisit();
+          return this.domHost._saveVisit();
         }
       },
       //# Settings - start
