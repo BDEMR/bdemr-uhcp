@@ -168,47 +168,34 @@
       },
 
       visitValueChanged: function (visit) {
+        if (!visit) return;
+        if (visit.hasOwnProperty('referralSerial') && visit.referralSerial) {
+          this._loadReferral(visit.referralSerial);
+        } else {
+          this._makeNewReferral()
+        }
 
-        if (!visit) return
-        if (!visit.serial) {
-        }
-        if (visit.serial) {
-          if (visit.hasOwnProperty('referralSerial') && visit.referralSerial) {
-            this._loadReferral(visit.referralSerial);
-          }
-        }
       },
 
       // Methods
       _loadReferral: function (referralSerialIdentifier) {
-        return lib.util.delay(5, (function (_this) {
-          return function () {
-            var list;
-            list = app.db.find('referral-record', function (arg) {
-              var serial;
-              serial = arg.serial;
-              return serial === referralSerialIdentifier;
-            });
-            if (list.length === 1) {
-              _this.referral = list[0];
-              return true;
-            }
-          };
-        })(this));
+        const list = app.db.find('referral-record', ({ serial }) => serial == referralSerialIdentifier)
+        if (list.length == 1) this.set('referral', list[0])
+        console.log(list);
       },
       _makeNewReferral: function () {
-        return this.referral = {
+        const referral = {
           serial: null,
           lastModifiedDatetimeStamp: lib.datetime.now(),
           createdDatetimeStamp: lib.datetime.now(),
           lastSyncedDatetimeStamp: 0,
           createdByUserSerial: this.user.serial,
+          organizationId: this.organization.idOnServer,
           visitSerial: null,
           patientSerial: this.patient.serial,
-          doctorName: this.visit.doctorName,
-          doctorSpeciality: this.visit.doctorSpeciality,
           data: {}
         };
+        this.set('referral', referral);
       },
       _saveReferral: function () {
         if (this.visit.serial === null) {
@@ -223,13 +210,9 @@
         }
         console.log('referral', this.referral);
         this.referral.lastModifiedDatetimeStamp = lib.datetime.now();
-        return app.db.upsert('referral-record', this.referral, (function (_this) {
-          return function (arg) {
-            var serial;
-            serial = arg.serial;
-            return _this.referral.serial === serial;
-          };
-        })(this));
+        this.referral.doctorName = this.visit.doctorName;
+        this.referral.doctorSpeciality = this.visit.doctorSpeciality;
+        app.db.upsert('referral-record', this.referral, ({ serial }) => this.referral.serial === serial);
       },
       openReferralDialogPressed: function (e) {
         return this.$.dialogReferral.toggle();

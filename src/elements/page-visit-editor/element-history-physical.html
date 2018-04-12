@@ -123,35 +123,35 @@
       visitValueChanged: function (visit) {
 
         if (!visit) return
-        if (visit.serial) {
-          if (visit.historyAndPhysicalRecordSerial) {
-            this.historyAndPhysical_navigatedIn();
 
-            this.set('recordPartName', 'history-and-physical-record');
+        if (visit.historyAndPhysicalRecordSerial) {
+          this.historyAndPhysical_navigatedIn();
 
-            this.recordDatabaseCollectionName = 'history-and-physical-record';
+          this.set('recordPartName', 'history-and-physical-record');
 
-            this.record = this._getRecord(this.visit.historyAndPhysicalRecordSerial, this.recordDatabaseCollectionName);
+          this.recordDatabaseCollectionName = 'history-and-physical-record';
 
-            this.recordPartData = this.record;
+          this.record = this._getRecord(this.visit.historyAndPhysicalRecordSerial, this.recordDatabaseCollectionName);
 
-            this.recordPartTitle = 'History and Physical Record';
+          this.recordPartData = this.record;
 
-            this.domHost.domHost.getStaticData('dynamicElementDefinitionPreoperativeAssessment', def => {
+          this.recordPartTitle = 'History and Physical Record';
 
-              this.recordPartDef = def;
+          this.domHost.domHost.getStaticData('dynamicElementDefinitionPreoperativeAssessment', def => {
 
-              this.recordPartHtmlContent = this.generateHtmlContent(this.recordPartDef, this.recordPartData);
+            this.recordPartDef = def;
 
-              // console.log @recordPartHtmlContent
+            this.recordPartHtmlContent = this.generateHtmlContent(this.recordPartDef, this.recordPartData);
 
-              if (!this.delayRendering) {
+            // console.log @recordPartHtmlContent
 
-                return this.shouldRender = true;
-              }
-            });
-          }
+            if (!this.delayRendering) {
+
+              return this.shouldRender = true;
+            }
+          });
         }
+
       },
 
       historyAndPhysicalAvailableToPatientCheckBoxChanged(e) {

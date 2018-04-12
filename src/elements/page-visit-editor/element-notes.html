@@ -102,24 +102,24 @@
       visitValueChanged(visit) {
 
         if (!visit) return
-        if (!visit.serial) {
+
+        if (visit.hasOwnProperty('doctorNotesSerial') && visit.doctorNotesSerial) {
+          this._loadVisitNote(visit.doctorNotesSerial);
+        } else {
           this._makeNewNote()
         }
-        if (visit.serial) {
-          if (visit.hasOwnProperty('doctorNotesSerial') && visit.doctorNotesSerial) {
-            this._loadVisitNote(visit.doctorNotesSerial);
-          }
-        }
+
       },
 
       // Methods
       _makeNewNote() {
-        this.doctorNotes = {
+        const doctorNotes = {
           serial: null,
           lastModifiedDatetimeStamp: 0,
           createdDatetimeStamp: 0,
           lastSyncedDatetimeStamp: 0,
-          createdByUserSerial: null,
+          createdByUserSerial: this.user.serial,
+          organizationId: this.organization.idOnServer,
           visitSerial: null,
           patientSerial: this.patient.serial,
           doctorName: this.user.name,
@@ -128,6 +128,7 @@
             messageList: []
           }
         };
+        this.set('doctorNotes', doctorNotes);
         return this.isNoteValid = true;
       },
       _saveNote(data) {

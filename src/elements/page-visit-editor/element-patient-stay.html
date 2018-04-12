@@ -281,16 +281,12 @@ link rel="import" href="../../behaviors/common-computes.html">
       },
 
       visitValueChanged: function (visit) {
-
         if (!visit) return
-        if (!visit.serial) {
-          this._loadOrganizationsIBelongTo()
+        this._loadOrganizationsIBelongTo()
+        if (visit.hasOwnProperty('patientStaySerial') && visit.patientStaySerial) {
+          this._loadVisitPatientStay(visit.patientStaySerial);
+        } else {
           this._makeNewPatientStay()
-        }
-        if (visit.serial) {
-          if (visit.hasOwnProperty('patientStaySerial') && visit.patientStaySerial) {
-            this._loadVisitPatientStay(visit.patientStaySerial);
-          }
         }
       },
       _checkUserAccess: function (accessId) {

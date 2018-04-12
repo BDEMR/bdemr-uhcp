@@ -19,7 +19,6 @@
 
 <!-- ELEMENTS -->
 <link rel="import" href="element-patient-details.html">
-<link rel="import" href="element-visit-details.html">
 <link rel="import" href="element-prescription.html">
 <link rel="import" href="element-symptoms.html">
 <link rel="import" href="element-examination.html">
@@ -816,9 +815,14 @@
 
               <div class="content left horizontal layout wrap type caption-2">
                 <div class="m-4">
-                  <strong>Record:</strong> [[visit.serial]]</div>
+                  <strong>Record:</strong>
+                  <div class="type label caption bg-gray">
+                    <template is='dom-if' if="[[!visit.serial]]">New</template>
+                    [[visit.serial]]
+                  </div>
+                </div>
                 <div class="m-4">
-                  <strong>Created Date:</strong> [[$mkDate(visit.createdDatetimeStamp)]]</div>
+                  <strong>Created Date:</strong> [[_formatDateTime(visit.createdDatetimeStamp)]]</div>
                 <div class="m-4">
                   <strong>Created By:</strong> [[visit.doctorName]]</div>
               </div>
@@ -905,7 +909,7 @@
             <div class="content right">
 
               <!-- Card - History And Physical - start -->
-              <element-history-physical></element-history-physical>
+              <element-history-physical patient="[[patient]]" user="[[user]]" visit="{{visit}}" organization="[[organization]]"></element-history-physical>
               <!-- Card - History And Physical - end -->
 
               <!-- Card :: Prescription - start -->
@@ -1023,5 +1027,6 @@
     <!-- local DOM -->
   </template>
   <script src="../mixin/load-price-list-mixin.coffee-compiled.js "></script>
+  <script src="mixin-utils.js"></script>
   <script src="page-visit-editor.coffee-compiled.js "></script>
 </dom-module>

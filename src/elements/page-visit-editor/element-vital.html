@@ -29,7 +29,7 @@
         <!-- <div class="type title-2">Vitals</div> -->
         <div class="flex">
           <paper-dropdown-menu class="dropdown-menu-custom-style" label="[[$TRANSLATE('Vital',LANG)]]">
-            <paper-menu class="dropdown-content" selected="{{selectedVitalIndex}}" on-iron-select="onVitalIndexChange">
+            <paper-menu class="dropdown-content" selected="{{selectedVitalIndex}}">
               <paper-item disabled$="{{isBPAdded}}">
                 <iron-icon class="m-right-8" src="../../images/icons/ico_blood_pressure.png"></iron-icon>Blood Pressure</paper-item>
               <paper-item disabled$="{{isHRAdded}}">
@@ -367,36 +367,16 @@
       visitValueChanged: function (visit) {
 
         if (!visit) return
-        if (!visit.serial) {
-          this._makeBloodPressure()
-          this._makePulseRate()
-          this._makeBmi()
-          this._makeRespiratoryRate()
-          this._makeOxygenSaturation()
-          this._makeTemperature()
+
+        if (visit.hasOwnProperty('vitalSerial')) {
+          visit.vitalSerial.bp ? this._loadVitalsForVisit(visit.vitalSerial.bp, 'Blood Pressure') : this._makeBloodPressure()
+          visit.vitalSerial.hr ? this._loadVitalsForVisit(visit.vitalSerial.hr, 'Heart Rate') : this._makePulseRate()
+          visit.vitalSerial.bmi ? this._loadVitalsForVisit(visit.vitalSerial.bmi, 'BMI') : this._makeBmi()
+          visit.vitalSerial.rr ? this._loadVitalsForVisit(visit.vitalSerial.rr, 'Respirtory Rate') : this._makeRespiratoryRate()
+          visit.vitalSerial.spo2 ? this._loadVitalsForVisit(visit.vitalSerial.spo2, 'Spo2') : this._makeOxygenSaturation()
+          visit.vitalSerial.temp ? this._loadVitalsForVisit(visit.vitalSerial.temp, 'Temperature') : this._makeTemperature()
         }
-        if (visit.serial) {
-          if (visit.hasOwnProperty('vitalSerial')) {
-            if (visit.vitalSerial.bp) {
-              this._loadVitalsForVisit(visit.vitalSerial.bp, 'Blood Pressure');
-            }
-            if (visit.vitalSerial.hr) {
-              this._loadVitalsForVisit(visit.vitalSerial.hr, 'Heart Rate');
-            }
-            if (visit.vitalSerial.bmi) {
-              this._loadVitalsForVisit(visit.vitalSerial.bmi, 'BMI');
-            }
-            if (visit.vitalSerial.rr) {
-              this._loadVitalsForVisit(visit.vitalSerial.rr, 'Respirtory Rate');
-            }
-            if (visit.vitalSerial.spo2) {
-              this._loadVitalsForVisit(visit.vitalSerial.spo2, 'Spo2');
-            }
-            if (visit.vitalSerial.temp) {
-              this._loadVitalsForVisit(visit.vitalSerial.temp, 'Temperature');
-            }
-          }
-        }
+
       },
 
       _loadVitalsForVisit(vitalIdentifier, vitalType) {
@@ -447,10 +427,11 @@
         }
       },
       _makeBloodPressure: function () {
-        return this.bloodPressure = {
+        const bloodPressure = {
           serial: null,
           visitSerial: this.visit.serial,
           createdByUserSerial: null,
+          organizationId: this.organization.idOnServer,
           patientSerial: null,
           createdDatetimeStamp: null,
           lastModifiedDatetimeStamp: null,
@@ -464,13 +445,15 @@
               flagAsError: false
             }
           }
-        };
+        }
+        this.set('bloodPressure', bloodPressure);
       },
       _makePulseRate: function () {
-        return this.pulseRate = {
+        const pulseRate = {
           serial: null,
           visitSerial: this.visit.serial,
           createdByUserSerial: null,
+          organizationId: this.organization.idOnServer,
           patientSerial: null,
           createdDatetimeStamp: null,
           lastModifiedDatetimeStamp: null,
@@ -483,12 +466,14 @@
             }
           }
         };
+        this.set('pulseRate', pulseRate);
       },
       _makeBmi: function () {
-        return this.bmi = {
+        const bmi = {
           serial: null,
           visitSerial: this.visit.serial,
           createdByUserSerial: null,
+          organizationId: this.organization.idOnServer,
           patientSerial: null,
           createdDatetimeStamp: null,
           lastModifiedDatetimeStamp: null,
@@ -506,12 +491,14 @@
             }
           }
         };
+        this.set('bmi', bmi);
       },
       _makeRespiratoryRate: function () {
-        return this.respiratoryRate = {
+        const respiratoryRate = {
           serial: null,
           visitSerial: this.visit.serial,
           createdByUserSerial: null,
+          organizationId: this.organization.idOnServer,
           patientSerial: null,
           createdDatetimeStamp: null,
           lastModifiedDatetimeStamp: null,
@@ -524,12 +511,14 @@
             }
           }
         };
+        this.set('respiratoryRate', respiratoryRate);
       },
       _makeOxygenSaturation: function () {
-        return this.oxygenSaturation = {
+        const oxygenSaturation = {
           serial: null,
           visitSerial: this.visit.serial,
           createdByUserSerial: null,
+          organizationId: this.organization.idOnServer,
           patientSerial: null,
           createdDatetimeStamp: null,
           lastModifiedDatetimeStamp: null,
@@ -542,12 +531,14 @@
             }
           }
         };
+        this.set('oxygenSaturation', oxygenSaturation);
       },
       _makeTemperature: function () {
-        return this.temperature = {
+        const temperature = {
           serial: null,
           visitSerial: this.visit.serial,
           createdByUserSerial: null,
+          organizationId: this.organization.idOnServer,
           patientSerial: null,
           createdDatetimeStamp: null,
           lastModifiedDatetimeStamp: null,
@@ -560,70 +551,45 @@
             }
           }
         };
+        this.set('temperature', temperature);
       },
-      _saveBloodPressure: function (data) {
-        return app.db.upsert('patient-vitals-blood-pressure', data, (function (_this) {
-          return function (arg) {
-            var serial;
-            serial = arg.serial;
-            return data.serial === serial;
-          };
-        })(this));
+      _saveBloodPressure(data) {
+        console.log(data);
+        return app.db.upsert('patient-vitals-blood-pressure', data, ({ serial }) => data.serial === serial);
       },
-      _savePulseRate: function (data) {
-        return app.db.upsert('patient-vitals-pulse-rate', data, (function (_this) {
-          return function (arg) {
-            var serial;
-            serial = arg.serial;
-            return data.serial === serial;
-          };
-        })(this));
+
+      _savePulseRate(data) {
+        console.log(data);
+        return app.db.upsert('patient-vitals-pulse-rate', data, ({ serial }) => data.serial === serial);
       },
-      _saveBmi: function (data) {
-        return app.db.upsert('patient-vitals-bmi', data, (function (_this) {
-          return function (arg) {
-            var serial;
-            serial = arg.serial;
-            return data.serial === serial;
-          };
-        })(this));
+
+      _saveBmi(data) {
+        console.log(data);
+        return app.db.upsert('patient-vitals-bmi', data, ({ serial }) => data.serial === serial);
       },
-      _saveRespiratoryRate: function (data) {
-        return app.db.upsert('patient-vitals-respiratory-rate', data, (function (_this) {
-          return function (arg) {
-            var serial;
-            serial = arg.serial;
-            return data.serial === serial;
-          };
-        })(this));
+
+      _saveRespiratoryRate(data) {
+        console.log(data);
+        return app.db.upsert('patient-vitals-respiratory-rate', data, ({ serial }) => data.serial === serial);
       },
-      _saveOxygenSaturation: function (data) {
-        return app.db.upsert('patient-vitals-spo2', data, (function (_this) {
-          return function (arg) {
-            var serial;
-            serial = arg.serial;
-            return data.serial === serial;
-          };
-        })(this));
+
+      _saveOxygenSaturation(data) {
+        console.log(data);
+        return app.db.upsert('patient-vitals-spo2', data, ({ serial }) => data.serial === serial);
       },
-      _saveTemperature: function (data) {
-        return app.db.upsert('patient-vitals-temperature', data, (function (_this) {
-          return function (arg) {
-            var serial;
-            serial = arg.serial;
-            return data.serial === serial;
-          };
-        })(this));
+
+      _saveTemperature(data) {
+        console.log(data);
+        return app.db.upsert('patient-vitals-temperature', data, ({ serial }) => data.serial === serial);
       },
-      _addToVitalList: function (object, type) {
-        return lib.util.delay(5, (function (_this) {
-          return function () {
-            return _this.push('addedVitalList', {
-              vitalType: type,
-              vitalObject: object
-            });
-          };
-        })(this));
+
+      _addToVitalList(object, type) {
+        return lib.util.delay(5, () => {
+          return this.push('addedVitalList', {
+            vitalType: type,
+            vitalObject: object
+          });
+        });
       },
       _pritifyVitalData: function (masterVitalObject) {
         var heightValue, weightValue;
@@ -765,20 +731,19 @@
           this.domHost.domHost.showToast('Diastolic value must not be greater than Systolic Value');
           return;
         }
-        return this.addBP();
-      },
-      addBP: function () {
+
         this.set('bloodPressure.serial', this.generateSerialForVitals('BP'));
         this.set('bloodPressure.lastModifiedDatetimeStamp', lib.datetime.now());
-        this.set('bloodPressure.createdByUserSerial', this.userSerial);
+        this.set('bloodPressure.createdByUserSerial', this.user.serial);
         this.set('bloodPressure.patientSerial', this.patient.serial);
         this.set('bloodPressure.createdDatetimeStamp', lib.datetime.now());
         this._addToVitalList(this.bloodPressure, 'Blood Pressure');
         this.updateVisitForVital(this.bloodPressure.serial, 'Blood Pressure');
+        this.bloodPressure.visitSerial = this.bloodPressure.visitSerial ? this.bloodPressure.visitSerial : this.visit.serial;
         this._saveBloodPressure(this.bloodPressure);
         this.domHost.domHost.addActivityLog('blood-pressure', 'add', {
           patientSerial: this.patient.serial,
-          createdByUserSerial: this.userSerial,
+          createdByUserSerial: this.user.serial,
           createdDatetimeStamp: lib.datetime.now()
         });
         this.domHost.domHost.showToast('Added Successfully');
@@ -794,15 +759,16 @@
         if ((20 <= bpm && bpm <= 225)) {
           this.set('pulseRate.lastModifiedDatetimeStamp', lib.datetime.now());
           this.set('pulseRate.serial', this.generateSerialForVitals('P'));
-          this.set('pulseRate.createdByUserSerial', this.userSerial);
+          this.set('pulseRate.createdByUserSerial', this.user.serial);
           this.set('pulseRate.patientSerial', this.patient.serial);
           this.set('pulseRate.createdDatetimeStamp', lib.datetime.now());
           this.updateVisitForVital(this.pulseRate.serial, 'Heart Rate');
+          this.pulseRate.visitSerial = this.pulseRate.visitSerial ? this.pulseRate.visitSerial : this.visit.serial;
           this._savePulseRate(this.pulseRate);
           this._addToVitalList(this.pulseRate, 'Heart Rate');
           this.domHost.domHost.addActivityLog('pulse-rate', 'add', {
             patientSerial: this.patient.serial,
-            createdByUserSerial: this.userSerial,
+            createdByUserSerial: this.user.serial,
             createdDatetimeStamp: lib.datetime.now()
           });
           this.domHost.domHost.showToast('Added Successfully');
@@ -903,16 +869,17 @@
           this.set('bmi.data.calculatedBMI', bmiResult.toPrecision(3));
           this.set('bmi.lastModifiedDatetimeStamp', lib.datetime.now());
           this.set('bmi.serial', this.generateSerialForVitals('BMI'));
-          this.set('bmi.createdByUserSerial', this.userSerial);
+          this.set('bmi.createdByUserSerial', this.user.serial);
           this.set('bmi.patientSerial', this.patient.serial);
           this.set('bmi.createdDatetimeStamp', lib.datetime.now());
           this.domHost.domHost.addActivityLog('bmi', 'add', {
             patientSerial: this.patient.serial,
-            createdByUserSerial: this.userSerial,
+            createdByUserSerial: this.user.serial,
             createdDatetimeStamp: lib.datetime.now()
           });
           this._addToVitalList(this.bmi, 'BMI');
           this.updateVisitForVital(this.bmi.serial, 'BMI');
+          this.bmi.visitSerial = this.bmi.visitSerial ? this.bmi.visitSerial : this.visit.serial;
           this._saveBmi(this.bmi);
           return this.domHost.domHost.showToast('Added Successfully!');
         } else {
@@ -927,15 +894,16 @@
         if ((1 < (ref = this.respiratoryRate.data.respiratoryRate) && ref <= 65)) {
           this.set('respiratoryRate.lastModifiedDatetimeStamp', lib.datetime.now());
           this.set('respiratoryRate.serial', this.generateSerialForVitals('RR'));
-          this.set('respiratoryRate.createdByUserSerial', this.userSerial);
+          this.set('respiratoryRate.createdByUserSerial', this.user.serial);
           this.set('respiratoryRate.patientSerial', this.patient.serial);
           this.set('respiratoryRate.createdDatetimeStamp', lib.datetime.now());
           this.updateVisitForVital(this.respiratoryRate.serial, 'Respirtory Rate');
+          this.respiratoryRate.visitSerial = this.respiratoryRate.visitSerial ? this.respiratoryRate.visitSerial : this.visit.serial;
           this._saveRespiratoryRate(this.respiratoryRate);
           this._addToVitalList(this.respiratoryRate, 'Respirtory Rate');
           this.domHost.domHost.addActivityLog('respiratory-rate', 'add', {
             patientSerial: this.patient.serial,
-            createdByUserSerial: this.userSerial,
+            createdByUserSerial: this.user.serial,
             createdDatetimeStamp: lib.datetime.now()
           });
           this.domHost.domHost.showToast('Added Successfully');
@@ -952,15 +920,16 @@
         if ((0 <= (ref = this.oxygenSaturation.data.spO2Percentage) && ref <= 100)) {
           this.set('oxygenSaturation.lastModifiedDatetimeStamp', lib.datetime.now());
           this.set('oxygenSaturation.serial', this.generateSerialForVitals('OS'));
-          this.set('oxygenSaturation.createdByUserSerial', this.userSerial);
+          this.set('oxygenSaturation.createdByUserSerial', this.user.serial);
           this.set('oxygenSaturation.patientSerial', this.patient.serial);
           this.set('oxygenSaturation.createdDatetimeStamp', lib.datetime.now());
           this.updateVisitForVital(this.oxygenSaturation.serial, 'SpO2');
+          this.oxygenSaturation.visitSerial = this.oxygenSaturation.visitSerial ? this.oxygenSaturation.visitSerial : this.visit.serial;
           this._saveOxygenSaturation(this.oxygenSaturation);
           this._addToVitalList(this.oxygenSaturation, 'SpO2');
           this.domHost.domHost.addActivityLog('oxygen-saturation', 'add', {
             patientSerial: this.patient.serial,
-            createdByUserSerial: this.userSerial,
+            createdByUserSerial: this.user.serial,
             createdDatetimeStamp: lib.datetime.now()
           });
           this.domHost.domHost.showToast('Added Successfully');
@@ -1012,15 +981,16 @@
         }
         this.set('temperature.lastModifiedDatetimeStamp', lib.datetime.now());
         this.set('temperature.serial', this.generateSerialForVitals('T'));
-        this.set('temperature.createdByUserSerial', this.userSerial);
+        this.set('temperature.createdByUserSerial', this.user.serial);
         this.set('temperature.patientSerial', this.patient.serial);
         this.set('temperature.createdDatetimeStamp', lib.datetime.now());
         this.updateVisitForVital(this.temperature.serial, 'Temperature');
+        this.temperature.visitSerial = this.temperature.visitSerial ? this.temperature.visitSerial : this.visit.serial;
         this._saveTemperature(this.temperature);
         this._addToVitalList(this.temperature, 'Temperature');
         this.domHost.domHost.addActivityLog('temperature', 'add', {
           patientSerial: this.patient.serial,
-          createdByUserSerial: this.userSerial,
+          createdByUserSerial: this.user.serial,
           createdDatetimeStamp: lib.datetime.now(),
           temperature: this.temparature
         });

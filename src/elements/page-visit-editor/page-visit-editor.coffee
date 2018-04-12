@@ -23,6 +23,7 @@ Polymer {
     app.behaviors.translating
     app.behaviors.apiCalling
     app.behaviors.local.loadPriceListMixin
+    app.behaviors.local.visitUtilsMixin
   ]
 
   properties:
@@ -217,8 +218,6 @@ Polymer {
       @_loadVisit params['visit']
       @domHost.setSelectedVisitSerial params['visit']
 
-
-    
   _loadOrganization: ->
     organization = @getCurrentOrganization()
     unless organization
@@ -337,7 +336,7 @@ Polymer {
       lastModifiedDatetimeStamp: 0
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
-      organization: @organization.idOnServer
+      organizationId: @organization.idOnServer
       doctorsPrivateNote: ''
       patientSerial: @patient.serial
       recordType: 'doctor-visit'
@@ -380,7 +379,7 @@ Polymer {
 
     if params['visit'] is 'new'
       @isThatNewVisit = false
-      @visit.serial = @generateSerialForVisit()
+      @set 'visit.serial', @generateSerialForVisit()
       @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
       
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
@@ -400,7 +399,7 @@ Polymer {
     list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
     if list.length is 1
       @isVisitValid = true
-      @visit = list[0]
+      @set 'visit', list[0]
     else
       @_notifyInvalidVisit()
       return
@@ -438,7 +437,7 @@ Polymer {
     
   
 
-  navigatedOut: ->
+  _navigatedOut: ->
     @visit = {}
     @patient = {}
     @doctorNotes = {}
@@ -571,5 +570,9 @@ Polymer {
     
     console.log 'invoice:', @invoice
     console.log 'visit:', @visit
+
+  arrowBackButtonPressed: (e)->
+    @domHost.setSelectedVisitSerial 'new'
+    @domHost.navigateToPage '#/patient-manager'
 
 }

@@ -131,14 +131,13 @@
       visitValueChanged(visit) {
 
         if (!visit) return
-        if (!visit.serial) {
+
+        if (visit.hasOwnProperty('examinationSerial') && visit.examinationSerial) {
+          this._loadExamination(visit.examinationSerial);
+        } else {
           this._makeNewExaminationObject()
         }
-        if (visit.serial) {
-          if (visit.hasOwnProperty('examinationSerial') && visit.examinationSerial) {
-            this._loadExamination(visit.examinationSerial);
-          }
-        }
+
       },
 
       // Methods
@@ -203,12 +202,13 @@
         })(this));
       },
       _makeNewExaminationObject() {
-        this.examinationObject = {
+        const examinationObject = {
           serial: null,
           lastModifiedDatetimeStamp: 0,
           createdDatetimeStamp: lib.datetime.now(),
           lastSyncedDatetimeStamp: 0,
           createdByUserSerial: this.user.serial,
+          organizationId: this.organization.idOnServer,
           visitSerial: null,
           patientSerial: this.patient.serial,
           doctorName: this.user.name,
@@ -218,6 +218,7 @@
           },
           availableToPatient: true
         };
+        this.set('examinationObject', examinationObject)
         return this.isExaminationValid = true;
       },
       _loadExamination(examinationIdentifier) {
@@ -250,6 +251,7 @@
           createdDatetimeStamp: lib.datetime.now(),
           lastSyncedDatetimeStamp: 0,
           createdByUserSerial: this.user.serial,
+          organizationId: this.organization.idOnServer,
           data: {
             name: examinationName,
             examinationValueList: []

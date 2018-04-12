@@ -169,14 +169,13 @@
       visitValueChanged: function (visit) {
 
         if (!visit && !user) return
-        if (!visit.serial) {
+
+        if (visit.hasOwnProperty('nextVisitSerial') && visit.nextVisitSerial) {
+          this._loadNextVisit(visit.nextVisitSerial);
+        } else {
           this._makeNewNextVisit()
         }
-        if (visit.serial) {
-          if (visit.hasOwnProperty('nextVisitSerial') && visit.nextVisitSerial) {
-            this._loadNextVisit(visit.nextVisitSerial);
-          }
-        }
+
       },
 
       _loadNextVisit: function (nextVisitSerial) {
@@ -195,12 +194,13 @@
 
 
       _makeNewNextVisit: function () {
-        this.nextVisit = {
+        const nextVisit = {
           serial: null,
           lastModifiedDatetimeStamp: 0,
           createdDatetimeStamp: 0,
           lastSyncedDatetimeStamp: 0,
           createdByUserSerial: this.user.serial,
+          organizationId: this.organization.idOnServer,
           visitSerial: this.visit.serial,
           patientSerial: this.patient.serial,
           doctorName: this.$getFullName(this.user.name),
@@ -210,6 +210,7 @@
             priorityType: 'As Necessary'
           }
         };
+        this.set('nextVisit', nextVisit);
         this.isNextVisitValid = true;
       },
 

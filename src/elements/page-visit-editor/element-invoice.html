@@ -134,12 +134,13 @@
       visitValueChanged: function (visit) {
 
         if (!visit) return
-        if (!visit.serial) this.invoice = {}
-        if (visit.serial) {
-          if (visit.hasOwnProperty('invoiceSerial') && visit.invoiceSerial) {
-            this._loadInvoice(visit.invoiceSerial);
-          }
+
+        if (visit.hasOwnProperty('invoiceSerial') && visit.invoiceSerial) {
+          this._loadInvoice(visit.invoiceSerial);
+        } else {
+          this.invoice = {}
         }
+
       },
 
       _loadInvoice(invoiceIndentifier) {

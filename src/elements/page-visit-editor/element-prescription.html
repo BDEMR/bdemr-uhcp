@@ -643,14 +643,14 @@
       visitValueChanged: function (visit) {
 
         if (!visit) return
-        if (!visit.serial) {
-          this._makeNewPrescription()
-        }
-        if (visit.serial) {
-          if (visit.hasOwnProperty('prescriptionSerial') && visit.prescriptionSerial) {
-            this._loadPrescription(visit.prescriptionSerial);
-            this.medicine.timesPerInterval = 1;
-          }
+
+        if (visit.hasOwnProperty('prescriptionSerial') && visit.prescriptionSerial) {
+          this._loadPrescription(visit.prescriptionSerial);
+          this.medicine.timesPerInterval = 1;
+        } else {
+          this._resetMedicineForm();
+          this._makeDuplicateMedicineEditablePart();
+          this._makeNewPrescription();
         }
       },
 
@@ -760,18 +760,20 @@
         return this.matchingFavoriteMedicineList = medicineList;
       },
       _makeNewPrescription: function () {
-        this.prescription = {
+        const prescription = {
           serial: null,
           lastModifiedDatetimeStamp: 0,
           createdDatetimeStamp: lib.datetime.now(),
           lastSyncedDatetimeStamp: 0,
           createdByUserSerial: this.user.serial,
+          organizationId: this.organization.idOnServer,
           visitSerial: this.visit.serial,
           patientSerial: this.patient.serial,
           doctorName: this.user.name,
           doctorSpeciality: this.getDoctorSpeciality(),
           availableToPatient: true
         };
+        this.set('prescription', prescription)
         return this.isPrescriptionValid = true;
       },
       _makeDuplicateMedicineEditablePart: function () {
@@ -887,6 +889,7 @@
           serial: this.generateSerialForMedication('DPMD'),
           createdDatetimeStamp: lib.datetime.now(),
           lastModifiedDatetimeStamp: lib.datetime.now(),
+          organizationId: this.organization.idOnServer,
           lastSyncedDatetimeStamp: 0,
           createdByUserSerial: this.user.serial,
           patientSerial: this.patient.serial,
@@ -905,6 +908,7 @@
           serial: this.generateSerialForMedication('DP'),
           createdDatetimeStamp: lib.datetime.now(),
           lastModifiedDatetimeStamp: lib.datetime.now(),
+          organizationId: this.organization.idOnServer,
           lastSyncedDatetimeStamp: 0,
           createdByUserSerial: this.user.serial,
           patientSerial: this.patient.serial,
