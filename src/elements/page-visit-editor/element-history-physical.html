@@ -1,8 +1,3 @@
-<link rel="import" href="../../behaviors/common-computes.html">
-<link rel="import" href="../../behaviors/db-using.html">
-<link rel="import" href="../../behaviors/translating.html">
-<link rel="import" href="../../behaviors/api-calling.html">
-
 <link rel="import" href="../../bower-assets/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower-assets/paper-button/paper-button.html">
 <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
@@ -13,6 +8,11 @@
 <link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/api-calling.html">
 
 <link rel="import" href="../../styles/common-style.html">
 <link rel="import" href="visit-common-styles.html">
@@ -39,7 +39,7 @@
 
           <template is="dom-if" if="[[_isEmptyString(visit.historyAndPhysicalRecordSerial)]]">
             <paper-button class="btn-add" on-tap="historyAndPhysicalRecordCreate">
-              <iron-icon icon="icons:add"></iron-icon>
+              <iron-icon icon="add"></iron-icon>
             </paper-button>
 
 
@@ -115,6 +115,11 @@
         this.historyAndPhysicalRecord = {}
       },
 
+      _getRecord(recordIdentifier, desiredRecordType) {
+        let list = app.db.find(desiredRecordType, (item) => item.serial == recordIdentifier);
+        return (list.length == 1) ? list[0] : null
+      },
+
       visitValueChanged: function (visit) {
 
         if (!visit) return
@@ -177,12 +182,12 @@
           createdDatetimeStamp: lib.datetime.now(),
           lastSyncedDatetimeStamp: 0,
           createdByUserSerial: this.user.serial,
+          organizationId: this.organization.idOnServer,
           serial: this.generateSerialForHistoryAndPhysical(),
           patientSerial: this.patient.serial,
           visitSerial: this.visit.serial,
           availableToPatient: true
         };
-
         this.visit.historyAndPhysicalRecordSerial = this.historyAndPhysicalRecord.serial;
         this.visit.lastModifiedDatetimeStamp = lib.datetime.now();
 
@@ -288,7 +293,566 @@
       _saveHistoryAndPhysicalRecord() {
         app.db.upsert('history-and-physical-record', this.historyAndPhysicalRecord, ({ serial }) => this.historyAndPhysicalRecord.serial === serial);
         return this.domHost.domHost.showToast('Record Saved');
+      },
+
+      generateHtmlContent(def, data) {
+        let html = this.handle_type(def, data.data);
+        html = this.filterHtmlContent(html);
+        return html;
+      },
+
+      filterHtmlContent(html) {
+        html = html.replace(/@VALUE@/g, '');
+        return html;
+      },
+
+      printOutStyleSheet() {
+        return `\
+        <style>
+          
+            .default-category {
+              /* font-size: 20px; 
+              font-weight: bold; */
+              text-align: center; 
+            }
+            .default-collection {
+              /* font-size: 16px; 
+              font-weight: bold; */
+            }
+            .default-group {
+              /* text-decoration: overline; */
+            }
+            .default-card {
+              /* text-decoration: underline; */
+            }
+            span {
+              font-size: 14px;
+            }
+            .unprocessed {
+              color: red;
+            }
+        </style>\
+        `;
+      },
+
+      handle_children(def, data) {
+        if (!data || !def) return;
+        let html = '';
+        if ('childMap' in data && 'childList' in def && (def.childList !== null)) {
+          for (let childIndex = 0; childIndex < def.childList.length; childIndex++) {
+            const child = def.childList[childIndex];
+            if (child.key in data.childMap) {
+              let childHtml = this.handle_type(child, data.childMap[child.key]);
+              if (childHtml && !([';', ':;', ': ;'].includes(childHtml))) {
+                childHtml = this.sanitizeOutput(childHtml);
+                html += childHtml;
+              }
+            }
+          }
+        } else {
+          console.log('end-case');
+        }
+        return html;
+      },
+
+      handle_type(def, data) {
+        // console.log def.key, @listPrintDirectives def
+        if (!('print' in def)) { def.print = {}; }
+        if (def.type === 'systemRoot') {
+          this.flattenStyle(def);
+          return this.type_systemRoot(def, data);
+        } else if (def.type === 'category') {
+          if (!('boldLabel' in def.print)) { def.print.boldLabel = true; }
+          if (!('fontSize' in def.print)) { def.print.fontSize = 18; }
+          this.flattenStyle(def);
+          return this.type_category(def, data);
+        } else if (def.type === 'collection') {
+          if (!('boldLabel' in def.print)) { def.print.boldLabel = true; }
+          if (!('fontSize' in def.print)) { def.print.fontSize = 16; }
+          this.flattenStyle(def);
+          return this.type_collection(def, data);
+        } else if (def.type === 'group') {
+          if (!('passThrough' in def.print)) { def.print.passThrough = true; }
+          if (!('fontSize' in def.print)) { def.print.fontSize = 14; }
+          this.flattenStyle(def);
+          return this.type_group(def, data);
+        } else if (def.type === 'card') {
+          if (!('boldLabel' in def.print)) { def.print.boldLabel = true; }
+          if (!('fontSize' in def.print)) { def.print.fontSize = 14; }
+          this.flattenStyle(def);
+          return this.type_card(def, data);
+        } else if (def.type === 'checkbox') {
+          this.flattenStyle(def);
+          return this.type_checkbox(def, data);
+        } else if (def.type === 'toggleableContainer') {
+          this.flattenStyle(def);
+          return this.type_toggleableContainer(def, data);
+        } else if (def.type === 'label') {
+          this.flattenStyle(def);
+          return this.type_label(def, data);
+        } else if (def.type === 'autocomplete') {
+          if ('selectionType' in def && (def.selectionType === 'label')) {
+            if (!('separatorString' in def.print)) { def.print.separatorString = ", "; }
+          }
+          this.flattenStyle(def);
+          return this.type_autocomplete(def, data);
+        } else if (def.type === 'container') {
+          this.flattenStyle(def);
+          return this.type_container(def, data);
+        } else if (def.type === 'checkList') {
+          if (!('separatorString' in def.print)) { def.print.separatorString = ", "; }
+          this.flattenStyle(def);
+          return this.type_checkList(def, data);
+        } else if (def.type === 'radioList') {
+          if (!('separatorString' in def.print)) { def.print.separatorString = ", "; }
+          this.flattenStyle(def);
+          return this.type_radioList(def, data);
+        } else if (def.type === 'input') {
+          this.flattenStyle(def);
+          return this.type_input(def, data);
+        } else if (def.type === 'singleSelectDropdown') {
+          this.flattenStyle(def);
+          return this.type_singleSelectDropdown(def, data);
+        } else if (def.type === 'incrementalCounter') {
+          this.flattenStyle(def);
+          return this.type_incrementalCounter(def, data);
+        } else {
+          return `<span class="unprocessed">UNPROCESSED ${def.type} - ${def.key}</span>`;
+        }
+      },
+
+
+      flattenStyle(def) {
+        if ('passThrough' in def.print) {
+          if (!('hideLabel' in def.print)) {
+            def.print.hideLabel = true;
+          }
+          if (!('noColonAfterThis' in def.print)) {
+            def.print.noColonAfterThis = true;
+          }
+          if (!('noSemicolonAfterThis' in def.print)) {
+            def.print.noSemicolonAfterThis = false;
+          }
+        }
+        // delete def.print['passThrough']
+        if ('newLineBeforeThis' in def.print) {
+          if (typeof def.print.newLineBeforeThis === 'boolean') {
+            def.print.newLineBeforeThis = (def.print.newLineBeforeThis === true ? 1 : 0);
+          } else {
+            def.print.newLineBeforeThis = parseInt(def.print.newLineBeforeThis);
+          }
+        }
+        if ('newLineAfterThis' in def.print) {
+          if (typeof def.print.newLineAfterThis === 'boolean') {
+            def.print.newLineAfterThis = (def.print.newLineAfterThis === true ? 1 : 0);
+          } else {
+            def.print.newLineAfterThis = parseInt(def.print.newLineAfterThis);
+          }
+        }
+        if ('newLineAfterThisAndChildren' in def.print) {
+          if (typeof def.print.newLineAfterThisAndChildren === 'boolean') {
+            def.print.newLineAfterThisAndChildren = (def.print.newLineAfterThisAndChildren === true ? 1 : 0);
+          } else {
+            def.print.newLineAfterThisAndChildren = parseInt(def.print.newLineAfterThisAndChildren);
+          }
+        }
+        if ('newLineAfterEachValue' in def.print) {
+          if (typeof def.print.newLineAfterEachValue === 'boolean') {
+            return def.print.newLineAfterEachValue = (def.print.newLineAfterEachValue === true ? 1 : 0);
+          } else {
+            return def.print.newLineAfterEachValue = parseInt(def.print.newLineAfterEachValue);
+          }
+        }
+      },
+
+      sanitizeOutput(content) {
+        for (let i = 0; i <= 2; i++) {
+          content = content.replace(/\;;/g, ';');
+          content = content.replace(/\;;/g, ';');
+          content = content.replace(/\; ;/g, ';');
+          content = content.replace(/\: ;/g, ';');
+          content = content.replace(/\: :/g, ':');
+          content = content.replace(/\, ;/g, ';');
+          content = content.replace(/\; ,/g, ';');
+          content = content.replace(/\,;/g, ';');
+
+          content = content.replace(/<\/span style=""><\/span>/g, '');
+          content = content.replace(/<\/span>;<\/span>/g, '<\/span><\/span>');
+          content = content.replace(/<\/span>; <\/span>/g, '<\/span><\/span>');
+          content = content.replace(/<\/span> ,<\/span>/g, '<\/span><\/span>');
+        }
+
+        return content;
+      },
+
+
+      /*
+        REGION - VARIOUS TYPES
+      */
+
+      _computeElementStyle(def) {
+        let style = '';
+        if (def.print.fontSize) {
+          style += `font-size: ${def.print.fontSize}px;`;
+        }
+        if (def.print.hide) {
+          style += "display: none;";
+        }
+        return style;
+      },
+
+      _computeTitleOrLabelStyle(def) {
+        let style = '';
+        if (def.print.boldLabel) {
+          style += "font-weight: bold;";
+        }
+        return style;
+      },
+
+      type_systemRoot(def, data) {
+        const content = (this.handle_children(def, data));
+        return this.printOutStyleSheet() + content;
+      },
+
+      type_category(def, data) {
+        const content = this.handle_children(def, data);
+        if (content.length === 0) { return ''; }
+        let style = this._computeTitleOrLabelStyle(def);
+        const title = `<span style="${style}">${def.label}</span>`;
+        style = this._computeElementStyle(def);
+        const html = `<div class="default-category" style="${style}">${title}</div>${content}`;
+        return html;
+      },
+
+      type_collection(def, data) {
+        let content;
+        if ((Object.keys(data.childMap)).length === 0) { return ''; }
+        if (def.defaultGroup && !data.isDefaultGroupDismissed) {
+          content = this.handle_type(def.defaultGroup, data.childMap[def.defaultGroup.key]);
+        } else {
+          content = this.handle_children(def, data);
+        }
+        let style = this._computeTitleOrLabelStyle(def);
+        const title = `<br><span style="${style}">${def.label}</span><br>`;
+        style = this._computeElementStyle(def);
+        const html = `<span class="default-collection" style="${style}">${title}</span>: ${content}<br>`;
+        return html;
+      },
+
+      type_group(def, data) {
+        let html;
+        const content = this.handle_children(def, data);
+        let style = this._computeTitleOrLabelStyle(def);
+        const title = `<span style="${style}">${def.label}</span>`;
+        if (def.print.passThrough) {
+          html = `${content};`;
+        } else {
+          style = this._computeElementStyle(def);
+          html = `<span class="default-group" style="${style}">${title}</span>: ${content}; `;
+        }
+        return html;
+      },
+
+      _makePrintableContent(label, content, value, def, data) {
+        let i, style;
+        if ((content.length === 0) && (value.length === 0) && (def.type !== 'label')) { return ''; }
+        const { print } = def;
+
+        // console.log label, print
+
+        let labelHtml = '';
+        let contentHtml = '';
+        let valueHtml = '';
+
+        if (print.hide) { return ''; }
+
+        if (label.length > 0) {
+          if (!print.hideLabel) {
+            style = '';
+            if (print.boldLabel) {
+              style += 'font-weight: bold;';
+            }
+            if (print.fontSize) {
+              style += `font-size:${print.fontSize}px;`;
+            }
+            labelHtml = `<span style="${style}">${label}</span>`;
+          }
+        }
+
+        if (value.length > 0) {
+          if (!print.hideValue) {
+            style = '';
+            if (print.boldValue) {
+              style += 'font-weight: bold;';
+            }
+            if (print.fontSize) {
+              style += `font-size:${print.fontSize}px;`;
+            }
+            valueHtml = `<span style="${style}">${value}</span>`;
+          }
+        }
+
+        if (content.length > 0) {
+          if (!print.hideChildren) {
+            style = '';
+            if (print.boldChildren) {
+              style += 'font-weight: bold;';
+            }
+            contentHtml = `<span style="${style}">${content}</span>`;
+          }
+        }
+
+        if ((labelHtml + contentHtml + valueHtml).length === 0) {
+          return '';
+        }
+
+        if ('newLineBeforeThis' in print) {
+          let asc, end;
+          for (i = 0, end = print.newLineBeforeThis, asc = 0 <= end; asc ? i < end : i > end; asc ? i++ : i--) {
+            labelHtml = `<br>${labelHtml}`;
+          }
+        }
+
+        if ('newLineAfterThis' in print) {
+          let asc1, end1;
+          for (i = 0, end1 = print.newLineAfterThis, asc1 = 0 <= end1; asc1 ? i < end1 : i > end1; asc1 ? i++ : i--) {
+            labelHtml = labelHtml + '<br>';
+          }
+        }
+
+        const colon = (('noColonAfterThis' in print && print.noColonAfterThis) || (labelHtml.length === 0) ? '' : ': ');
+        const semicolon = ('noSemicolonAfterThis' in print && print.noSemicolonAfterThis ? '' : '; ');
+        let html = labelHtml + colon + contentHtml + valueHtml + semicolon;
+
+        if ('newLineAfterThisAndChildren' in print) {
+          let asc2, end2;
+          for (i = 0, end2 = print.newLineAfterThisAndChildren, asc2 = 0 <= end2; asc2 ? i < end2 : i > end2; asc2 ? i++ : i--) {
+            html = html + '<br>';
+          }
+        }
+
+        return html;
+      },
+
+
+      type_card(def, data) {
+        const content = (this.handle_children(def, data));
+        const { label } = def;
+        const value = null;
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_checkbox(def, data) {
+        let value;
+        const content = null;
+        const label = null;
+
+        if (data.isChecked) {
+          value = def.label;
+        } else {
+          value = '';
+        }
+
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_label(def, data) {
+        const content = null;
+        const label = data.label || def.label || def.defaultLabel;
+        const value = null;
+
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_toggleableContainer(def, data) {
+        if (!data.isChecked) { return ''; }
+
+        const content = this.handle_children(def, data);
+        const { label } = def;
+        const value = null;
+
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_container(def, data) {
+        const content = this.handle_children(def, data);
+        const label = data.label || def.defaultLabel;
+        const value = null;
+
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_checkList(def, data) {
+        const { print } = def;
+
+        const stringList = [];
+        for (let item of Array.from(data.checkedValueList)) {
+          stringList.push(item);
+        }
+
+        let { separatorString } = print;
+        if ('newLineAfterEachValue' in print) {
+          for (let i = 0, end = print.newLineAfterEachValue, asc = 0 <= end; asc ? i < end : i > end; asc ? i++ : i--) {
+            separatorString += '<br>';
+          }
+        }
+
+        const value = stringList.join(separatorString);
+
+        const label = null;
+        const content = null;
+
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_radioList(def, data) {
+        const value = data.selectedValue;
+        const label = null;
+        const content = null;
+
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_singleSelectDropdown(def, data) {
+        const value = def.possibleValueList[data.selectedIndex];
+        const label = null;
+        const content = null;
+
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_input(def, data) {
+        let content = data.value;
+
+        if (def.unitDetails) {
+          const unit = def.unitDetails.unitList[data.selectedUnitIndex];
+        }
+        // content += ' ' + unit.name
+
+        const value = content;
+        const { label } = def;
+        content = null;
+
+        return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+      },
+
+      type_autocomplete(def, data) {
+        let content, key, label, title, value;
+        const { print } = def;
+
+        if (def.selectionType === 'label') {
+
+          const stringList = [];
+          for (key in data.virtualChildMap) {
+            value = data.virtualChildMap[key];
+            title = key.split('_');
+            title.pop();
+            title.shift();
+            title = title.join('_');
+            stringList.push(title);
+          }
+
+          let { separatorString } = print;
+          if ('newLineAfterEachValue' in print) {
+            for (let i = 0, end = print.newLineAfterEachValue, asc = 0 <= end; asc ? i < end : i > end; asc ? i++ : i--) {
+              separatorString += '<br>';
+            }
+          }
+
+          value = stringList.join(separatorString);
+
+          ({ label } = def);
+          content = null;
+
+          return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+
+        } else {
+          content = '';
+          for (key in data.virtualChildMap) {
+            value = data.virtualChildMap[key];
+            title = key.split('_');
+            title.pop();
+            title.shift();
+            title = title.join('_');
+
+            const virtualContainer = {
+              type: 'container',
+              defaultLabel: title,
+              key,
+              childList: def.childListForEachContainer
+            };
+
+            const childContent = (this.handle_type(virtualContainer, value)) + ', ';
+            content += childContent;
+          }
+
+          value = null;
+          ({ label } = def);
+
+          return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+        }
+      },
+
+      type_incrementalCounter(def, data) {
+        let content = '';
+        for (let key in data.virtualChildMap) {
+          let value = data.virtualChildMap[key];
+          const title = key.replace('item', '');
+          const serial = parseInt(title);
+
+          const virtualContainer = {
+            type: 'container',
+            defaultLabel: ((() => { try { return def.unit.singular; } catch (ex) { return 'unit'; } })()) + ' #' + (serial + 1),
+            key,
+            childList: def.childListForEachContainer
+          };
+
+          content += (this.handle_type(virtualContainer, value)) + ';';
+
+          value = null;
+          const { label } = def;
+          return this._makePrintableContent((label || ''), (content || ''), (value || ''), def, data);
+        }
+      },
+
+      /*
+        REGION - PRINT RELATED CHECKS
+      */
+
+      should_boldLabel(def) {
+        return 'print' in def && 'boldLabel' in def.print && def.print.boldLabel;
+      },
+
+      should_passThrough(def) {
+        return 'print' in def && 'passThrough' in def.print && def.print.passThrough;
+      },
+
+      should_newLineBeforeThis(def) {
+        return 'print' in def && 'newLineBeforeThis' in def.print && def.print.newLineBeforeThis;
+      },
+
+      inject_passThrough_special_card(def, data) {
+        if ((def.key === def.label) && ["Details", 'Default'].includes(def.key)) {
+          if (!def.print) { def.print = {}; }
+          return def.print.passThrough = true;
+        }
+      },
+
+      inject_passThrough_special_group(def, data) {
+        if ((def.key === def.label) && ["List", 'Default'].includes(def.key)) {
+          if (!def.print) { def.print = {}; }
+          return def.print.passThrough = true;
+        }
+      },
+
+      __debug_print(def, handledDirectiveList) {
+        const all = 'print' in def ? Object.keys(def.print) : [];
+        const left = lib.array.minus(all, handledDirectiveList);
+        if (left.length > 0) {
+          return console.log('UNHANDLED print directives', def, left);
+        }
       }
+
     });
   </script>
 </dom-module>
