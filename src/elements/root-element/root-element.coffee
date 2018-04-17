@@ -12,13 +12,14 @@ Polymer {
     app.behaviors.dbUsing
     app.behaviors.debug
     app.behaviors.local['root-element'].dataLoader
-    app.behaviors.local['root-element'].patientsDataSyncConfig
-    app.behaviors.local['root-element'].patientsDataSync
-    app.behaviors.local['root-element'].userDataSyncConfig
-    app.behaviors.local['root-element'].userDataSync
-    app.behaviors.local['root-element'].organizationDataSyncConfig
-    app.behaviors.local['root-element'].organizationDataSync
-    app.behaviors.local['root-element'].syncCall
+    app.behaviors.local['root-element'].sync
+    # app.behaviors.local['root-element'].patientsDataSyncConfig
+    # app.behaviors.local['root-element'].patientsDataSync
+    # app.behaviors.local['root-element'].userDataSyncConfig
+    # app.behaviors.local['root-element'].userDataSync
+    # app.behaviors.local['root-element'].organizationDataSyncConfig
+    # app.behaviors.local['root-element'].organizationDataSync
+    # app.behaviors.local['root-element'].syncCall
   ]
   properties:
 
