@@ -13,7 +13,7 @@ app.behaviors.local.loadPriceListMixin =
   
   _loadPriceList: (organizationIdentifier, cbfn)->
     lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
-    
+
     if lastSyncedDatetimeStamp
       priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
       if priceListFromLocalStorage.length
@@ -25,7 +25,9 @@ app.behaviors.local.loadPriceListMixin =
           @set 'priceList', priceListFromFile
           cbfn priceListFromFile
     else
-      @domHost._syncOnlyPriceList ()=> @domHost.reloadPage() 
+      @domHost._syncOnlyPriceList ()=> 
+        window.localStorage.setItem 'lastSyncedDatetimeStamp', lib.datetime.now()
+        @domHost.reloadPage() 
 
   _prepareNewItemForDB: (data)->
     return Object.assign data, {
