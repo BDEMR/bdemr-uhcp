@@ -986,6 +986,7 @@ Polymer {
       createdDatetimeStamp: 0
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: @visit.serial
       patientSerial: @patient.serial
       doctorName: @$getFullName @user.name
@@ -1003,6 +1004,7 @@ Polymer {
       createdDatetimeStamp: 0
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: null
+      organizationId: @organization.idOnServer
       visitSerial: null
       patientSerial: @patient.serial
       doctorName: @user.name
@@ -1099,6 +1101,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: @visit.serial
       patientSerial: @patient.serial
       doctorName: @user.name
@@ -1119,8 +1122,11 @@ Polymer {
 
   _savePrescription: ()->      
 
+    @_saveVisit() unless @visit.serial
+    
     if @visit.prescriptionSerial is null
       @prescription.serial = @generateSerialForPrescription()
+      @prescription.visitSerial = @visit.serial
       @visit.prescriptionSerial = @prescription.serial
       @_saveVisit()
 
@@ -1221,7 +1227,9 @@ Polymer {
 
     duplicateMedicine.data.endDateTimeStamp = @duplicateMedicineEditablePart.endDateTimeStamp
     duplicateMedicine.data.startDateTimeStamp = @duplicateMedicineEditablePart.startDateTimeStamp
-
+    duplicateMedicine.organizationId = @organization.idOnServer
+    @_saveVisit() unless @visit.serial
+    duplicateMedicine.visitSerial = @visit.serial
     app.db.insert 'patient-medications', duplicateMedicine
     @domHost.showToast 'Medicine Added.'
     @_makeDuplicateMedicineEditablePart()
@@ -1233,6 +1241,8 @@ Polymer {
       lastModifiedDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
+      visitSerial: @visit.serial
       patientSerial: @patient.serial
       prescriptionSerial: @prescription.serial
       data:
@@ -1285,7 +1295,9 @@ Polymer {
       medicine.prescriptionSerial = @prescription.serial
     else
       medicine.prescriptionSerial = @prescription.serial
-
+    medicine.organizationId = @organization.idOnServer
+    @_saveVisit() unless @visit.serial
+    medicine.visitSerial = @visit.serial
     app.db.insert 'patient-medications', medicine
     @domHost.showToast 'Medicine Added.'
 
@@ -1753,12 +1765,17 @@ Polymer {
         medicine.lastSyncedDatetimeStamp = null
         medicine.createdByUserSerial = @user.serial
         medicine.patientSerial = params['patient']
-
+        medicine.organizationId = @organization.idOnServer
+        
         if @visit.prescriptionSerial is null
           @_savePrescription()
           medicine.prescriptionSerial = @prescription.serial
         else
           medicine.prescriptionSerial = @prescription.serial
+
+        @_saveVisit() unless @visit.serial
+
+        medicine.visitSerial = @visit.serial
 
         medicine.lastModifiedDatetimeStamp = lib.datetime.now()
 
@@ -1826,6 +1843,9 @@ Polymer {
           medicine.prescriptionSerial = @prescription.serial
 
         medicine.lastModifiedDatetimeStamp = lib.datetime.now()
+        medicine.organizationId = @organization.idOnServer
+        @_saveVisit() unless @visit.serial
+        medicine.visitSerial = @visit.serial
         # console.log medicine
         app.db.insert 'patient-medications', medicine
 
@@ -2057,6 +2077,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: null
       patientSerial: @patient.serial
       doctorName: @user.name
@@ -2142,6 +2163,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       data:
         name: symptomName
 
@@ -2335,6 +2357,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: null
       patientSerial: @patient.serial
       doctorName: @user.name
@@ -2371,11 +2394,12 @@ Polymer {
   saveUserAddedCustomExamination: (examinationName)->
 
     object =
-      serial: @generateSerialForCustomExamination
+      serial: @generateSerialForCustomExamination()
       lastModifiedDatetimeStamp: lib.datetime.now()
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       data:
         name: examinationName
         examinationValueList: []
@@ -2586,6 +2610,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: null
       patientSerial: @patient.serial
       doctorName: @user.name
@@ -2619,11 +2644,12 @@ Polymer {
 
   _makeCustomInvestigationObject : ()->
     @customInvestigationObject = {
-      serial: @generateSerialForCustomInvestigation
+      serial: @generateSerialForCustomInvestigation()
       lastModifiedDatetimeStamp: lib.datetime.now()
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: @visit.serial
       patientSerial: @patient.serial
       data:
@@ -3073,6 +3099,7 @@ Polymer {
       serial: null
       visitSerial: @visit.serial
       createdByUserSerial: null
+      organizationId: @organization.idOnServer
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
@@ -3090,6 +3117,7 @@ Polymer {
       serial: null
       visitSerial: @visit.serial
       createdByUserSerial: null
+      organizationId: @organization.idOnServer
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
@@ -3104,6 +3132,7 @@ Polymer {
       serial: null
       visitSerial: @visit.serial
       createdByUserSerial: null
+      organizationId: @organization.idOnServer
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
@@ -3123,6 +3152,7 @@ Polymer {
       serial: null
       visitSerial: @visit.serial
       createdByUserSerial: null
+      organizationId: @organization.idOnServer
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
@@ -3137,6 +3167,7 @@ Polymer {
       serial: null
       visitSerial: @visit.serial
       createdByUserSerial: null
+      organizationId: @organization.idOnServer
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
@@ -3152,6 +3183,7 @@ Polymer {
       serial: null
       visitSerial: @visit.serial
       createdByUserSerial: null
+      organizationId: @organization.idOnServer
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
@@ -3368,6 +3400,7 @@ Polymer {
 
     @_addToVitalList @bloodPressure, 'Blood Pressure'
     @updateVisitForVital @bloodPressure.serial, 'Blood Pressure'
+    @bloodPressure.visitSerial = @visit.serial
     @_saveBloodPressure @bloodPressure
    
    # Activity LOG for BLOOD PRESSURE -START
@@ -3403,8 +3436,8 @@ Polymer {
       @set 'pulseRate.createdDatetimeStamp', lib.datetime.now()
 
       @updateVisitForVital @pulseRate.serial, 'Heart Rate'
+      @pulseRate.visitSerial = @visit.serial
       @_savePulseRate @pulseRate
-
       @_addToVitalList @pulseRate, 'Heart Rate'
    
    # Activity LOG for PULSE RATE -START
@@ -3522,6 +3555,7 @@ Polymer {
 
       @_addToVitalList @bmi, 'BMI'
       @updateVisitForVital @bmi.serial, 'BMI'
+      @bmi.visitSerial = @visit.serial
       @_saveBmi @bmi
       @domHost.showToast 'Added Successfully!'
       # @bmiList = app.db.find 'patient-vitals-bmi'
@@ -3542,6 +3576,7 @@ Polymer {
       @set 'respiratoryRate.createdDatetimeStamp', lib.datetime.now()
 
       @updateVisitForVital @respiratoryRate.serial, 'Respirtory Rate'
+      @respiratoryRate.visitSerial = @visit.serial
       @_saveRespiratoryRate @respiratoryRate
       @_addToVitalList @respiratoryRate, 'Respirtory Rate'
       # @respiratoryRateList = app.db.find 'patient-vitals-respiratory-rate'
@@ -3576,6 +3611,7 @@ Polymer {
       @set 'oxygenSaturation.createdDatetimeStamp', lib.datetime.now()
 
       @updateVisitForVital @oxygenSaturation.serial, 'SpO2'
+      @oxygenSaturation.visitSerial = @visit.serial
       @_saveOxygenSaturation @oxygenSaturation
       @_addToVitalList @oxygenSaturation, 'SpO2'
       # @oxygenSaturationList = app.db.find 'patient-vitals-spo2'
@@ -3641,6 +3677,7 @@ Polymer {
     @set 'temperature.patientSerial', @patient.serial
     @set 'temperature.createdDatetimeStamp', lib.datetime.now()
     @updateVisitForVital @temperature.serial, 'Temperature'
+    @temperature.visitSerial = @visit.serial
     @_saveTemperature @temperature
     @_addToVitalList @temperature, 'Temperature'
    
@@ -3716,6 +3753,7 @@ Polymer {
     @nextVisit.data.priorityType = @priorityTypeList[@nextVisitPriorityTypeSelectedIndex]
 
   _saveNextVisit: (data)->
+    data.visitSerial = @visit.serial
     data.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'visit-next-visit', data, ({serial})=> data.serial is serial
 
@@ -3728,7 +3766,6 @@ Polymer {
       if @visit.nextVisitSerial is null
         @visit.nextVisitSerial = @nextVisit.serial
         @_saveVisit()
-
 
       @nextVisit.data.priorityType = @priorityValue
       @_saveNextVisit @nextVisit
@@ -3744,6 +3781,7 @@ Polymer {
   ### Note - start
   #####################################################################
   _saveNote: (data)->
+    data.visitSerial = @visit.serial
     data.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'visit-note', data, ({serial})=> data.serial is serial
 
@@ -3810,6 +3848,7 @@ Polymer {
       lastModifiedDatetimeStamp: 0
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       doctorsPrivateNote: ''
       patientSerial: @patient.serial
       recordType: 'doctor-visit'
@@ -3855,22 +3894,10 @@ Polymer {
       @isThatNewVisit = false
       @visit.serial = @generateSerialForVisit()
       @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
-      @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
       @domHost.setSelectedVisitSerial @visit.serial
-
-    # UHCP dont charge patient for Visit
-    # if @visit.isPaidUp
-    #   fn()
-    # else
-    #   this._chargePatient @patient.idOnServer, 5, 'Payment BDEMR Doctor Generic', (err)=>
-    #     @visit.isPaidUp = true
-    #     if (err)
-    #       @domHost.showModalDialog("Unable to charge the patient. #{err.message}")
-    #       return
-    #     fn()
-
-
+    @visit.lastModifiedDatetimeStamp = lib.datetime.now()
+    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
+    
 
   _notifyInvalidPatient: ->
     @isPatientValid = false
@@ -5056,6 +5083,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       serial: @generateSerialForHistoryAndPhysical()
       patientSerial: @patient.serial
       visitSerial: @visit.serial
@@ -5243,6 +5271,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: null
       patientSerial: @patient.serial
       doctorName: @visit.doctorName
@@ -5401,6 +5430,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: null
       patientSerial: @patient.serial
       doctorName: @visit.doctorName
