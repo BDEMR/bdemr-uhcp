@@ -130,6 +130,7 @@
 
               <paper-dropdown-menu label="Filter by Gender" class="m-right-8">
                 <paper-listbox class="dropdown-content" on-iron-activate="genderSelected">
+                  <paper-item>All</paper-item>
                   <paper-item>Male</paper-item>
                   <paper-item>Female</paper-item>
                 </paper-listbox>
@@ -154,6 +155,8 @@
               <paper-input label="Search by Name" value="{{searchString}}" class="m-right-8"></paper-input>
 
               <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
+
+              <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
 
             </div>
             <div class="layout horizontal">

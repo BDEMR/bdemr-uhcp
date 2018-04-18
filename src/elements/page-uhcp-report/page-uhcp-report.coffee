@@ -33,10 +33,7 @@ Polymer {
     ageGroupList:
       type: Array
       value: -> [
-        '0 to 2'
-        '2 to 5'
-        '5 to 11'
-        '11 to 18'
+        '0 to 18'
         '18 to 25'
         '25 to 35'
         '35 to 50'
@@ -82,7 +79,12 @@ Polymer {
     if organizationList.length is 1
       @set 'organization', organizationList[0]
 
+  resetButtonClicked: -> @domHost.reloadPage()
+
+  
   searchButtonClicked: ->
+    @reportResults = []
+    
     unless @selectedReportType
       @domHost.showWarningToast 'Select a Type of Report'
       return
@@ -101,7 +103,7 @@ Polymer {
       }
     }
 
-    @loading = true    
+    @loading = true
     @callApi '/uhcp--get-reports', query, (err, response)=>
       if response.hasError
         @domHost.showModalDialog response.error.message
@@ -117,7 +119,11 @@ Polymer {
   
   genderSelected: (e)->
     index = e.detail.selected
-    @set 'selectedGender', (if index then 'female' else 'male')
+    gender = switch index
+      when 1 then 'male'
+      when 2 then 'female'
+      else ''
+    @set 'selectedGender', gender
   
   _createAgeGroupFromString: (ageGroupString)->
     ageGroupStringArr = ageGroupString.split('to')
@@ -146,10 +152,14 @@ Polymer {
 
   filterByDateClicked: (e)->
     startDate = new Date e.detail.startDate
-    startDate.setHours 0,0,1
+    startDate.setHours(0,0,0,0)
     endDate = new Date e.detail.endDate
-    endDate.setHours 23,59,59
-    @set 'dateCreateFrom', (startDate.getTime())
-    @set 'dateCreateTo', (endDate.getTime())
+    endDate.setHours(23,59,59,999)
+    @set 'dateCreatedFrom', (startDate.getTime())
+    @set 'dateCreatedTo', (endDate.getTime())
+
+  filterByDateClearButtonClicked: ->
+    @dateCreatedFrom = 0
+    @dateCreatedTo = 0
 
 }
