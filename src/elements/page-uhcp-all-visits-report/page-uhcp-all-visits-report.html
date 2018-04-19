@@ -1,0 +1,213 @@
+<link rel="import" href="../../bower-assets/polymer/polymer.html">
+<!-- paper-* -->
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-progress/paper-progress.html">
+
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-filter.html">
+<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-sorter.html">
+
+<link rel="import" href="../custom-vital-search/custom-vital-search.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<!-- behavior -->
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/page-like.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
+
+<dom-module id="page-uhcp-all-visits-report">
+  <template>
+    <!-- style -->
+    <style is="custom-style" include="common-style">
+      .search {
+        background-color: #fafafa;
+        border: 1px solid #dadada;
+        padding: 0px 8px 12px 8px;
+        margin: 4px;
+        margin-left: 0;
+      }
+
+      .results {
+        margin-top: 20px;
+      }
+
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+    </style>
+
+    <div class="master-container">
+
+      <div class="limiting-container vertical layout">
+
+        <paper-card heading="Reports">
+
+          <div class="card-content">
+
+            <div class="search layout horizontal end wrap">
+
+              <paper-dropdown-menu label="Filter by Organization" class="m-right-8">
+                <paper-listbox class="dropdown-content" attr-for-selected="organization-id" on-iron-activate="organizationSelected">
+                  <template is="dom-repeat" items="[[organizationList]]">
+                    <paper-item organization-id="[[item.idOnServer]]">[[item.name]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-dropdown-menu label="Filter by Gender" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="genderSelected">
+                  <paper-item>All</paper-item>
+                  <paper-item>Male</paper-item>
+                  <paper-item>Female</paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
+
+              <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
+
+            </div>
+            <div class="layout horizontal">
+              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+            </div>
+
+            <div class="results">
+
+              <paper-progress indeterminate hidden="[[!loading]]"></paper-progress>
+              <vaadin-grid items="[[reportResults]]">
+                <vaadin-grid-column resizable>
+                  <template class="header">Visit Id</template>
+                  <template>
+                    <span>[[item.visit.serial]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Employee Id</template>
+                  <template>
+                    <span>[[item.patientInfo.employeeId]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header layout horizontal">
+                    <vaadin-grid-filter aria-label="Name" path="name" value="[[nameFilter]]">
+                      <paper-input label="Search By Name" value="{{nameFilter}}" no-label-float></paper-input>
+                    </vaadin-grid-filter>
+                  </template>
+                  <template>
+                    <div>[[item.patientInfo.name]]</div>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">DOB</template>
+                  <template>
+                    <span>[[item.patientInfo.dateOfBirth]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Sex</template>
+                  <template>
+                    <span>[[item.patientInfo.gender]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Consulation Site </template>
+                  <template>
+                    <span>[[item.organizationInfo.name]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Consulation Date </template>
+                  <template>
+                    <span>[[$formatDateTime(item.visit.createdDatetimeStamp)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Chief Complaint</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Diagnosis</template>
+                  <template>
+                    <template is="dom-repeat" items="[[item.diagnosis.diagnosisList]]" as="diagnosis">
+                      <p>[[diagnosis]]</p>
+                    </template>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Advices</template>
+                  <template>
+                    <template is="dom-repeat" items="[[item.advisedTests.testAdvisedList]]" as="advice">
+                      <p>[[advice.investigationName]]</p>
+                    </template>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Referral</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Referred Location</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Treatment</template>
+                  <template>
+                    <span>[[item.medication.brandName]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Drug Cost</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Inv. Cost</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Consultancy Fee</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
+                  <template class="header">Total Cost</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+              </vaadin-grid>
+            </div>
+
+          </div>
+        </paper-card>
+
+      </div>
+      <!--Limiting Container Ends-->
+
+    </div>
+    <!--Master Container Ends-->
+
+  </template>
+  <script type="text/javascript" src="page-uhcp-all-visits-report.js"></script>
+</dom-module>
