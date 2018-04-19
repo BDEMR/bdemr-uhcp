@@ -72,13 +72,14 @@ Polymer({
 
   genderSelected(e) {
     const index = e.detail.selected;
-    const gender = (() => {
-      switch (index) {
-        case 1: return 'male';
-        case 2: return 'female';
-        default: return '';
-      }
-    })();
+    var gender;
+    if (index == 1) {
+      gender = 'male'
+    } else if (index == 2) {
+      gender = 'female'
+    } else {
+      gender = ''
+    }
     return this.set('selectedGender', gender);
   },
 
@@ -88,12 +89,22 @@ Polymer({
     const endDate = new Date(e.detail.endDate);
     endDate.setHours(23, 59, 59, 999);
     this.set('dateCreatedFrom', (startDate.getTime()));
-    return this.set('dateCreatedTo', (endDate.getTime()));
+    this.set('dateCreatedTo', (endDate.getTime()));
   },
 
   filterByDateClearButtonClicked() {
     this.dateCreatedFrom = 0;
-    return this.dateCreatedTo = 0;
+    this.dateCreatedTo = 0;
+  },
+
+  $getCategoryCost(category, invoice) {
+    if (!invoice) return 'N/A';
+    return invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0)
+  },
+
+  $getTotalCost(invoice) {
+    if (!invoice) return 'N/A';
+    return invoice.totalBilled;
   },
 
   resetButtonClicked() { return this.domHost.reloadPage(); },
@@ -120,7 +131,5 @@ Polymer({
       }
     });
   }
-
-
 
 });

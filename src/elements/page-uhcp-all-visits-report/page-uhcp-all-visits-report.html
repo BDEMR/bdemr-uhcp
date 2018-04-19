@@ -193,25 +193,25 @@
                 <vaadin-grid-column resizable>
                   <template class="header">Drug Cost</template>
                   <template>
-                    <span>N/A</span>
+                    <span>[[$getCategoryCost('Medicine', item.invoice)]]</span>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Inv. Cost</template>
                   <template>
-                    <span>N/A</span>
+                    <span>[[$getCategoryCost('Investigation', item.invoice)]]</span>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Consultancy Fee</template>
                   <template>
-                    <span>N/A</span>
+                    <span>[[$getCategoryCost('Consultancy', item.invoice)]]</span>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Total Cost</template>
                   <template>
-                    <span>N/A</span>
+                    <span>[[$getTotalCost(item.invoice)]]</span>
                   </template>
                 </vaadin-grid-column>
               </vaadin-grid>
