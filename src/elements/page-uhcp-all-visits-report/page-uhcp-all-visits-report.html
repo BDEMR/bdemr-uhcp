@@ -29,6 +29,24 @@
   <template>
     <!-- style -->
     <style is="custom-style" include="common-style">
+      .limiting-container {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+
+      paper-button {
+        background: white;
+      }
+
+      .invoice-card {
+        background: white;
+      }
+
+      paper-card {
+        margin: 4px;
+      }
+
       .search {
         background-color: #fafafa;
         border: 1px solid #dadada;
@@ -142,7 +160,7 @@
                   <template class="header">Diagnosis</template>
                   <template>
                     <template is="dom-repeat" items="[[item.diagnosis.diagnosisList]]" as="diagnosis">
-                      <p>[[diagnosis]]</p>
+                      <p>[[diagnosis.name]]</p>
                     </template>
                   </template>
                 </vaadin-grid-column>

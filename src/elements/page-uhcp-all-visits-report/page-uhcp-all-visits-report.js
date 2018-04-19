@@ -101,7 +101,7 @@ Polymer({
   searchButtonClicked() {
     const query = {
       apiKey: this.user.apiKey,
-      orgnizationId: this.organization.idOnServer,
+      organizationId: this.organization.idOnServer,
       searchParameters: {
         dateCreatedFrom: this.dateCreatedFrom || '',
         dateCreatedTo: this.dateCreatedTo || '',
