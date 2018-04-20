@@ -370,6 +370,21 @@ app.pages.pageList = [
   }
 
   {
+    name: 'uhcp-all-visits-report'
+    element: 'page-uhcp-all-visits-report'
+    windowTitlePostfix: 'UHCP Visits Reports'
+    headerTitle: 'UHCP Visits Reports'
+    preload: true
+    hrefList: [ 'uhcp-all-visits-report' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showPatientsDetails: false
+    showToolbar: false
+    hideHeaderTitle: false
+  }
+
+  {
     name: 'upload-organization-patient-list'
     element: 'page-upload-organization-patient-list'
     windowTitlePostfix: 'UHCP Upload Patient List'

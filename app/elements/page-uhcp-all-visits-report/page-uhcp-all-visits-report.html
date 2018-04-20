@@ -1,0 +1,335 @@
+<!-- paper-* --><!-- style --><!-- behavior --><div hidden="" by-polymer-bundler=""><link rel="import" href="../custom-vital-search/custom-vital-search.html"></div><dom-module id="page-uhcp-all-visits-report">
+  <template>
+    <!-- style -->
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+
+      paper-button {
+        background: white;
+      }
+
+      .invoice-card {
+        background: white;
+      }
+
+      paper-card {
+        margin: 4px;
+      }
+
+      .search {
+        background-color: #fafafa;
+        border: 1px solid #dadada;
+        padding: 8px 12px;
+        margin: 4px;
+        margin-left: 0;
+      }
+
+      .results {
+        margin-top: 20px;
+      }
+
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+
+      ul {
+        padding: 0;
+        margin: 0;
+      }
+
+      ul>ol {
+        margin: 0;
+        padding: 5px;
+        list-style-type: decimal;
+      }
+    </style>
+
+    <div class="master-container">
+
+      <div class="limiting-container vertical layout">
+
+        <paper-card heading="Reports">
+
+          <div class="card-content">
+
+            <div class="search layout horizontal center">
+
+              <!-- <paper-dropdown-menu label="Filter by Organization" class="m-right-8">
+                <paper-listbox class="dropdown-content" attr-for-selected="organization-id" on-iron-activate="organizationSelected">
+                  <template is="dom-repeat" items="[[organizationList]]">
+                    <paper-item organization-id="[[item.idOnServer]]">[[item.name]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu> -->
+
+              <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
+              <div class="flex"></div>
+              <paper-button raised="" on-tap="resetButtonClicked">Reset</paper-button>
+
+            </div>
+            <div class="layout horizontal">
+              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+            </div>
+
+            <div class="results">
+
+              <paper-progress indeterminate="" hidden="[[!loading]]"></paper-progress>
+              <vaadin-grid items="[[reportResults]]">
+                <vaadin-grid-column resizable="">
+                  <template class="header">Visit Id</template>
+                  <template>
+                    <span>[[item.visit.serial]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Employee Id</template>
+                  <template>
+                    <span>[[item.patientInfo.employeeId]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header layout horizontal">
+                    <vaadin-grid-filter aria-label="Name" path="name" value="[[nameFilter]]">
+                      <paper-input label="Search By Name" value="{{nameFilter}}" no-label-float=""></paper-input>
+                    </vaadin-grid-filter>
+                  </template>
+                  <template>
+                    <div>[[item.patientInfo.name]]</div>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">DOB</template>
+                  <template>
+                    <span>[[item.patientInfo.dateOfBirth]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">
+                    <vaadin-grid-sorter path="patientInfo.gender">Sex</vaadin-grid-sorter>
+                  </template>
+                  <template>
+                    <span>[[item.patientInfo.gender]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Consulation Site </template>
+                  <template>
+                    <span>[[item.organizationInfo.name]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Consulation Date </template>
+                  <template>
+                    <span>[[$formatDateTime(item.visit.createdDatetimeStamp)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Chief Complaint</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Diagnosis</template>
+                  <template>
+                    <ul>
+                      <template is="dom-repeat" items="[[item.diagnosis.diagnosisList]]" as="diagnosis">
+                        <ol>[[diagnosis.name]]</ol>
+                      </template>
+                    </ul>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Advices</template>
+                  <template>
+                    <ul>
+                      <template is="dom-repeat" items="[[item.advisedTests.testAdvisedList]]" as="advice">
+                        <ol>[[advice.investigationName]]</ol>
+                      </template>
+                    </ul>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Referral</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Referred Location</template>
+                  <template>
+                    <span>N/A</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Treatment</template>
+                  <template>
+                    <ul>
+                      <template is="dom-repeat" as="medicine" items="[[item.medication]]">
+                        <ol>[[medicine.data.brandName]]</ol>
+                      </template>
+                    </ul>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Drug Cost</template>
+                  <template>
+                    <span>[[$getCategoryCost('Medicine', item.invoice)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Inv. Cost</template>
+                  <template>
+                    <span>[[$getCategoryCost('Investigation', item.invoice)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Consultancy Fee</template>
+                  <template>
+                    <span>[[$getCategoryCost('Consultancy', item.invoice)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Total Cost</template>
+                  <template>
+                    <span>[[$getTotalCost(item.invoice)]]</span>
+                  </template>
+                </vaadin-grid-column>
+              </vaadin-grid>
+            </div>
+
+          </div>
+        </paper-card>
+
+      </div>
+      <!--Limiting Container Ends-->
+
+    </div>
+    <!--Master Container Ends-->
+
+  </template>
+  <script type="text/javascript">Polymer({
+
+  is: 'page-uhcp-all-visits-report',
+
+  behaviors: [
+    app.behaviors.dbUsing,
+    app.behaviors.translating,
+    app.behaviors.pageLike,
+    app.behaviors.apiCalling
+  ],
+
+  properties: {
+
+    user: {
+      type: Object,
+      notify: true,
+      value: null
+    },
+
+    organization: {
+      type: Object,
+      notify: true,
+      value: null
+    },
+
+    loading: {
+      type: Boolean,
+      value: false
+    },
+
+    reportResults: {
+      type: Array,
+      value: []
+    },
+
+    dateCreatedFrom: String,
+    dateCreatedTo: String,
+    selectedGender: String,
+    selectedOrganizationId: String
+
+  },
+
+
+  navigatedIn() {
+    this._loadUser()
+    this._loadOrganization()
+  },
+
+
+  _loadUser() {
+    const userList = app.db.find('user');
+    if (userList.length == 1) this.set('user', userList[0]);
+  },
+
+
+  _loadOrganization() {
+    const organizationList = app.db.find('organization');
+    if (organizationList.length === 1) {
+      return this.set('organization', organizationList[0]);
+    }
+  },
+
+  $formatDateTime(dateTime) {
+    if (!dateTime) return;
+    return lib.datetime.format((new Date(dateTime)), 'mmm d, yyyy h:MMTT')
+  },
+
+  organizationSelected(e) {
+    const orgnizationId = e.detail.selected
+    this.set('selectedOrganizationId', organizationId)
+  },
+
+  filterByDateClicked(e) {
+    const startDate = new Date(e.detail.startDate);
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date(e.detail.endDate);
+    endDate.setHours(23, 59, 59, 999);
+    this.set('dateCreatedFrom', (startDate.getTime()));
+    this.set('dateCreatedTo', (endDate.getTime()));
+  },
+
+  filterByDateClearButtonClicked() {
+    this.dateCreatedFrom = 0;
+    this.dateCreatedTo = 0;
+  },
+
+  $getCategoryCost(category, invoice) {
+    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 'N/A'
+  },
+
+  $getTotalCost(invoice) {
+    return invoice ? invoice.totalBilled : 'N/A'
+  },
+
+  resetButtonClicked() { return this.domHost.reloadPage(); },
+
+  searchButtonClicked() {
+    const query = {
+      apiKey: this.user.apiKey,
+      organizationId: this.organization.idOnServer,
+      searchParameters: {
+        dateCreatedFrom: this.dateCreatedFrom || '',
+        dateCreatedTo: this.dateCreatedTo || '',
+      }
+    }
+    this.loading = true;
+    this.callApi('/uhcp--get-visit-reports', query, (err, response) => {
+      if (response.hasError) {
+        this.domHost.showModalDialog(response.error.message);
+        return this.loading = false;
+      } else {
+        this.set('reportResults', response.data);
+        console.log(this.reportResults);
+        return this.loading = false;
+      }
+    });
+  }
+
+});</script>
+</dom-module>
