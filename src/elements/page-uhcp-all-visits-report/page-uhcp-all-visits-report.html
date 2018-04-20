@@ -50,7 +50,7 @@
       .search {
         background-color: #fafafa;
         border: 1px solid #dadada;
-        padding: 0px 8px 12px 8px;
+        padding: 8px 12px;
         margin: 4px;
         margin-left: 0;
       }
@@ -63,6 +63,17 @@
         width: 100%;
         --paper-progress-active-color: var(--paper-orange-500);
       }
+
+      ul {
+        padding: 0;
+        margin: 0;
+      }
+
+      ul>ol {
+        margin: 0;
+        padding: 5px;
+        list-style-type: decimal;
+      }
     </style>
 
     <div class="master-container">
@@ -73,26 +84,18 @@
 
           <div class="card-content">
 
-            <div class="search layout horizontal end wrap">
+            <div class="search layout horizontal center">
 
-              <paper-dropdown-menu label="Filter by Organization" class="m-right-8">
+              <!-- <paper-dropdown-menu label="Filter by Organization" class="m-right-8">
                 <paper-listbox class="dropdown-content" attr-for-selected="organization-id" on-iron-activate="organizationSelected">
                   <template is="dom-repeat" items="[[organizationList]]">
                     <paper-item organization-id="[[item.idOnServer]]">[[item.name]]</paper-item>
                   </template>
                 </paper-listbox>
-              </paper-dropdown-menu>
-
-              <paper-dropdown-menu label="Filter by Gender" class="m-right-8">
-                <paper-listbox class="dropdown-content" on-iron-activate="genderSelected">
-                  <paper-item>All</paper-item>
-                  <paper-item>Male</paper-item>
-                  <paper-item>Female</paper-item>
-                </paper-listbox>
-              </paper-dropdown-menu>
+              </paper-dropdown-menu> -->
 
               <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
-
+              <div class="flex"></div>
               <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
 
             </div>
@@ -133,7 +136,9 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
-                  <template class="header">Sex</template>
+                  <template class="header">
+                    <vaadin-grid-sorter path="patientInfo.gender">Sex</vaadin-grid-sorter>
+                  </template>
                   <template>
                     <span>[[item.patientInfo.gender]]</span>
                   </template>
@@ -159,17 +164,21 @@
                 <vaadin-grid-column resizable>
                   <template class="header">Diagnosis</template>
                   <template>
-                    <template is="dom-repeat" items="[[item.diagnosis.diagnosisList]]" as="diagnosis">
-                      <p>[[diagnosis.name]]</p>
-                    </template>
+                    <ul>
+                      <template is="dom-repeat" items="[[item.diagnosis.diagnosisList]]" as="diagnosis">
+                        <ol>[[diagnosis.name]]</ol>
+                      </template>
+                    </ul>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Advices</template>
                   <template>
-                    <template is="dom-repeat" items="[[item.advisedTests.testAdvisedList]]" as="advice">
-                      <p>[[advice.investigationName]]</p>
-                    </template>
+                    <ul>
+                      <template is="dom-repeat" items="[[item.advisedTests.testAdvisedList]]" as="advice">
+                        <ol>[[advice.investigationName]]</ol>
+                      </template>
+                    </ul>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
@@ -187,7 +196,11 @@
                 <vaadin-grid-column resizable>
                   <template class="header">Treatment</template>
                   <template>
-                    <span>[[item.medication.brandName]]</span>
+                    <ul>
+                      <template is="dom-repeat" as="medicine" items="[[item.medication]]">
+                        <ol>[[medicine.data.brandName]]</ol>
+                      </template>
+                    </ul>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>

@@ -70,19 +70,6 @@ Polymer({
     this.set('selectedOrganizationId', organizationId)
   },
 
-  genderSelected(e) {
-    const index = e.detail.selected;
-    var gender;
-    if (index == 1) {
-      gender = 'male'
-    } else if (index == 2) {
-      gender = 'female'
-    } else {
-      gender = ''
-    }
-    return this.set('selectedGender', gender);
-  },
-
   filterByDateClicked(e) {
     const startDate = new Date(e.detail.startDate);
     startDate.setHours(0, 0, 0, 0);
@@ -98,13 +85,11 @@ Polymer({
   },
 
   $getCategoryCost(category, invoice) {
-    if (!invoice) return 'N/A';
-    return invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0)
+    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 'N/A'
   },
 
   $getTotalCost(invoice) {
-    if (!invoice) return 'N/A';
-    return invoice.totalBilled;
+    return invoice ? invoice.totalBilled : 'N/A'
   },
 
   resetButtonClicked() { return this.domHost.reloadPage(); },
@@ -116,7 +101,6 @@ Polymer({
       searchParameters: {
         dateCreatedFrom: this.dateCreatedFrom || '',
         dateCreatedTo: this.dateCreatedTo || '',
-        gender: this.selectedGender || 'all'
       }
     }
     this.loading = true;
