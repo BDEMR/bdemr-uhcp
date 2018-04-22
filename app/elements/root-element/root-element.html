@@ -1,6 +1,4 @@
-f
-<!-- app-* -->
-<div hidden="" by-polymer-bundler=""><!--
+<!-- app-* --><!-- iron-* --><!-- paper-* --><!-- behavior --><!-- custom --><!-- element --><div hidden="" by-polymer-bundler=""><!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
@@ -29503,13 +29501,7 @@ The following imports are available:
     
 
 </dom-module>
-</div>
-<!-- iron-* -->
-<!-- paper-* -->
-<!-- behavior -->
-<!-- custom -->
-<!-- element -->
-<dom-module id="root-element">
+</div><dom-module id="root-element">
   <template>
 
     <!-- style -->
@@ -29722,14 +29714,26 @@ The following imports are available:
         paper-toolbar {
           display: none;
         }
-        #adArea {
-          display: none;
+        .ad-area {
+          display: none !important;
+        }
+        app-header-layout.show-ad {
+          height: 100%;
         }
 
         app-header-layout ::content #contentContainer {
           padding: 0 !important;
           margin: 0 !important;
+          overflow-x: hidden !important;
         }
+        app-drawer-layout ::content #contentContainer {
+          overflow-x: hidden !important;
+          height: unset !important;
+          position: unset !important;
+        }
+
+
+      }
       }
 
 
