@@ -1,4 +1,3 @@
- f
 <link rel="import" href="../../bower-assets/polymer/polymer.html">
 
 <!-- app-* -->
@@ -258,14 +257,26 @@
         paper-toolbar {
           display: none;
         }
-        #adArea {
-          display: none;
+        .ad-area {
+          display: none !important;
+        }
+        app-header-layout.show-ad {
+          height: 100%;
         }
 
         app-header-layout ::content #contentContainer {
           padding: 0 !important;
           margin: 0 !important;
+          overflow-x: hidden !important;
         }
+        app-drawer-layout ::content #contentContainer {
+          overflow-x: hidden !important;
+          height: unset !important;
+          position: unset !important;
+        }
+
+
+      }
       }
 
 
