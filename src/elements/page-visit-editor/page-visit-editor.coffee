@@ -4700,11 +4700,7 @@ Polymer {
       console.log "SETTINGS:", @settings
 
       # Load Patient
-      unless params['patient']
-        @_notifyInvalidPatient()
-        return
-      else
-        @_loadPatient params['patient'], =>
+      @_loadPatient params['patient'], =>
 
           # load Wallets
           @_loadVariousWallets => null
@@ -5569,6 +5565,9 @@ Polymer {
           @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
             @set 'patientServiceBalance', patientServiceBalance
             @makeNewVisitButtonPressed()
+
+    @arrowBackButtonPressed()
+            
 
     
       

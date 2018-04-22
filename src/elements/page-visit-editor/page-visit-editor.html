@@ -890,7 +890,7 @@
                 <div class="m-4">
                   <strong>Record:</strong> [[visit.serial]]</div>
                 <div class="m-4">
-                  <strong>Created Date:</strong> [[$mkDate(visit.createdDatetimeStamp)]]</div>
+                  <strong>Created Date:</strong> [[$mkDateTime(visit.createdDatetimeStamp)]]</div>
                 <div class="m-4">
                   <strong>Created By:</strong> {{visit.doctorName}}</div>
               </div>
@@ -2372,7 +2372,7 @@
       <div class="document-header horizontal layout center p-vertical-8">
         <template is="dom-if" if="[[!patient.isForOrganizationOnly]]">
           <div class="m-horizontal-4">
-            <strong>Patient Serial: </strong>
+            <strong>PatientId: </strong>
             <span>{{patient.serial}}</span>
           </div>
           <div class="m-horizontal-4">
@@ -2381,11 +2381,11 @@
           </div>
           <div class="m-horizontal-4">
             <strong>Sex: </strong>
-            <span></span>
+            <span>{{patient.gender}}</span>
           </div>
           <div class="m-horizontal-4">
             <strong>Age: </strong>
-            <span>[[_computeAge(patient.dob)]] years </span>
+            <span>[[_computeAge(patient.dateOfBirth)]] years </span>
           </div>
           <div class="m-horizontal-4">
             <strong>Blood Group: [[patient.bloodGroup]] </strong>
