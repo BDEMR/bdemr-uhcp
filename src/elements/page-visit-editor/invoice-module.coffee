@@ -47,7 +47,7 @@ app.behaviors.local.invoiceMixin =
     for item in invoice.data
       continue if item.category is 'custom'
       doc = (app.db.find 'organization-price-list', ({serial})=> serial is item.serial)[0]
-      if doc.qty
+      if doc?.qty
         doc.qty -= item.qty
         app.db.update 'organization-price-list', doc._id, doc
 

@@ -50,13 +50,8 @@ app.behaviors.local['root-element'].dataLoader =
       }
 
       {
-        name: 'medicineList'
-        url: 'static-data/medicine-list.json'
-      }
-
-      {
         name: 'pccMedicineList'
-        url: 'static-data/pcc-medicine-list.json'
+        url: 'static-data/uhcp-drug-list-with-price.json'
       }
       # {
       #   name: 'doseGuidelineList'
@@ -144,7 +139,7 @@ app.behaviors.local['root-element'].dataLoader =
       }
       {
         name: 'pccMedicineList'
-        url: 'https://bdemr.b-cdn.net/pcc-medicine-list-19-02-2018.json'
+        url: 'https://bdemr.b-cdn.net/uhcp-drug-list-with-price-6-5-2018.json'
       }
       {
         name: 'uhcpInvoicePriceList'
