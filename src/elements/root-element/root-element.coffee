@@ -910,7 +910,13 @@ Polymer {
   # = REGION ======================================
 
   syncButtonPressed: (e)->
-    @_sync()
+    @_sync (errMessage)=>
+      if errMessage
+        # @$$('#sync-dialog').toggle()
+        @async => @showModalDialog(errMessage);
+      else
+        # @$$('#sync-dialog').toggle()
+        @reloadPage() 
     
   # sync code moved to 'mixin-call-sync.coffee' file
 

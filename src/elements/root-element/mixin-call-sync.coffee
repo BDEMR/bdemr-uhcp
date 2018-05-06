@@ -3,23 +3,19 @@ unless app.behaviors.local['root-element']
 app.behaviors.local['root-element'].syncCall = 
 
   _syncOnlyPatientTestResults: (cbfn)->
-      @_syncPatients @syncPatientTestResultsConfig, ()->
-        cbfn()
+      @_sync cbfn
 
   _syncOnlyPatientGallery: (cbfn)->
-    @_syncPatients @syncPatientGalleryAttachmentConfig, ()->
-      cbfn()
+    @_sync cbfn
 
   _syncUserSettings: (cbfn)->
-    @_syncUser @syncSettings, ()->
-      cbfn()
+    @_sync cbfn
 
   _syncOnlyInvoice: (cbfn)->
-    @_syncPatients @syncVisitInvoice, ()->
-      cbfn()
+    @_sync cbfn
 
   _syncOnlyPriceList: (cbfn)=>
-    @_syncOrganizationData @syncOrganizationPriceList, cbfn
+    @_sync cbfn
 
   _sync: (navigateToAfterSyncing = null)->
     console.group 'Sync'
