@@ -1,6 +1,6 @@
-
 <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
 <link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
@@ -28,14 +28,14 @@
       .limiting-container {
         margin-top: 10px;
       }
-      
+
       .external-card-title {
         margin-top: 20px;
         margin-left: 20px;
         margin-right: 10px;
         color: #777777;
       }
-      
+
       .info-card {
         @apply(--layout-vertical);
         /*@apply(--layout-center);*/
@@ -44,13 +44,13 @@
         margin-right: 10px;
         padding-bottom: 20px;
       }
-      
+
       .info-card .row {
         margin-left: 10px;
         /*margin-right: 10px;*/
         margin-top: 10px;
       }
-      
+
       .info-card .hr {
         margin-left: 20px;
         margin-right: 20px;
@@ -58,7 +58,7 @@
         /*width: 100px;*/
         background: #dddddd;
       }
-      
+
       .info-card .row .modifier {
         font-size: 14px;
         background: #000000;
@@ -71,32 +71,32 @@
         border-radius: 4px;
         text-transform: uppercase;
       }
-      
+
       .info-card .row .modifier.online {
         background: #757575;
       }
-      
+
       .info-card .row .modifier.local-only {
         background: #039BE5;
       }
-      
+
       .info-card .row .modifier.locally-updated {
         background: #009688;
       }
-      
+
       .info-card .row .modifier.imported {
         background: #4CAF50;
       }
-      
+
       .info-row {
         margin-top: 10px;
       }
-      
+
       .top-info-row {
         margin-top: 10px;
         margin-bottom: 10px;
       }
-      
+
       .serial-number {
         background: #37474F;
         color: #ffffff;
@@ -111,48 +111,51 @@
         display: inline-block;
         font-size: 14px;
       }
-      
+
       .address1 {
         margin-right: 10px;
       }
-      
+
       .name {
         margin-left: 5px;
         font-size: 24px;
       }
-      
+
       .email {
         margin-left: 5px;
         font-size: 14px;
       }
-      
+
       .phone {
         margin-left: 5px;
       }
-      
+
       .val {
         text-decoration: underline;
       }
-      
+
       .account-box {
         --iron-icon-width: 96px;
         --iron-icon-height: 96px;
       }
+
       /* - */
-      
+
       .limiting-container {
         max-width: 720px
       }
-      
+
       .language-strip {
         /*margin: 10px;*/
         @apply(--layout-horizontal);
         /*@apply(--layout-center);*/
         /*@apply(--layout-end-justified);*/
       }
+
       .logo-input {
         margin-left: 4px;
       }
+
       .logo-preview {
         width: 256px;
         max-height: 128px;
@@ -183,7 +186,7 @@
 
             </div>
           </paper-card>
-  
+
           <paper-card class="info-card" heading="Printing (Headline)">
             <div class="card-content">
               <paper-input always-float-label label="Headline" value="{{settings.printDecoration.headerLine}}"></paper-input>
@@ -215,12 +218,12 @@
 
               <paper-input always-float-label label="Full Visit Headline" value="{{settings.printDecoration.fullVisitHeadline}}"></paper-input>
 
-              <paper-input always-float-label label="Footer" value="{{settings.printDecoration.footerLine}}"></paper-input>
+              <paper-textarea always-float-label label="Footer" value="{{settings.printDecoration.footerLine}}"></paper-textarea>
               <paper-checkbox checked="{{settings.flags.showFooterLine}}" on-change="showFooterLine">Show Footer</paper-checkbox>
 
               <div class="horizontal layout wrap">
                 <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
-                <img class="logo-preview" src$="[[settings.printDecoration.logoDataUri]]" />
+                  <img class="logo-preview" src$="[[settings.printDecoration.logoDataUri]]" />
                 </template>
                 <paper-input class="logo-input flex" type="file" accept="image/*" on-change="fileInputChanged"></paper-input>
               </div>
@@ -228,6 +231,15 @@
             </div>
           </paper-card>
 
+          <paper-card class="info-card" heading="Partner Logo Upload">
+            <div class="card-content">
+              <paper-input label="Partner Logo 1" class="logo-input flex" type="file" accept="image/*" on-change="partner1LogoFileInputChanged"></paper-input>
+
+              <paper-input label="Partner Logo 2" class="logo-input flex" type="file" accept="image/*" on-change="partner2LogoFileInputChanged"></paper-input>
+
+              <paper-input label="Partner Logo 3" class="logo-input flex" type="file" accept="image/*" on-change="partner3LogoFileInputChanged"></paper-input>
+            </div>
+          </paper-card>
 
           <!-- Signature - start -->
           <paper-card class="info-card" heading="Signature Image">
@@ -235,7 +247,7 @@
 
               <div class="horizontal layout wrap">
                 <template is="dom-if" if="[[settings.printDecoration.signatureDataUri]]">
-                <img class="logo-preview" src$="[[settings.printDecoration.signatureDataUri]]" />
+                  <img class="logo-preview" src$="[[settings.printDecoration.signatureDataUri]]" />
                 </template>
                 <paper-input class="logo-input flex" type="file" accept="image/*" on-change="fileInputChanged2"></paper-input>
               </div>

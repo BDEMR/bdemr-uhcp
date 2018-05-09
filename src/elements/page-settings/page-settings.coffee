@@ -33,7 +33,7 @@ Polymer {
 
   _saveSettings: ->
     @settings.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'settings', @settings, ({serial})=> @settings.serial is 'only'
+    app.db.upsert 'settings', @settings, ({serial})=> @settings.serial is serial
 
   arrowBackButtonPressed: (e)->
     @domHost.navigateToPreviousPage()
@@ -99,30 +99,38 @@ Polymer {
   navigatedOut: ->
     null
 
-  fileInputChanged: (e)->
+  getUploadedFileDataUri: (file, cbfn)->
     reader = new FileReader
-    file = e.target.files[0]
-
     if file.size > @maximumLogoImageSizeAllowedInBytes
       @domHost.showModalDialog 'Please provide a file less than 1mb in size.'
       return
-
     reader.readAsDataURL file
     reader.onload = =>
       dataUri = reader.result
+      cbfn(dataUri)
+
+  fileInputChanged: (e)->
+    file = e.target.files[0]
+    @getUploadedFileDataUri file, (dataUri)=>
       @set 'settings.printDecoration.logoDataUri', dataUri
 
   fileInputChanged2: (e)->
-    reader = new FileReader
     file = e.target.files[0]
-
-    if file.size > @maximumLogoImageSizeAllowedInBytes
-      @domHost.showModalDialog 'Please provide a file less than 1mb in size.'
-      return
-
-    reader.readAsDataURL file
-    reader.onload = =>
-      dataUri = reader.result
+    @getUploadedFileDataUri file, (dataUri)=>
       @set 'settings.printDecoration.signatureDataUri', dataUri
 
+  partner1LogoFileInputChanged: (e)->
+    file = e.target.files[0]
+    @getUploadedFileDataUri file, (dataUri)=>
+      @set 'settings.printDecoration.partner1LogoDataUri', dataUri
+
+  partner2LogoFileInputChanged: (e)->
+    file = e.target.files[0]
+    @getUploadedFileDataUri file, (dataUri)=>
+      @set 'settings.printDecoration.partner2LogoDataUri', dataUri
+
+  partner3LogoFileInputChanged: (e)->
+    file = e.target.files[0]
+    @getUploadedFileDataUri file, (dataUri)=>
+      @set 'settings.printDecoration.partner3LogoDataUri', dataUri
 }
