@@ -573,8 +573,7 @@
       }
 
       @media print {
-        html,
-        body {
+        html, body {
           width: 210mm;
           height: 297mm;
         }
@@ -771,6 +770,20 @@
         color: #fff;
       }
 
+      .print-content {
+        border-top: 1px solid #eee;
+        @apply(--layout-horizontal);
+      }
+
+      .print-content .left {
+        width: 34%;
+        border-right: 1px solid #eee;
+      }
+
+      .print-content .right {
+        width: 66%;
+      }
+
       ol.order-list {
         margin: 4px 0;
         padding-left: 16px;
@@ -787,17 +800,9 @@
       }
 
       .print-sub-header {
-        font-size: 16px;
-        font-weight: bold;
-        border: 1px solid var(--paper-grey-300);
-        border-width: 1px 0;
-        padding: 5px 0;
-        margin-bottom: 5px;
-        background-color: var(--paper-grey-100);
-      }
-
-      .print-content-body {
-        margin-bottom: 20px;
+        font-size: bold;
+        background-color: #fafafa;
+        margin-bottom: 8px;
       }
 
       .profile-image {
@@ -818,6 +823,15 @@
         width: 40px;
       }
     </style>
+
+    <!-- local DOM -->
+    <!-- <template is="dom-if" if="{{!isVisitValid}}">
+      Visit invalid
+    </template>
+
+    <template is="dom-if" if="{{!isPatientValid}}">
+      Patient invalid
+    </template> -->
 
     <div class="master-container">
       <div class="limiting-container">
@@ -2352,71 +2366,80 @@
     <!-- Print Preview Area - start -->
     <div id="printPreview">
 
+      <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
+        <img style="width: 100%; max-height: 128px;" class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+      </template>
 
-
-
-      <div class="print-header horizontal layout center">
-        <img src="../../assets/img/partners/uhcp.jpg" width="38" height="38" alt="UHCP Logo" class="p-right-16">
-        <h2>Universal Health Coverage Plan Project</h2>
-
+      <div class="print-header horizontal layout center center-justified">
+        <h1>[[settings.printDecoration.headerLine]]</h1>
       </div>
-      <hr>
+
       <!-- Print Header - Main - start -->
-      <div class="">
-        <table class="table">
-          <tr>
-            <th>Consultation Site:</th>
-            <td>[[organization.name]]</td>
-          </tr>
-          <tr>
-            <th>Consultant Name:</th>
-            <td>[[visit.doctorName]]</td>
-          </tr>
-          <tr>
-            <th>Consultant Grade</th>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Patient Id / Policy Id:</th>
-            <td>
-              <template is="dom-if" if="[[patient.policyList.length]]">
-                <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
-                  <span class="">[[policy.number]]</span>
-                </template>
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <th>Patient Name:</th>
-            <td>{{$getFullName(patient.name)}}</td>
-          </tr>
-          <tr>
-            <th>Age/Sex:</th>
-            <td>[[_computeAge(patient.dateOfBirth)]] years / {{patient.gender}}</td>
-          </tr>
-          <tr>
-            <th>Factory name:</th>
-            <td>
-              <template is="dom-if" if="[[patient.employmentDetailsList.length]]">
-                <template is="dom-repeat" items="[[patient.employmentDetailsList]]" as="factory">
-                  [[factory.institutionName]]
-                </template>
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <th>Prescription Id:</th>
-            <td>[[visit.serial]]</td>
-          </tr>
-          <tr>
-            <th>Date &amp; Time:</th>
-            <td>[[$mkDateTime(visit.createdDatetimeStamp)]]</td>
-          </tr>
-        </table>
+      <div class="document-header horizontal layout center">
+        
+
+        <div class="leftSide">
+          <div class="leftSideLine1">[[settings.printDecoration.leftSideLine1]]</div>
+          <div class="leftSideLine2">[[settings.printDecoration.leftSideLine2]]</div>
+          <div class="leftSideLine3">[[settings.printDecoration.leftSideLine3]]</div>
+        </div>
+        <div class="flex"></div>
+        <div class="rightSide layout end-justified">
+          <div class="rightSideLine1">[[settings.printDecoration.rightSideLine1]]</div>
+          <div class="rightSideLine2">[[settings.printDecoration.rightSideLine2]]</div>
+          <div class="rightSideLine3">[[settings.printDecoration.rightSideLine3]]</div>
+        </div>
       </div>
-      <br>
-      <br>
       <!-- Print Header - Main - end -->
+      <!-- Print Header - Patient Details - start -->
+      <div class="document-header horizontal layout center p-vertical-8">
+        <template is="dom-if" if="[[!patient.isForOrganizationOnly]]">
+          <div class="m-horizontal-4">
+            <strong>PatientId: </strong>
+            <span>{{patient.serial}}</span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Patient Name: </strong>
+            <span>{{$getFullName(patient.name)}}</span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Sex: </strong>
+            <span>{{patient.gender}}</span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Age: </strong>
+            <span>[[_computeAge(patient.dateOfBirth)]] years </span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Blood Group: [[patient.bloodGroup]] </strong>
+            <span> </span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Allergy: [[patient.allergy]]</strong>
+            <span> </span>
+          </div>
+        </template>
+
+        <template is="dom-if" if="[[patient.isForOrganizationOnly]]">
+          <div class="m-horizontal-4">
+            <strong>Patient Name: </strong>
+            <i></i>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Age: </strong>
+            <i>REDACTED FOR CONFIDENTIALITY</i>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Blood Group: [[patient.bloodGroup]]</strong>
+            <span> </span>
+          </div>
+          <div class="m-horizontal-4">
+            <strong>Allergy: [[patient.allergy]]</strong>
+            <span> </span>
+          </div>
+        </template>
+      </div>
+      <!-- Print Header - Patient Details - end -->
 
       <!-- Print Header - record Title - start -->
       <div class="p-16 horizontal layout center center-justified" hidden$="{{!printPrescriptionOnly}}">
@@ -2426,13 +2449,14 @@
 
       <!-- Print Content [FULL] - start -->
       <div class="print-content" hidden$="{{printPrescriptionOnly}}">
+        <!-- Print Content - Left - start -->
+        <div class="left">
 
-        <!-- Print - Symptoms - start -->
-        <template is="dom-if" if="[[!_isEmpty(addedIdentifiedSymptomsList.length)]]">
-          <div class="horizontal layout center print-sub-header">
-            <span>Symptoms</span>
-          </div>
-          <div class="print-content-body">
+          <!-- Print - Symptoms - start -->
+          <template is="dom-if" if="[[!_isEmpty(addedIdentifiedSymptomsList.length)]]">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body">Symptoms</div>
+            </div>
             <template is="dom-repeat" items="[[addedIdentifiedSymptomsList]]">
               <div class="type caption-2">
                 <span class="type secondary">[[_returnSerial(index)]]. </span>
@@ -2445,16 +2469,15 @@
                 </template>
               </div>
             </template>
-          </div>
-        </template>
-        <!-- Print - Symptoms - end -->
+            <div class="b-top m-top-8"></div>
+          </template>
+          <!-- Print - Symptoms - end -->
 
-        <!-- Print - Examination - start -->
-        <template is="dom-if" if="[[!_isEmpty(addedExaminationList2.length)]]">
-          <div class="horizontal layout center print-sub-header">
-            <span>Examination</span>
-          </div>
-          <div class="print-content-body">
+          <!-- Print - Examination - start -->
+          <template is="dom-if" if="[[!_isEmpty(addedExaminationList2.length)]]">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body">Examination</div>
+            </div>
             <template is="dom-repeat" items="[[addedExaminationList2]]" as="examination">
               <div class="type caption-2">
                 <span class="type secondary">[[_returnSerial(index)]]. </span>
@@ -2465,32 +2488,30 @@
                 </template>)
               </div>
             </template>
-          </div>
-        </template>
-        <!-- Print - Examination - end -->
+            <div class="b-top m-top-8 "></div>
+          </template>
+          <!-- Print - Examination - end -->
 
-        <!-- Print - Vitals - start -->
-        <template is="dom-if" if="[[!_isEmpty(addedVitalList.length)]]">
-          <div class="horizontal layout center print-sub-header">
-            <span>Vitals</span>
-          </div>
-          <div class="print-content-body">
+          <!-- Print - Vitals - start -->
+          <template is="dom-if" if="[[!_isEmpty(addedVitalList.length)]]">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body">Vitals</div>
+            </div>
             <template is="dom-repeat" items="[[addedVitalList]]">
               <div class="type caption-2">
                 <strong>{{item.vitalType}}: </strong>
                 <span>[[_pritifyVitalData(item)]]</span>
               </div>
             </template>
-          </div>
-        </template>
-        <!-- Print - Vitals - end -->
+            <div class="b-top m-top-8"></div>
+          </template>
+          <!-- Print - Vitals - end -->
 
-        <!-- Print - Test Advised - start -->
-        <template is="dom-if" if="[[!_isEmpty(addedInvestigationList.length)]]">
-          <div class="horizontal layout center print-sub-header">
-            <span>Advised Test</span>
-          </div>
-          <div class="print-content-body">
+          <!-- Print - Test Advised - start -->
+          <template is="dom-if" if="[[!_isEmpty(addedInvestigationList.length)]]">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body">Advised Test</div>
+            </div>
             <template is="dom-repeat" items="[[addedInvestigationList]]">
               <div class="type caption-2 layout horizontal">
                 <div class="type secondary m-right-8">[[_returnSerial(index)]]. </div>
@@ -2517,16 +2538,15 @@
                 </template>
               </div>
             </template>
-          </div>
-        </template>
-        <!-- Print - Test Advised - end -->
+            <div class="b-top"></div>
+          </template>
+          <!-- Print - Test Advised - end -->
 
-        <!-- Print - Diagnosis - start -->
-        <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
-          <div class="horizontal layout center print-sub-header">
-            <span>Diagnosis</span>
-          </div>
-          <div class="print-content-body">
+          <!-- Print - Diagnosis - start -->
+          <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body">Diagnosis</div>
+            </div>
             <template is="dom-repeat" items="[[diagnosis.data.diagnosisList]]">
               <div class="type caption-2">
                 <span class="type secondary">[[_returnSerial(index)]]. </span>
@@ -2539,15 +2559,12 @@
                 </template>
               </div>
             </template>
-          </div>
-        </template>
-        <!-- Print - Diagnosis - end -->
+            <div class="b-top m-top-8"></div>
+          </template>
+          <!-- Print - Diagnosis - end -->
 
-        <!-- Print Referral Start -->
-        <div class="horizontal layout center print-sub-header">
-          <span>Referral</span>
-        </div>
-        <div class="print-content-body">
+          <!-- Print Referral Start -->
+
           <div class="layout horizontal">
             <span class="type bold">Referred By: </span> [[referral.data.referredByDoctorName]]
           </div>
@@ -2562,164 +2579,64 @@
             <div class="layout horizontal">
               <span class="type bold">Organization Name: </span> [[referral.data.organizationName]]</div>
           </template>
-        </div>
-        <!-- Print Referral end -->
+          <!-- Print Referral end -->
 
-        <!-- Print - Notes - start -->
-        <template is="dom-if" if="{{!_isEmpty(doctorNotes.data.messageList.length)}}">
-          <div class="horizontal layout center print-sub-header">
-            <span>Doctor Advised/Notes</span>
-          </div>
-          <div class="print-content-body">
+          <!-- Print - Notes - start -->
+          <template is="dom-if" if="{{!_isEmpty(doctorNotes.data.messageList.length)}}">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body">Doctor Advised/Notes</div>
+            </div>
             <ul class="unorderd-list-custom">
               <template is="dom-repeat" items="[[doctorNotes.data.messageList]]">
                 <li class="type caption-2" style="word-break: break-word; margin-right: 4px;">{{item}}</li>
               </template>
             </ul>
-          </div>
-        </template>
-        <!-- Print - Notes - end -->
+            <div class="b-top m-top-8"></div>
+          </template>
+          <!-- Print - Notes - end -->
 
-        <!-- Print - Next Visit - start -->
-        <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
-          <div class="horizontal layout center print-sub-header">
-            <span>Next Visit</span>
-          </div>
-          <div class="type caption-2 print-content-body">
-            <div>
-              <strong>Date: </strong>
-              <span>[[$mkDate(nextVisit.data.nextVisitDateTimestamp)]]</span>
+          <!-- Print - Next Visit - start -->
+          <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body">Next Visit</div>
             </div>
-            <div>{{nextVisit.data.priorityType}}</div>
-          </div>
-        </template>
-        <!-- Print - Next Visit - end -->
-
-
-        <!-- Print - History And Physical - start -->
-        <template is="dom-if" if="[[shouldRender]]">
-          <div class="horizontal layout center">
-            <div class="type body print-sub-header">[[recordPartTitle]]</div>
-          </div>
-          <div class="p-horizontal-16 print-content-body">
-            <html-block html="[[recordPartHtmlContent]]"></html-block>
-          </div>
-        </template>
-        <!-- Print - History And Physical - end -->
-
-        <br>
-        <br>
-
-        <!-- Print - Prescription - start -->
-        <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
-          <div class="horizontal layout center print-sub-header">
-            <span>Prescription</span>
-          </div>
-          <div class="print-content-body">
-            <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
-              <div class="m-vertical-8 horizontal layout center">
-
-                <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
-                <div>
-                  <div>
-                    <span class="type caption-2 text-bold">{{item.data.brandName}}</span>
-                    <span class="type caption italic">{{item.data.genericName}} {{item.data.strength}}</span>
-                  </div>
-
-
-                  <div class="type caption">
-                    <strong>Instruction: </strong>
-                    <span>[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                      <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
-                    </span>
-                    <span>[[$TRANSLATE('By', LANG)]] </span>
-                    <span>[[$TRANSLATE(item.data.route, LANG)]]</span>
-                    <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
-                  </div>
-                  <div class="type caption">[[item.data.comments]]</div>
-                </div>
+            <div class="type caption-2">
+              <div>
+                <strong>Date: </strong>
+                <span>[[$mkDate(nextVisit.data.nextVisitDateTimestamp)]]</span>
               </div>
-            </template>
-          </div>
-        </template>
-        <!-- Print - Prescription - end -->
-        <br>
-        <!-- Patient Stay Preview -->
-        <template is="dom-if" if="[[patientStay.serial]]">
-          <div class="horizontal layout center print-sub-header">
-            <span>Patient Stay</span>
-          </div>
-          <div class="p-horizontal-16 print-content-body">
-            <div class="layout horizontal">
-              <span class="type bold"> Admission Date: </span>
-              <span>&nbsp;[[$mkDate(patientStay.data.admissionDateTimeStamp)]]</span>
+              <div>{{nextVisit.data.priorityType}}</div>
             </div>
-            <div>
-              <span class="type bold">Type: </span> [[patientStay.data.admissionType]]
+            <div class="b-top m-top-8"></div>
+          </template>
+          <!-- Print - Next Visit - end -->
+        </div>
+        <!-- Print Content - Left - end -->
+
+        <!-- Print Content - right - start -->
+        <div class="right">
+
+          <!-- Print - History And Physical - start -->
+          <template is="dom-if" if="[[shouldRender]]">
+            <div class="horizontal layout center">
+              <div class="type body print-sub-header">[[recordPartTitle]]</div>
             </div>
-            <template is="dom-if" if="[[patientStay.adviseOnly]]">
-              <div>
-                <span class="type bold">Advice: </span> [[patientStay.data.advise]]
-              </div>
-            </template>
-            <template is="dom-if" if="[[!patientStay.adviseOnly]]">
-              <div>
-                <span class="type bold">Referred By: </span> [[patientStay.data.referredByDoctorName]]
-              </div>
-              <div>
-                <span class="type bold">Admitted By: </span> [[patientStay.data.admittedByDoctorName]]
-              </div>
-              <div class="type italic">
-                <span>[[patientStay.data.locationHospitalName]]</span> >
-                <span>[[patientStay.data.locationDepartment]]</span> >
-                <span>[[patientStay.data.locationUnit]]</span> >
-                <span>[[patientStay.data.locationWard]]</span> >
-                <span>[[patientStay.data.locationBed]]</span>
-              </div>
-            </template>
-            <template is="dom-if" if="[[patientStay.data.currentLocation.length]]">
-              <div>
-                <span class="type bold"> Current Location:</span>
-                <span>[[patientStay.data.currentLocation.0.location]]</span>
-              </div>
-            </template>
-            <template is="dom-if" if="[[patientStay.data.dischargeDatetimeStamp]]">
-              <div>
-                <span class="type bold"> Discharge Date:</span>
-                <span>[[$mkDate(patientStay.data.dischargeDatetimeStamp)]]</span>
-              </div>
-              <div>
-                <span class="type bold">Discharged By: </span> [[patientStay.data.dischargedByDoctorName]]
-              </div>
-              <div>
-                <span class="type bold"> Length of Stay:</span>
-                <span>[[calculateLengthOfStay(patientStay.data.admissionDateTimeStamp, patientStay.data.dischargeDatetimeStamp)]]
-                  Days
-                </span>
-              </div>
-            </template>
-            <template is="dom-if" if="[[patientStay.data.dischargeReason.length]]">
-              <div>
-                <span class="type bold">Discharge Reason: </span> [[patientStay.data.dischargeReason]]</div>
-            </template>
-            <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
-              <div>
-                <span class="type bold"> Discharged To:</span> [[patientStay.data.dischargeTo]]</div>
-            </template>
-          </div>
-        </template>
-        <!-- Patient Stay Preview End -->
+            <div class="p-horizontal-16">
+              <html-block html="[[recordPartHtmlContent]]"></html-block>
+            </div>
+            <div class="b-top m-top-8"></div>
+          </template>
+          <!-- Print - History And Physical - end -->
 
-      </div>
-      <!-- Print Content [FULL] - end -->
+          <br>
+          <br>
 
-      <!-- Print Content - [Prescripton only] - start -->
-      <div hidden$="{{!printPrescriptionOnly}}">
-        <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
-          <div class="horizontal layout center print-sub-header">
-            <span>Prescription</span>
-          </div>
-          <div class="print-content-body">
+          <!-- Print - Prescription - start -->
+          <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body p-left-16">Prescription</div>
+            </div>
+
             <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
               <div class="m-vertical-8 p-left-16 horizontal layout center">
                 <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
@@ -2744,22 +2661,145 @@
                 </div>
               </div>
             </template>
+
+          </template>
+          <!-- Print - Prescription - end -->
+          <br>
+          <!-- Patient Stay Preview -->
+          <template is="dom-if" if="[[patientStay.serial]]">
+            <div class="horizontal layout center print-sub-header">
+              <div class="type body p-left-16">Patient Stay</div>
+            </div>
+            <div class="p-horizontal-16">
+              <div class="layout horizontal">
+                <span class="type bold"> Admission Date: </span>
+                <span>&nbsp;[[$mkDate(patientStay.data.admissionDateTimeStamp)]]</span>
+              </div>
+              <div>
+                <span class="type bold">Type: </span> [[patientStay.data.admissionType]]
+              </div>
+              <template is="dom-if" if="[[patientStay.adviseOnly]]">
+                <div>
+                  <span class="type bold">Advice: </span> [[patientStay.data.advise]]
+                </div>
+              </template>
+              <template is="dom-if" if="[[!patientStay.adviseOnly]]">
+                <div>
+                  <span class="type bold">Referred By: </span> [[patientStay.data.referredByDoctorName]]
+                </div>
+                <div>
+                  <span class="type bold">Admitted By: </span> [[patientStay.data.admittedByDoctorName]]
+                </div>
+                <div class="type italic">
+                  <span>[[patientStay.data.locationHospitalName]]</span> >
+                  <span>[[patientStay.data.locationDepartment]]</span> >
+                  <span>[[patientStay.data.locationUnit]]</span> >
+                  <span>[[patientStay.data.locationWard]]</span> >
+                  <span>[[patientStay.data.locationBed]]</span>
+                </div>
+              </template>
+              <template is="dom-if" if="[[patientStay.data.currentLocation.length]]">
+                <div>
+                  <span class="type bold"> Current Location:</span>
+                  <span>[[patientStay.data.currentLocation.0.location]]</span>
+                </div>
+              </template>
+              <template is="dom-if" if="[[patientStay.data.dischargeDatetimeStamp]]">
+                <div>
+                  <span class="type bold"> Discharge Date:</span>
+                  <span>[[$mkDate(patientStay.data.dischargeDatetimeStamp)]]</span>
+                </div>
+                <div>
+                  <span class="type bold">Discharged By: </span> [[patientStay.data.dischargedByDoctorName]]
+                </div>
+                <div>
+                  <span class="type bold"> Length of Stay:</span>
+                  <span>[[calculateLengthOfStay(patientStay.data.admissionDateTimeStamp, patientStay.data.dischargeDatetimeStamp)]]
+                    Days
+                  </span>
+                </div>
+              </template>
+              <template is="dom-if" if="[[patientStay.data.dischargeReason.length]]">
+                <div>
+                  <span class="type bold">Discharge Reason: </span> [[patientStay.data.dischargeReason]]</div>
+              </template>
+              <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
+                <div>
+                  <span class="type bold"> Discharged To:</span> [[patientStay.data.dischargeTo]]</div>
+              </template>
+            </div>
+          </template>
+          <!-- Patient Stay Preview End -->
+        </div>
+        <!-- Print Content - right - end -->
+      </div>
+      <!-- Print Content [FULL] - end -->
+
+      <!-- Print Content - [Prescripton only] - start -->
+      <div hidden$="{{!printPrescriptionOnly}}">
+        <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body p-left-16">Prescription</div>
           </div>
+
+          <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
+            <div class="m-vertical-8 p-left-16 horizontal layout center">
+              <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
+              <div>
+                <div>
+                  <span class="type caption-2 text-bold">{{item.data.brandName}}</span>
+                  <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
+                  <span class="type caption italic">{{item.data.genericName}} {{item.data.strength}}</span>
+                </div>
+
+
+                <div class="type caption">
+                  <strong>Instruction: </strong>
+                  <span>[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
+                    <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
+                  </span>
+                  <span>[[$TRANSLATE('By', LANG)]] </span>
+                  <span>[[$TRANSLATE(item.data.route, LANG)]]</span>
+                  <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
+                </div>
+                <div class="type caption">[[item.data.comments]]</div>
+              </div>
+            </div>
+          </template>
         </template>
       </div>
       <!-- Print Content - [Prescripton only] - end -->
 
-      <div class="type caption text-muted b-top">
-        <div>A project of Diabetic Association of Bangladesh (BADAS) and Weave Our Future (WOF)</div>
+      <div class="footer">
+  
+        <div class="horizontal layout end-justified center">
+          <template is="dom-if" if="[[settings.printDecoration.signatureDataUri]]">
+            <img height="96" width="128" class="logo" src="[[settings.printDecoration.signatureDataUri]]" alt="signature">
+          </template>
+        </div>
+        <div class="type caption secondary" style="text-align: center; padding: 8px;">
+          <div>
+            <i>
+              <strong>Printed by: </strong>{{user.name}}, Created on: [[$mkDateTime(visit.createdDatetimeStamp)]]</i>
+          </div>
 
-        <div>Address: Dhaka: Ibrahim General Hospital, 27-28 Commercial Plot, main road-01, Section-06, Mirpur, Dhaka. Contact
-          No. : 01712222222, from 9.00 AM to 5.00 PM (Sat- Thu)</div>
-
-        <div>Narayangonj: Narayangonj Diabetic Hospital, Dewbogh, Nagbari, Narayangonj. Contact No : 01712222222, from 9.00 AM
-          to 5.00 PM (Sat- Thu)</div>
+        </div>
+        <div class="horizontal layout center" style="max-height: 64px;">
+          <div class="partner-logo layout">
+            <div class="horizontal layout center center-justified">
+              <img src="../../assets/img/partners/uhcp.jpg" alt="" class="p-horizontal-8">
+              <img src="../../assets/img/partners/wof.jpg" alt="" class="p-horizontal-8">
+              <img src="../../assets/img/partners/badas.jpg" alt="" class="p-horizontal-8">
+            </div>
+          </div>
+          <template is="dom-if" if="[[settings.flags.showFooterLine]]">
+            <div class="b-top">
+              <div class="type caption secondary">[[settings.printDecoration.footerLine]]</div>
+            </div>
+          </template>
+        </div>
+        
       </div>
-
-
     </div>
     <!-- Print Preview Area - end -->
 
