@@ -7,14 +7,14 @@
       .limiting-container {
         margin-top: 10px;
       }
-      
+
       .external-card-title {
         margin-top: 20px;
         margin-left: 20px;
         margin-right: 10px;
         color: #777777;
       }
-      
+
       .info-card {
         @apply(--layout-vertical);
         /*@apply(--layout-center);*/
@@ -23,13 +23,13 @@
         margin-right: 10px;
         padding-bottom: 20px;
       }
-      
+
       .info-card .row {
         margin-left: 10px;
         /*margin-right: 10px;*/
         margin-top: 10px;
       }
-      
+
       .info-card .hr {
         margin-left: 20px;
         margin-right: 20px;
@@ -37,7 +37,7 @@
         /*width: 100px;*/
         background: #dddddd;
       }
-      
+
       .info-card .row .modifier {
         font-size: 14px;
         background: #000000;
@@ -50,32 +50,32 @@
         border-radius: 4px;
         text-transform: uppercase;
       }
-      
+
       .info-card .row .modifier.online {
         background: #757575;
       }
-      
+
       .info-card .row .modifier.local-only {
         background: #039BE5;
       }
-      
+
       .info-card .row .modifier.locally-updated {
         background: #009688;
       }
-      
+
       .info-card .row .modifier.imported {
         background: #4CAF50;
       }
-      
+
       .info-row {
         margin-top: 10px;
       }
-      
+
       .top-info-row {
         margin-top: 10px;
         margin-bottom: 10px;
       }
-      
+
       .serial-number {
         background: #37474F;
         color: #ffffff;
@@ -90,48 +90,51 @@
         display: inline-block;
         font-size: 14px;
       }
-      
+
       .address1 {
         margin-right: 10px;
       }
-      
+
       .name {
         margin-left: 5px;
         font-size: 24px;
       }
-      
+
       .email {
         margin-left: 5px;
         font-size: 14px;
       }
-      
+
       .phone {
         margin-left: 5px;
       }
-      
+
       .val {
         text-decoration: underline;
       }
-      
+
       .account-box {
         --iron-icon-width: 96px;
         --iron-icon-height: 96px;
       }
+
       /* - */
-      
+
       .limiting-container {
         max-width: 720px
       }
-      
+
       .language-strip {
         /*margin: 10px;*/
         @apply(--layout-horizontal);
         /*@apply(--layout-center);*/
         /*@apply(--layout-end-justified);*/
       }
+
       .logo-input {
         margin-left: 4px;
       }
+
       .logo-preview {
         width: 256px;
         max-height: 128px;
@@ -162,7 +165,7 @@
 
             </div>
           </paper-card>
-  
+
           <paper-card class="info-card" heading="Printing (Headline)">
             <div class="card-content">
               <paper-input always-float-label="" label="Headline" value="{{settings.printDecoration.headerLine}}"></paper-input>
@@ -194,12 +197,12 @@
 
               <paper-input always-float-label="" label="Full Visit Headline" value="{{settings.printDecoration.fullVisitHeadline}}"></paper-input>
 
-              <paper-input always-float-label="" label="Footer" value="{{settings.printDecoration.footerLine}}"></paper-input>
+              <paper-textarea always-float-label="" label="Footer" value="{{settings.printDecoration.footerLine}}"></paper-textarea>
               <paper-checkbox checked="{{settings.flags.showFooterLine}}" on-change="showFooterLine">Show Footer</paper-checkbox>
 
               <div class="horizontal layout wrap">
                 <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
-                <img class="logo-preview" src$="[[settings.printDecoration.logoDataUri]]">
+                  <img class="logo-preview" src$="[[settings.printDecoration.logoDataUri]]">
                 </template>
                 <paper-input class="logo-input flex" type="file" accept="image/*" on-change="fileInputChanged"></paper-input>
               </div>
@@ -207,6 +210,15 @@
             </div>
           </paper-card>
 
+          <paper-card class="info-card" heading="Partner Logo Upload">
+            <div class="card-content">
+              <paper-input label="Partner Logo 1" class="logo-input flex" type="file" accept="image/*" on-change="partner1LogoFileInputChanged"></paper-input>
+
+              <paper-input label="Partner Logo 2" class="logo-input flex" type="file" accept="image/*" on-change="partner2LogoFileInputChanged"></paper-input>
+
+              <paper-input label="Partner Logo 3" class="logo-input flex" type="file" accept="image/*" on-change="partner3LogoFileInputChanged"></paper-input>
+            </div>
+          </paper-card>
 
           <!-- Signature - start -->
           <paper-card class="info-card" heading="Signature Image">
@@ -214,7 +226,7 @@
 
               <div class="horizontal layout wrap">
                 <template is="dom-if" if="[[settings.printDecoration.signatureDataUri]]">
-                <img class="logo-preview" src$="[[settings.printDecoration.signatureDataUri]]">
+                  <img class="logo-preview" src$="[[settings.printDecoration.signatureDataUri]]">
                 </template>
                 <paper-input class="logo-input flex" type="file" accept="image/*" on-change="fileInputChanged2"></paper-input>
               </div>
@@ -239,6 +251,6 @@
     </div>
 
   </template>
-  <script>(function(){Polymer({is:"page-settings",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike],properties:{user:{type:Object,notify:!0},settings:{type:Object,notify:!0},languageSelectedIndex:{type:Number,value:app.lang.defaultLanguageIndex,notify:!0,observer:"languageSelectedIndexChanged"},maximumLogoImageSizeAllowedInBytes:{type:Number,value:1e6}},languageSelectedIndexChanged:function(){var e;return e=this.supportedLanguageList[this.languageSelectedIndex],this.setActiveLanguage(e)},_saveSettings:function(){return this.settings.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.upsert("settings",this.settings,function(e){return function(t){var i;return i=t.serial,"only"===e.settings.serial}}(this))},arrowBackButtonPressed:function(e){return this.domHost.navigateToPreviousPage()},saveButtonPressed:function(e){return this._saveSettings(),this.domHost.showToast("Settings Saved!")},_loadUser:function(){var e;if(e=app.db.find("user"),1===e.length)return this.user=e[0]},_makeSettings:function(){return this.settings={createdByUserSerial:this.user.serial,lastModifiedDatetimeStamp:0,createdDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:null,serial:"only",printDecoration:{headerLine:"",leftSideLine1:"",leftSideLine2:"",leftSideLine3:"",rightSideLine1:"",rightSideLine2:"",rightSideLine3:"",footerLine:"",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT",otherSettings:{patientSignUpDefaultPassword:"123456"},flags:{showFooterLine:!0}}},showFooterLine:function(e){var t,i;i=e.target.checked,"undefined"==typeof this.settings.flags?(t={showFooterLine:i},this.settings.flags=t):this.settings.flags.showFooterLine=i},navigatedIn:function(){var e;return this._loadUser(),e=app.db.find("settings",function(e){var t;return t=e.serial,"only"===t}),1===e.length?this.set("settings",e[0]):this._makeSettings()},navigatedOut:function(){return null},fileInputChanged:function(e){var t,i;return i=new FileReader,t=e.target.files[0],t.size>this.maximumLogoImageSizeAllowedInBytes?void this.domHost.showModalDialog("Please provide a file less than 1mb in size."):(i.readAsDataURL(t),i.onload=function(e){return function(){var t;return t=i.result,e.set("settings.printDecoration.logoDataUri",t)}}(this))},fileInputChanged2:function(e){var t,i;return i=new FileReader,t=e.target.files[0],t.size>this.maximumLogoImageSizeAllowedInBytes?void this.domHost.showModalDialog("Please provide a file less than 1mb in size."):(i.readAsDataURL(t),i.onload=function(e){return function(){var t;return t=i.result,e.set("settings.printDecoration.signatureDataUri",t)}}(this))}})}).call(this);
+  <script>(function(){Polymer({is:"page-settings",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike],properties:{user:{type:Object,notify:!0},settings:{type:Object,notify:!0},languageSelectedIndex:{type:Number,value:app.lang.defaultLanguageIndex,notify:!0,observer:"languageSelectedIndexChanged"},maximumLogoImageSizeAllowedInBytes:{type:Number,value:1e6}},languageSelectedIndexChanged:function(){var t;return t=this.supportedLanguageList[this.languageSelectedIndex],this.setActiveLanguage(t)},_saveSettings:function(){return this.settings.lastModifiedDatetimeStamp=lib.datetime.now(),app.db.upsert("settings",this.settings,function(t){return function(e){var i;return i=e.serial,t.settings.serial===i}}(this))},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},saveButtonPressed:function(t){return this._saveSettings(),this.domHost.showToast("Settings Saved!")},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},_makeSettings:function(){return this.settings={createdByUserSerial:this.user.serial,lastModifiedDatetimeStamp:0,createdDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:null,serial:"only",printDecoration:{headerLine:"",leftSideLine1:"",leftSideLine2:"",leftSideLine3:"",rightSideLine1:"",rightSideLine2:"",rightSideLine3:"",footerLine:"",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT",otherSettings:{patientSignUpDefaultPassword:"123456"},flags:{showFooterLine:!0}}},showFooterLine:function(t){var e,i;i=t.target.checked,"undefined"==typeof this.settings.flags?(e={showFooterLine:i},this.settings.flags=e):this.settings.flags.showFooterLine=i},navigatedIn:function(){var t;return this._loadUser(),t=app.db.find("settings",function(t){var e;return e=t.serial,"only"===e}),1===t.length?this.set("settings",t[0]):this._makeSettings()},navigatedOut:function(){return null},getUploadedFileDataUri:function(t,e){var i;return i=new FileReader,t.size>this.maximumLogoImageSizeAllowedInBytes?void this.domHost.showModalDialog("Please provide a file less than 1mb in size."):(i.readAsDataURL(t),i.onload=function(t){return function(){var t;return t=i.result,e(t)}}(this))},fileInputChanged:function(t){var e;return e=t.target.files[0],this.getUploadedFileDataUri(e,function(t){return function(e){return t.set("settings.printDecoration.logoDataUri",e)}}(this))},fileInputChanged2:function(t){var e;return e=t.target.files[0],this.getUploadedFileDataUri(e,function(t){return function(e){return t.set("settings.printDecoration.signatureDataUri",e)}}(this))},partner1LogoFileInputChanged:function(t){var e;return e=t.target.files[0],this.getUploadedFileDataUri(e,function(t){return function(e){return t.set("settings.printDecoration.partner1LogoDataUri",e)}}(this))},partner2LogoFileInputChanged:function(t){var e;return e=t.target.files[0],this.getUploadedFileDataUri(e,function(t){return function(e){return t.set("settings.printDecoration.partner2LogoDataUri",e)}}(this))},partner3LogoFileInputChanged:function(t){var e;return e=t.target.files[0],this.getUploadedFileDataUri(e,function(t){return function(e){return t.set("settings.printDecoration.partner3LogoDataUri",e)}}(this))}})}).call(this);
 //# sourceMappingURL=page-settings.coffee-compiled.js.map</script>
 </dom-module>
