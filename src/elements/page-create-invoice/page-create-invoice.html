@@ -9,6 +9,7 @@
 <link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower-assets/iron-list/iron-list.html">
 <link rel="import" href="../../bower-assets/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower-assets/iron-input/iron-input.html">
 <link rel="import" href="../../bower-assets/paper-dialog/paper-dialog.html">
 
 <!-- Custom AutoComplete -->
@@ -149,6 +150,36 @@
         }
       }
 
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table th {
+        text-align: left;
+        background-color: var(--paper-grey-50);
+      }
+
+      .table td,
+      .table th {
+        vertical-align: left;
+        padding: 15px;
+        border-top: 1px solid var(--paper-grey-500);
+      }
+
+      .calculation .table th {
+        text-align: right;
+        background-color: transparent;
+      }
+
+      .calculation .table td,
+      .calculation .table th {
+        vertical-align: left;
+        padding: 15px;
+        border-top: 1px solid var(--paper-grey-300);
+      }
+
+
       @media only screen and (max-width: 1024px) {
         .page-invoice {
           @apply(--layout-vertical);
@@ -228,109 +259,88 @@
 
           <paper-card heading="Invoice">
             <div class="card-content">
-              <!-- <div class="p-16">
-                <vaadin-combo-box class="flex" label="Type of Invoice" id="invoiceType" items="[[invoiceCategoryList.data]]" allow-custom-value="true"
-                  on-custom-value-set="invoiceTypeCustomValueSet" selected-item="{{invoice.category}}">
-                </vaadin-combo-box>
-                <span class="type caption secondary">Press Enter after typing Custom Category</span>
-              </div> -->
-
-              <div class="layout horizontal start invoice-item">
-                <div class="flex-1">
-                  <strong>Unit Price</strong>
-                </div>
-                <div class="flex-1">
-                  <strong>Qty</strong>
-                </div>
-                <div class="flex-7">
-                  <strong>Items</strong>
-                </div>
-                <div class="flex-2">
-                  <strong>Price</strong>
-                </div>
-              </div>
               <template is="dom-if" if="[[!invoice.data.length]]">
                 <div class="layout horizontal center center-justified">Add Item</div>
               </template>
-              <template id="invoice-item-repeater" is="dom-repeat" items="{{invoice.data}}">
-                <paper-item class="invoice-item">
-                  <template is="dom-if" if="[[item.price]]">
-                    <div class="flex-1">[[item.price]]</div>
-                  </template>
-                  <template is="dom-if" if="[[!item.price]]">
-                    <paper-input class="flex-1" type="number" on-change="itemUnitPriceChanged" no-label-float style="padding-right:10px;"></paper-input>
-                  </template>
-                  <paper-input class="flex-1" label="Qty" type="number" value="1" on-input="quantityChanged" no-label-float style="padding-right:10px;"></paper-input>
-                  <div class="flex-7 layout vertical">
-                    <div>
-                      <strong>[[item.name]]</strong>
-                      <template is="dom-if" if="[[item.type]]">
-                        <span class="type secondary">[[item.type]]</span>
+
+              <table class="table">
+                <tr>
+                  <th width="80">Unit Price</th>
+                  <th width="80">Qty</th>
+                  <th>Description</th>
+                  <th width="80">Gross</th>
+                  <th width="80"></th>
+                </tr>
+                <template id="invoice-item-repeater" is="dom-repeat" items="{{invoice.data}}">
+                  <tr>
+                    <td>
+                      <template is="dom-if" if="[[item.price]]">
+                        <div class="flex-1">[[item.price]]</div>
                       </template>
-                    </div>
-                    <template is="dom-if" if="[[item.itemList]]">
-                      <ul>
-                        <template is="dom-repeat" items="[[item.itemList]]" as="packageItem">
-                          <li>[[packageItem.name]]</li>
+                      <template is="dom-if" if="[[!item.price]]">
+                        <paper-input class="flex-1" type="number" on-change="itemUnitPriceChanged" no-label-float style="padding-right:10px;"></paper-input>
+                      </template>
+                    </td>
+                    <td>
+                      <paper-input class="flex-1" label="Qty" type="number" value="[[item.qty]]" on-input="quantityChanged" no-label-float style="padding-right:10px;"></paper-input>
+                    </td>
+                    <td>
+                      <div class="flex-7 layout vertical">
+                        <div>
+                          <strong>[[item.name]]</strong>
+                          <template is="dom-if" if="[[item.type]]">
+                            <span class="type secondary">[[item.type]]</span>
+                          </template>
+                        </div>
+                        <template is="dom-if" if="[[item.itemList]]">
+                          <ul>
+                            <template is="dom-repeat" items="[[item.itemList]]" as="packageItem">
+                              <li>[[packageItem.name]]</li>
+                            </template>
+                          </ul>
                         </template>
-                      </ul>
-                    </template>
-                  </div>
-                  <div class="flex-2">[[item.totalPrice]]
-                    <span class="text-mute">BDT</span>
-                  </div>
-                  <paper-icon-button class="flex-1" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
-                </paper-item>
-              </template>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="flex-2">[[$calculateItemTotalPrice(item.price, item.qty)]]
+                        <span class="text-mute">BDT</span>
+                      </div>
+                    </td>
+                    <td>
+                      <paper-icon-button class="flex-1" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                    </td>
+                  </tr>
+
+
+                </template>
+              </table>
 
               <div class="layout vertical calculation p-16 m-vertical-16">
-                <!-- <div class="layout horizontal end">
-                  <paper-dropdown-menu>
-                    <paper-menu selected="{{discountType}}" id="discountType" class="dropdown-content" on-iron-select="discountTypeChanged">
-                      <paper-item>Percentage</paper-item>
-                      <paper-item>Amount</paper-item>
-                    </paper-menu>
-                  </paper-dropdown-menu>
-                  <paper-input label="Discount" type="number" value="{{invoice.discount}}" max="99" maxlength="2" no-label-float>
-                    <div suffix>Discount</div>
-                  </paper-input>
-                </div> -->
 
-                <!-- <div class="layout horizontal type body-lead">Gross - [[invoiceGrossPrice]] BDT</div> -->
-                <!-- <div class="text-mute layout horizontal">Discount [[invoiceDiscountAmt]]</div> -->
-                <div class="layout horizontal type title-2">
-                  <strong>Total [[invoice.totalBilled]] BDT</strong>
-                </div>
-                <div class="layout horizontal">
-                  <paper-input class="big-text-input" label="Paid Amount" value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]" allowed-pattern="[0-9]"
-                    auto-validate no-label-float error-message="Amount can't be more than Total">
-                    <div prefix>Paid Amount</div>
-                  </paper-input>
-                </div>
-                <div class="layout horizontal text-warning type body-lead">Due [[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</div>
-                <!-- <div class="layout horizontal">
-                  <paper-input class="big-text-input" label="Last Payment" type="number" value="{{invoice.lastPaid}}" min="0" on-change="lastPaymentChanged"
-                    allowed-pattern="[0-9]" disabled$="[[!invoice.paid]]" no-label-float error-message="Last Payment Can not be more than the Due Amount">
-                    <div prefix>Last Payment</div>
-                  </paper-input>
-                </div> -->
-                <div class="layout horizontal text-success type body-lead bold">Total Amount Received: [[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</div>
+                <table class="table">
+                  <tr>
+                    <th>Total</th>
+                    <td>[[invoice.totalBilled]] BDT</td>
+                  </tr>
+                  <tr>
+                    <th>Paid Amount</th>
+                    <td width="160">
+                      <input is="iron-input" type="number" value="{{invoice.paid::input}}" min="0" max="[[invoice.totalBilled]]" allowed-pattern="[0-9]"
+                        auto-validate />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Due</th>
+                    <td>[[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</td>
+                  </tr>
+                  <tr>
+                    <th>Total Amount Received:</th>
+                    <td>[[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</td>
+                  </tr>
+                </table>
 
               </div>
 
-              <!-- <div class="m-left-10 type subhead bold">Third Party Commission: </div>
-              <div class="layout horizontal justified center">
-                <div class="layout horizontal">
-                  <paper-autocomplete class="m-left-10" label="Name" text="{{invoice.commission.name}}" no-label-float source="[[thirdPartyUserListSourceMap]]"
-                    on-autocomplete-selected="thirdPartyUserSelected" disable-show-clear></paper-autocomplete>
-                  <paper-input class="m-left-10" label="Mobile" type="tel" value="{{invoice.commission.mobile}}" no-label-float></paper-input>
-                  <paper-input class="m-left-10" label="Total Billed" value="{{invoice.commission.billed}}" no-label-float></paper-input>
-                  <paper-input class="m-left-10" label="Percentage" value="{{invoice.commission.percentage}}" no-label-float>
-                    <div suffix>%</div>
-                  </paper-input>
-                  <paper-input class="m-left-10" label="Commission" value="{{invoice.commission.amount}}" no-label-float></paper-input>
-                </div>
-              </div> -->
 
             </div>
             <div class="card-actions vertical layout">

@@ -5521,13 +5521,14 @@ Polymer {
   _addMedicinePriceToInvoice: (itemName, qty, visitSerial)->
     matchedItem = (item for item in @medicineCompositionList when item.brandName is itemName)[0]
     invoiceItem = {
-      name: matchedItem.brandName or itemName
+      name: matchedItem?.brandName or itemName
       qty: qty
       price: matchedItem.retailPrice or 0
       actualCost: matchedItem.actualCost or 0
-      category: "prescription"
+      category: "medicine"
       subCategory: ""
       serial: null
+      visitSerial: visitSerial
       organizationId: @organization.idOnServer
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
@@ -5555,6 +5556,7 @@ Polymer {
         category: "custom"
         subCategory: ""
         serial: null
+        visitSerial: visitSerial
         organizationId: @organization.idOnServer
         createdDatetimeStamp: lib.datetime.now()
         lastModifiedDatetimeStamp: lib.datetime.now()

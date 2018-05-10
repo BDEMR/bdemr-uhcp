@@ -343,7 +343,7 @@ Polymer {
     item = e.model.item
     item.qty = 1
     item.price = item.price?= 0
-    item.totalPrice = item.price?= 0
+    # item.totalPrice = item.price?= 0
     @push 'invoice.data', item
 
   deleteInvoiceItem: (e)->
@@ -359,7 +359,8 @@ Polymer {
     if el.value > due
       el.invalid = true
 
-  
+  $calculateItemTotalPrice: (price=0, qty=1)-> return qty * price
+
   itemUnitPriceChanged: (e)->
     value = parseInt e.target.value
     el = @locateParentNode e.target, 'PAPER-ITEM'
@@ -387,34 +388,24 @@ Polymer {
 
   calculateTotalPrice: ->
     price = 0
-    discount = parseInt @invoice.discount?= 0
 
     for item in @invoice.data
       price += parseInt (item.price * item.qty)
 
-    if discount
-      if @discountType is 0
-        discountAmt = (price * discount /100)
-        priceAfterDiscount = price - discountAmt
-      else
-        discountAmt = discount
-        priceAfterDiscount = price - discount
-      
-    else
-      priceAfterDiscount = price
-
     @set "invoiceGrossPrice", price
-    @set "invoiceDiscountAmt", discountAmt
-
-    @set 'invoice.totalBilled', priceAfterDiscount
+    @set 'invoice.totalBilled', price
 
   _calculateDue: (total=0, paid=0, lastPaid=0)->
+    paid = parseInt paid
+    paid = 0 if Number.isNaN(paid)
     if total > 0
-      return total- ((parseInt paid) + (parseInt lastPaid) )
+      return total- ((paid) + (parseInt lastPaid) )
       
 
   _calculateTotalAmtReceived: (paid=0, lastPaid=0)->
-    totalAmountReceieved = (parseInt paid) + (parseInt lastPaid)
+    paid = parseInt paid
+    paid = 0 if Number.isNaN(paid)
+    totalAmountReceieved = (paid) + (parseInt lastPaid)
     @set 'invoice.totalAmountReceieved', totalAmountReceieved
     return totalAmountReceieved
 

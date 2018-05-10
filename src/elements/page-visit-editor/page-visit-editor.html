@@ -1479,6 +1479,7 @@
                       <thead>
                         <tr>
                           <th>Service</th>
+                          <th>Qty</th>
                           <th>Price</th>
                         </tr>
                       </thead>
@@ -1486,24 +1487,27 @@
                         <template is="dom-repeat" items="[[invoice.data]]">
                           <tr>
                             <td>[[item.name]]</td>
+                            <td>[[item.qty]]</td>
                             <td>
-                              [[item.price]]
-                              <paper-icon-button class="type danger" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                              <div class="layout horizontal center">
+                                <span class="flex">[[item.price]]</span>
+                                <paper-icon-button class="type danger" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                              </div>
                             </td>
                           </tr>
                         </template>
                       </tbody>
                       <tfoot>
                         <tr>
-                          <th>Total</th>
+                          <th colspan="2">Total</th>
                           <th>[[invoice.totalBilled]]</th>
                         </tr>
                         <tr>
-                          <td>Available Outdoor Balance</td>
+                          <td colspan="2">Available Outdoor Balance</td>
                           <td>[[patientServiceBalance.outdoorBalance]]</td>
                         </tr>
                         <tr>
-                          <th>Balance After Deduction</th>
+                          <th colspan="2">Balance After Deduction</th>
                           <th>[[calculatedOutDoorBalanceAfterDeduction(patientServiceBalance.outdoorBalance, invoice.totalBilled)]]</th>
                         </tr>
                       </tfoot>
