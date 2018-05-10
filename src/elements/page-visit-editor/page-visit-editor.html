@@ -1714,7 +1714,7 @@
                       <div class="form-group">
                         <!--Dose-->
                         <div>
-                          <vaadin-combo-box label="Dose" items="[[doseList]]" allow-custom-value="true" on-keyup="doseSelected" value="{{medicine.doseDirection}}"></vaadin-combo-box>
+                          <vaadin-combo-box label="Dose" items="[[doseList]]" allow-custom-value="true" value="{{medicine.doseDirection}}" on-value-changed="doseDirectionValueChanged"></vaadin-combo-box>
                         </div>
                         <!--Dose-->
                       </div>

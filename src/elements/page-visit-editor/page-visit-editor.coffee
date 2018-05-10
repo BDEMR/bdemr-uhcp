@@ -814,9 +814,7 @@ Polymer {
 
 
   observers : [
-    '_computeQuantityPerPrescription(medicine.dose, medicine.timesPerInterval, intervalInDays, medicine.endDateTimeStamp, medicine.startDateTimeStamp)'
-    '_computeIntervalInHours(medicine.timesPerInterval, intervalInDays)'
-    
+    '_computeQuantityPerPrescription(medicine.intakePerDay, medicine.endDateTimeStamp, medicine.startDateTimeStamp)'
   ]
 
 
@@ -1032,9 +1030,9 @@ Polymer {
   ### Prescription - start
   #####################################################################
 
-  doseSelected: (e)->
-    if e.which is 13
-      @medicine.doseDirection = e.target.value
+  # doseSelected: (e)->
+  #   if e.which is 13
+  #     @medicine.doseDirection = e.target.value
 
   
   _isFavoriteMedicineContentHidden: (index, favoriteMedicineShownIndex)->
@@ -1375,20 +1373,16 @@ Polymer {
       manufacturer: ''
       dose: 1
       doseDirection: ''
-      timeOfDay: {
-        morning: 0
-        noon: 0
-        night: 0
-      }
       doseUnit: ''
       form: ''
       startDateTimeStamp: lib.datetime.mkDate new Date
       endDateTimeStamp: null
       route: ()-> return @routeList[@routeSelectedIndex]
       direction: ()-> return @directionList[@directionSelectedIndex]
-      quantityPerPrescription: 1
-      numberOfRefill: 1
+      quantityPerPrescription: 0
+      numberOfRefill: 0
       comments: ''
+      intakePerDay: 0
       intakeDateTimeStampList: []
       nextDoseDateTimeStamp: null
       timesPerInterval: 1
@@ -1579,6 +1573,26 @@ Polymer {
 
   # Observing Changes
 
+  convertStringToDecimal: (item)->
+    strArr = item.split("/")
+    newVal = (parseInt strArr[0])/(parseInt strArr[1])
+    return newVal
+  
+  doseDirectionValueChanged: (e)->
+    value = e.detail.value
+    return unless value
+    valueStrArr = value.split("+")
+    totalDose = valueStrArr.reduce((total, currentVal)=>
+      if currentVal.length > 1
+        newValue = @convertStringToDecimal currentVal
+        return total + newValue
+      else
+        return total + (parseInt currentVal)
+    , 0)
+    @medicine.intakePerDay = totalDose
+    @medicine.doseDirection = e.detail.value
+
+
   _doseValueChanged: (e)->
     if @medicine.dose > 20
       @medicine.dose = 20
@@ -1587,14 +1601,6 @@ Polymer {
       @medicine.dose = 1
       e.target.value = 1
     
-  
-  _compouteTimesPerInterval: (morning, noon, night)->
-    interval = (parseInt morning) + (parseInt noon) + (parseInt night)
-    
-    if interval is 0
-      @set 'medicine.timesPerInterval', 1
-    else
-      @set 'medicine.timesPerInterval', interval
   
   _computeIntervalInHours: (timesPerInterval, intervalInDays)->
     # console.log intervalInDays
@@ -1722,16 +1728,14 @@ Polymer {
     return null if @endDateTimeTypeSelectedIndex is 0
     return lib.datetime.mkDate endDate, 'dd-mmm-yyyy'
 
-  _computeQuantityPerPrescription: (dose, timesPerInterval, intervalInDays, endDate, startDate)->
+  _computeQuantityPerPrescription: (intakePerDay, endDate, startDate)->
     # console.log (Date.parse startDate)
     if (Date.parse endDate) > 0
       oneDay = 1000*60*60*24
       diffMs = (Date.parse endDate) - (Date.parse startDate)
       totalDay =  Math.round(diffMs / oneDay)
       #FOR ROUNDING TO 2 Decimal, quantityPerPrescription = (Math.round (timesPerInterval * (totalDay/intervalInDays)) * 100)/100
-      quantityPerPrescription = ( Math.ceil (timesPerInterval * (totalDay / intervalInDays)) ) * dose
-    else
-       quantityPerPrescription = timesPerInterval * dose
+      quantityPerPrescription = Math.ceil (totalDay * intakePerDay)
     @set 'medicine.quantityPerPrescription', quantityPerPrescription
 
   asNeededSelected: (e)->
@@ -4692,7 +4696,7 @@ Polymer {
 
  
     # Load User
-    @_loadUser =>
+    @_loadUser ()=>
       params = @domHost.getPageParams()
 
       # Load Settings Data
