@@ -1442,20 +1442,10 @@ Polymer {
     for item in @medicineCompositionList
       brandNameMap[item.brandName] = null
       manufacturerMap[item.manufacturer] = null
-      if item.composition
-        genericNameMap[item.composition[0].genericName] = null
-    # @brandNameSourceDataList = ({text: item, value: item} for item in Object.keys brandNameMap)
+      genericNameMap[item.genericName] = null
+    @brandNameSourceDataList = ({text: item, value: item} for item in Object.keys brandNameMap)
     @manufacturerSourceDataList = ({text: item, value: item} for item in Object.keys manufacturerMap)
     @genericNameSourceDataList = ({text: item, value: item} for item in Object.keys genericNameMap)
-
-    # Combining Brand Strengh and Type in One line
-    for item in @medicineCompositionList
-      if item.composition?.length > 1
-        for comp in item.composition
-          @brandNameSourceDataList.push {text: "#{item.brandName} [#{comp.strength}] #{item.type}", value: item.brandName}
-      else
-        @brandNameSourceDataList.push {text: "#{item.brandName} [#{item.composition?[0].strength}] #{item.type}", value: item.brandName}
-
 
 
   brandNameAutocompleteSelected: (e)->
@@ -1464,8 +1454,7 @@ Polymer {
     
     if @matchingMedicineList.length isnt 0
       @set 'medicine.manufacturer', @matchingMedicineList[0].manufacturer
-      @set 'medicine.genericName', @matchingMedicineList[0].composition[0].genericName
-      
+      @set 'medicine.genericName', @matchingMedicineList[0].genericName
       selectedMedicineFormList = lib.array.unique (item.type for item in @matchingMedicineList)
       @medicineFormList = []
       @medicineFormList = selectedMedicineFormList
@@ -1492,7 +1481,7 @@ Polymer {
     
     for item in @medicineCompositionList
      if item.composition
-       if item.composition[0].genericName is genericName
+       if item.genericName is genericName
         @matchingMedicineList.push item
 
     brandNameMap = {}
@@ -1516,7 +1505,7 @@ Polymer {
       for item in matchingMedicineList
         brandNameMap[item.brandName] = null
         if item.composition
-          genericNameMap[item.composition[0].genericName] = null
+          genericNameMap[item.genericName] = null
       @genericNameSourceDataList = ({text: item, value: item} for item in Object.keys genericNameMap)
       @brandNameSourceDataList = ({text: item, value: item} for item in Object.keys brandNameMap)
       # @manufacturerDependency = "by #{manufacturer} only"
@@ -1630,7 +1619,7 @@ Polymer {
       strengthList = []
       for medicine in @matchingMedicineList
         if medicine.type is item
-          strengthList.push medicine.composition[0].strength
+          strengthList.push medicine.strength
      
       @set 'strengthList', []
       @set 'strengthList', strengthList
@@ -1787,7 +1776,7 @@ Polymer {
 
         @domHost.showToast "Medicine Added!"
 
-        @_addToInvoice medicine.data.brandName, @visit.serial
+        @_addMedicinePriceToInvoice medicine.data.brandName, medicine.data.quantityPerPrescription, @visit.serial
 
         @_resetMedicineForm()
         @_listPrescribedMedications @prescription.serial
@@ -5529,6 +5518,29 @@ Polymer {
     @$.dialogReferral.toggle()
 
 
+  _addMedicinePriceToInvoice: (itemName, qty, visitSerial)->
+    matchedItem = (item for item in @medicineCompositionList when item.brandName is itemName)[0]
+    invoiceItem = {
+      name: matchedItem.brandName or itemName
+      qty: qty
+      price: matchedItem.retailPrice or 0
+      actualCost: matchedItem.actualCost or 0
+      category: "prescription"
+      subCategory: ""
+      serial: null
+      organizationId: @organization.idOnServer
+      createdDatetimeStamp: lib.datetime.now()
+      lastModifiedDatetimeStamp: lib.datetime.now()
+      createdByUserSerial: @user.serial
+    }
+    if Object.keys(@invoice).length
+      @push 'invoice.data', invoiceItem
+    else
+      @_makeNewInvoice()
+      @push 'invoice.data', invoiceItem
+    @_saveInvoice()
+
+  
   _addToInvoice: (itemName, visitSerial)->
     matchedItem = (item for item in @priceList when item.name is itemName)[0]
     if matchedItem
