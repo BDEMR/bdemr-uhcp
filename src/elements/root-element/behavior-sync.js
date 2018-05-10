@@ -111,9 +111,9 @@ app.behaviors.local['root-element'].sync = {
     const removedDocList = [];
 
     const lastSyncedDatetimeStamp = this._getLastSyncedDatetimeStamp();
-    // const organizationId = this.getCurrentOrganization().idOnServer;
-    // const patientList = app.db.find('patient-list');
-    // const knownPatientSerialList = patientList.map((patient) => patient.serial);
+    const organizationId = this.getCurrentOrganization().idOnServer;
+    const patientList = app.db.find('patient-list');
+    const knownPatientSerialList = patientList.map((patient) => patient.serial);
     const { apiKey } = this.getCurrentUser();
 
     for (let clientCollectionName of collectionNameList) {
@@ -130,6 +130,8 @@ app.behaviors.local['root-element'].sync = {
 
     const data = {
       apiKey,
+      organizationId,
+      knownPatientSerialList,
       lastSyncedDatetimeStamp,
       clientToServerDocList,
       removedDocList,

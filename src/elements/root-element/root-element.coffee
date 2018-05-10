@@ -916,7 +916,7 @@ Polymer {
         @async => @showModalDialog(errMessage);
       else
         # @$$('#sync-dialog').toggle()
-        @reloadPage() 
+        @reloadPage()
     
   # sync code moved to 'mixin-call-sync.coffee' file
 

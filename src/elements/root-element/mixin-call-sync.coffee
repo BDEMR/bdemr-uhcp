@@ -3,7 +3,7 @@ unless app.behaviors.local['root-element']
 app.behaviors.local['root-element'].syncCall = 
 
   _syncOnlyPatientTestResults: (cbfn)->
-      @_sync cbfn
+    @_sync cbfn
 
   _syncOnlyPatientGallery: (cbfn)->
     @_sync cbfn
