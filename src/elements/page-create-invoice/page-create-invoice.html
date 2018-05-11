@@ -179,6 +179,9 @@
         border-top: 1px solid var(--paper-grey-300);
       }
 
+      input:invalid {
+        border: 1px solid red;
+      }
 
       @media only screen and (max-width: 1024px) {
         .page-invoice {
@@ -260,62 +263,64 @@
           <paper-card heading="Invoice">
             <div class="card-content">
               <template is="dom-if" if="[[!invoice.data.length]]">
-                <div class="layout horizontal center center-justified">Add Item</div>
+                <div class="layout horizontal center center-justified p-16">Add Item</div>
               </template>
 
-              <table class="table">
-                <tr>
-                  <th width="80">Unit Price</th>
-                  <th width="80">Qty</th>
-                  <th>Description</th>
-                  <th width="80">Gross</th>
-                  <th width="80"></th>
-                </tr>
-                <template id="invoice-item-repeater" is="dom-repeat" items="{{invoice.data}}">
+              <template is="dom-if" if="[[invoice.data.length]]">
+                <table class="table">
                   <tr>
-                    <td>
-                      <template is="dom-if" if="[[item.price]]">
-                        <div class="flex-1">[[item.price]]</div>
-                      </template>
-                      <template is="dom-if" if="[[!item.price]]">
-                        <paper-input class="flex-1" type="number" on-change="itemUnitPriceChanged" no-label-float style="padding-right:10px;"></paper-input>
-                      </template>
-                    </td>
-                    <td>
-                      <paper-input class="flex-1" label="Qty" type="number" value="[[item.qty]]" on-input="quantityChanged" no-label-float style="padding-right:10px;"></paper-input>
-                    </td>
-                    <td>
-                      <div class="flex-7 layout vertical">
-                        <div>
-                          <strong>[[item.name]]</strong>
-                          <template is="dom-if" if="[[item.type]]">
-                            <span class="type secondary">[[item.type]]</span>
+                    <th width="80">Unit Price</th>
+                    <th width="80">Qty</th>
+                    <th>Description</th>
+                    <th width="80">Gross</th>
+                    <th width="80"></th>
+                  </tr>
+                  <template id="invoice-item-repeater" is="dom-repeat" items="{{invoice.data}}">
+                    <tr>
+                      <td>
+                        <template is="dom-if" if="[[item.price]]">
+                          <div class="flex-1">[[item.price]]</div>
+                        </template>
+                        <template is="dom-if" if="[[!item.price]]">
+                          <paper-input class="flex-1" type="number" on-change="itemUnitPriceChanged" no-label-float style="padding-right:10px;"></paper-input>
+                        </template>
+                      </td>
+                      <td>
+                        <paper-input class="flex-1" label="Qty" type="number" value="[[item.qty]]" on-input="quantityChanged" no-label-float style="padding-right:10px;"></paper-input>
+                      </td>
+                      <td>
+                        <div class="flex-7 layout vertical">
+                          <div>
+                            [[item.name]]
+                            <template is="dom-if" if="[[item.type]]">
+                              <span class="type secondary">[[item.type]]</span>
+                            </template>
+                          </div>
+                          <template is="dom-if" if="[[item.itemList]]">
+                            <ul>
+                              <template is="dom-repeat" items="[[item.itemList]]" as="packageItem">
+                                <li>[[packageItem.name]]</li>
+                              </template>
+                            </ul>
                           </template>
                         </div>
-                        <template is="dom-if" if="[[item.itemList]]">
-                          <ul>
-                            <template is="dom-repeat" items="[[item.itemList]]" as="packageItem">
-                              <li>[[packageItem.name]]</li>
-                            </template>
-                          </ul>
-                        </template>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="flex-2">[[$calculateItemTotalPrice(item.price, item.qty)]]
-                        <span class="text-mute">BDT</span>
-                      </div>
-                    </td>
-                    <td>
-                      <paper-icon-button class="flex-1" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
-                    </td>
-                  </tr>
+                      </td>
+                      <td>
+                        <div class="flex-2">[[$calculateItemTotalPrice(item.price, item.qty)]]
+                          <span class="text-mute">BDT</span>
+                        </div>
+                      </td>
+                      <td>
+                        <paper-icon-button class="flex-1" icon="delete" on-tap="deleteInvoiceItem"></paper-icon-button>
+                      </td>
+                    </tr>
 
 
-                </template>
-              </table>
+                  </template>
+                </table>
+              </template>
 
-              <div class="layout vertical calculation p-16 m-vertical-16">
+              <div class="layout vertical calculation">
 
                 <table class="table">
                   <tr>
@@ -324,9 +329,9 @@
                   </tr>
                   <tr>
                     <th>Paid Amount</th>
-                    <td width="160">
-                      <input is="iron-input" type="number" value="{{invoice.paid::input}}" min="0" max="[[invoice.totalBilled]]" allowed-pattern="[0-9]"
-                        auto-validate />
+                    <td width="190">
+                      <input style="font-size: 16px" is="iron-input" type="number" bind-value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]"
+                        auto-validate prevent-invalid-input required/>
                     </td>
                   </tr>
                   <tr>

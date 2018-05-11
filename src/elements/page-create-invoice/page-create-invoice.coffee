@@ -363,14 +363,14 @@ Polymer {
 
   itemUnitPriceChanged: (e)->
     value = parseInt e.target.value
-    el = @locateParentNode e.target, 'PAPER-ITEM'
+    el = @locateParentNode e.target, 'TR'
     repeater = @$$ '#invoice-item-repeater'
     index = repeater.indexForElement el
     model = repeater.modelForElement el
     invoiceItem = @invoice.data[index]
     invoiceItem.price = value
     invoiceItem.totalPrice = value * invoiceItem.qty
-    model.set 'item.totalPrice', (value * model.item.qty)
+    model.set 'item.price', value
     @splice 'invoice.data', index, 1, invoiceItem
   
   quantityChanged: (e)->
@@ -400,6 +400,7 @@ Polymer {
     paid = 0 if Number.isNaN(paid)
     if total > 0
       return total- ((paid) + (parseInt lastPaid) )
+   
       
 
   _calculateTotalAmtReceived: (paid=0, lastPaid=0)->
