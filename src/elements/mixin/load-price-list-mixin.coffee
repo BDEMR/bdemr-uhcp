@@ -11,49 +11,56 @@ app.behaviors.local.loadPriceListMixin =
 
   _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
   
-  _loadPriceList: (organizationIdentifier, cbfn)->
-    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
+  # _loadPriceList: (organizationIdentifier, cbfn)->
+  #   lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
 
-    if lastSyncedDatetimeStamp
-      priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-      if priceListFromLocalStorage.length
-        @set 'priceList', priceListFromLocalStorage
-        cbfn priceListFromLocalStorage
-      else 
-        @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-          @_insertItemIntoDatabase priceListFromFile
-          @set 'priceList', priceListFromFile
-          cbfn priceListFromFile
-    else
-      @domHost._syncOnlyPriceList ()=> 
-        window.localStorage.setItem 'lastSyncedDatetimeStamp', lib.datetime.now()
-        @domHost.reloadPage() 
+  #   if lastSyncedDatetimeStamp
+  #     priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
+  #     if priceListFromLocalStorage.length
+  #       @set 'priceList', priceListFromLocalStorage
+  #       cbfn priceListFromLocalStorage
+  #     else 
+  #       @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
+  #         @_insertItemIntoDatabase priceListFromFile
+  #         @set 'priceList', priceListFromFile
+  #         cbfn priceListFromFile
+  #   else
+  #     @domHost._syncOnlyPriceList ()=> 
+  #       window.localStorage.setItem 'lastSyncedDatetimeStamp', lib.datetime.now()
+  #       @domHost.reloadPage() 
+
+  _loadPriceList: (organizationIdentifier, cbfn)->
+    @_createNewPriceList (priceListFromFile)=>
+      # @_insertItemIntoDatabase priceListFromFile
+      @set 'priceList', priceListFromFile
+      cbfn priceListFromFile
 
   _prepareNewItemForDB: (data)->
-    return Object.assign data, {
-      serial: @generateSerialForPriceListItem()
-      organizationId: @organization.idOnServer
-      createdDatetimeStamp: lib.datetime.now()
-      lastModifiedDatetimeStamp: lib.datetime.now()
-      createdByUserSerial: @user.serial
-    }
-  
+    data.serial = @generateSerialForPriceListItem()
+    data.organizationId = @organization.idOnServer
+    data.createdDatetimeStamp = lib.datetime.now()
+    data.lastModifiedDatetimeStamp = lib.datetime.now()
+    data.createdByUserSerial = @user.serial
+    return data
+    
   _preparePriceListData: (priceList)-> 
-    priceList.map (item)=> 
-      newItem = @_prepareNewItemForDB item
-      newItem.actualCost = newItem.actualCost or item.price
+    return priceList.map (newItem)=> 
+      # newItem = @_prepareNewItemForDB item
+      newItem.actualCost = newItem.actualCost or newItem.price
       newItem.qty = newItem.qty or null
       return newItem
   
-  _getPriceListFromFile: (fileName, cbfn)->
-    @domHost.getStaticData fileName, (priceList)=>
-      cbfn priceList
-
-  _createNewPriceList: (organizationIdentifier, cbfn)->
-    @_getPriceListFromFile 'uhcpInvoicePriceList', (priceList)=>
+  _createNewPriceList: (cbfn)->
+    @domHost.getStaticData 'uhcpInvoicePriceList', (priceList)=>
       priceListData = @_preparePriceListData priceList
       cbfn priceListData
 
   _insertItemIntoDatabase: (priceList)->
-    for item in priceList
+    app.db.__allowCommit = false
+    for item, index in priceList
+      console.log item
+      if index is priceList.length-1
+        app.db.__allowCommit = true
       app.db.insert 'organization-price-list', item
+
+    app.db.__allowCommit = true

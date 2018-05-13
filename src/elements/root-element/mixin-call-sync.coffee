@@ -27,7 +27,7 @@ app.behaviors.local['root-element'].syncCall =
 
     @_syncTemporaryOfflinePccPatients =>
 
-      collector1 = new lib.util.Collector 43
+      collector1 = new lib.util.Collector 42
 
       @_syncUser @syncDoctorFavoriteMedicationConfig, ()=> 
         @syncCompleted++
@@ -57,12 +57,6 @@ app.behaviors.local['root-element'].syncCall =
         @syncCompleted++
         collector1.collect 'A1', null
         
-
-      # @_syncPatients @syncPatientListConfig, ()=> 
-        @syncCompleted++
-        collector1.collect 'A1', null
-        
-
       @_syncPatients @syncVisitConfig, ()=> 
         @syncCompleted++
         collector1.collect 'A1', null
@@ -203,9 +197,9 @@ app.behaviors.local['root-element'].syncCall =
         
 
       # Invoice Related data
-      @_syncOrganizationData @syncOrganizationPriceList, ()=> 
-        @syncCompleted++
-        collector1.collect 'A1', null
+      # @_syncOrganizationData @syncOrganizationPriceList, ()=> 
+      #   @syncCompleted++
+      #   collector1.collect 'A1', null
         
       @_syncOrganizationData @syncInventoryList, ()=> 
         @syncCompleted++

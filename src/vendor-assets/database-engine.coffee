@@ -59,6 +59,8 @@ class DatabaseEngine
 
     @definition = {}
 
+    @__allowCommit = true
+
   _saveDatabase: ->
 
     @database.lastSavedDatetimeStamp = (new Date).getTime()
@@ -160,9 +162,8 @@ class DatabaseEngine
 
   _notifyDatabaseChange: (type, param1 = null, param2 = null, param3 = null)->
 
-    ## TODO Factor in @options.commitDelay
-
-    @_saveDatabase()
+    if @__allowCommit
+      @_saveDatabase()
 
   getCollectionNameList: ->
 
