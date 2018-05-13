@@ -4066,6 +4066,9 @@ Polymer {
         rightSideLine3: 'My Contact'
         footerLine: 'A simple message on the bottom'
         logoDataUri: null
+        partner1LogoDataUri: null
+        partner2LogoDataUri: null
+        partner3LogoDataUri: null
       billingTargetEmailAddress: ''
       nsqipTargetEmailAddress: ''
       monetaryUnit: 'BDT'
