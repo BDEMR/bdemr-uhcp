@@ -129,9 +129,13 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
-                  <template class="header">Chief Complaint</template>
+                  <template class="header">Symptoms</template>
                   <template>
-                    <span>N/A</span>
+                    <ul>
+                      <template is="dom-repeat" items="[[item.symptoms.symptomsList]]" as="symptoms">
+                        <ol>[[symptoms.name]]</ol>
+                      </template>
+                    </ul>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
@@ -157,7 +161,8 @@
                 <vaadin-grid-column resizable="">
                   <template class="header">Referral</template>
                   <template>
-                    <span>N/A</span>
+                    <div>[[item.referral.doctorName]]</div>
+                    <div class="type caption">[[item.referral.speciality]]</div>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
