@@ -2786,9 +2786,15 @@
         <div class="horizontal layout center b-top">
           <div class="partner-logo layout">
             <div class="horizontal layout center center-justified">
-              <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.partner1LogoDataUri]]" alt="">
-              <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.partner2LogoDataUri]]" alt="">
-              <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.partner3LogoDataUri]]" alt="">
+              <template is="dom-if" if="[[settings.printDecoration.partner1LogoDataUri]]">
+                <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.partner1LogoDataUri]]" alt="">
+              </template>
+              <template is="dom-if" if="[[settings.printDecoration.partner2LogoDataUri]]">
+                <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.partner2LogoDataUri]]" alt="">
+              </template>
+              <template is="dom-if" if="[[settings.printDecoration.partner3LogoDataUri]]">
+                <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.partner3LogoDataUri]]" alt="">
+              </template>
             </div>
           </div>
           <template is="dom-if" if="[[settings.flags.showFooterLine]]">
