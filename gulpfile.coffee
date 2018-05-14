@@ -159,6 +159,8 @@ gulp.task 'html-replace', ->
   gulp.src 'build-debug/index.html'
   .pipe htmlreplace {
     concat: 'all.js'
+    sentry: '<script src="https://cdn.ravenjs.com/3.25.1/raven.min.js" crossorigin="anonymous"></script>
+    <script>Raven.config("https://1e2912546006425893b38afe2391a21f@sentry.io/1206105").install()</script>'
     sw: '<script>"serviceWorker"in navigator&&window.addEventListener("load",function(){navigator.serviceWorker.register("./service-worker.js")});</script>'
   }
   .pipe gulp.dest './build-debug'
