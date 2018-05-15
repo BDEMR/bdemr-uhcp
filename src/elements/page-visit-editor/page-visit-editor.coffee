@@ -4588,6 +4588,8 @@ Polymer {
     else
       return true
 
+  getPrintedOnTime: ()->
+    lib.datetime.format((new Date()), 'mmm d, yyyy h:MMTT')
 
   printButtonPressed: (e)->
  
