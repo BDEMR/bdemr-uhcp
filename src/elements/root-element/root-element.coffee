@@ -65,7 +65,7 @@ Polymer {
 
     currentOrganization:
       type: Object
-      value: {}
+      value: null
 
     currentNavigationCandidate:
       type: String
@@ -362,6 +362,25 @@ Polymer {
 
     document.title = "UHCP App " + app.config.clientVersion
         
+    # error tracking js meta
+    if app.mode is 'production'
+      bugsnagClient.app.version = app.config.clientVersion
+      if @currentOrganization
+        bugsnagClient.metaData = {
+          organization: {
+            name: @currentOrganization.name
+            id: @currentOrganization.idOnServer
+            isCurrentUserAnAdmin: @currentOrganization.isCurrentUserAnAdmin
+          }
+        }
+      if @user
+        bugsnagClient.user = {
+          id: @user.idOnServer
+          serial: @user.serial
+          name: @user.name
+          email: @user.email or @user.phone
+        }
+    # error tracking js meta end
 
   getYear: ->
     return (new Date).getFullYear()
@@ -912,7 +931,5 @@ Polymer {
     @_sync()
     
   # sync code moved to 'mixin-call-sync.coffee' file
-
-
 
 }

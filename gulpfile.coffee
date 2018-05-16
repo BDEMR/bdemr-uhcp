@@ -159,6 +159,8 @@ gulp.task 'html-replace', ->
   gulp.src 'build-debug/index.html'
   .pipe htmlreplace {
     concat: 'all.js'
+    bugsnag: '<script src="//d2wy8f7a9ursnm.cloudfront.net/v4/bugsnag.min.js"></script>
+    <script>window.bugsnagClient = bugsnag("f98e39d838828db009c54c4bb1632a09")</script>'
     sw: '<script>"serviceWorker"in navigator&&window.addEventListener("load",function(){navigator.serviceWorker.register("./service-worker.js")});</script>'
   }
   .pipe gulp.dest './build-debug'
