@@ -355,18 +355,19 @@ app.pages.pageList = [
   }
 
   {
-    name: 'uhcp-report'
-    element: 'page-uhcp-report'
-    windowTitlePostfix: 'UHCP Reports'
-    headerTitle: 'UHCP Reports'
+    name: 'uhcp-summary-report'
+    element: 'page-uhcp-summary-report'
+    windowTitlePostfix: 'UHCP Summary Reports'
+    headerTitle: 'UHCP Summary Reports'
     preload: true
-    hrefList: [ 'uhcp-report' ]
+    hrefList: [ 'uhcp-summary-report' ]
     requireAuthentication : true
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
     showToolbar: false
     hideHeaderTitle: false
+    accessId: 'R001'
   }
 
   {
@@ -382,6 +383,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: false
     hideHeaderTitle: false
+    accessId: 'R002'
   }
 
   {

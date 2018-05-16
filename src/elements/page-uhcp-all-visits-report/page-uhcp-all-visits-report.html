@@ -79,6 +79,10 @@
         padding: 5px;
         list-style-type: decimal;
       }
+
+      .organization-dropdown {
+        width: 250px;
+      }
     </style>
 
     <div class="master-container">
@@ -91,17 +95,8 @@
 
             <div class="search layout horizontal center">
 
-              <!-- <paper-dropdown-menu label="Filter by Organization" no-label-float class="m-right-8">
-                <paper-listbox class="dropdown-content" attr-for-selected="organization-id" on-iron-activate="organizationSelected">
-                  <paper-item>All</paper-item>
-                  <template is="dom-repeat" items="[[childOrganizationList]]">
-                    <paper-item organization-id="[[item._id]]">[[item.name]]</paper-item>
-                  </template>
-                </paper-listbox>
-              </paper-dropdown-menu> -->
-
-              <vaadin-combo-box no-label-float label="Organization" class="flex-1" items="[[childOrganizationList]]" on-value-changed="organizationSelected"
-                loading="[[organizationLoading]]"></vaadin-combo-box>
+              <vaadin-combo-box class="organization-dropdown" no-label-float label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected"
+                loading="[[organizationLoading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
               <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
               <div class="flex"></div>

@@ -476,6 +476,18 @@ Polymer {
         type: 'billing-report'
         isSelected: false
       }
+      {
+        serial: 'R001'
+        name: 'Summary Report'
+        type: 'report'
+        isSelected: false
+      }
+      {
+        serial: 'R002'
+        name: 'All Visit Report'
+        type: 'report'
+        isSelected: false
+      }
 
     ]
 
