@@ -17,6 +17,19 @@ app.behaviors.commonComputes =
 
   $mkDate: (date)-> lib.datetime.mkDate date
 
+
+  $compareFn: (left, op, right)->
+    if (op=='<')
+      return left < right
+    if (op=='>')
+      return left > right
+    if (op=='==')
+      return left == right
+    if (op=='>=')
+      return left >= right
+    if (op=='<=')
+      return left <= right
+
   $mkDateTime: (ms)->
     if typeof ms is 'undefined'
       return lib.datetime.now()

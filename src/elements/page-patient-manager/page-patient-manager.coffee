@@ -57,11 +57,10 @@ Polymer {
           lowerBound: lib.datetime.mkDate lib.datetime.now()
           upperBound: lib.datetime.mkDate lib.datetime.now()
 
-    hasSearchBeenPressed:
-      type: Boolean
+    arbitaryCounter:
+      type: Number
       notify: true
-      value: true
-
+      value: 0
 
     matchingPatientList:
       type: Array
@@ -103,7 +102,11 @@ Polymer {
       type: Array
       value: -> []
 
-    patientListForPendingPccRecords:
+    # patientListForPendingPccRecords:
+    #   type: Array
+    #   value: -> []
+
+    conflictedPatientList:
       type: Array
       value: -> []
 
@@ -114,39 +117,56 @@ Polymer {
       @user = userList[0]
       # console.log @user
 
-  loadPatientListForPendingPCCRecords: ()->
-    list = app.db.find 'existing-patient-log-for-pending-pcc-records'
-    @patientListForPendingPccRecords = list
-    console.log 'patientListForPendingPccRecords', @patientListForPendingPccRecords
+  loadConflictedPatientList: ()->
+    list = app.db.find 'conflicted-patient-list'
+    @conflictedPatientList = list
+    console.log 'conflictedPatientList', @conflictedPatientList
 
-  savePendingPccRecords: (e)->
+  checkAndUpdateConflictedPatientData: (e)->
     el = @locateParentNode e.target, 'PAPER-BUTTON'
     el.opened = false
-    repeater = @$$ '#pending-pcc-record-for-existing-patient-repeater'
+    repeater = @$$ '#conflicted-patient-repeater'
 
     index = repeater.indexForElement el
-    patient = @patientListForPendingPccRecords[index]
+    patient = @conflictedPatientList[index]
 
     @_importPatient patient.data.serial, patient.doctorAccessPin, (importedPatientLocalId)=>
       # console.log 'PATIENT', patient
-      @_updateLocalPcc patient.data.serial, patient.oldSerial
-      @_removeLocalPatient patient.oldSerial, =>
-        @loadPatientListForPendingPCCRecords()
-      @domHost.showToast 'PCC Record has been saved Successfully!'
+      @updatePatientSerialOnExisitingRecords patient.data.serial, patient.oldSerial, =>
+        @_removeLocalPatient patient.oldSerial, =>
+          @loadConflictedPatientList()
+          @domHost.showToast 'Patient Data Updated!'
 
 
   _removeLocalPatient: (oldSerial, cbfn)->
-    id = (app.db.find 'existing-patient-log-for-pending-pcc-records', ({oldSerial})-> oldSerial is oldSerial)[0]._id
-    app.db.remove 'existing-patient-log-for-pending-pcc-records', id
-    console.log 'Deleted 1 from "existing-patient-log-for-pending-pcc-records"'
+    id = (app.db.find 'conflicted-patient-list', ({oldSerial})-> oldSerial is oldSerial)[0]._id
+    app.db.remove 'conflicted-patient-list', id
+
+    id = (app.db.find 'patient-list', ({serial})-> serial is oldSerial)[0]._id
+    app.db.remove 'patient-list', id
+
+    console.log 'Deleted'
     cbfn()
 
 
-  _updateLocalPcc: (newSerial, oldSerial)->
-    console.log 'newSerial', newSerial
-    pcc = (app.db.find 'pcc-records', ({patientSerial})-> patientSerial is oldSerial)[0]
-    pcc.patientSerial = newSerial
-    app.db.update 'pcc-records', pcc._id, pcc
+  checkAndupdateSerialOnCollection: (newSerial, oldSerial, collectionName)->
+    list = app.db.find collectionName, ({patientSerial})-> patientSerial is oldSerial
+
+    if list.length > 0
+      for item in list
+        item.patientSerial = newSerial
+        app.db.update collectionName, item._id, item
+
+
+  updatePatientSerialOnExisitingRecords: (patientActualSerial, patientOldSerial, cbfn)->
+    collectionMap = ['unregsitered-patient-details', 'anaesmon-record', 'progress-note-record', 'visited-patient-log', 'history-and-physical-record', 'diagnosis-record', 'doctor-visit', 'doctor-visit', 'visit-note', 'visit-patient-stay', 'visit-next-visit', 'custom-investigation-list', 'visit-advised-test', 'patient-test-results', 'patient-medications', 'patient-vitals-blood-pressure', 'patient-vitals-pulse-rate', 'patient-vitals-respiratory-rate', 'patient-vitals-spo2', 'patient-vitals-temperature', 'patient-vitals-bmi', 'patient-test-blood-sugar', 'patient-test-other', 'comment-patient', 'comment-doctor', 'patient-gallery--local-attachment', 'patient-gallery--online-attachment', 'patient-test-results', 'in-app-notification', 'local-patient-pin-code-list', 'activity', 'visit-invoice', 'visit-diagnosis', 'visit-identified-symptoms', 'visit-examination', 'offline-patient-pin', 'in-patient-medicine-dispense-log', 'pcc-records', 'ndr-records', 'patient-insulin-list']
+
+    for collectionName in collectionMap
+      @checkAndupdateSerialOnCollection patientActualSerial, patientOldSerial, collectionName
+
+    cbfn()
+      
+
 
   _organizationNavigatedIn: ->
 
@@ -185,7 +205,7 @@ Polymer {
 
     @_organizationNavigatedIn()
 
-    @loadPatientListForPendingPCCRecords()
+    @loadConflictedPatientList()
 
     # @domHost.setCurrentPatientsDetails null
 
@@ -245,7 +265,7 @@ Polymer {
     if @searchFieldMainInput.length is 0
       return @domHost.showModalDialog "Please enter something to search with."
     @searchContextDropdownSelectedIndex = 0
-    @searchButtonPressed null    
+    @searchButtonPressed null
 
   searchOnlineButtonPressed: (e)->
     @searchContextDropdownSelectedIndex = 1
@@ -254,11 +274,14 @@ Polymer {
   searchOnlineEnterKeyPressed: (e)->
     return unless e.keyCode is 13
     @searchOnlineButtonPressed()
-  
+    
+
   _searchOnline: ->
     @matchingPatientList = []
-    # console.log @searchFieldMainInput
-    @callApi '/bdemr-patient-search', {apiKey: @user.apiKey, searchQuery: @searchFieldMainInput}, (err, response)=>
+    @arbitaryCounter++
+
+    @callApi '/bdemr-patient-search', { apiKey: @user.apiKey, searchQuery: @searchFieldMainInput}, (err, response)=>
+      @arbitaryCounter--
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -276,9 +299,10 @@ Polymer {
             patient.flags.isImported = true
             patient._tempLocalDbId = localPatientList[0]._id
         @matchingPatientList = matchingPatientList
-        # console.log @matchingPatientList
+        console.log 'matchingPatientList', @matchingPatientList
   
   _searchOffline: ->
+    @arbitaryCounter++
     ## Basic Search
     searchFieldMainInput = @searchFieldMainInput
 
@@ -353,6 +377,7 @@ Polymer {
 
     ## Show results
     @matchingPatientList = patientList
+    @arbitaryCounter--
 
 
   clearSearchResultsClicked: (e)->
@@ -424,7 +449,7 @@ Polymer {
 
   _importPatient: (serial, pin, cbfn)->
     @callApi '/bdemr-patient-import-new', {serial: serial, pin: pin, doctorName: @user.name, organizationId: @organization.idOnServer}, (err, response)=>
-      console.log response
+      console.log "bdemr-patient-import-new", response
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -433,9 +458,9 @@ Polymer {
         if patientList.length isnt 1
           return @domHost.showModalDialog 'Unknown error occurred.'
         patient = patientList[0]
-        console.log patient
+
         # patientPinObject = {patientSerial: serial, pin: pin}
-        @_savePinForLocalPatient pin, patient.serial
+        # @_savePinForLocalPatient pin, patient.serial
         patient.flags = {
           isImported: false
           isLocalOnly: false
@@ -498,9 +523,8 @@ Polymer {
   goPatientViewPage: (patient)->
     @domHost.setCurrentPatientsDetails patient
     @createdPatientVisitedLog patient
-    # @domHost.navigateToPage '#/visit-editor/patient:' + patient.serial + '/selected:5'
-    @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
-    @domHost.selectedPatientPageIndex = 0
+    @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
+    @domHost.selectedPatientPageIndex = 5
 
 
 
@@ -569,9 +593,9 @@ Polymer {
 
     @domHost.setCurrentPatientsDetails patient
 
-    @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
-    # @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
-    @domHost.selectedPatientPageIndex = 0
+    # @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
+    @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
+    @domHost.selectedPatientPageIndex = 5
 
   # editPatientPreconceptionRecord: (e)->
   #   el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
@@ -646,9 +670,9 @@ Polymer {
     
     @domHost.setCurrentPatientsDetails patient
     @createdPatientVisitedLog patient
-    @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
-    @domHost.selectedPatientPageIndex = 0
-    # @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
+    # @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
+    @domHost.selectedPatientPageIndex = 5
+    @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
 
 
   # Visted Patient Log
