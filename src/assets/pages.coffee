@@ -367,6 +367,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: false
     hideHeaderTitle: false
+    accessId: 'R001'
   }
 
   {
