@@ -93,15 +93,20 @@ Polymer({
   },
 
   _loadChildOrganizationList(organizationIdentifier) {
-    this.loading = true;
+    this.organizationLoading = true;
     const query = {
       apiKey: this.user.apiKey,
       organizationId: organizationIdentifier
     }
     this.callApi('/bdemr--get-child-organization-list', query, (err, response) => {
-      this.loading = false;
-      if (response.data.length) {
-        this.set('childOrganizationList', response.data)
+      this.organizationLoading = false;
+      const organizationList = response.data
+      if (organizationList.length) {
+        const mappedValue = organizationList.map((item) => {
+          return { label: item.name, value: item._id }
+        })
+        mappedValue.unshift({ label: 'All', value: '' })
+        this.set('childOrganizationList', mappedValue)
       } else {
         this.domHost.showToast('No Child Organization Found')
       }
@@ -114,9 +119,8 @@ Polymer({
   },
 
   organizationSelected(e) {
-    const organizationId = e.detail.selected;
+    const organizationId = e.detail.value;
     this.set('selectedOrganizationId', organizationId)
-    console.log(e.detail.selected)
   },
 
   filterByDateClicked(e) {
