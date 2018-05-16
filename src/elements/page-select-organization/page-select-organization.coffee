@@ -40,9 +40,11 @@ Polymer {
       @user = userList[0]
 
   organizationSelected: (e)->
+    return unless e.detail.value
     selectedOrganizationId = e.detail.value
-    @selectedOrganization = @organizationsIBelongToList.find (item)=> item.idOnServer is selectedOrganizationId
+    selectedOrganization = @organizationsIBelongToList.find (item)=> item.idOnServer is selectedOrganizationId
     if selectedOrganization
+      @set 'selectedOrganization', selectedOrganization
       @set 'userRoleList', selectedOrganization.userRoleList
   
   $notUndefined: (value)-> if value? then true else false
