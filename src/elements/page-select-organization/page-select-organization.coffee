@@ -95,11 +95,10 @@ Polymer {
     console.log 'data', data
 
     @callApi '/bdemr-get-user-role-details-from-belong-organization', data , (err, response)=>
-      console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
-        selectedOrganization = @organizationsIBelongToList[@selectedOrganizationIndex]
+        selectedOrganization = @get 'selectedOrganization'
         selectedOrganization.userActiveRole = response.data
         app.db.upsert 'organization', selectedOrganization, ({idOnServer})=> selectedOrganization.idOnServer is idOnServer
         cbfn()
