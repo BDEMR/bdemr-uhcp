@@ -511,7 +511,7 @@ Polymer {
       app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
       @domHost.showToast 'Invoice Saved Successfully'
       @_updateVisit @invoice.serial
-      @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:g"
+      @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
      
 
   # =====================================================================
