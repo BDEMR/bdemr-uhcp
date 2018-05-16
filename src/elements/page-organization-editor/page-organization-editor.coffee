@@ -58,6 +58,7 @@ Polymer {
   _makeNewOrganization: ->
     @organization = 
       idOnServer: null
+      serial: null
       name: ''
       address: ''
       effectiveRegion: ''
@@ -72,6 +73,7 @@ Polymer {
     data = { 
       apiKey: @user.apiKey
       name: @organization.name
+      serial: @organization.serial
       address: @organization.address
       effectiveRegion: @organization.effectiveRegion
       parentOrganizationIdList: @organization.parentOrganizationIdList
@@ -87,6 +89,7 @@ Polymer {
       apiKey: @user.apiKey
       organizationId: @organization.idOnServer
       name: @organization.name
+      serial: @organization.serial
       address: @organization.address
       effectiveRegion: @organization.effectiveRegion
       parentOrganizationIdList: @organization.parentOrganizationIdList

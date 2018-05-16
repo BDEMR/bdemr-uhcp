@@ -59,6 +59,10 @@
         margin-top: 20px;
       }
 
+      .results span {
+        color: #333;
+      }
+
       paper-progress {
         width: 100%;
         --paper-progress-active-color: var(--paper-orange-500);
@@ -86,13 +90,14 @@
 
             <div class="search layout horizontal center">
 
-              <!-- <paper-dropdown-menu label="Filter by Organization" class="m-right-8">
+              <paper-dropdown-menu label="Filter by Organization" no-label-float class="m-right-8">
                 <paper-listbox class="dropdown-content" attr-for-selected="organization-id" on-iron-activate="organizationSelected">
-                  <template is="dom-repeat" items="[[organizationList]]">
-                    <paper-item organization-id="[[item.idOnServer]]">[[item.name]]</paper-item>
+                  <paper-item>All</paper-item>
+                  <template is="dom-repeat" items="[[childOrganizationList]]">
+                    <paper-item organization-id="[[item._id]]">[[item.name]]</paper-item>
                   </template>
                 </paper-listbox>
-              </paper-dropdown-menu> -->
+              </paper-dropdown-menu>
 
               <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
               <div class="flex"></div>
@@ -107,32 +112,32 @@
 
               <paper-progress indeterminate hidden="[[!loading]]"></paper-progress>
               <vaadin-grid items="[[reportResults]]">
-                <vaadin-grid-column resizable>
+                <vaadin-grid-column resizable frozen>
                   <template class="header">Visit Id</template>
                   <template>
                     <span>[[item.visit.serial]]</span>
                   </template>
                 </vaadin-grid-column>
-                <vaadin-grid-column resizable>
+                <vaadin-grid-column resizable frozen>
                   <template class="header">Employee Id</template>
                   <template>
                     <span>[[item.patientInfo.employeeId]]</span>
                   </template>
                 </vaadin-grid-column>
-                <vaadin-grid-column resizable>
+                <vaadin-grid-column resizable width="220px" flex-grow="0" frozen>
                   <template class="header layout horizontal">
-                    <vaadin-grid-filter aria-label="Name" path="name" value="[[nameFilter]]">
+                    <vaadin-grid-filter aria-label="Name" path="patientInfo.name" value="[[nameFilter]]">
                       <paper-input label="Search By Name" value="{{nameFilter}}" no-label-float></paper-input>
                     </vaadin-grid-filter>
                   </template>
                   <template>
-                    <div>[[item.patientInfo.name]]</div>
+                    <p>[[item.patientInfo.name]]</p>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
-                  <template class="header">DOB</template>
+                  <template class="header">Age</template>
                   <template>
-                    <span>[[item.patientInfo.dateOfBirth]]</span>
+                    <span>[[$computeAge(item.patientInfo.dateOfBirth)]]</span>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
@@ -144,13 +149,15 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
-                  <template class="header">Consulation Site </template>
+                  <template class="header">Site </template>
                   <template>
                     <span>[[item.organizationInfo.name]]</span>
                   </template>
                 </vaadin-grid-column>
-                <vaadin-grid-column resizable>
-                  <template class="header">Consulation Date </template>
+                <vaadin-grid-column resizable width="180px" flex-grow="0">
+                  <template class="header">
+                    <vaadin-grid-sorter path="visit.createdDatetimeStamp" direction="desc">Date</vaadin-grid-sorter>
+                  </template>
                   <template>
                     <span>[[$formatDateTime(item.visit.createdDatetimeStamp)]]</span>
                   </template>
@@ -213,24 +220,28 @@
                   <template>
                     <span>[[$getCategoryCost('Medicine', item.invoice)]]</span>
                   </template>
+                  <template class="footer">[[totalDrugCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Inv. Cost</template>
                   <template>
                     <span>[[$getCategoryCost('Investigation', item.invoice)]]</span>
                   </template>
+                  <template class="footer">[[totalInvestigationCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Consultancy Fee</template>
                   <template>
                     <span>[[$getCategoryCost('Consultancy', item.invoice)]]</span>
                   </template>
+                  <template class="footer">[[totalConsultancyCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Total Cost</template>
                   <template>
                     <span>[[$getTotalCost(item.invoice)]]</span>
                   </template>
+                  <template class="footer">[[totalCostByReport]]</template>
                 </vaadin-grid-column>
               </vaadin-grid>
             </div>
