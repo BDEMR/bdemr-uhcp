@@ -1,15 +1,16 @@
 <!doctype html>
 <html>
-  <head>
-    <title>UHCP App</title>
-    <link rel="stylesheet" type="text/css" href="assets/global.css">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="favicon.png">
 
-    
+<head>
+  <title>UHCP App</title>
+  <link rel="stylesheet" type="text/css" href="assets/global.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.png">
 
-    <!-- 
+
+
+  <!-- 
       other known exposed globals - 
         window.
           'Polymer'
@@ -26,61 +27,65 @@
           'app'
      -->
 
-    
-    <script src="all.js"></script>
+  <script src="//d2wy8f7a9ursnm.cloudfront.net/v4/bugsnag.min.js"></script> <script>window.bugsnagClient = bugsnag("f98e39d838828db009c54c4bb1632a09")</script>
 
 
-    <!-- Set polymer's global settings -->
-    <script type="text/javascript">
-      window.Polymer = {
-        lazyRegister: false,
-        dom: 'Shadow',
-        passiveTouchGestures: true
-      };
-      // Load webcomponentsjs polyfill if browser does not support native Web Components
-      (function() {
-        'use strict';
+  <script src="all.js"></script>
 
-        var onload = function() {
-          // For native Imports, manually fire WebComponentsReady so user code
-          // can use the same code path for native and polyfill'd imports.
-          if (!window.HTMLImports) {
-            document.dispatchEvent(
-              new CustomEvent('WebComponentsReady', {bubbles: true})
-            );
-          }
-        };
 
-        var webComponentsSupported = (
-          'registerElement' in document
-          && 'import' in document.createElement('link')
-          && 'content' in document.createElement('template')
-        );
+  <!-- Set polymer's global settings -->
+  <script type="text/javascript">
+    window.Polymer = {
+      lazyRegister: false,
+      dom: 'Shadow',
+      passiveTouchGestures: true
+    };
+    // Load webcomponentsjs polyfill if browser does not support native Web Components
+    (function () {
+      'use strict';
 
-        if (!webComponentsSupported) {
-          var script = document.createElement('script');
-          script.async = true;
-          script.src = 'bower-assets/webcomponentsjs/webcomponents-lite.min.js';
-          script.onload = onload;
-          document.head.appendChild(script);
-        } else {
-          onload();
+      var onload = function () {
+        // For native Imports, manually fire WebComponentsReady so user code
+        // can use the same code path for native and polyfill'd imports.
+        if (!window.HTMLImports) {
+          document.dispatchEvent(
+            new CustomEvent('WebComponentsReady', { bubbles: true })
+          );
         }
-      })();
-    </script>
-    
-    <script>"serviceWorker"in navigator&&window.addEventListener("load",function(){navigator.serviceWorker.register("./service-worker.js")});</script>
+      };
 
-    
-    <!-- Import root element -->
-    <link rel="import" href="elements/root-element/root-element.html">
-    
-  </head>
-  <body>
-    <root-element></root-element>
-    
-    <div id="unsupported-screen-size-overlay">
-      Sorry! Your screen resolution is too low for this application to function properly.
-    </div>
-  </body>
+      var webComponentsSupported = (
+        'registerElement' in document
+        && 'import' in document.createElement('link')
+        && 'content' in document.createElement('template')
+      );
+
+      if (!webComponentsSupported) {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'bower-assets/webcomponentsjs/webcomponents-lite.min.js';
+        script.onload = onload;
+        document.head.appendChild(script);
+      } else {
+        onload();
+      }
+    })();
+  </script>
+
+  <script>"serviceWorker"in navigator&&window.addEventListener("load",function(){navigator.serviceWorker.register("./service-worker.js")});</script>
+
+
+  <!-- Import root element -->
+  <link rel="import" href="elements/root-element/root-element.html">
+
+</head>
+
+<body>
+  <root-element></root-element>
+
+  <div id="unsupported-screen-size-overlay">
+    Sorry! Your screen resolution is too low for this application to function properly.
+  </div>
+</body>
+
 </html>
