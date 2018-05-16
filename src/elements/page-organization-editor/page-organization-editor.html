@@ -27,14 +27,14 @@
       .limiting-container {
         margin-top: 10px;
       }
-      
+
       .organization-info-card-counter {
         margin-top: 20px;
         margin-left: 20px;
         margin-right: 10px;
         color: #777777;
       }
-      
+
       .organization-info-cards {
         @apply(--layout-vertical);
         /*@apply(--layout-center);*/
@@ -43,13 +43,13 @@
         margin-right: 10px;
         padding-bottom: 20px;
       }
-      
+
       .organization-info-cards .row {
         margin-left: 10px;
         /*margin-right: 10px;*/
         margin-top: 10px;
       }
-      
+
       .organization-info-cards .hr {
         margin-left: 20px;
         margin-right: 20px;
@@ -57,7 +57,7 @@
         /*width: 100px;*/
         background: #dddddd;
       }
-      
+
       .organization-info-cards .row .modifier {
         font-size: 14px;
         background: #000000;
@@ -70,32 +70,32 @@
         border-radius: 4px;
         text-transform: uppercase;
       }
-      
+
       .organization-info-cards .row .modifier.online {
         background: #757575;
       }
-      
+
       .organization-info-cards .row .modifier.local-only {
         background: #039BE5;
       }
-      
+
       .organization-info-cards .row .modifier.locally-updated {
         background: #009688;
       }
-      
+
       .organization-info-cards .row .modifier.imported {
         background: #4CAF50;
       }
-      
+
       .info-row {
         margin-top: 10px;
       }
-      
+
       .top-info-row {
         margin-top: 10px;
         margin-bottom: 10px;
       }
-      
+
       .serial-number {
         background: #37474F;
         color: #ffffff;
@@ -108,21 +108,21 @@
         text-transform: uppercase;
         font-weight: bold;
       }
-      
+
       .address1 {
         margin-right: 10px;
       }
-      
+
       .break-on-tablet {
         @apply(--layout-horizontal);
       }
-      
+
       @media screen and (max-width: 740px) {
         .break-on-tablet {
           display: block;
         }
       }
-      
+
       .val {
         text-decoration: underline;
       }
@@ -139,7 +139,6 @@
         line-height: 28px;
         color: var(--brand-primary-color);
       }
-
     </style>
 
     <!-- local DOM -->
@@ -170,6 +169,10 @@
                 <paper-input always-float-label value="{{organization.name}}" label="Name of the organization"></paper-input>
               </div>
               <div class="info-row">
+                <paper-input value="{{organization.serial}}" label="Serial"></paper-input>
+                <div class="type caption secondary">Serial must 4 chars long.</div>
+              </div>
+              <div class="info-row">
                 <paper-input always-float-label value="{{organization.effectiveRegion}}" label="Effective Region for the Organization"></paper-input>
               </div>
             </div>
@@ -182,7 +185,7 @@
           <paper-card class="organization-info-cards">
             <div class="card-content">
               <div class="info-row">
-                <paper-textarea rows="6" always-float-label value="{{organization.address}}" label="Full Address"></paper-textarea>
+                <paper-textarea always-float-label value="{{organization.address}}" label="Full Address"></paper-textarea>
               </div>
             </div>
           </paper-card>
@@ -192,21 +195,21 @@
           </div>
 
           <paper-card class="organization-info-cards">
-            
-                
+
+
             <div class="card-custom-header">
               <div class="layout horizontal center">
-                <div class="title flex">Currently there are [[parentList.length]] parent organizations.</div>  
+                <div class="title flex">Currently there are [[parentList.length]] parent organizations.</div>
               </div>
             </div>
 
             <template is="dom-if" if="[[parentList.length]]">
               <div class="p-0">
                 <paper-listbox>
-                  
+
                   <template id="assistant-list-repeater" is="dom-repeat" items="[[parentList]]" as="parent">
                     <paper-item class="custom layout horizontal center">
-                      
+
                       <div class="flex m-left-8">
                         <div class="type body capitalize">[[parent.name]]</div>
                         <div class="type caption secondary">[[parent.idOnServer]]</div>
@@ -214,9 +217,9 @@
 
                       <div class="layout horizontal m-horizontal-4 wrap">
                         <div class="type caption">[[parent.address]]&nbsp;</div>
-                         <div class="type caption">([[parent.effectiveRegion]])</div>
+                        <div class="type caption">([[parent.effectiveRegion]])</div>
                       </div>
-            
+
                       <paper-menu-button horizontal-align="right" no-animations>
                         <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
                         <paper-menu class="dropdown-content">
@@ -229,7 +232,7 @@
                   </template>
 
                 </paper-listbox>
-                
+
               </div>
             </template>
           </paper-card>
@@ -248,10 +251,10 @@
             <template is="dom-if" if="[[parentSearchResultList.length]]">
               <div class="p-0">
                 <paper-listbox>
-                  
+
                   <template id="assistant-list-repeater" is="dom-repeat" items="[[parentSearchResultList]]" as="parent">
                     <paper-item class="custom layout horizontal center">
-                      
+
                       <div class="flex m-left-8">
                         <div class="type body capitalize">[[parent.name]]</div>
                         <div class="type caption secondary">[[parent.idOnServer]]</div>
@@ -259,17 +262,17 @@
 
                       <div class="layout horizontal m-horizontal-4 wrap">
                         <div class="type caption">[[parent.address]]&nbsp;</div>
-                         <div class="type caption">([[parent.effectiveRegion]])</div>
+                        <div class="type caption">([[parent.effectiveRegion]])</div>
                       </div>
-            
+
                       <paper-menu-button horizontal-align="right" no-animations>
                         <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
                         <paper-menu class="dropdown-content">
 
-                        <template is="dom-if" if="[[!$in(parent.idOnServer, organization.parentOrganizationIdList)]]">
-                          <div hidden>[[parent]]</div>
-                          <paper-item on-tap="addParentTapped">Add as a parent</paper-item>
-                        </template>
+                          <template is="dom-if" if="[[!$in(parent.idOnServer, organization.parentOrganizationIdList)]]">
+                            <div hidden>[[parent]]</div>
+                            <paper-item on-tap="addParentTapped">Add as a parent</paper-item>
+                          </template>
                         </paper-menu>
                       </paper-menu-button>
 
@@ -277,7 +280,7 @@
                   </template>
 
                 </paper-listbox>
-                
+
               </div>
             </template>
           </paper-card>

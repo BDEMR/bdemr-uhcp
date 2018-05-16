@@ -808,31 +808,24 @@ Polymer {
 
   _checkUserAccess: (accessId)->
     currentOrganization = @getCurrentOrganization()
-
-    if accessId is 'none'
-      return true
-    else
-      if currentOrganization
-
-        if currentOrganization.isCurrentUserAnAdmin
-          return true
-        else if currentOrganization.isCurrentUserAMember
-          if currentOrganization.userActiveRole
-            privilegeList = currentOrganization.userActiveRole.privilegeList
-            unless privilegeList.length is 0
-              for privilege in privilegeList
-                if privilege.serial is accessId
-                  return true
-          else
-            return true
-
-          return false
+    return true if accessId is 'none' or !accessId
+    
+    if currentOrganization
+      if currentOrganization.isCurrentUserAnAdmin
+        return true
+      else if currentOrganization.isCurrentUserAMember
+        if currentOrganization.userActiveRole
+          privilegeList = currentOrganization.userActiveRole.privilegeList
+          unless privilegeList.length is 0
+            for privilege in privilegeList
+              if privilege.serial is accessId
+                return true
         else
           return false
-
       else
-        # @navigateToPage "#/select-organization"
-        return true
+        return false
+    else
+      @navigateToPage "#/select-organization"
 
   # = REGION offline patient with pending pcc records
   _createOnlinePccPatient: (patient, cbfn) ->

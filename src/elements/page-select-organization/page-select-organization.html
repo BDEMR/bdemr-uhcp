@@ -8,7 +8,8 @@
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
-
+<link rel="import" href="../../bower-assets/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
 
@@ -21,7 +22,6 @@
 <dom-module id="page-select-organization">
   <template>
     <style is="custom-style" include="common-style">
-
     </style>
 
     <div class="master-container">
@@ -29,16 +29,21 @@
       <div class="limiting-container">
         <paper-card>
           <div class="card-content layout horizontal center center-justified">
-            
+
+            <template is="dom-if" if="[[organizationLoading]]">
+              <div class="layout horizontal center">
+                <paper-spinner active></paper-spinner>
+                <span class="p-left-16 text-mute">Loading Organization List</span>
+              </div>
+              <br>
+            </template>
+
             <!--If User has Organization-->
+
             <template is="dom-if" if="[[organizationsIBelongToList.length]]">
-              <paper-dropdown-menu label="Organization">
-                <paper-listbox class="dropdown-content" selected="{{selectedOrganizationIndex}}" on-iron-select="organizationSelected">
-                  <template is="dom-repeat" items="[[organizationsIBelongToList]]">
-                    <paper-item>[[item.name]]</paper-item>
-                  </template>
-                </paper-listbox>
-              </paper-dropdown-menu>
+
+              <vaadin-combo-box style="width: 300px;" label="Select Organization" items="[[mappedOrganizationList]]" on-value-changed="organizationSelected"
+                loading="[[organizationLoading]]"></vaadin-combo-box>
 
               <template is="dom-if" if="[[!_isEmpty(userRoleList.length)]]">
                 <paper-dropdown-menu label="Select Your Role">
@@ -51,12 +56,14 @@
               </template>
 
               <paper-button raised class="btn btn-success" on-tap="navigateWithOrganizationSelected">Select</paper-button>
-              
+
             </template>
 
             <!--If User doesn't have Organization-->
-            <template is="dom-if" if="[[!organizationsIBelongToList.length]]">
-              <paper-button raised class="btn btn-success" on-tap="createOrganizationButtonPressed">Create/Join Organization</paper-button>
+            <template is="dom-if" if="[[!organizationLoading]]">
+              <template is="dom-if" if="[[!organizationsIBelongToList.length]]">
+                <paper-button raised class="btn btn-success" on-tap="createOrganizationButtonPressed">Create/Join Organization</paper-button>
+              </template>
             </template>
 
           </div>
@@ -68,4 +75,3 @@
   </template>
   <script src="page-select-organization.coffee-compiled.js"></script>
 </dom-module>
-

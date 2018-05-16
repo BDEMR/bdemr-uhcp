@@ -22,10 +22,10 @@ Polymer {
       type: Array
       value: -> []
     
-    selectedOrganizationIndex:
-      type: Number
+    selectedOrganization:
+      type: Object
       notify: true
-      value: 0
+      value: null
 
     selectedUserRoleIndex:
       type: Number
@@ -40,10 +40,12 @@ Polymer {
       @user = userList[0]
 
   organizationSelected: (e)->
-    if @selectedOrganizationIndex?
-      @set 'userRoleList', @organizationsIBelongToList[@selectedOrganizationIndex].userRoleList
-
-    console.log 'userRoleList', @userRoleList
+    return unless e.detail.value
+    selectedOrganizationId = e.detail.value
+    selectedOrganization = @organizationsIBelongToList.find (item)=> item.idOnServer is selectedOrganizationId
+    if selectedOrganization
+      @set 'selectedOrganization', selectedOrganization
+      @set 'userRoleList', selectedOrganization.userRoleList
   
   $notUndefined: (value)-> if value? then true else false
 
@@ -57,23 +59,25 @@ Polymer {
     @memberList = []
 
   _findOrganizationsUserBelongsTo: (apiKey)->
+    @organizationLoading = true
     @callApi '/bdemr-organization-list-those-user-belongs-to', apiKey: apiKey, (err, response)=>
-      console.log response
+      @organizationLoading = false
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
-        @organizationsIBelongToList = response.data.organizationObjectList
+        @set 'organizationsIBelongToList', response.data.organizationObjectList
+        @mappedOrganizationList = response.data.organizationObjectList.map (item)=>
+          return {label: item.name, value: item.idOnServer}
   
   
   navigateWithOrganizationSelected: ->
-    selectedOrganization = @organizationsIBelongToList[@selectedOrganizationIndex]
-    if selectedOrganization
+    if @selectedOrganization
       app.db.remove 'organization', item._id for item in app.db.find 'organization'
-      app.db.insert 'organization', selectedOrganization
+      app.db.insert 'organization', @selectedOrganization
 
       selectedUserRole = @userRoleList[@selectedUserRoleIndex]
       if selectedUserRole
-        @_getUserRoleDetails selectedUserRole, selectedOrganization.idOnServer, =>
+        @_getUserRoleDetails selectedUserRole, @selectedOrganization.idOnServer, =>
           @domHost.navigateToPage "#/dashboard"
           window.location.reload()
       else
@@ -91,11 +95,10 @@ Polymer {
     console.log 'data', data
 
     @callApi '/bdemr-get-user-role-details-from-belong-organization', data , (err, response)=>
-      console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
-        selectedOrganization = @organizationsIBelongToList[@selectedOrganizationIndex]
+        selectedOrganization = @get 'selectedOrganization'
         selectedOrganization.userActiveRole = response.data
         app.db.upsert 'organization', selectedOrganization, ({idOnServer})=> selectedOrganization.idOnServer is idOnServer
         cbfn()

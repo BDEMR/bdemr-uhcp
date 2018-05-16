@@ -166,14 +166,13 @@
 
           <paper-card class="organization-info-cards">
             <div class="card-content">
-              <div class="horizontal layout center top-info-row">
-                <div>ID: </div>
-                <div class="serial-number">[[organization.idOnServer]]</div>
-                <div class="flex"></div>
-              </div>
               <div class="info-row">
-                <div>Name: [[organization.name]]</div>
+                <span class="type bold headline">[[organization.name]]</span>
               </div>
+              <div class="horizontal layout center top-info-row">
+                <span class="type caption bg-gray">[[organization.idOnServer]]</span>
+              </div>
+
               <div class="info-row">
                 <div>Region: [[organization.effectiveRegion]]</div>
               </div>
@@ -208,21 +207,19 @@
                           <template is="dom-if" if="[[$equals(member.idOnServer, user.idOnServer)]]">
                             (You)
                           </template>
-
-                        </div>
-
-                        <div class="type caption secondary">
                           <template is="dom-if" if="[[$isAdmin(member.idOnServer, organization.userList)]]">
-                            Admin
+                            <span class="type caption uppercase bg-success">
+                              <iron-icon icon="done" class="icon small-tiny"></iron-icon>
+                              Admin</span>
                           </template>
-                          <!-- <template is="dom-if" if="[[!$isAdmin(member.idOnServer, organization.userList)]]">
-                            Regular User
-                          </template> -->
+                          <template is="dom-if" if="[[!$isAdmin(member.idOnServer, organization.userList)]]">
+                            <span class="type caption uppercase bg-gray">Member</span>
+                          </template>
                         </div>
+
                         <div class="type caption secondary">
                           <strong>Role:</strong> {{_getRoleTitleForUser(member.idOnServer)}}
                         </div>
-
 
                       </div>
 
@@ -264,7 +261,7 @@
               </div>
             </template>
           </paper-card>
-          
+
           <!-- Add Member Start -->
           <paper-card class="organization-info-cards" heading="Add A Member">
             <div class="card-content">

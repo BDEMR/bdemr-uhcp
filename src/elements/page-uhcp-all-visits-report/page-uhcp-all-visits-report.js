@@ -23,6 +23,12 @@ Polymer({
       value: null
     },
 
+    childOrganizationList: {
+      type: Array,
+      notify: true,
+      value: []
+    },
+
     loading: {
       type: Boolean,
       value: false
@@ -31,6 +37,30 @@ Polymer({
     reportResults: {
       type: Array,
       value: []
+    },
+
+    totalCostByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalCostByReport(reportResults)'
+    },
+
+    totalDrugCostByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalCategoryCostByReport("Medicine", reportResults)'
+    },
+
+    totalInvestigationCostByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalCategoryCostByReport("Investigation", reportResults)'
+    },
+
+    totalConsultancyCostByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalCategoryCostByReport("Consultancy" ,reportResults)'
     },
 
     dateCreatedFrom: String,
@@ -56,8 +86,31 @@ Polymer({
   _loadOrganization() {
     const organizationList = app.db.find('organization');
     if (organizationList.length === 1) {
-      return this.set('organization', organizationList[0]);
+      this.set('organization', organizationList[0]);
+      this._loadChildOrganizationList(this.organization.idOnServer)
     }
+
+  },
+
+  _loadChildOrganizationList(organizationIdentifier) {
+    this.organizationLoading = true;
+    const query = {
+      apiKey: this.user.apiKey,
+      organizationId: organizationIdentifier
+    }
+    this.callApi('/bdemr--get-child-organization-list', query, (err, response) => {
+      this.organizationLoading = false;
+      const organizationList = response.data
+      if (organizationList.length) {
+        const mappedValue = organizationList.map((item) => {
+          return { label: item.name, value: item._id }
+        })
+        mappedValue.unshift({ label: 'All', value: '' })
+        this.set('childOrganizationList', mappedValue)
+      } else {
+        this.domHost.showToast('No Child Organization Found')
+      }
+    })
   },
 
   $formatDateTime(dateTime) {
@@ -66,7 +119,7 @@ Polymer({
   },
 
   organizationSelected(e) {
-    const orgnizationId = e.detail.selected
+    const organizationId = e.detail.value;
     this.set('selectedOrganizationId', organizationId)
   },
 
@@ -85,11 +138,35 @@ Polymer({
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 'N/A'
+    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 0
   },
 
   $getTotalCost(invoice) {
-    return invoice ? invoice.totalBilled : 'N/A'
+    return invoice ? invoice.totalBilled : 0
+  },
+
+  $computeAge(dateString) {
+    if (!dateString) { return ""; }
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if ((m < 0) || ((m === 0) && (today.getDate() < birthDate.getDate()))) {
+      age--;
+    }
+    return age;
+  },
+
+  _getTotalCostByReport(reports) {
+    return reports.reduce((total, item) => {
+      return total + this.$getTotalCost(item.invoice)
+    }, 0)
+  },
+
+  _getTotalCategoryCostByReport(category, reports) {
+    return reports.reduce((total, item) => {
+      return total + this.$getCategoryCost(category, item.invoice)
+    }, 0)
   },
 
   resetButtonClicked() { return this.domHost.reloadPage(); },
@@ -97,7 +174,7 @@ Polymer({
   searchButtonClicked() {
     const query = {
       apiKey: this.user.apiKey,
-      organizationId: this.organization.idOnServer,
+      organizationId: this.selectedOrganizationId,
       searchParameters: {
         dateCreatedFrom: this.dateCreatedFrom || '',
         dateCreatedTo: this.dateCreatedTo || '',

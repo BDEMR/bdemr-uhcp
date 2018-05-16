@@ -1,7 +1,7 @@
 
 Polymer {
 
-  is: 'page-uhcp-report'
+  is: 'page-uhcp-summary-report'
 
   behaviors: [ 
     app.behaviors.dbUsing
