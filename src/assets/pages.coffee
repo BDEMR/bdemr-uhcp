@@ -912,6 +912,25 @@ app.pages.pageList = [
   }
 
   {
+    name: 'visit-preview'
+    element: 'page-visit-preview'
+    windowTitlePostfix: 'Visit Preview'
+    headerTitle: 'Visit Preview'
+    preload: true
+    hrefList: [ 'visit-preview' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: false
+    showSaveButton: false
+    showPatientsDetails: true
+    hideAd: false
+    showPrintButton: true
+    showToolbar: false
+    hideHeaderTitle: true
+    accessId: 'D014'
+  }
+
+  {
     name: 'test-other'
     element: 'page-test-other-editor'
     windowTitlePostfix: 'Other Test'
