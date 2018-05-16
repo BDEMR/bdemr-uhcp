@@ -232,10 +232,11 @@
 
                       </template>
 
-                      <template is="dom-if" if="[[$equals(recordAuthorization.masterType, 'doctor-app')]]">
+                      <template is="dom-if" if="[[!$equals(recordAuthorization.masterType, 'anaesmon')]]">
                         <div class="flex m-left-8">
-                          <div class="type body capitalize">[[recordAuthorization.recordType]]</div>
-                          <div class="type caption secondary">[[recordAuthorization.visitSerial]] / [[recordAuthorization.recordSerial]] ([[$mkDate(recordAuthorization.createdDatetimeStamp)]]) by [[recordAuthorization.userName]]</div>
+                          <div class="type caption-2 secondary"><strong>Record Serial: </strong>[[recordAuthorization.recordSerial]], <strong>Created on:</strong> [[$mkDate(recordAuthorization.createdDatetimeStamp)]], <strong>Created by: </strong>[[recordAuthorization.userName]]</div>
+                          <div class="type body capitalize">[[recordAuthorization.recordType]] ([[recordAuthorization.recordSubType]])</div>
+                          <div class="type caption-2 secondary"><strong>Patients Serial: </strong>[[recordAuthorization.patientSerial]]</div>
                         </div>
 
                         <!-- <div class="layout horizontal m-horizontal-4 wrap"> -->
@@ -254,21 +255,7 @@
 
                       </template>
 
-                      <template is="dom-if" if="[[$equals(recordAuthorization.masterType, 'pcc-records')]]">
-                        <div class="flex m-left-8">
-                          <div class="type body capitalize">[[recordAuthorization.recordType]]</div>
-                          <div class="type caption secondary">[[recordAuthorization.recordSerial]] ([[$mkDate(recordAuthorization.createdDatetimeStamp)]]) by [[recordAuthorization.userName]]</div>
-                        </div>
 
-                        <paper-menu-button horizontal-align="right" no-animations>
-                          <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
-                          <paper-menu class="dropdown-content">
-                            <div hidden>[[recordAuthorization]]</div>
-                            <paper-item on-tap="openPccRecordAuthorization">Open record</paper-item>
-                          </paper-menu>
-                        </paper-menu-button>
-
-                      </template>
 
                     </paper-item>
                   </template>
