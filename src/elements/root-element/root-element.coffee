@@ -834,49 +834,49 @@ Polymer {
         # @navigateToPage "#/select-organization"
         return true
 
-  # = REGION offline patient with pending pcc records
-  _createOnlinePccPatient: (patient, cbfn) ->
-    data =
-      patient: patient
-      apiKey: @user.apiKey
-    @callApi '/bdemr-preconception-records-patient-registration', data, (err, response)=>
-      console.log response
+  # = REGION offline patient 
+  _createOnlinePatient: (patient, cbfn) ->
+    patient.apiKey = @user.apiKey
+    @callApi '/bdemr-app-patient-signup-partial', patient, (err, response)=>
+      # console.log response
       if response.hasError
         if response.error.message is "Phone number already exists."
           # @showModalInput "Phone number already exists. Please Enter Another Phone Number instead of #{patient.phone}", patient.phone, (answer)=>
           #   if answer
           #     patient.phone = answer
-          #     @_createOnlinePccPatient patient, cbfn
+          #     @_createOnlinePatient patient, cbfn
           patient.userAlreadyExist = true
-          console.log 'patientserial', patient.serial
-          @getExisitingPatientInfo patient.serial, patient.phone, =>
+          # console.log 'patientserial', patient.serial
+          @getExisitingPatientInfo patient.name, patient.serial, patient.phone, =>
             return cbfn patient
 
         else
-          @domHost.showModalDialog response.error.message
+          @showModalDialog response.error.message
       else
-        patient = response.data.patient
+        patientSerial = response.data.patientSerial
+        patient.serial = patientSerial
+        patient.userAlreadyExist = false
         return cbfn patient
 
-  getExisitingPatientInfo: (oldSerial, phoneNumber, cbfn)->
+  getExisitingPatientInfo: (patientOldName, oldSerial, phoneNumber, cbfn)->
     data =
       apiKey: @user.apiKey
       phoneNumber: phoneNumber
 
     @callApi '/bdemr-get-patient-info', data, (err, response)=>
-      console.log response
+      # console.log response
       if response.hasError
         # console.log response
       else
         patient =
           oldSerial: oldSerial
+          patientOldName: patientOldName
           doctorAccessPin: '0000'
           data: null
 
         patient.data = response.data
-        console.log "PATIENT INFO", patient
-        app.db.insert 'existing-patient-log-for-pending-pcc-records', patient
-        console.log 'data inserted on pending-pcc-record-for-existing-patient'
+        # console.log "PATIENT INFO", patient
+        app.db.insert 'conflicted-patient-list', patient
         cbfn()
 
 
@@ -893,33 +893,50 @@ Polymer {
     app.db.remove 'patient-list', id      
     app.db.insert 'patient-list', patient
 
-  _updateLocalPcc: (newSerial, oldSerial)->
-    pcc = (app.db.find 'pcc-records', ({patientSerial})-> patientSerial is oldSerial)[0]
-    pcc.patientSerial = newSerial
-    app.db.update 'pcc-records', pcc._id, pcc
+
 
   _removeLocalPatient: (patientTempSerial)->
     id = (app.db.find 'patient-list', ({serial})-> serial is patientTempSerial)[0]._id
     app.db.remove 'patient-list', id
-    console.log 'deleted already exist patient data'
+    # console.log 'deleted already exist patient data'
 
 
-  _convertOfflinePccPatientToOnline: (patient, cbfn)->
+  _convertOfflinePatientToOnline: (patient, cbfn)->
     oldSerial = patient.serial
-    @_createOnlinePccPatient patient, (patient)=>
-      if patient.userAlreadyExist
-        @_removeLocalPatient patient.serial
+    @_createOnlinePatient patient, (patient)=>
+      if !patient.userAlreadyExist
+        @updatePatientSerialOnExisitingRecords patient.serial, oldSerial, =>
+          @_updateLocalPatient patient, oldSerial
+          cbfn()
       else
-        @_updateLocalPatient patient, oldSerial
-        @_updateLocalPcc patient.serial, oldSerial
-      return cbfn()
+        cbfn()
 
-  _syncTemporaryOfflinePccPatients:(cbfn)->
+      return
+
+
+  checkAndupdateSerialOnCollection: (newSerial, oldSerial, collectionName)->
+    list = app.db.find collectionName, ({patientSerial})-> patientSerial is oldSerial
+
+    if list.length > 0
+      for item in list
+        item.patientSerial = newSerial
+        app.db.update collectionName, item._id, item
+
+
+  updatePatientSerialOnExisitingRecords: (patientActualSerial, patientOldSerial, cbfn)->
+    collectionMap = ['unregsitered-patient-details', 'anaesmon-record', 'progress-note-record', 'visited-patient-log', 'history-and-physical-record', 'diagnosis-record', 'doctor-visit', 'doctor-visit', 'visit-note', 'visit-patient-stay', 'visit-next-visit', 'custom-investigation-list', 'visit-advised-test', 'patient-test-results', 'patient-medications', 'patient-vitals-blood-pressure', 'patient-vitals-pulse-rate', 'patient-vitals-respiratory-rate', 'patient-vitals-spo2', 'patient-vitals-temperature', 'patient-vitals-bmi', 'patient-test-blood-sugar', 'patient-test-other', 'comment-patient', 'comment-doctor', 'patient-gallery--local-attachment', 'patient-gallery--online-attachment', 'patient-test-results', 'in-app-notification', 'local-patient-pin-code-list', 'activity', 'visit-invoice', 'visit-diagnosis', 'visit-identified-symptoms', 'visit-examination', 'offline-patient-pin', 'in-patient-medicine-dispense-log', 'pcc-records', 'ndr-records', 'patient-insulin-list']
+
+    for collectionName in collectionMap
+      @checkAndupdateSerialOnCollection patientActualSerial, patientOldSerial, collectionName
+
+    cbfn()
+
+  _syncTemporaryOfflinePatients:(cbfn)->
     userList = app.db.find 'patient-list', (patient)=> patient.isTemporaryOfflinePatient is true
     return cbfn() if userList.length is 0
     it1 = new lib.util.Iterator userList
     it1.forEach (next, index, patient)=>
-      @_convertOfflinePccPatientToOnline patient, ()=>
+      @_convertOfflinePatientToOnline patient, ()=>
         next()
     it1.finally =>
       return cbfn()

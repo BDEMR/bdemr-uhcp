@@ -298,6 +298,8 @@ Polymer {
 
       nationalIdCardNumber: item.nationalIdCardNumber or ''
 
+      employmentDetailsList: []
+
 
       belongOrganizationList: item.belongOrganizationList or []
 

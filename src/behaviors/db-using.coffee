@@ -110,6 +110,7 @@ app.behaviors.dbUsing =
 
     serialGenerator = 
       'patient-seed': 0
+      'offline-patient-serial-seed': 1
       'doctor-visit-seed': 0
       'doctor-pcc-seed': 1
       'doctor-ndr-seed': 1
@@ -624,4 +625,17 @@ app.behaviors.dbUsing =
     itemType = 'UC'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     return (appIdentifier + userSerial + itemType + 'only')
+
+  generateSerialForOfflinePatient: ->
+    appIdentifier = 'D'
+    itemType = 'OFFPT'
+    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
+    serialGenerator = (app.db.find '--serial-generator')[0]
+    seed = serialGenerator['offline-patient-serial-seed']
+    console.log 'seed', seed
+    serialGenerator['offline-patient-serial-seed'] += 1
+    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
+    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+
+
 
