@@ -56,7 +56,6 @@
   <template>
 
     <style is="custom-style" include="common-style">
-
       .limiting-container {
         margin-top: 8px;
       }
@@ -543,7 +542,6 @@
       #printPreview {
         word-break: break-word;
         /*display: none !important;*/
-
       }
 
       @media print {
@@ -769,6 +767,7 @@
         background-color: #fafafa;
         margin-bottom: 8px;
       }
+
       .profile-image {
         height: 78px;
         width: 78px;
@@ -789,84 +788,86 @@
     <div class="master-container">
       <div class="limiting-container">
         <!-- Print Preview Area - start -->
-        <paper-card id="printPreview" elevation="0">
+        <paper-card id="printPreview" elevation='0'>
 
           <div class="print-header horizontal layout center center-justified">
             <h1>[[settings.printDecoration.headerLine]]</h1>
           </div>
 
-          <!-- Print Header - Main - start -->
-          <div class="document-header horizontal layout center">
+          <div class="print-header horizontal layout center">
             <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
-              <img class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+              <div class="m-right-16">
+                <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+              </div>
             </template>
-
-            <div class="leftSide">
-              <div class="leftSideLine1">[[settings.printDecoration.leftSideLine1]]</div>
-              <div class="leftSideLine2">[[settings.printDecoration.leftSideLine2]]</div>
-              <div class="leftSideLine3">[[settings.printDecoration.leftSideLine3]]</div>
-            </div>
-            <div class="flex"></div>
-            <div class="rightSide layout end-justified">
-              <div class="rightSideLine1">[[settings.printDecoration.rightSideLine1]]</div>
-              <div class="rightSideLine2">[[settings.printDecoration.rightSideLine2]]</div>
-              <div class="rightSideLine3">[[settings.printDecoration.rightSideLine3]]</div>
-            </div>
+            <h1>[[settings.printDecoration.headerLine]]</h1>
           </div>
-          <!-- Print Header - Main - end -->
 
-          <!-- Print Header - Patient Details - start -->
-          <div class="document-header horizontal layout center p-vertical-8">
-            <!-- <template is="dom-if" if="[[!patient.isForOrganizationOnly]]"> -->
+          <!-- Print Header - Main - start -->
+          <div class="">
             <div class="m-horizontal-4">
-              <strong>Patient Serial: </strong>
-              <span>{{patient.serial}}</span>
+              <strong>Consultation Site: </strong>
+              <span>[[organization.name]]</span>
+            </div>
+            <div class="m-horizontal-4">
+              <strong>Consultant Name: </strong>
+              <span>[[visit.doctorName]]</span>
+            </div>
+            <div class="m-horizontal-4">
+              <strong>Consultant Grade: </strong>
+              <span></span>
+            </div>
+            <div class="m-horizontal-4">
+              <strong>Patient Id / Policy Id: </strong>
+              <span>
+                <template is="dom-if" if="[[patient.policyList.length]]">
+                  <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
+                    <span class="">[[policy.number]]</span>
+                  </template>
+                </template>
+              </span>
             </div>
             <div class="m-horizontal-4">
               <strong>Patient Name: </strong>
               <span>{{$getFullName(patient.name)}}</span>
             </div>
             <div class="m-horizontal-4">
-              <strong>Sex: </strong>
-              <span>{{patient.gender}}</span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Age: </strong>
-              <span>[[_computeAge(patient.dateOfBirth)]] years </span>
+              <strong>Age/Sex: </strong>
+              <span>[[_computeAge(patient.dateOfBirth)]] years / {{patient.gender}}</span>
             </div>
             <div class="m-horizontal-4">
               <strong>Blood Group: </strong>
               <span>[[patient.bloodGroup]]</span>
             </div>
             <div class="m-horizontal-4">
-              <strong>Allergy: </strong>
+              <strong>Allergies: </strong>
               <span>[[patient.allergy]]</span>
             </div>
-            <!-- </template> -->
-
-            <!-- <template is="dom-if" if="[[patient.isForOrganizationOnly]]">
-              <div class="m-horizontal-4">
-                <strong>Patient Name: </strong>
-                <i></i>
-              </div>
-              <div class="m-horizontal-4">
-                <strong>Age: </strong>
-                <i>REDACTED FOR CONFIDENTIALITY</i>
-              </div>
-              <div class="m-horizontal-4">
-                <strong>Blood Group: [[patient.bloodGroup]]</strong>
-                <span> </span>
-              </div>
-              <div class="m-horizontal-4">
-                <strong>Allergy: [[patient.allergy]]</strong>
-                <span> </span>
-              </div>
-            </template> -->
+            <div class="m-horizontal-4">
+              <strong>Factory name: </strong>
+              <span>
+                <template is="dom-if" if="[[patient.employmentDetailsList.length]]">
+                  <template is="dom-repeat" items="[[patient.employmentDetailsList]]" as="factory">
+                    [[factory.institutionName]]
+                  </template>
+                </template>
+              </span>
+            </div>
+            <div class="m-horizontal-4">
+              <strong>Prescription Id: </strong>
+              <span>[[visit.serial]]</span>
+            </div>
+            <div class="m-horizontal-4">
+              <strong>Date &amp; Time: </strong>
+              <span>[[$mkDateTime(visit.createdDatetimeStamp)]]</span>
+            </div>
           </div>
-          <!-- Print Header - Patient Details - end -->
+          <br>
+          <br>
+          <!-- Print Header - Main - end -->
 
           <!-- Print Header - record Title - start -->
-          <div class="p-16 horizontal layout center center-justified">
+          <div class="p-16 horizontal layout center center-justified" hidden$="{{!printPrescriptionOnly}}">
             <div class="type headline">{{visit.recordTitle}}</div>
           </div>
           <!-- Print Header - record Title - start -->
@@ -906,7 +907,8 @@
                   <div class="type caption-2">
                     <span class="type secondary">[[_returnSerial(index)]]. </span>
                     <span>{{examination.name}}</span>
-                    (<template is="dom-repeat" items="[[examination.examinationValueList]]" as="examItem">
+                    (
+                    <template is="dom-repeat" items="[[examination.examinationValueList]]" as="examItem">
                       <span hidden$="{{!examItem.checked}}">{{examItem.value}}, </span>
                     </template>)
                   </div>
@@ -1129,7 +1131,8 @@
                       <span class="type bold">Discharge Reason: </span> [[patientStay.data.dischargeReason]]</div>
                   </template>
                   <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
-                    <div><span class="type bold"> Discharged To:</span> [[patientStay.data.dischargeTo]]</div>
+                    <div>
+                      <span class="type bold"> Discharged To:</span> [[patientStay.data.dischargeTo]]</div>
                   </template>
                 </div>
               </template>
@@ -1148,10 +1151,13 @@
 
             <template is="dom-if" if="[[settings.flags.showUserNameOnPrintPreview]]">
               <div class="type caption secondary" style="text-align: center; padding: 8px;">
-                <div><i><strong>prepared by: </strong>{{user.name}}</i></div>
+                <div>
+                  <i>
+                    <strong>prepared by: </strong>{{user.name}}</i>
+                </div>
               </div>
             </template>
-            
+
             <template is="dom-if" if="[[settings.flags.showFooterLine]]">
               <div class="b-top">
                 <div class="type caption secondary">[[settings.printDecoration.footerLine]]</div>
@@ -1163,8 +1169,8 @@
       </div>
     </div>
 
-    
-    
+
+
 
     <!-- local DOM -->
   </template>
