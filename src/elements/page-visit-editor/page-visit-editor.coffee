@@ -975,7 +975,7 @@ Polymer {
   getDoctorSpeciality: () ->
     unless @user.specializationList.length is 0
       return @user.specializationList[0].specializationTitle
-    return 'not provided yet'
+    return ''
 
   _makeNewNextVisit: ()->
     @nextVisit =
@@ -3847,8 +3847,8 @@ Polymer {
       patientSerial: @patient.serial
       recordType: 'doctor-visit'
       doctorName: @user.name
-      hospitalName: null
-      doctorSpeciality: null
+      hospitalName: @organization.name
+      doctorSpeciality: @getDoctorSpeciality()
       prescriptionSerial: null
       doctorNotesSerial: null
       nextVisitSerial: null
