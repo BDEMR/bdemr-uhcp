@@ -822,6 +822,16 @@
       .partner-logo img {
         margin-right: 5px;
       }
+
+      .edit-icon {
+        display: inline-block;
+        margin-left: 4px;
+        --paper-icon-button: {
+          height: 18px;
+          width: 18px;
+          padding: 0;
+        }
+      }
     </style>
 
     <!-- local DOM -->
@@ -911,10 +921,14 @@
               <div class="content left horizontal layout wrap type caption-2">
                 <div class="m-4">
                   <strong>Record:</strong> [[visit.serial]]</div>
+                <div class="m-4 layout horizontal start">
+                  <strong>Created Date: &nbsp;</strong>
+                  <span> [[$mkDateTime(visit.createdDatetimeStamp)]]</span>
+                  <paper-icon-button on-tap="visitDateChangeOpenModalClicked" icon="create" class="edit-icon"></paper-icon-button>
+                </div>
                 <div class="m-4">
-                  <strong>Created Date:</strong> [[$mkDateTime(visit.createdDatetimeStamp)]]</div>
-                <div class="m-4">
-                  <strong>Created By:</strong> {{visit.doctorName}}</div>
+                  <strong>Created By:</strong> {{visit.doctorName}}
+                </div>
               </div>
 
               <div class="content right horizontal layout end-justified">
@@ -2367,6 +2381,24 @@
     </paper-dialog>
     <!-- Dialog for - Referral start -->
 
+    <!-- Dialog for Changing Visit Date start -->
+    <paper-dialog id="visitDateModal">
+      <h2>Change Visit Date</h2>
+      <div class="p-16">
+        <vaadin-date-picker label="Chose Date" value="{{customVisitDate}}"></vaadin-date-picker>
+        <div class="m-top-8">
+          <label for="">Chose Time</label>
+          <input class="m-left-8" type="time" is="iron-input" bind-value="{{customVisitTime}}">
+        </div>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="btn btn-primary" on-tap="saveNewVisitDateButtonClicked">Save</paper-button>
+      </div>
+    </paper-dialog>
+
+    <!-- Dialog for Changing Visit Date end -->
+
     <!-- Print Preview Area - start -->
     <div id="printPreview">
       <div class="print-header horizontal layout center">
@@ -2780,7 +2812,8 @@
           </template>
         </div>
         <div class="type caption p-8">
-          <strong>Printed By: </strong>[[user.name]], <strong>Printed On: </strong>[[getPrintedOnTime()]]
+          <strong>Printed By: </strong>[[user.name]],
+          <strong>Printed On: </strong>[[getPrintedOnTime()]]
         </div>
 
         <div class="horizontal layout center b-top">

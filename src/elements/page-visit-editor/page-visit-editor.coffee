@@ -3837,6 +3837,7 @@ Polymer {
       serial: null
       idOnServer: null
       source: 'local'
+      recordCreatedDateTimeStamp: lib.datetime.now()
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: 0
       lastSyncedDatetimeStamp: 0
@@ -5590,8 +5591,18 @@ Polymer {
             @makeNewVisitButtonPressed()
 
     @arrowBackButtonPressed()
-            
 
-    
-      
+
+  visitDateChangeOpenModalClicked: ->
+    @customVisitDate = ""
+    @customVisitTime = ""
+    @.$.visitDateModal.toggle()
+
+  saveNewVisitDateButtonClicked: ->
+    visitDateTime = +new Date("#{@customVisitDate} #{@customVisitTime}")
+    @set 'visit.createdDatetimeStamp', visitDateTime
+    @_saveVisit()
+    @.$.visitDateModal.toggle()
+
+   
 }
