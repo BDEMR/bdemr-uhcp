@@ -7,6 +7,7 @@ Polymer {
     app.behaviors.translating
     app.behaviors.pageLike
     app.behaviors.dbUsing
+    app.behaviors.apiCalling
   ]
 
   properties:
@@ -19,6 +20,14 @@ Polymer {
     daysLeft:
       type: Number
       value: 0
+
+    authorizeToSelectedIndex:
+      type: Number
+      value: 0
+
+    organizationsIBelongToList:
+      type: Array
+      value: -> []
 
     managePatientLinkList:
       type: Array
@@ -175,11 +184,146 @@ Polymer {
 
 
   ready: -> @version = app.config.clientVersion
+
+
+  _organizationNavigatedIn: () ->
+    if localStorage.getItem("authorizedOrganiztionId")
+      @authorizedOrganiztionId = localStorage.getItem("authorizedOrganiztionId")
+    else
+      @authorizedOrganiztionId = @currentOrganization.idOnServer
+      localStorage.setItem("authorizedOrganiztionId", @authorizedOrganiztionId)
+
+    data = { 
+      apiKey: @user.apiKey
+    }
+
+    @callApi '/bdemr-organization-list-those-user-belongs-to', data, (err, response)=>
+      if response.hasError
+        @domHost.showModalDialog response.error.message
+      else
+        @organizationsIBelongToList = response.data.organizationObjectList
+
+        for item, index in @organizationsIBelongToList
+          if item.idOnServer is @authorizedOrganiztionId
+            @set 'authorizeToSelectedIndex', index
+
+        @checkForAuthorizedOrganiztionListFromUserSettings =>
+          @_saveSettings()
+
+
+
+  _saveSettings: ->
+    @settings.lastModifiedDatetimeStamp = lib.datetime.now()
+    app.db.remove 'settings', item._id for item in app.db.find 'settings'
+    app.db.insert 'settings', @settings
+
+
+  isOrganizationFoundOnAuthorizedOrganiztionList: (org)->
+    list = @settings.authorizedOrganiztionList
+    for item in list
+      if item.idOnServer is org.idOnServer
+        return true
+    return false
+
+
+  checkForAuthorizedOrganiztionListFromUserSettings: (cbfn)->
+    authorizedOrganiztionList = @settings.authorizedOrganiztionList
+
+    if authorizedOrganiztionList.length > 0
+      for item in @organizationsIBelongToList
+        if !@isOrganizationFoundOnAuthorizedOrganiztionList item
+          object =
+            idOnServer: item.idOnServer
+            isChecked: false
+            name: item.name
+
+          @settings.authorizedOrganiztionList.push object
+
+    else
+      for item in @organizationsIBelongToList
+        object =
+          idOnServer: item.idOnServer
+          isChecked: false
+          name: item.name
+
+        @settings.authorizedOrganiztionList.push object
+
+    cbfn()
+
+
+
+
+  ## Authorize organization for Records - start
+  onCheckAuthorizedOrganization: (e)->
+    isChecked = e.target.checked
+    index = e.model.index
+
+    if isChecked
+      @settings.authorizedOrganiztionList[index].isChecked = isChecked
+
+    else
+      @settings.authorizedOrganiztionList[index].isChecked = false
+
+
+    console.log 'settings', @settings
+
+
+    @_saveSettings()
+
+
+
+
+
+  ## Authorize organization for Records - end
+
+  loadSettings: (cbfn)->
+    list = app.db.find 'settings', ({serial})=> @user.serial is serial
+
+    if list.length > 0
+      @settings = list[0]
+
+    else
+     @_makeSettings()
+
+    cbfn()
+
+  _makeSettings: () ->
+
+    @settings =
+      createdByUserSerial: @user.serial
+      lastModifiedDatetimeStamp: 0
+      createdDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: null
+      serial: @user.serial
+      printDecoration:
+        headerLine: ''
+        leftSideLine1: ''
+        leftSideLine2: ''
+        leftSideLine3: ''
+        rightSideLine1: ''
+        rightSideLine2: ''
+        rightSideLine3: ''
+        footerLine: ''
+        logoDataUri: null
+      billingTargetEmailAddress: ''
+      nsqipTargetEmailAddress: ''
+      monetaryUnit: 'BDT'
+      otherSettings:
+        patientSignUpDefaultPassword: '123456'
+      flags:
+        showFooterLine: true
+        showUserNameOnPrintPreview: true
+
+      authorizedOrganiztionList: []
+
+    @_saveSettings()
+
+
   
   navigatedIn: ->
     
-    currentOrganization = @getCurrentOrganization()
-    unless currentOrganization
+    @currentOrganization = @getCurrentOrganization()
+    unless @currentOrganization
       @domHost.navigateToPage "#/select-organization"
 
     # Sync User Settings if availble or set as default settings. this is required.
@@ -201,6 +345,9 @@ Polymer {
 
     if @daysLeft < 0
       @domHost.navigateToPage '#/activate'
+
+    @loadSettings =>
+      @_organizationNavigatedIn()
 
 
   languageSelectedIndexChanged: ->

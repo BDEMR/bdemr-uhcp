@@ -25,7 +25,7 @@ app.behaviors.local['root-element'].syncCall =
     console.group 'Sync'
     @$$('#sync-dialog').toggle()
 
-    @_syncTemporaryOfflinePccPatients =>
+    @_syncTemporaryOfflinePatients => =>
 
       collector1 = new lib.util.Collector 42
 

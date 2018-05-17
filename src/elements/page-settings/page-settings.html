@@ -15,6 +15,7 @@
 <link rel="import" href="../../behaviors/db-using.html">
 <link rel="import" href="../../behaviors/translating.html">
 <link rel="import" href="../../behaviors/page-like.html">
+<link rel="import" href="../../behaviors/api-calling.html">
 
 <!-- custom-elements -->
 
@@ -185,6 +186,20 @@
               <paper-input always-float-label label="Monetary Unit" value="{{settings.monetaryUnit}}"></paper-input>
 
             </div>
+          </paper-card>
+
+          <paper-card heading="Change Password" class="info-card">
+            <div class="card-content">
+              <paper-input required type="password" label="Current Password" value="{{changePassword.oldPassword}}" error-message="{{validationError.oldPassword.0}}"></paper-input>
+
+
+              <paper-input type="password" label="New Password" value="{{changePassword.newPassword}}" error-message="{{validationError.newPassword.0}}" required></paper-input>
+              <paper-input type="password" label="Retype Password" value="{{changePassword.newRetypePassword}}" error-message="{{validationError.newRetypePassword.0}}" required></paper-input>
+            </div>
+            <div class="card-actions">
+              <paper-button class="btn colored" raised on-tap="changePasswordBtnPressed">Change password</paper-button>
+            </div>
+            
           </paper-card>
 
           <paper-card class="info-card" heading="Printing (Headline)">

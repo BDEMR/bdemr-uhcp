@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu-light.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -11,6 +12,8 @@
 <link rel="import" href="../../behaviors/translating.html">
 <link rel="import" href="../../behaviors/page-like.html">
 <link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+
 
 <!-- custom-elements -->
 <link rel="import" href="../../elements/html-block/html-block.html">
@@ -226,6 +229,16 @@
                 </div>
               </template>
             </div>
+          </div>
+        </paper-card>
+
+        <paper-card heading="Authorize records to" class="m-top-8">
+          <div class="card-content">
+
+            <template is="dom-repeat" items="{{settings.authorizedOrganiztionList}}">
+              <paper-checkbox class="custom-checkbox" checked="{{item.isChecked}}" on-change="onCheckAuthorizedOrganization">{{item.name}}</paper-checkbox>
+            </template>
+
           </div>
         </paper-card>
 

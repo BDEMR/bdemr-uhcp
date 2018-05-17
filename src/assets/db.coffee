@@ -1085,6 +1085,36 @@ app.db.defineCollection {
   name: 'ndr-records--deleted'
 }
 
+### 
+patient-insulin-list
+  serial: null
+  lastModifiedDatetimeStamp: 0
+  createdDatetimeStamp: 0
+  lastSyncedDatetimeStamp: 0
+  createdByUserSerial
+  patientSerial
+  data:
+
+###
+
+app.db.defineCollection {
+  name: 'patient-insulin-list'
+}
+
+app.db.defineCollection {
+  name: 'patient-insulin-list--deleted'
+}
+
+app.db.defineCollection {
+  name: 'conflicted-patient-list'
+}
+
+app.db.defineCollection {
+  name: 'organization-record-authorization'
+}
+
+
+
 app.db.defineCollection { name: 'employee-leave-data' }
 app.db.defineCollection { name: 'employee-leave-data--deleted' }
 

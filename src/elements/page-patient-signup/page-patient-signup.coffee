@@ -245,6 +245,31 @@ Polymer {
       @_mimicPatientImport patient
       @domHost.showModalDialog "Patient Created Successfully!"
 
+  getAddressObject:()->
+    addressList = [
+      {
+        addressTitle: 'Personal'
+        addressType: 'personal'
+        flat: null
+        floor: null
+        plot: null
+        block: null
+        road: null
+        village: null
+        addressUnion: null
+        subdistrictName: null
+        addressDistrict: null
+        addressPostalOrZipCode: null
+        addressCityOrTown: null
+        addressLine1: null
+        addressLine2: null
+        stateOrProvince: null
+        addressCountry: null
+      }
+    ]
+
+    return addressList
+
   _mimicImportPatient: (item, cbfn)->
     patient = 
           
@@ -269,9 +294,11 @@ Polymer {
       drugAllergy: item.drugAllergy or {value: null, list: []}
       emmergencyContact: item.emmergencyContact or {}
 
-      addressList: item.addressList or []
+      addressList: item.addressList or @getAddressObject()
 
       nationalIdCardNumber: item.nationalIdCardNumber or ''
+
+      employmentDetailsList: []
 
 
       belongOrganizationList: item.belongOrganizationList or []
@@ -501,6 +528,9 @@ Polymer {
       organizationId: null
       password: '123456'
       doctorAccessPin: '0000'
+      createdDatetimeStamp: lib.datetime.now()
+      lastModifiedDatetimeStamp: lib.datetime.now()
+      createdByUserId: @user.idOnServer
 
 
     @verifyPhoneNumber =

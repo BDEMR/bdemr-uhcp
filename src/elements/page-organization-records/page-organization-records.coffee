@@ -135,20 +135,20 @@ Polymer {
 
   openPccRecordAuthorization: (e)->
     { recordAuthorization } = e.model
-    console.log 'recordAuthorization', recordAuthorization
+    # console.log 'recordAuthorization', recordAuthorization
     data = { 
       apiKey: @user.apiKey
       recordAuthorizationId: recordAuthorization._id
     }
     @callApi '/bdemr-organization-import-authorized-record', data, (err, response)=>
-      console.log response
+      # console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message
         return
       else
         # @recordAuthorizationList = response.data.recordAuthorizationList
         
-        { recordObject } = response.data
+        recordObject = response.data
    
         url = "#/preview-preconception-record/record:#{recordObject.serial}"
 
@@ -157,32 +157,48 @@ Polymer {
 
         @domHost.navigateToPage url
 
+  saveSubRecord: (data, clientDb, cbfn)->
+    console.log 'clientDb', clientDb
+    app.db.upsert clientDb, data, ({serial})=> data.serial is serial
+
+
+  saveAllSubRecords: (recordObject, subRecordList, cbfn)->
+    if recordObject.recordType is "doctor-visit"
+      for item in subRecordList
+        if item.record
+          @saveSubRecord item.record, item.clientDb
+
+    cbfn()
+
+
   openRecordAuthorization: (e)->
     { recordAuthorization } = e.model
-    console.log 'recordAuthorization', recordAuthorization
+    # console.log 'recordAuthorization', recordAuthorization
     data = { 
       apiKey: @user.apiKey
       recordAuthorizationId: recordAuthorization._id
     }
+
     @callApi '/bdemr-organization-import-authorized-record', data, (err, response)=>
+
       console.log response
+      
       if response.hasError
         @domHost.showModalDialog response.error.message
         return
       else
         # @recordAuthorizationList = response.data.recordAuthorizationList
 
-        { recordTypeObject, visitObject } = response.data
+        { recordObject, subRecordList } = response.data
 
         clientVisitDb = 'doctor-visit'
 
         clientPatientDb = 'patient-list'
    
         typeMap = 
-          'Prescription': {  clientDb: 'visit-prescription', url : "#/print-record/visit:#{visitObject.serial}/patient:#{visitObject.patientSerial}/prescription:#{recordTypeObject.serial}" }
-          'Test Advised': { clientDb: 'visit-advised-test', url : "#/print-test-adviced/visit:#{visitObject.serial}/patient:#{visitObject.patientSerial}/test-adviced:#{recordTypeObject.serial}" }
-          'History & Physical': { clientDb: 'history-and-physical-record', url : "#/print-history-and-physical-record/visit:#{visitObject.serial}/patient:#{visitObject.patientSerial}/record:#{recordTypeObject.serial}" }
-          'PCC': { clientDb: 'pcc-records', url : "#/preview-preconception-record/record:#{recordTypeObject.serial}" }
+          'Visit Record': {  clientDb: 'doctor-visit', url : "#/visit-preview/visit:#{recordObject.serial}/patient:#{recordObject.patientSerial}" }
+          'PCC': { clientDb: 'pcc-records', url : "#/preview-preconception-record/record:#{recordObject.serial}" }
+          'NDR': { clientDb: 'ndr-records', url : "#/preview-ndr/record:#{recordObject.serial}/patient:#{recordObject.patientSerial}" }
         unless recordAuthorization.recordType of typeMap
           @domHost.showModalDialog "This type of record can not be opened"
           return
@@ -191,11 +207,12 @@ Polymer {
 
         data = { 
           apiKey: @user.apiKey
-          serial: visitObject.patientSerial
+          serial: recordObject.patientSerial
           givenPin: 'DISREGARD-ME'
           pin: 'DISREGARD-ME' ## NOTE: for backward compatibility.
           organizationId: @organization.idOnServer
         }
+
         @callApi '/bdemr-patient-import-new', data, (err, response)=>
 
           console.log response
@@ -205,23 +222,20 @@ Polymer {
           else
             patientObject = response.data[0]
 
-            recordTypeObject.isForOrganizationOnly = true
-            visitObject.isForOrganizationOnly = true
+            recordObject.isForOrganizationOnly = true
             patientObject.isForOrganizationOnly = true
 
-            console.log recordTypeObject, patientObject, visitObject, clientDb, url
+            console.log recordObject, patientObject, clientDb, url
 
             app.db.upsert clientPatientDb, patientObject, ({serial})=> patientObject.serial is serial
-            app.db.upsert clientVisitDb, visitObject, ({serial})=> visitObject.serial is serial
-            app.db.upsert clientDb, recordTypeObject, ({serial})=> recordTypeObject.serial is serial
-
-            @domHost.navigateToPage url
+            app.db.upsert clientDb, recordObject, ({serial})=> recordObject.serial is serial
 
 
+            @saveAllSubRecords recordObject, subRecordList, =>
 
-            
-            
-            
-        
-        
+              @domHost.setCurrentPatientsDetails patientObject
+
+              @domHost.navigateToPage url
+
+
 }
