@@ -1582,159 +1582,132 @@
 
                   <!-- visit and reports - start -->
                   <section>
-                    <template is="dom-if" if="[[_isEmptyArray(matchingVisitList)]]">
-                      <div class="card-content layout horizontal center center-justified">
-                        <div class="type body secondary p-16">-- no data available --</div>
-                      </div>
-                    </template>
-
-                    <template id="visit-list-repeater" is="dom-repeat" items="[[matchingVisitList]]">
-                      <div class="custom-list vertical layout">
-                        <div class="horizontal layout center">
-                          <div class="flex type caption-2 secondary horizontal layout wrap m-top-8">
-                            <div class="m-horizontal-8">Visit Serial: [[item.serial]]</div>
-                            <div class="m-horizontal-8">Created Date: [[$mkDateTime(item.createdDatetimeStamp)]]</div>
-                            <div class="m-horizontal-8">Created by: [[item.doctorName]]
-                              <span>[[item.doctorSpeciality]]</span>
-                            </div>
-                            <div class="m-horizontal-8">Organization/Hospital: [[item.hospitalName]]</div>
-                          </div>
-                          <template is="dom-if" if="[[_compareFn(item.recordType, '==', 'anaesmon-record')]]">
-                            <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
-                              <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
-                              <paper-menu class="dropdown-content">
-                                <paper-item on-tap="preopPreviewButtonClicked">
-                                  <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
-                                  PreOP
-                                </paper-item>
-                                <paper-item on-tap="postopPreviewButtonClicked">
-                                  <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
-                                  Post Op
-                                </paper-item>
-                                <paper-item on-tap="opAnaesthesiaPreviewButtonClicked">
-                                  <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
-                                  Op Anaesthesia
-                                </paper-item>
-                                <paper-item on-tap="opSurgeryPreviewButtonClicked">
-                                  <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
-                                  Op Surgery
-                                </paper-item>
-                              </paper-menu>
-                            </paper-menu-button>
-                          </template>
-                          <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
-                            <div class="layout horizontal center">
-
+                  
+                    <table class="table">
+                      <tr>
+                        <th>Serial</th>
+                        <th>Record Type</th>
+                        <th>Created Date</th>
+                        <th>Created by</th>
+                        <th>Organization/Hospital</th>
+                        <th>Action</th>
+                      </tr>
+                      <template is="dom-if" if="[[_isEmptyArray(matchingVisitList)]]">
+                        <tr>
+                          <td colspan="5" class="text-center">
+                            [[$TRANSLATE('No Data added yet',LANG)]]...
+                          </td>
+                        </tr>
+                      </template>
+                      <template id="visit-list-repeater" is="dom-repeat" items="[[matchingVisitList]]">
+                        <tr class="type body">
+                          <td>[[item.serial]]</td>
+                          <td>{{_checkRecordTitle(item)}}</td>
+                          <td>[[$mkDateTime(item.createdDatetimeStamp)]]</td>
+                  
+                          <td>[[item.doctorName]]
+                            <span>[[item.doctorSpeciality]]</td>
+                          <td>[[item.hospitalName]]</td>
+                          <td class="horizontal layout center end-justified">
+                            <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
+                              <paper-button class="btn-add colored" on-tap="viewVisitRecord">View</paper-button>
+                            </template>
+                            <template is="dom-if" if="[[_compareFn(item.recordType, '==', 'anaesmon-record')]]">
                               <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
                                 <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
                                 <paper-menu class="dropdown-content">
-                                  <paper-item on-tap="viewVisitRecord">View</paper-item>
-                                  <template is="dom-if" if="[[!_isEmptyArray(item.testResults.attachmentSerialList)]]">
-                                    <paper-item on-tap="viewTestResultsAttachemntsBtnPressed">View Attachment</paper-item>
-                                  </template>
-                                  <template is="dom-if" if="[[_compareFn(item.recordTypeName, '==' ,'History & Physical')]]">
-                                    <paper-item on-tap="visitReportCopyBtnPressed">
-                                      <iron-icon class="m-right-8" icon="icons:content-copy" item-icon></iron-icon>
-                                      Copy History & Physical
-                                    </paper-item>
-                                  </template>
-
-                                  <!-- <paper-item on-tap="authorizeRecordPressed">
-                                    Authorize
-                                  </paper-item> -->
-
+                                  <paper-item on-tap="preopPreviewButtonClicked">
+                                    <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                                    PreOP
+                                  </paper-item>
+                                  <paper-item on-tap="postopPreviewButtonClicked">
+                                    <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                                    Post Op
+                                  </paper-item>
+                                  <paper-item on-tap="opAnaesthesiaPreviewButtonClicked">
+                                    <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                                    Op Anaesthesia
+                                  </paper-item>
+                                  <paper-item on-tap="opSurgeryPreviewButtonClicked">
+                                    <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                                    Op Surgery
+                                  </paper-item>
                                 </paper-menu>
                               </paper-menu-button>
-
-
-
-                            </div>
-                          </template>
-                        </div>
-                        <div class="m-8 type body-lead">Type: {{_checkRecordTitle(item)}}</div>
-                        <div>
-                          <div class="type caption-2 secondary m-horizontal-8">Available Records:</div>
-                          <div class="horizontal layout wrap">
-
-                            <template is="dom-repeat" items="[[item.recordList]]" as="record" index-as="recordIndex">
-                              <template is="dom-if" if="[[record.recordSerial]]">
-                                <div class="record-item">
-                                  <div hidden="">{{recordIndex}}</div>
-                                  <div class="horizontal layout center">
-                                    <div class="flex m-right-8">
-                                      <div class="type body">[[record.recordType]]</div>
-                                      <div class="type caption secondary">Serial: [[record.recordSerial]]</div>
-                                    </div>
-
-                                    <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
-                                      <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
-                                      <paper-menu class="dropdown-content">
-                                        <paper-item on-tap="authorizeRecordPressed" hidden="[[record.hideAuthorizeButton]]">Authorize </paper-item>
-                                        <paper-item on-tap="deleteRecordFromSelectedVisit">Delete</paper-item>
-
-                                      </paper-menu>
-                                    </paper-menu-button>
-                                  </div>
-
-                                  <div class="horizontal layout">
-                                    <template is="dom-if" if="[[$equals(toAuthorizeIndex, recordIndex)]]">
-                                      <paper-dropdown-menu label="Authorize To" class="flex">
-                                        <paper-listbox class="dropdown-content" on-iron-select="authorizeToSelected" selected="{{authorizeToSelectedIndex}}">
-                                          <template is="dom-repeat" items="{{organizationsIBelongToList}}" as="authorizeTo">
-                                            <paper-item>{{authorizeTo.name}}</paper-item>
-                                          </template>
-                                        </paper-listbox>
-                                      </paper-dropdown-menu>
-                                    </template>
-                                  </div>
-
-                                </div>
-                              </template>
-
                             </template>
-
-                          </div>
-                        </div>
-
-                      </div>
-                    </template>
+                            <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
+                              <div class="layout horizontal center">
+                  
+                                <template is="dom-if" if="[[!_isEmptyArray(item.testResults.attachmentSerialList)]]">
+                                  <paper-icon-button icon="attachment" on-tap="viewTestResultsAttachemntsBtnPressed"></paper-icon-button>
+                                </template>
+                  
+                                <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
+                                  <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
+                                  <paper-menu class="dropdown-content">
+                                    <!-- <paper-item on-tap="viewVisitRecord">View</paper-item> -->
+                                    <!-- <template is="dom-if" if="[[!_isEmptyArray(item.testResults.attachmentSerialList)]]">
+                                                        <paper-item on-tap="viewTestResultsAttachemntsBtnPressed">View Attachment</paper-item>
+                                                      </template> -->
+                                    <template is="dom-if" if="[[_compareFn(item.recordTypeName, '==' ,'History & Physical')]]">
+                                      <paper-item on-tap="visitReportCopyBtnPressed">
+                                        <iron-icon class="m-right-8" icon="icons:content-copy" item-icon></iron-icon>
+                                        Copy History & Physical
+                                      </paper-item>
+                                    </template>
+                  
+                                    <!-- <paper-item on-tap="authorizeRecordPressed">
+                                                        Authorize
+                                                      </paper-item> -->
+                  
+                                  </paper-menu>
+                                </paper-menu-button>
+                  
+                  
+                  
+                              </div>
+                            </template>
+                          </td>
+                  
+                        </tr>
+                      </template>
+                    </table>
+                  
                   </section>
-
+                  
                   <!-- visit and reports - end -->
-
+                  
                   <!-- next visit - start -->
                   <section>
-                    <div class="card-content">
-                      <table class="table">
+                    <table class="table">
+                      <tr>
+                        <th>Date Advised</th>
+                        <th>Next Visit Date</th>
+                        <th>Name of Doctor</th>
+                        <th>Specialty</th>
+                        <th>Priority</th>
+                      </tr>
+                      <template is="dom-if" if="[[_isEmptyArray(matchingNextVisitList)]]">
                         <tr>
-                          <th>Date Advised</th>
-                          <th>Next Visit Date</th>
-                          <th>Name of Doctor</th>
-                          <th>Specialty</th>
-                          <th>Priority</th>
+                          <td colspan="5" class="text-center">
+                            [[$TRANSLATE('No Data added yet',LANG)]]...
+                          </td>
                         </tr>
-                        <template is="dom-if" if="[[_isEmptyArray(matchingNextVisitList)]]">
-                          <tr>
-                            <td colspan="5" class="text-center">
-                              [[$TRANSLATE('No Data added yet',LANG)]]...
-                            </td>
-                          </tr>
-                        </template>
-                        <template id="visit-list-repeater" is="dom-repeat" items="[[matchingNextVisitList]]" sort="_sortByDate" filter="{{computeVisitFilter(searchString)}}">
-                          <tr>
-                            <td>
-                              <span class="text-muted">[[$mkDateTime(item.createdDatetimeStamp)]]</span>
-                            </td>
-                            <td>[[$mkDateTime(item.data.nextVisitDateTimestamp)]]</td>
-
-                            <td>[[item.doctorName]]</td>
-                            <td>[[item.doctorSpeciality]]</td>
-                            <td>[[item.data.priorityType]]</td>
-
-                          </tr>
-                        </template>
-                      </table>
-                    </div>
+                      </template>
+                      <template id="next-visit-list-repeater" is="dom-repeat" items="[[matchingNextVisitList]]" sort="_sortByDate" filter="{{computeVisitFilter(searchString)}}">
+                        <tr>
+                          <td>
+                            <span class="text-muted">[[$mkDateTime(item.createdDatetimeStamp)]]</span>
+                          </td>
+                          <td>[[$mkDateTime(item.data.nextVisitDateTimestamp)]]</td>
+                  
+                          <td>[[item.doctorName]]</td>
+                          <td>[[item.doctorSpeciality]]</td>
+                          <td>[[item.data.priorityType]]</td>
+                  
+                        </tr>
+                      </template>
+                    </table>
                   </section>
                   <!-- next visit - end -->
                 </iron-pages>
