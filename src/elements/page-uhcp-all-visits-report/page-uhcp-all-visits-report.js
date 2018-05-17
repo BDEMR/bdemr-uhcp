@@ -187,10 +187,53 @@ Polymer({
         return this.loading = false;
       } else {
         this.set('reportResults', response.data);
-        console.log(this.reportResults);
         return this.loading = false;
       }
     });
+  },
+
+  _prepareJsonData(rawReport) {
+    return rawReport.map((item) => {
+      return {
+        'EmployeeId': item.patientInfo.employeeId,
+        'Name': item.patientInfo.name,
+        'Age': this.$computeAge(item.patientInfo.dateOfBirth),
+        'Gender': item.patientInfo.gender,
+        'Consultation Site': item.organizationInfo ? item.organizationInfo.name : '',
+        'Visit Date': this.$formatDateTime(item.visit.createdDatetimeStamp),
+        'Symptoms': item.symptoms ? item.symptoms.symptomsList.map(item => item.name) : '',
+        'Diagnosis': item.diagnosis ? item.diagnosis.diagnosisList.map(item => item.name) : '',
+        'Test Advise': item.advisedTests ? item.advisedTests.testAdvisedList.map(item => item.investigationName) : '',
+        referral: `${item.referral ? item.referral.doctorName : ''} - ${item.referral ? item.referral.doctorName : ''}`,
+        treatment: item.medication ? item.medication.map(item => item.data.brandName) : '',
+        'Cost of Drug': this.$getCategoryCost('Medicine', item.invoice),
+        'Cost of Investigation': this.$getCategoryCost('Investigation', item.invoice),
+        'Cost of Consultancy': this.$getCategoryCost('Consultancy', item.invoice),
+        'Total Cost': this.$getTotalCost(item.invoice)
+      }
+    })
+  },
+
+  downloadCsv(csv) {
+    var exportedFilenmae = 'uhcp-visit-report-export.csv';
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement("a");
+    var url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", exportedFilenmae);
+    link.style.visibility = 'hidden';
+    link.target = '_blank'
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  },
+
+  exportButtonClicked() {
+    if (!this.reportResults.length) return this.domHost.showModalDialog('Search for a Report First')
+    const preppedData = this._prepareJsonData(this.reportResults);
+    const csvString = Papa.unparse(preppedData);
+    this.downloadCsv(csvString)
   }
 
 });
