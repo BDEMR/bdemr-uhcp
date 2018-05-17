@@ -774,6 +774,33 @@
         border-radius: 50%;
         border: 2px solid #f7f7f7;
       }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table th {
+        text-align: left;
+      }
+
+      .table thead * {
+        border-bottom: 1px solid #ccc;
+        background-color: #f5f5f5;
+        padding: 5px;
+      }
+
+      .table tbody th,
+      .table tbody td {
+        padding: 5px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+      }
+
+      .table tfoot * {
+        background-color: #f5f5f5;
+        padding: 5px;
+      }
     </style>
 
     <!-- local DOM -->
@@ -805,72 +832,72 @@
 
           <!-- Print Header - Main - start -->
           <div class="">
-            <div class="m-horizontal-4">
-              <strong>Consultation Site: </strong>
-              <span>[[organization.name]]</span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Consultant Name: </strong>
-              <span>[[visit.doctorName]]</span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Consultant Grade: </strong>
-              <span></span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Patient Id / Policy Id: </strong>
-              <span>
-                <template is="dom-if" if="[[patient.policyList.length]]">
-                  <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
-                    <span class="">[[policy.number]]</span>
+            <table class="table">
+              <tr>
+                <th>Consultation Site:</th>
+                <td>[[visit.hospitalName]]</td>
+              </tr>
+              <tr>
+                <th>Consultant Name:</th>
+                <td>[[visit.doctorName]]</td>
+              </tr>
+              <tr>
+                <th>Consultant Grade</th>
+                <td>[[visit.doctorSpeciality]]</td>
+              </tr>
+              <tr>
+                <th>Patient Id / Policy Id:</th>
+                <td>
+                  <template is="dom-if" if="[[patient.policyList.length]]">
+                    <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
+                      <span class="">[[policy.number]]</span>
+                    </template>
                   </template>
-                </template>
-              </span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Patient Name: </strong>
-              <span>{{$getFullName(patient.name)}}</span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Age/Sex: </strong>
-              <span>[[_computeAge(patient.dateOfBirth)]] years / {{patient.gender}}</span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Blood Group: </strong>
-              <span>[[patient.bloodGroup]]</span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Allergies: </strong>
-              <span>[[patient.allergy]]</span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Factory name: </strong>
-              <span>
-                <template is="dom-if" if="[[patient.employmentDetailsList.length]]">
-                  <template is="dom-repeat" items="[[patient.employmentDetailsList]]" as="factory">
-                    [[factory.institutionName]]
+                </td>
+              </tr>
+              <tr>
+                <th>Patient Name:</th>
+                <td>{{$getFullName(patient.name)}}</td>
+              </tr>
+              <tr>
+                <th>Age/Sex:</th>
+                <td>[[_computeAge(patient.dateOfBirth)]] years / {{patient.gender}}</td>
+              </tr>
+              <tr>
+                <th>Blood Group</th>
+                <td>[[patient.bloodGroup]]</td>
+              </tr>
+              <tr>
+                <th>Allergies</th>
+                <td>[[patient.allergy]]</td>
+              </tr>
+              <tr>
+                <th>Factory name:</th>
+                <td>
+                  <template is="dom-if" if="[[patient.employmentDetailsList.length]]">
+                    <template is="dom-repeat" items="[[patient.employmentDetailsList]]" as="factory">
+                      [[factory.institutionName]]
+                    </template>
                   </template>
-                </template>
-              </span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Prescription Id: </strong>
-              <span>[[visit.serial]]</span>
-            </div>
-            <div class="m-horizontal-4">
-              <strong>Date &amp; Time: </strong>
-              <span>[[$mkDateTime(visit.createdDatetimeStamp)]]</span>
-            </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Prescription Id:</th>
+                <td>[[visit.serial]]</td>
+              </tr>
+              <tr>
+                <th>Date &amp; Time:</th>
+                <td>[[$mkDateTime(visit.createdDatetimeStamp)]]</td>
+              </tr>
+            </table>
           </div>
-          <br>
-          <br>
           <!-- Print Header - Main - end -->
 
           <!-- Print Header - record Title - start -->
           <div class="p-16 horizontal layout center center-justified" hidden$="{{!printPrescriptionOnly}}">
             <div class="type headline">{{visit.recordTitle}}</div>
           </div>
-          <!-- Print Header - record Title - start -->
+          <!-- Print Header - record Title - end -->
 
           <!-- Print Content [FULL] - start -->
           <div class="print-content">
@@ -1153,7 +1180,11 @@
               <div class="type caption secondary" style="text-align: center; padding: 8px;">
                 <div>
                   <i>
-                    <strong>prepared by: </strong>{{user.name}}</i>
+                    <div class="type caption p-8">
+                      <strong>Printed By: </strong>[[user.name]],
+                      <strong>Printed On: </strong>[[getPrintedOnTime()]]
+                    </div>
+                  </i>
                 </div>
               </div>
             </template>
