@@ -8,6 +8,7 @@ Polymer {
     app.behaviors.dbUsing
     app.behaviors.translating
     app.behaviors.pageLike
+    app.behaviors.apiCalling
   ]
 
   properties:
@@ -26,6 +27,15 @@ Polymer {
       type: Number
       value: 1000 * 1000
 
+    changePassword:
+      type: Object
+      notify: true
+
+    validationError:
+      type: Object
+      notify: true
+      value: null
+
   languageSelectedIndexChanged: ->
     value = @supportedLanguageList[@languageSelectedIndex]
     # console.log value
@@ -33,7 +43,9 @@ Polymer {
 
   _saveSettings: ->
     @settings.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'settings', @settings, ({serial})=> @settings.serial is serial
+    @settings.serial = 'only'
+    app.db.remove 'settings', item._id for item in app.db.find 'settings'
+    app.db.insert 'settings', @settings
 
   arrowBackButtonPressed: (e)->
     @domHost.navigateToPreviousPage()
@@ -49,7 +61,8 @@ Polymer {
     if userList.length is 1
       @user = userList[0]
 
-  _makeSettings: ->
+  _makeSettings: () ->
+
     @settings =
       createdByUserSerial: @user.serial
       lastModifiedDatetimeStamp: 0
@@ -73,6 +86,13 @@ Polymer {
         patientSignUpDefaultPassword: '123456'
       flags:
         showFooterLine: true
+        showUserNameOnPrintPreview: true
+
+      authorizedOrganiztionList: []
+
+    @_saveSettings()
+
+    
 
   showFooterLine:(e)->
     value = e.target.checked
@@ -86,37 +106,108 @@ Polymer {
 
     console.log @settings
 
+
+  loadSettings: (cbfn)->
+    list = app.db.find 'settings'
+
+    if list.length > 0
+      @settings = list[0]
+
+    else
+     @_makeSettings()
+
+    cbfn()
+
+
+  ## change password - start
+  changePasswordBtnPressed: ()->
+    if @changePassword.oldPassword and @changePassword.newPassword and @changePassword.newRetypePassword
+      @_callChangeUserPasswordApi()
+
+
+  _callChangeUserPasswordApi: ()->
+    data = @changePassword
+    data.apiKey = @user.apiKey
+
+    @callApi '/change-user-password', data, (err, response)=>
+      console.log response
+      if response.hasError
+        
+        # if response.error.message
+        #   @domHost.showModalDialog response.error.message
+        # else
+        @validationError = response.error.details
+
+        @domHost.showModalDialog @_formatErrorMessageAndShow @validationError
+
+      else
+        @validationError = null
+        @resetChangePasswordObject()
+        @domHost.showModalDialog "Password has been changes successfully!"
+
+
+      console.log 'validationError', @validationError
+
+  _formatErrorMessageAndShow: (err)->
+    errList = []
+
+    if err.oldPassword
+      errList.push err.oldPassword[0]
+
+    if err.newPassword
+      errList.push err.newPassword[0]
+
+    if err.newRetypePassword
+      errList.push err.newRetypePassword[0]
+
+    return errList
+
+
+  resetChangePasswordObject: ()->
+    @changePassword =
+      oldPassword: null
+      newPassword: null
+      newRetypePassword: null
+
+  _getError: (errObj, prop)->
+    console.log 'errObj', errObj
+
+  ## change password - end
+  
+
+
   navigatedIn: ->
     @_loadUser()
-
-    list = app.db.find 'settings', ({serial})-> serial is 'only'
-    if list.length is 1
-      @set 'settings', list[0]
-    else
-      @_makeSettings()
-
+    @loadSettings =>
+      @resetChangePasswordObject()
 
   navigatedOut: ->
     null
 
-  getUploadedFileDataUri: (file, cbfn)->
+  fileInputChanged: (e)->
     reader = new FileReader
+    file = e.target.files[0]
+
     if file.size > @maximumLogoImageSizeAllowedInBytes
       @domHost.showModalDialog 'Please provide a file less than 1mb in size.'
       return
+
     reader.readAsDataURL file
     reader.onload = =>
       dataUri = reader.result
-      cbfn(dataUri)
-
-  fileInputChanged: (e)->
-    file = e.target.files[0]
-    @getUploadedFileDataUri file, (dataUri)=>
       @set 'settings.printDecoration.logoDataUri', dataUri
 
   fileInputChanged2: (e)->
+    reader = new FileReader
     file = e.target.files[0]
-    @getUploadedFileDataUri file, (dataUri)=>
+
+    if file.size > @maximumLogoImageSizeAllowedInBytes
+      @domHost.showModalDialog 'Please provide a file less than 1mb in size.'
+      return
+
+    reader.readAsDataURL file
+    reader.onload = =>
+      dataUri = reader.result
       @set 'settings.printDecoration.signatureDataUri', dataUri
 
   partner1LogoFileInputChanged: (e)->

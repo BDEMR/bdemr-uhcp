@@ -229,6 +229,16 @@
           </div>
         </paper-card>
 
+        <paper-card heading="Authorize records to" class="m-top-8">
+          <div class="card-content">
+
+            <template is="dom-repeat" items="{{settings.authorizedOrganiztionList}}">
+              <paper-checkbox class="custom-checkbox" checked="{{item.isChecked}}" on-change="onCheckAuthorizedOrganization">{{item.name}}</paper-checkbox>
+            </template>
+
+          </div>
+        </paper-card>
+
         <paper-card heading="Navigate to" class="m-top-8">
           <div class="p-12">
             <div class="layout horizontal wrap">
