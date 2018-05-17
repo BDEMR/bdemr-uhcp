@@ -7,6 +7,7 @@ Polymer {
     app.behaviors.translating
     app.behaviors.pageLike
     app.behaviors.dbUsing
+    app.behaviors.apiCalling
   ]
 
   properties:
