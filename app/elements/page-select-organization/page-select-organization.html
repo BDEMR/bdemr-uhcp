@@ -1,7 +1,6 @@
 <!-- iron-* --><!-- paper-* --><!-- style --><!-- behavior --><dom-module id="page-select-organization">
   <template>
     <style is="custom-style" include="common-style">
-
     </style>
 
     <div class="master-container">
@@ -9,16 +8,20 @@
       <div class="limiting-container">
         <paper-card>
           <div class="card-content layout horizontal center center-justified">
-            
+
+            <template is="dom-if" if="[[organizationLoading]]">
+              <div class="layout horizontal center">
+                <paper-spinner active=""></paper-spinner>
+                <span class="p-left-16 text-mute">Loading Organization List</span>
+              </div>
+              <br>
+            </template>
+
             <!--If User has Organization-->
+
             <template is="dom-if" if="[[organizationsIBelongToList.length]]">
-              <paper-dropdown-menu label="Organization">
-                <paper-listbox class="dropdown-content" selected="{{selectedOrganizationIndex}}" on-iron-select="organizationSelected">
-                  <template is="dom-repeat" items="[[organizationsIBelongToList]]">
-                    <paper-item>[[item.name]]</paper-item>
-                  </template>
-                </paper-listbox>
-              </paper-dropdown-menu>
+
+              <vaadin-combo-box style="width: 300px;" label="Select Organization" items="[[mappedOrganizationList]]" on-value-changed="organizationSelected" loading="[[organizationLoading]]"></vaadin-combo-box>
 
               <template is="dom-if" if="[[!_isEmpty(userRoleList.length)]]">
                 <paper-dropdown-menu label="Select Your Role">
@@ -31,12 +34,14 @@
               </template>
 
               <paper-button raised="" class="btn btn-success" on-tap="navigateWithOrganizationSelected">Select</paper-button>
-              
+
             </template>
 
             <!--If User doesn't have Organization-->
-            <template is="dom-if" if="[[!organizationsIBelongToList.length]]">
-              <paper-button raised="" class="btn btn-success" on-tap="createOrganizationButtonPressed">Create/Join Organization</paper-button>
+            <template is="dom-if" if="[[!organizationLoading]]">
+              <template is="dom-if" if="[[!organizationsIBelongToList.length]]">
+                <paper-button raised="" class="btn btn-success" on-tap="createOrganizationButtonPressed">Create/Join Organization</paper-button>
+              </template>
             </template>
 
           </div>
@@ -46,7 +51,6 @@
 
     </div>
   </template>
-  <script>(function(){Polymer({is:"page-select-organization",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{user:{type:Object,notify:!0,value:null},organizationsIBelongToList:{type:Array,value:function(){return[]}},selectedOrganizationIndex:{type:Number,notify:!0,value:0},selectedUserRoleIndex:{type:Number,notify:!0,value:0}},_loadUser:function(){var e;if(e=app.db.find("user"),1===e.length)return this.user=e[0]},organizationSelected:function(e){null!=this.selectedOrganizationIndex&&this.set("userRoleList",this.organizationsIBelongToList[this.selectedOrganizationIndex].userRoleList)},$notUndefined:function(e){return null!=e},navigatedIn:function(){return this._loadUser(),this._findOrganizationsUserBelongsTo(this.user.apiKey)},navigatedOut:function(){return this.isOrganizationValid=!1,this.memberSearchResultList=[],this.memberList=[]},_findOrganizationsUserBelongsTo:function(e){return this.callApi("/bdemr-organization-list-those-user-belongs-to",{apiKey:e},function(e){return function(i,n){return n.hasError?e.domHost.showModalDialog(n.error.message):e.organizationsIBelongToList=n.data.organizationObjectList}}(this))},navigateWithOrganizationSelected:function(){var e,i,n,t,o,a;if(o=this.organizationsIBelongToList[this.selectedOrganizationIndex]){for(t=app.db.find("organization"),e=0,n=t.length;e<n;e++)i=t[e],app.db.remove("organization",i._id);return app.db.insert("organization",o),a=this.userRoleList[this.selectedUserRoleIndex],a?this._getUserRoleDetails(a,o.idOnServer,function(e){return function(){return e.domHost.navigateToPage("#/dashboard"),window.location.reload()}}(this)):(this.domHost.navigateToPage("#/dashboard"),window.location.reload())}return this.domHost.showModalDialog("Chose an Organization to Continue")},_getUserRoleDetails:function(e,i,n){var t;return t={apiKey:this.user.apiKey,organizationId:i,roleId:e.serial},this.callApi("/bdemr-get-user-role-details-from-belong-organization",t,function(e){return function(i,t){var o;return t.hasError?e.domHost.showModalDialog(t.error.message):(o=e.organizationsIBelongToList[e.selectedOrganizationIndex],o.userActiveRole=t.data,app.db.upsert("organization",o,function(e){var i;return i=e.idOnServer,o.idOnServer===i}),n())}}(this))},createOrganizationButtonPressed:function(){return this.domHost.navigateToPage("#/organization-manager")},_isEmpty:function(e){return 0===e}})}).call(this);
+  <script>(function(){Polymer({is:"page-select-organization",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling],properties:{user:{type:Object,notify:!0,value:null},organizationsIBelongToList:{type:Array,value:function(){return[]}},selectedOrganization:{type:Object,notify:!0,value:null},selectedUserRoleIndex:{type:Number,notify:!0,value:0}},_loadUser:function(){var e;if(e=app.db.find("user"),1===e.length)return this.user=e[0]},organizationSelected:function(e){var i,t;if(e.detail.value)return t=e.detail.value,i=this.organizationsIBelongToList.find(function(e){return function(e){return e.idOnServer===t}}(this)),i?(this.set("selectedOrganization",i),this.set("userRoleList",i.userRoleList)):void 0},$notUndefined:function(e){return null!=e},navigatedIn:function(){return this._loadUser(),this._findOrganizationsUserBelongsTo(this.user.apiKey)},navigatedOut:function(){return this.isOrganizationValid=!1,this.memberSearchResultList=[],this.memberList=[]},_findOrganizationsUserBelongsTo:function(e){return this.organizationLoading=!0,this.callApi("/bdemr-organization-list-those-user-belongs-to",{apiKey:e},function(e){return function(i,t){return e.organizationLoading=!1,t.hasError?e.domHost.showModalDialog(t.error.message):(e.set("organizationsIBelongToList",t.data.organizationObjectList),e.mappedOrganizationList=t.data.organizationObjectList.map(function(e){return{label:e.name,value:e.idOnServer}}))}}(this))},navigateWithOrganizationSelected:function(){var e,i,t,n,a;if(this.selectedOrganization){for(n=app.db.find("organization"),e=0,t=n.length;e<t;e++)i=n[e],app.db.remove("organization",i._id);return app.db.insert("organization",this.selectedOrganization),a=this.userRoleList[this.selectedUserRoleIndex],a?this._getUserRoleDetails(a,this.selectedOrganization.idOnServer,function(e){return function(){return e.domHost.navigateToPage("#/dashboard"),window.location.reload()}}(this)):(this.domHost.navigateToPage("#/dashboard"),window.location.reload())}return this.domHost.showModalDialog("Chose an Organization to Continue")},_getUserRoleDetails:function(e,i,t){var n;return n={apiKey:this.user.apiKey,organizationId:i,roleId:e.serial},this.callApi("/bdemr-get-user-role-details-from-belong-organization",n,function(e){return function(i,n){var a;return n.hasError?e.domHost.showModalDialog(n.error.message):(a=e.get("selectedOrganization"),a.userActiveRole=n.data,app.db.upsert("organization",a,function(e){var i;return i=e.idOnServer,a.idOnServer===i}),t())}}(this))},createOrganizationButtonPressed:function(){return this.domHost.navigateToPage("#/organization-manager")},_isEmpty:function(e){return 0===e}})}).call(this);
 //# sourceMappingURL=page-select-organization.coffee-compiled.js.map</script>
 </dom-module>
-

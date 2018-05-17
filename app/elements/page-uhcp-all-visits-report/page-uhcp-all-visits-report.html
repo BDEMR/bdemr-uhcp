@@ -32,6 +32,10 @@
         margin-top: 20px;
       }
 
+      .results span {
+        color: #333;
+      }
+
       paper-progress {
         width: 100%;
         --paper-progress-active-color: var(--paper-orange-500);
@@ -47,6 +51,10 @@
         padding: 5px;
         list-style-type: decimal;
       }
+
+      .organization-dropdown {
+        width: 250px;
+      }
     </style>
 
     <div class="master-container">
@@ -59,13 +67,7 @@
 
             <div class="search layout horizontal center">
 
-              <!-- <paper-dropdown-menu label="Filter by Organization" class="m-right-8">
-                <paper-listbox class="dropdown-content" attr-for-selected="organization-id" on-iron-activate="organizationSelected">
-                  <template is="dom-repeat" items="[[organizationList]]">
-                    <paper-item organization-id="[[item.idOnServer]]">[[item.name]]</paper-item>
-                  </template>
-                </paper-listbox>
-              </paper-dropdown-menu> -->
+              <vaadin-combo-box class="organization-dropdown" no-label-float="" label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected" loading="[[organizationLoading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
               <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
               <div class="flex"></div>
@@ -80,32 +82,32 @@
 
               <paper-progress indeterminate="" hidden="[[!loading]]"></paper-progress>
               <vaadin-grid items="[[reportResults]]">
-                <vaadin-grid-column resizable="">
+                <vaadin-grid-column resizable="" frozen="">
                   <template class="header">Visit Id</template>
                   <template>
                     <span>[[item.visit.serial]]</span>
                   </template>
                 </vaadin-grid-column>
-                <vaadin-grid-column resizable="">
+                <vaadin-grid-column resizable="" frozen="">
                   <template class="header">Employee Id</template>
                   <template>
                     <span>[[item.patientInfo.employeeId]]</span>
                   </template>
                 </vaadin-grid-column>
-                <vaadin-grid-column resizable="">
+                <vaadin-grid-column resizable="" width="220px" flex-grow="0" frozen="">
                   <template class="header layout horizontal">
-                    <vaadin-grid-filter aria-label="Name" path="name" value="[[nameFilter]]">
+                    <vaadin-grid-filter aria-label="Name" path="patientInfo.name" value="[[nameFilter]]">
                       <paper-input label="Search By Name" value="{{nameFilter}}" no-label-float=""></paper-input>
                     </vaadin-grid-filter>
                   </template>
                   <template>
-                    <div>[[item.patientInfo.name]]</div>
+                    <p>[[item.patientInfo.name]]</p>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
-                  <template class="header">DOB</template>
+                  <template class="header">Age</template>
                   <template>
-                    <span>[[item.patientInfo.dateOfBirth]]</span>
+                    <span>[[$computeAge(item.patientInfo.dateOfBirth)]]</span>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
@@ -117,13 +119,15 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
-                  <template class="header">Consulation Site </template>
+                  <template class="header">Site </template>
                   <template>
                     <span>[[item.organizationInfo.name]]</span>
                   </template>
                 </vaadin-grid-column>
-                <vaadin-grid-column resizable="">
-                  <template class="header">Consulation Date </template>
+                <vaadin-grid-column resizable="" width="180px" flex-grow="0">
+                  <template class="header">
+                    <vaadin-grid-sorter path="visit.createdDatetimeStamp" direction="desc">Date</vaadin-grid-sorter>
+                  </template>
                   <template>
                     <span>[[$formatDateTime(item.visit.createdDatetimeStamp)]]</span>
                   </template>
@@ -186,28 +190,35 @@
                   <template>
                     <span>[[$getCategoryCost('Medicine', item.invoice)]]</span>
                   </template>
+                  <template class="footer">[[totalDrugCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
                   <template class="header">Inv. Cost</template>
                   <template>
                     <span>[[$getCategoryCost('Investigation', item.invoice)]]</span>
                   </template>
+                  <template class="footer">[[totalInvestigationCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
                   <template class="header">Consultancy Fee</template>
                   <template>
                     <span>[[$getCategoryCost('Consultancy', item.invoice)]]</span>
                   </template>
+                  <template class="footer">[[totalConsultancyCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
                   <template class="header">Total Cost</template>
                   <template>
                     <span>[[$getTotalCost(item.invoice)]]</span>
                   </template>
+                  <template class="footer">[[totalCostByReport]]</template>
                 </vaadin-grid-column>
               </vaadin-grid>
             </div>
 
+          </div>
+          <div class="card-actions">
+            <paper-button raised="" on-tap="exportButtonClicked">Export</paper-button>
           </div>
         </paper-card>
 
@@ -243,6 +254,12 @@
       value: null
     },
 
+    childOrganizationList: {
+      type: Array,
+      notify: true,
+      value: []
+    },
+
     loading: {
       type: Boolean,
       value: false
@@ -251,6 +268,30 @@
     reportResults: {
       type: Array,
       value: []
+    },
+
+    totalCostByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalCostByReport(reportResults)'
+    },
+
+    totalDrugCostByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalCategoryCostByReport("Medicine", reportResults)'
+    },
+
+    totalInvestigationCostByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalCategoryCostByReport("Investigation", reportResults)'
+    },
+
+    totalConsultancyCostByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalCategoryCostByReport("Consultancy" ,reportResults)'
     },
 
     dateCreatedFrom: String,
@@ -276,8 +317,31 @@
   _loadOrganization() {
     const organizationList = app.db.find('organization');
     if (organizationList.length === 1) {
-      return this.set('organization', organizationList[0]);
+      this.set('organization', organizationList[0]);
+      this._loadChildOrganizationList(this.organization.idOnServer)
     }
+
+  },
+
+  _loadChildOrganizationList(organizationIdentifier) {
+    this.organizationLoading = true;
+    const query = {
+      apiKey: this.user.apiKey,
+      organizationId: organizationIdentifier
+    }
+    this.callApi('/bdemr--get-child-organization-list', query, (err, response) => {
+      this.organizationLoading = false;
+      const organizationList = response.data
+      if (organizationList.length) {
+        const mappedValue = organizationList.map((item) => {
+          return { label: item.name, value: item._id }
+        })
+        mappedValue.unshift({ label: 'All', value: '' })
+        this.set('childOrganizationList', mappedValue)
+      } else {
+        this.domHost.showToast('No Child Organization Found')
+      }
+    })
   },
 
   $formatDateTime(dateTime) {
@@ -286,7 +350,7 @@
   },
 
   organizationSelected(e) {
-    const orgnizationId = e.detail.selected
+    const organizationId = e.detail.value;
     this.set('selectedOrganizationId', organizationId)
   },
 
@@ -305,11 +369,35 @@
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 'N/A'
+    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 0
   },
 
   $getTotalCost(invoice) {
-    return invoice ? invoice.totalBilled : 'N/A'
+    return invoice ? invoice.totalBilled : 0
+  },
+
+  $computeAge(dateString) {
+    if (!dateString) { return ""; }
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if ((m < 0) || ((m === 0) && (today.getDate() < birthDate.getDate()))) {
+      age--;
+    }
+    return age;
+  },
+
+  _getTotalCostByReport(reports) {
+    return reports.reduce((total, item) => {
+      return total + this.$getTotalCost(item.invoice)
+    }, 0)
+  },
+
+  _getTotalCategoryCostByReport(category, reports) {
+    return reports.reduce((total, item) => {
+      return total + this.$getCategoryCost(category, item.invoice)
+    }, 0)
   },
 
   resetButtonClicked() { return this.domHost.reloadPage(); },
@@ -317,7 +405,7 @@
   searchButtonClicked() {
     const query = {
       apiKey: this.user.apiKey,
-      organizationId: this.organization.idOnServer,
+      organizationId: this.selectedOrganizationId,
       searchParameters: {
         dateCreatedFrom: this.dateCreatedFrom || '',
         dateCreatedTo: this.dateCreatedTo || '',
@@ -330,10 +418,53 @@
         return this.loading = false;
       } else {
         this.set('reportResults', response.data);
-        console.log(this.reportResults);
         return this.loading = false;
       }
     });
+  },
+
+  _prepareJsonData(rawReport) {
+    return rawReport.map((item) => {
+      return {
+        'EmployeeId': item.patientInfo.employeeId,
+        'Name': item.patientInfo.name,
+        'Age': this.$computeAge(item.patientInfo.dateOfBirth),
+        'Gender': item.patientInfo.gender,
+        'Consultation Site': item.organizationInfo ? item.organizationInfo.name : '',
+        'Visit Date': this.$formatDateTime(item.visit.createdDatetimeStamp),
+        'Symptoms': item.symptoms ? item.symptoms.symptomsList.map(item => item.name) : '',
+        'Diagnosis': item.diagnosis ? item.diagnosis.diagnosisList.map(item => item.name) : '',
+        'Test Advise': item.advisedTests ? item.advisedTests.testAdvisedList.map(item => item.investigationName) : '',
+        referral: `${item.referral ? item.referral.doctorName : ''} - ${item.referral ? item.referral.doctorName : ''}`,
+        treatment: item.medication ? item.medication.map(item => item.data.brandName) : '',
+        'Cost of Drug': this.$getCategoryCost('Medicine', item.invoice),
+        'Cost of Investigation': this.$getCategoryCost('Investigation', item.invoice),
+        'Cost of Consultancy': this.$getCategoryCost('Consultancy', item.invoice),
+        'Total Cost': this.$getTotalCost(item.invoice)
+      }
+    })
+  },
+
+  downloadCsv(csv) {
+    var exportedFilenmae = 'uhcp-visit-report-export.csv';
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement("a");
+    var url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", exportedFilenmae);
+    link.style.visibility = 'hidden';
+    link.target = '_blank'
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  },
+
+  exportButtonClicked() {
+    if (!this.reportResults.length) return this.domHost.showModalDialog('Search for a Report First')
+    const preppedData = this._prepareJsonData(this.reportResults);
+    const csvString = Papa.unparse(preppedData);
+    this.downloadCsv(csvString)
   }
 
 });</script>
