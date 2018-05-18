@@ -257,23 +257,29 @@ Polymer {
       @_searchOffline()
 
   listAllImportedAndOfflinePatientsPressed: (e)->
-    @searchFieldMainInput = ''
-    @searchContextDropdownSelectedIndex = 0
-    @searchButtonPressed null    
+    patientList = app.db.find 'patient-list'
+    for patient in patientList
+      unless 'flags' of patient
+        patient.flags = {
+          isImported: false
+          isLocalOnly: false
+          isOnlineOnly: false
+        }
+        patient.flags.isLocalOnly = true
+
+    @matchingPatientList = patientList 
 
   searchOfflineButtonPressed: (e)->
     if @searchFieldMainInput.length is 0
       return @domHost.showModalDialog "Please enter something to search with."
-    @searchContextDropdownSelectedIndex = 0
-    @searchButtonPressed null
+    @_searchOffline()
 
   searchOnlineButtonPressed: (e)->
-    @searchContextDropdownSelectedIndex = 1
-    @searchButtonPressed null
+    @_searchOnline()
 
   searchOnlineEnterKeyPressed: (e)->
     return unless e.keyCode is 13
-    @searchOnlineButtonPressed()
+    @_searchOnline()
     
 
   _searchOnline: ->
@@ -306,59 +312,56 @@ Polymer {
     ## Basic Search
     searchFieldMainInput = @searchFieldMainInput
 
-    if searchFieldMainInput.length is 0  and false
-      patientList = app.db.find 'patient-list'
-    else
-      patientList = app.db.find 'patient-list', ({serial, name, email, phone, nIdOrSsn, hospitalNumber, initialVisitDate, lastVisitDate, admissionDate})=>
-  
-        if @oneTimeSearchFilter
-          condition1 = (''+serial) is ('' + @oneTimeSearchFilter)
-          condition2 = false
-          condition3 = false
-          condition4 = false
-          condition5 = false
-        else
-          condition1 = (name.first.indexOf searchFieldMainInput) > -1
-          condition2 = (email.indexOf searchFieldMainInput) > -1
-          condition3 = (phone.indexOf searchFieldMainInput) > -1
-          condition4 = (serial.indexOf searchFieldMainInput) > -1
-          condition5 = try (nIdOrSsn.indexOf searchFieldMainInput) > -1 catch ex then false
-          ## NOTE:
-          # Found to be commented out on master when shafayet merged
-          # his interoperability issues branch. shafayet did not comment 
-          # this out.
+    patientList = app.db.find 'patient-list', ({serial, name, email, phone, nationalIdCardNumber, hospitalNumber, initialVisitDate, lastVisitDate, admissionDate})=>
 
-        isAdvancedSearchPassed = true
+      if @oneTimeSearchFilter
+        condition1 = (''+serial) is ('' + @oneTimeSearchFilter)
+        condition2 = false
+        condition3 = false
+        condition4 = false
+        condition5 = false
+      else
+        condition1 = (name?.first?.indexOf searchFieldMainInput) > -1
+        condition2 = (email?.indexOf searchFieldMainInput) > -1
+        condition3 = (phone?.indexOf searchFieldMainInput) > -1
+        condition4 = (serial?.indexOf searchFieldMainInput) > -1
+        condition5 = try (nationalIdCardNumber.indexOf searchFieldMainInput) > -1 catch ex then false
+        ## NOTE:
+        # Found to be commented out on master when shafayet merged
+        # his interoperability issues branch. shafayet did not comment 
+        # this out.
 
-        ## Advanced Search
-        isAdvancedSearchEnabled = @isAdvancedSearchEnabled
-        if isAdvancedSearchEnabled
-          if @advancedSearchParameters.initialVisitDate.enabled
-            left = new Date @advancedSearchParameters.initialVisitDate.lowerBound
-            middle = new Date initialVisitDate
-            right = new Date @advancedSearchParameters.initialVisitDate.upperBound
-            if left.getTime() <= middle.getTime() <= right.getTime()
-              isAdvancedSearchPassed = true
-            else
-              isAdvancedSearchPassed = false
-          else if @advancedSearchParameters.lastVisitDate.enabled
-            left = new Date @advancedSearchParameters.lastVisitDate.lowerBound
-            middle = new Date lastVisitDate
-            right = new Date @advancedSearchParameters.lastVisitDate.upperBound
-            if left.getTime() <= middle.getTime() <= right.getTime()
-              isAdvancedSearchPassed = true
-            else
-              isAdvancedSearchPassed = false
-          else if @advancedSearchParameters.admissionDate.enabled
-            left = new Date @advancedSearchParameters.admissionDate.lowerBound
-            middle = new Date admissionDate
-            right = new Date @advancedSearchParameters.admissionDate.upperBound
-            if left.getTime() <= middle.getTime() <= right.getTime()
-              isAdvancedSearchPassed = true
-            else
-              isAdvancedSearchPassed = false
+      isAdvancedSearchPassed = true
 
-        return (condition1 or condition2 or condition3 or condition4 or condition5 ) and isAdvancedSearchPassed
+      ## Advanced Search
+      isAdvancedSearchEnabled = @isAdvancedSearchEnabled
+      if isAdvancedSearchEnabled
+        if @advancedSearchParameters.initialVisitDate.enabled
+          left = new Date @advancedSearchParameters.initialVisitDate.lowerBound
+          middle = new Date initialVisitDate
+          right = new Date @advancedSearchParameters.initialVisitDate.upperBound
+          if left.getTime() <= middle.getTime() <= right.getTime()
+            isAdvancedSearchPassed = true
+          else
+            isAdvancedSearchPassed = false
+        else if @advancedSearchParameters.lastVisitDate.enabled
+          left = new Date @advancedSearchParameters.lastVisitDate.lowerBound
+          middle = new Date lastVisitDate
+          right = new Date @advancedSearchParameters.lastVisitDate.upperBound
+          if left.getTime() <= middle.getTime() <= right.getTime()
+            isAdvancedSearchPassed = true
+          else
+            isAdvancedSearchPassed = false
+        else if @advancedSearchParameters.admissionDate.enabled
+          left = new Date @advancedSearchParameters.admissionDate.lowerBound
+          middle = new Date admissionDate
+          right = new Date @advancedSearchParameters.admissionDate.upperBound
+          if left.getTime() <= middle.getTime() <= right.getTime()
+            isAdvancedSearchPassed = true
+          else
+            isAdvancedSearchPassed = false
+
+      return (condition1 or condition2 or condition3 or condition4 or condition5 ) and isAdvancedSearchPassed
 
     @oneTimeSearchFilter = null
 
@@ -372,11 +375,12 @@ Polymer {
         }
         patient.flags.isLocalOnly = true
 
-    ## Sort Results
-    ''
-
     ## Show results
+    unless patientList.length
+      @domHost.showToast 'No Patient Found'
+    
     @matchingPatientList = patientList
+
     @arbitaryCounter--
 
 
