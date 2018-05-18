@@ -288,6 +288,8 @@ Polymer {
 
     @callApi '/bdemr-patient-search', { apiKey: @user.apiKey, searchQuery: @searchFieldMainInput}, (err, response)=>
       @arbitaryCounter--
+      if err or not response
+        return @domHost.showModalDialog 'Problem connecting wtih the server. Check your internet connection and try again.'
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -671,19 +673,21 @@ Polymer {
     index = repeater.indexForElement el
 
     patient = @matchingPatientList[index]
-    
-    @domHost.setCurrentPatientsDetails patient
-    @createdPatientVisitedLog patient
-    # @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
-    @domHost.selectedPatientPageIndex = 5
-    @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
+
+    if patient
+      @domHost.setCurrentPatientsDetails patient
+      @createdPatientVisitedLog patient
+      # @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
+      @domHost.selectedPatientPageIndex = 5
+      @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
+    else
+      @domHost.showModalDialog 'Patient not found'
 
 
   # Visted Patient Log
   # ================================
 
   createdPatientVisitedLog: (patient)->
-
     visitedPatientLogObject = {
       createdByUserSerial: @user.serial
       serial: @generateSerialForVisitedPatientLog()

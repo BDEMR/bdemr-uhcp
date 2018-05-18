@@ -284,7 +284,7 @@ Polymer {
   
 
   _isEmptyArray: (data)->
-    if data.length is 0
+    if data?.length is 0
       return true
     else
       return false

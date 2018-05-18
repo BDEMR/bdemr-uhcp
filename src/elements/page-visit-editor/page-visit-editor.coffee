@@ -894,7 +894,10 @@ Polymer {
       if response.hasError
         @domHost.showToast response.error.message
       else
-        cbfn response.data
+        if response.data.length
+          cbfn response.data
+        else
+          cbfn {outdoorBalance:0, indoorBalance:0}
 
   _deductServiceValueToPatient: ({patientId, outdoorBalanceToDeduct, indoorBalanceToDeduct}, cbfn)->
     @_getPatientServiceBalance patientId, ({outdoorBalance, indoorBalance})=>
@@ -5584,7 +5587,7 @@ Polymer {
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (err)=>
         if err
-          console.log 'something went wrong with balance deduction'
+          console.log 'Something went wrong with balance deduction.'
         else
           @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
             @set 'patientServiceBalance', patientServiceBalance
