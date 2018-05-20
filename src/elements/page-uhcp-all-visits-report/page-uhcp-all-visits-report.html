@@ -107,10 +107,18 @@
               <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
             </div>
 
+            <h4>Total Visit: [[reportResults.length]]</h4>
+
             <div class="results">
 
               <paper-progress indeterminate hidden="[[!loading]]"></paper-progress>
               <vaadin-grid items="[[reportResults]]">
+                <vaadin-grid-column frozen width="50px" flex-grow="0">
+                  <template class="header">#</template>
+                  <template>
+                    <span>[[$getItemCounter(index)]]</span>
+                  </template>
+                </vaadin-grid-column>
                 <vaadin-grid-column resizable frozen>
                   <template class="header">Visit Id</template>
                   <template>

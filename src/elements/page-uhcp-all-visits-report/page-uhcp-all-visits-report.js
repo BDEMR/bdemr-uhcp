@@ -113,6 +113,10 @@ Polymer({
     })
   },
 
+  $getItemCounter(index) {
+    return index + 1
+  },
+
   $formatDateTime(dateTime) {
     if (!dateTime) return;
     return lib.datetime.format((new Date(dateTime)), 'mmm d, yyyy h:MMTT')
@@ -172,14 +176,22 @@ Polymer({
   resetButtonClicked() { return this.domHost.reloadPage(); },
 
   searchButtonClicked() {
-    const query = {
+    let query = {
       apiKey: this.user.apiKey,
-      organizationId: this.selectedOrganizationId,
       searchParameters: {
         dateCreatedFrom: this.dateCreatedFrom || '',
         dateCreatedTo: this.dateCreatedTo || '',
       }
     }
+    // search parent+child when selecting all
+    if (!this.selectedOrganizationId) {
+      organizationIdList = this.childOrganizationList.map(item => item.value);
+      organizationIdList.splice(0, 1, this.organization.idOnServer)
+      query.organizationIdList = organizationIdList
+    } else {
+      query.organizationIdList = [this.selectedOrganizationId]
+    }
+
     this.loading = true;
     this.callApi('/uhcp--get-visit-reports', query, (err, response) => {
       if (response.hasError) {
@@ -195,10 +207,10 @@ Polymer({
   _prepareJsonData(rawReport) {
     return rawReport.map((item) => {
       return {
-        'EmployeeId': item.patientInfo.employeeId,
-        'Name': item.patientInfo.name,
-        'Age': this.$computeAge(item.patientInfo.dateOfBirth),
-        'Gender': item.patientInfo.gender,
+        'EmployeeId': item.patientInfo ? item.patientInfo.employeeId : '',
+        'Name': item.patientInfo ? item.patientInfo.name : '',
+        'Age': item.patientInfo ? this.$computeAge(item.patientInfo.dateOfBirth) : '',
+        'Gender': item.patientInfo ? item.patientInfo.gender : '',
         'Consultation Site': item.organizationInfo ? item.organizationInfo.name : '',
         'Visit Date': this.$formatDateTime(item.visit.createdDatetimeStamp),
         'Symptoms': item.symptoms ? item.symptoms.symptomsList.map(item => item.name) : '',
