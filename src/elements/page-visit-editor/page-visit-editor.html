@@ -859,7 +859,7 @@
                   <div class="m-horizontal-4 horizontal layout center">
                     <div class="type body-lead capitalize">{{$getFullName(patient.name)}}</div>
                     <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
-                      <div class="m-left-8 type caption bg-gray">[[policy.insuranceProvider]]-[[policy.number]]</div>
+                      <div class="m-left-8 type caption bg-gray">[[policy.number]]</div>
                     </template>
                   </div>
                   <div class="horizontal layout wrap type caption-2 secondary">

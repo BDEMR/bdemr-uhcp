@@ -43,7 +43,6 @@
     <!-- style -->
 
     <style is="custom-style" include="common-style">
-
       paper-card {
         border-radius: 6px;
         text-align: left !important;
@@ -65,6 +64,7 @@
       paper-button.btn.text-success {
         color: rgb(47, 127, 50) !important;
       }
+
       paper-button.btn.text-info {
         color: var(--paper-blue-700) !important;
       }
@@ -119,6 +119,7 @@
       paper-button.btn.medium {
         font-size: 14px;
       }
+
       .user-avatar {
         height: 64px;
         width: 64px;
@@ -144,6 +145,7 @@
         background-color: #f7f7f7;
         padding: 16px 24px !important;
       }
+
       iron-icon.icon.small {
         height: 16px;
         width: 16px;
@@ -316,7 +318,7 @@
       }
 
       #fileInput:hover {
-        background-color: rgba(0,0,0, .56)
+        background-color: rgba(0, 0, 0, .56)
       }
 
       .p-horizontal-40 {
@@ -331,8 +333,8 @@
 
         <paper-card class="card">
 
-         
-          
+
+
           <div class="card-content">
             <iron-image class="p-horizontal-8" src="../../images/bdemr_logo_small.png" preload></iron-image>
             <div class="type headline p-horizontal-8">Patient Signup</div>
@@ -349,7 +351,8 @@
                     <div class="horizontal layout center-justified center">
                       <div class="profile-image-area">
                         <iron-image class="user-avatar medium" src$="[[profileImage]]" preload sizing="cover"></iron-image>
-                        <input id="fileInput" type="file" accept="image/*" on-change="fileInputChanged"></paper-input>
+                        <input id="fileInput" type="file" accept="image/*" on-change="fileInputChanged">
+                        </paper-input>
                       </div>
                     </div>
                     <div class="type caption text-center secondary m-top-8 p-horizontal-8 center horizontal layout">
@@ -366,19 +369,21 @@
                 </div>
 
                 <div class="content right flex">
-                  
 
-                  <paper-input class="custom-input paper-custom full" label="Full Name" required value="{{patient.name}}" label="Full Name" auto-validate error-message="Patient Name is Required!" on-keyup="checkNextBtnStatus"></paper-input>
+
+                  <paper-input class="custom-input paper-custom full" label="Full Name" required value="{{patient.name}}" label="Full Name"
+                    auto-validate error-message="Member Name is Required!" on-keyup="checkNextBtnStatus"></paper-input>
 
                   <div class="custom-input paper-custom horizontal layout full">
-                    <vaadin-date-picker on-keyup="checkNextBtnStatus" required auto-validate error-message="Date of Birth is Required!" class="flex m-right-16" type="date" value="{{patient.dateOfBirth}}" label="Date of Birth" on-value-changed="calculateAge"></vaadin-date-picker>
+                    <vaadin-date-picker on-keyup="checkNextBtnStatus" required auto-validate error-message="Date of Birth is Required!" class="flex m-right-16"
+                      type="date" value="{{patient.dateOfBirth}}" label="Date of Birth" on-value-changed="calculateAge"></vaadin-date-picker>
 
                     <paper-input label="Age" type="number" value="{{ageInYears}}" on-change="makeDOBFromYears"></paper-input>
                   </div>
-                  
+
 
                   <div class="custom-radio-button-group full-width">
-                    
+
                     <div class="type body secondary">Gender</div>
                     <paper-radio-group selected="{{patient.gender}}">
                       <paper-radio-button name="male">Male</paper-radio-button>
@@ -387,7 +392,9 @@
                     </paper-radio-group>
                   </div>
 
-                  <paper-input class="custom-input paper-custom full" class="p-horizontal-8" value="{{patient.phone}}" label="Phone Number" pattern="^[0-9]{11,11}(-[0-9]*){0,1}$" required auto-validate error-message="Phone Number Required. i.e.: 01712345678 or 01712345678-12'" char-counter minlength="11" maxlength="14">
+                  <paper-input class="custom-input paper-custom full" class="p-horizontal-8" value="{{patient.phone}}" label="Phone Number"
+                    pattern="^[0-9]{11,11}(-[0-9]*){0,1}$" required auto-validate error-message="Phone Number Required. i.e.: 01712345678 or 01712345678-12'"
+                    char-counter minlength="11" maxlength="14">
                     <div prefix>+88</div>
                   </paper-input>
 
@@ -406,7 +413,7 @@
                   </template>
 
                   <paper-input class="custom-input paper-custom full" class="p-horizontal-8" value="{{patient.repeatPhone}}" required label="Repeat Phone Number"
-                   char-counter minlength="11" maxlength="14" on-keyup="_checkForPhoneNumberMatch">
+                    char-counter minlength="11" maxlength="14" on-keyup="_checkForPhoneNumberMatch">
                     <div prefix>+88</div>
                   </paper-input>
 
@@ -424,7 +431,8 @@
                     </div>
                   </template>
 
-                  <paper-input class="custom-input paper-custom full" label="Email" value="{{patient.email}}" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' error-message="Please Enter valid Email."></paper-input>
+                  <paper-input class="custom-input paper-custom full" label="Email" value="{{patient.email}}" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+                    error-message="Please Enter valid Email."></paper-input>
 
 
                   <paper-input class="custom-input paper-custom full" label="Repeat Email" value="{{patient.repeatEmail}}" on-keyup="_checkForEmailMatch"></paper-input>
@@ -442,26 +450,28 @@
                     </div>
                   </template>
 
-                  <paper-input class="custom-input paper-custom full" label="Password" required value="{{patient.password}}" auto-validate error-message="Password is Required!"></paper-input>
+                  <paper-input class="custom-input paper-custom full" label="Password" required value="{{patient.password}}" auto-validate
+                    error-message="Password is Required!"></paper-input>
 
-                  <paper-input class="custom-input paper-custom full" label="Doctor Access Pin" required value="{{patient.doctorAccessPin}}" auto-validate error-message="Doctor Access Pin is Required!"></paper-input>
+                  <paper-input class="custom-input paper-custom full" label="Doctor Access Pin" required value="{{patient.doctorAccessPin}}"
+                    auto-validate error-message="Doctor Access Pin is Required!"></paper-input>
 
-                  
 
-                  
-                  
+
+
+
 
 
                   <div class="horizontal layout m-top-16 center">
                     <div class="flex"></div>
-                    <paper-button  class="p-horizontal-40" on-tap="offlineSignup" raised>Signup (offline)</paper-button>
+                    <paper-button class="p-horizontal-40" on-tap="offlineSignup" raised>Signup (offline)</paper-button>
                     <paper-button class="colored p-horizontal-40" raised auto-focuse on-tap="nextBtnPressed">Signup</paper-button>
                   </div>
                 </div>
               </div>
             </section>
             <!-- step 1 - end  -->
-            
+
             <!-- step 2 - start  -->
             <section>
               <div class="card-content">
@@ -472,7 +482,7 @@
                   <!-- <div class="type body secondary p-horizontal-8">please wait for <span>0:59s</span></div> -->
                   <!-- <div class="type headline p-horizontal-8">017123456789</div> -->
                 </div>
-                
+
 
                 <paper-input class="p-horizontal-8" label="Verification Code" value="{{verifyPhoneNumber.typedSmsVerificationCode}}"></paper-input>
 
@@ -483,7 +493,7 @@
                 </div>
 
               </div>
-              
+
             </section>
             <!-- step 2 - end  -->
           </iron-pages>
@@ -494,7 +504,7 @@
       </div>
     </div>
 
-   
+
 
   </template>
   <script src="page-patient-signup.coffee-compiled.js"></script>

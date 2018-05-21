@@ -555,5 +555,7 @@ Polymer {
     @isPatientValid = false
     @set "EDIT_MODE_ON", false
 
+  arrowBackButtonPressed: (e)->
+    @domHost.navigateToPreviousPage()
 
 }

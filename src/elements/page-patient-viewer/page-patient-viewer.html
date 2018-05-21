@@ -586,7 +586,7 @@
                   <div class="m-horizontal-4 horizontal layout center">
                     <div class="type body-lead capitalize">{{$getFullName(patient.name)}}</div>
                     <template is="dom-repeat" items="[[patient.policyList]]" as="policy">
-                      <div class="m-left-8 type caption bg-gray">[[policy.insuranceProvider]]-[[policy.number]]</div>
+                      <div class="m-left-8 type caption bg-gray">[[policy.number]]</div>
                     </template>
                   </div>
                   <div class="horizontal layout wrap type caption-2 secondary">
@@ -1582,7 +1582,7 @@
 
                   <!-- visit and reports - start -->
                   <section>
-                  
+
                     <table class="table">
                       <tr>
                         <th>Serial</th>
@@ -1604,7 +1604,7 @@
                           <td>[[item.serial]]</td>
                           <td>{{_checkRecordTitle(item)}}</td>
                           <td>[[$mkDateTime(item.createdDatetimeStamp)]]</td>
-                  
+
                           <td>[[item.doctorName]]
                             <span>[[item.doctorSpeciality]]</td>
                           <td>[[item.hospitalName]]</td>
@@ -1637,11 +1637,11 @@
                             </template>
                             <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
                               <div class="layout horizontal center">
-                  
+
                                 <template is="dom-if" if="[[!_isEmptyArray(item.testResults.attachmentSerialList)]]">
                                   <paper-icon-button icon="attachment" on-tap="viewTestResultsAttachemntsBtnPressed"></paper-icon-button>
                                 </template>
-                  
+
                                 <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
                                   <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
                                   <paper-menu class="dropdown-content">
@@ -1655,28 +1655,28 @@
                                         Copy History & Physical
                                       </paper-item>
                                     </template>
-                  
+
                                     <!-- <paper-item on-tap="authorizeRecordPressed">
                                                         Authorize
                                                       </paper-item> -->
-                  
+
                                   </paper-menu>
                                 </paper-menu-button>
-                  
-                  
-                  
+
+
+
                               </div>
                             </template>
                           </td>
-                  
+
                         </tr>
                       </template>
                     </table>
-                  
+
                   </section>
-                  
+
                   <!-- visit and reports - end -->
-                  
+
                   <!-- next visit - start -->
                   <section>
                     <table class="table">
@@ -1700,11 +1700,11 @@
                             <span class="text-muted">[[$mkDateTime(item.createdDatetimeStamp)]]</span>
                           </td>
                           <td>[[$mkDateTime(item.data.nextVisitDateTimestamp)]]</td>
-                  
+
                           <td>[[item.doctorName]]</td>
                           <td>[[item.doctorSpeciality]]</td>
                           <td>[[item.data.priorityType]]</td>
-                  
+
                         </tr>
                       </template>
                     </table>
