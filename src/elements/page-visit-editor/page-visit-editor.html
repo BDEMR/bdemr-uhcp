@@ -1614,7 +1614,7 @@
                               <div>
                                 <div class="type caption m-horizontal-4">
                                   <!-- <span>[[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]] [[$TRANSLATE('As', LANG)]]</span> -->[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                                  <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
+                                  [[$TRANSLATE('Days',LANG)]]
                                 </div>
 
                                 <div class="type caption m-horizontal-4">
@@ -1671,8 +1671,7 @@
                                     <!-- <span>[[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]] [[$TRANSLATE('As', LANG)]]</span> -->
                                     <span hidden="[[!item.data.doseDirection]]">
                                       [[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]]</span>
-                                    [[$TRANSLATE('for',LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                                    <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
+                                    [[$TRANSLATE('for',LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]] [[$TRANSLATE('Days',LANG)]]
                                   </div>
 
                                   <div class="type caption m-horizontal-4">
@@ -1709,7 +1708,7 @@
                       <div class="form-group">
                         <div>
                           <paper-autocomplete id="brandName" label="[[$TRANSLATE('Brand Name',LANG)]]" text="{{medicine.brandName}}" source="[[brandNameSourceDataList]]"
-                            on-autocomplete-selected="brandNameAutocompleteSelected" on-autocomplete-reset="brandNameCleared"
+                            on-autocomplete-selected="brandNameAutocompleteSelected" on-autocomplete-reset-blur="brandNameCleared"
                             min-length="2" on-input="validate" error-message="Input Required" required></paper-autocomplete>
                         </div>
                       </div>
@@ -1839,11 +1838,14 @@
                         <div>
                           <vaadin-date-picker id="endDate" label="[[$TRANSLATE('Ends on',LANG)]]" value="{{medicine.endDateTimeStamp}}"></vaadin-date-picker>
                         </div>
-                        <div>
+                        <!-- <div>
                           <paper-checkbox checked="{{medicine.continue}}" on-change="asNeededSelected">[[$TRANSLATE('Continue As Needed',LANG)]]</paper-checkbox>
-                        </div>
+                        </div> -->
                         <!--End Date-->
                       </div>
+
+                      <p class="type caption secondary">Total : [[_computeTotalDaysCount(medicine.endDateTimeStamp,medicine.startDateTimeStamp)]] days x [[medicine.intakePerDay]]
+                        = [[medicine.quantityPerPrescription]] [[medicine.doseUnit]]</p>
 
                       <br>
                       <br>

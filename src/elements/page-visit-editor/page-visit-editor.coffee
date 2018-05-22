@@ -863,14 +863,6 @@ Polymer {
     if a.lastModifiedDatetimeStamp > b.lastModifiedDatetimeStamp
       return -1
 
-  _computeTotalDaysCount: (endDate, startDate)->
-    return (@$TRANSLATE 'As Needed', @LANG) unless endDate
-    oneDay = 1000*60*60*24;
-    startDate = new Date startDate
-    endDate = new Date endDate
-    diffMs = endDate - startDate
-    return @$TRANSLATE (Math.round(diffMs / oneDay)), @LANG
-
   _returnSerial: (index)->
     index+1
 
@@ -1368,7 +1360,7 @@ Polymer {
 
 
   _resetMedicineForm: ()->
-    @medicine =
+    medicine = {
       serial: @generateSerialForMedication()
       genericName: ''
       strength: ''
@@ -1392,17 +1384,18 @@ Polymer {
       intervalInHours: 24
       remind: false
       status: 'continue'
+    }
+
+    @set 'medicine', {}
+    @set 'medicine', medicine
+
+    @set 'showCustomDoseDropdown', false
+    @set 'directionSelectedIndex', 0
     
-    @strengthSelectedIndex = 0
-    @medicineFormSelectedIndex = 0
-    @doseUnitSelectedIndex = 0
-    @routeSelectedIndex = 0
-    @endDateTimeTypeSelectedIndex = 0
-    @endDateTimeTypeArgument2SelectedIndex = 0
-    @showCustomDoseDropdown = false
-    @directionSelectedIndex = 0
-
-
+    @set 'medicineFormList', []
+    @set 'strengthList', []
+    @set 'routeList', []
+    @set 'doseUnitList', []
 
 
   _checkValidity: (inputsToValidate, cbfn)->
@@ -1516,17 +1509,13 @@ Polymer {
   brandNameCleared: (e)->
     @_resetMedicineForm()
     @activeDoseGuideline = {}
-    @_loadDefaultMedicineCompositionList()
 
   manufacturerCleared: (e)->
     @set 'medicine.manufacturer', null
-    @_loadDefaultMedicineCompositionList()
     
   genericNameCleared: (e)->
     @set 'medicine.genericName', null
     @activeDoseGuideline = {}
-    @_loadDefaultMedicineCompositionList()
-  
   
   _isNthWeekSelectedAsEndDate: (index)->
     if index isnt 0 && !(@endDateTimeTypeList.length is index + 1)
@@ -1581,8 +1570,8 @@ Polymer {
       else
         return total + (parseInt currentVal)
     , 0)
-    @medicine.intakePerDay = totalDose
-    @medicine.doseDirection = e.detail.value
+    @set 'medicine.intakePerDay', totalDose
+    @set 'medicine.doseDirection', e.detail.value
 
 
   _doseValueChanged: (e)->
@@ -1720,16 +1709,31 @@ Polymer {
     return null if @endDateTimeTypeSelectedIndex is 0
     return lib.datetime.mkDate endDate, 'dd-mmm-yyyy'
 
-  _computeQuantityPerPrescription: (intakePerDay, endDate, startDate)->
-    # console.log (Date.parse startDate)
-    if (Date.parse endDate) > 0
-      oneDay = 1000*60*60*24
-      diffMs = (Date.parse endDate) - (Date.parse startDate)
-      totalDay =  Math.round(diffMs / oneDay)
-      #FOR ROUNDING TO 2 Decimal, quantityPerPrescription = (Math.round (timesPerInterval * (totalDay/intervalInDays)) * 100)/100
-      quantityPerPrescription = Math.ceil (totalDay * intakePerDay)
+  _computeQuantityPerPrescription: (intakePerDay, endDate=0, startDate)->  
+    oneDay = 1000*60*60*24
+    if endDate and startDate
+      endDate = (new Date endDate).getTime()
+      startDate = (new Date startDate).getTime()
+      if endDate > startDate
+        diffMs = endDate - startDate
+      else
+        return @domHost.showModalDialog 'End Date must be later than Start Date'
+    else
+      diffMs = oneDay
+    totalDay =  Math.round(diffMs / oneDay)
+    quantityPerPrescription = Math.ceil (totalDay * intakePerDay)
+    console.log quantityPerPrescription
     @set 'medicine.quantityPerPrescription', quantityPerPrescription
 
+  _computeTotalDaysCount: (endDate, startDate)->
+    if !endDate or !startDate
+      return @$TRANSLATE_NUMBER(1, @LANG)
+    oneDay = 1000*60*60*24;
+    startDate = new Date startDate
+    endDate = new Date endDate
+    diffMs = endDate - startDate
+    return @$TRANSLATE_NUMBER (Math.round(diffMs / oneDay)), @LANG
+  
   asNeededSelected: (e)->
     if e.target.checked
       @.$.endDate.disabled = true
