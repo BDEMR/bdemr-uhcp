@@ -338,9 +338,26 @@
           </div>
           <!-- patient details - end -->
 
-          <!-- basic - start -->
           <div class="card-item p-8">
             <div class="type body-lead primary m-horizontal-4">Basic</div>
+
+            <div class="layout horizontal wrap">
+              <paper-input class="custom-input" label="Name" value="{{patient.name}}"></paper-input>
+              <!-- <paper-input class="custom-input" type="tel" label="Phone Number" value="{{patient.phone}}"></paper-input> -->
+            </div>
+
+
+            <div class="layout horizontal wrap">
+              <vaadin-date-picker class="custom-input" value="{{patient.dateOfBirth}}" label="Date of Birth"></vaadin-date-picker>
+              <paper-input class="custom-input" value="[[_computeAge(patient.dateOfBirth)]]" label="Years" disabled></paper-input>
+            </div>
+
+
+          </div>
+
+          <!-- basic - start -->
+          <div class="card-item p-8">
+            <div class="type body-lead primary m-horizontal-4">General</div>
 
             <paper-input class="custom-input full-width" type="number" value="{{patient.nationalIdCardNumber}}" label="National ID"></paper-input>
 
