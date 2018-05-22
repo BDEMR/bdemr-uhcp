@@ -1,13 +1,13 @@
 if (!app.behaviors.local['root-element']) {
   app.behaviors.local['root-element'] = {};
 }
-app.behaviors.local['root-element'].sync = {
+app.behaviors.local['root-element'].newSync = {
 
   _getLastSyncedDatetimeStamp() { return parseInt(window.localStorage.getItem('lastSyncedDatetimeStamp')) || 0; },
 
   _updateLastSyncedDatetimeStamp() { return window.localStorage.setItem('lastSyncedDatetimeStamp', lib.datetime.now()); },
 
-  _sync(cbfn) {
+  _newSync(cbfn) {
 
     apiActionId = this.notifyApiAction('start', null);
 
@@ -142,10 +142,14 @@ app.behaviors.local['root-element'].sync = {
     this.callApi('/bdemr--sync', data, (err, response) => {
 
       this.notifyApiAction('done', null, apiActionId)
-
-      if (response.hasError) {
+      if (err) {
+        return cbfn(err)
+      }
+      else if (response.hasError) {
         return cbfn(response.error.message);
       } else {
+
+        console.log(JSON.stringify(response.data));
         app.db.__allowCommit = false;
         for (let index = 0; index < response.data.length; index++) {
           var item = response.data[index];
