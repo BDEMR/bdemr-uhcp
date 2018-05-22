@@ -605,7 +605,7 @@ Polymer {
       organizationId: organizationId
     }
     @callApi '/bdemr-get-organization-sms-balance', data, (err, response)=>
-      console.log 'ORG SMS BALNCE:', response
+      # console.log 'ORG SMS BALNCE:', response
       if err or not response
         return @domHost.showModalDialog 'Problem connecting wtih the server. Check your internet connection and try again.'
       if response.hasError
