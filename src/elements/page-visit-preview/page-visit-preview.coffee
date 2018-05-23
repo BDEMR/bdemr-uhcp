@@ -1733,14 +1733,14 @@ Polymer {
       print = @$$('.print')
       header = @$$('.print .header')
       footer = @$$('.print .footer')
-      input = @$$('.print .input')
+      content = @$$('.print .content')
       output = @$$('.print .output')
 
       console.log footer.offsetHeight
 
       idealHeight = @$$('.print .ideal').offsetHeight
 
-      nodeList = input.childNodes
+      nodeList = content.childNodes
 
       page = document.createElement('div')
       page.className = 'page'
@@ -1769,7 +1769,7 @@ Polymer {
 
       print.removeChild header
       print.removeChild footer
-      print.removeChild input
+      print.removeChild content
 
       print.removeChild @$$('.print .ideal')
 

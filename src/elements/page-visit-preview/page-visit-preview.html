@@ -146,7 +146,7 @@
     <!-- print - start -->
     <div class="print">
 
-      <!-- header - start -->
+      <!-- print - header - start -->
       <div class="header horizontal layout center">
 
         <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
@@ -156,10 +156,10 @@
         </template>
         <h1>[[settings.printDecoration.headerLine]]</h1>
       </div>
-      <!-- header - end -->
+      <!-- print- header - end -->
 
-      <!-- content aka 'input' - start -->
-      <div class="input">
+      <!-- print - content - start -->
+      <div class="content">
 
         <div class="">
           <table class="table">
@@ -479,9 +479,9 @@
         </template>
         <!-- Patient Stay Preview End -->
       </div>
-      <!-- content aka 'input' - end -->
+      <!-- print - content - end -->
 
-      <!-- footer - start -->
+      <!-- print - footer - start -->
       <div class="footer">
         <div class="horizontal layout end-justified center">
           <template is="dom-if" if="[[settings.printDecoration.signatureDataUri]]">
@@ -508,12 +508,14 @@
           </div>
         </template>
       </div>
-      <!-- footer - end -->
+      <!-- print - footer - end -->
 
+      <!-- do not delete/modify this area - start -->
       <div class="ideal">
       </div>
       <div class="output">
       </div>
+      <!-- do not delete/modify this area - end -->
 
     </div>
     <!-- print - end -->
