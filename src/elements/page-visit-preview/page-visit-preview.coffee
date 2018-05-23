@@ -1729,13 +1729,14 @@ Polymer {
 
 
   generatePrintPagination:()->
-    lib.util.delay 20000, ()=>
-      console.log 'done'
+    lib.util.delay 100, ()=>
       print = @$$('.print')
       header = @$$('.print .header')
       footer = @$$('.print .footer')
       input = @$$('.print .input')
       output = @$$('.print .output')
+
+      console.log footer.offsetHeight
 
       idealHeight = @$$('.print .ideal').offsetHeight
 
@@ -1743,15 +1744,22 @@ Polymer {
 
       page = document.createElement('div')
       page.className = 'page'
+      page.setAttribute("style", "page-break-after: always; border: 1px solid white;")
       output.appendChild(page)
       page.appendChild(header.cloneNode(true))
 
       for node in nodeList
 
         if ((node.offsetHeight + page.offsetHeight + footer.offsetHeight) > idealHeight)
+          margin = idealHeight - (page.offsetHeight + footer.offsetHeight)
+          console.log margin
+          page.setAttribute("style", page.getAttribute("style") + "margin-bottom: #{margin}px; border: 1px solid white;")
           page.appendChild(footer.cloneNode(true))
           page = document.createElement('div')
           page.className = 'page'
+          
+          
+          page.setAttribute("style", "page-break-after: always; border: 1px solid white;")
           output.appendChild(page)
           page.appendChild(header.cloneNode(true))
 

@@ -101,8 +101,8 @@
       }
 
       .print {
-        min-width: 21cm;
-        max-width: 21cm;
+        min-width: calc(210mm - 20.32mm);
+        max-width: calc(210mm - 20.32mm);
         /*text-align: center;*/
         background: #fff;
       }
@@ -116,24 +116,24 @@
       }
 
       .ideal {
-        min-width: 21cm;
-        max-width: 21cm;
-        min-height: 297mm;
-        max-height: 297mm;
+        min-width: calc(210mm - 20.32mm);
+        max-width: calc(210mm - 20.32mm);
+        min-height: calc(297mm - 20.32mm);
+        max-height: calc(297mm - 20.32mm);
         border: 1px solid black;
       }
 
-      .page {
+      /*.page {
         border: 1px solid black;
         min-width: 21cm;
         max-width: 21cm;
-      }
+      }*/
 
-      @media print {
+      /*@media print {
         .page {
           page-break-after: always;
         }
-      }
+      }*/
 
       @media print {
         app-header-layout #contentContainer {
@@ -147,19 +147,19 @@
     <div class="print">
 
       <!-- header - start -->
-      <div class="header">
-        <div class="horizontal layout center center-justified">
-          <h1>[[settings.printDecoration.headerLine]]</h1>
-        </div>
+      <div class="header horizontal layout center">
 
-        <div class="print-header horizontal layout center">
-          <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
-            <div class="m-right-16">
-              <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
-            </div>
-          </template>
-          <h1>[[settings.printDecoration.headerLine]]</h1>
-        </div>
+        <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
+          <div class="m-right-16">
+            <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
+          </div>
+        </template>
+        <h1>[[settings.printDecoration.headerLine]]</h1>
+      </div>
+      <!-- header - end -->
+
+      <!-- content aka 'input' - start -->
+      <div class="input">
 
         <div class="">
           <table class="table">
@@ -221,287 +221,263 @@
             </tr>
           </table>
         </div>
-      </div>
-      <!-- header - end -->
-
-      <!-- content aka 'input' - start -->
-      <div class="input">
         
-        <!-- Print Header - record Title - start -->
+
         <div class="p-16 horizontal layout center center-justified" hidden$="{{!printPrescriptionOnly}}">
           <div class="type headline">{{visit.recordTitle}}</div>
         </div>
-        <!-- Print Header - record Title - end -->
 
-        <!-- Print Content [FULL] - start -->
-        <div class="print-content">
-          <!-- Print Content - Left - start -->
-          <div class="left">
-
-            <!-- Print - Symptoms - start -->
-            <template is="dom-if" if="[[!_isEmpty(addedIdentifiedSymptomsList.length)]]">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body">Symptoms</div>
-              </div>
-              <template is="dom-repeat" items="[[addedIdentifiedSymptomsList]]">
-                <div class="type caption-2">
-                  <span class="type secondary">[[_returnSerial(index)]]. </span>
-                  <span>{{item.name}}</span>
-                  <template is="dom-if" if="[[_compareFn(item.possibleValueList.length, '>', 0)]]">
-                    (
-                    <template is="dom-repeat" items="[[item.possibleValueList]]">
-                      <span>{{item}}, </span>
-                    </template>)
-                  </template>
-                </div>
-              </template>
-              <div class="b-top m-top-8"></div>
-            </template>
-            <!-- Print - Symptoms - end -->
-
-            <!-- Print - Examination - start -->
-            <template is="dom-if" if="[[!_isEmpty(addedExaminationList.length)]]">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body">Examination</div>
-              </div>
-              <template is="dom-repeat" items="[[addedExaminationList]]" as="examination">
-                <div class="type caption-2">
-                  <span class="type secondary">[[_returnSerial(index)]]. </span>
-                  <span>{{examination.name}}</span>
-                  (
-                  <template is="dom-repeat" items="[[examination.examinationValueList]]" as="examItem">
-                    <span hidden$="{{!examItem.checked}}">{{examItem.value}}, </span>
-                  </template>)
-                </div>
-              </template>
-              <div class="b-top m-top-8 "></div>
-            </template>
-            <!-- Print - Examination - end -->
-
-            <!-- Print - Vitals - start -->
-            <template is="dom-if" if="[[!_isEmpty(addedVitalList.length)]]">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body">Vitals</div>
-              </div>
-              <template is="dom-repeat" items="[[addedVitalList]]">
-                <div class="type caption-2">
-                  <strong>{{item.vitalType}}: </strong>
-                  <span>[[_pritifyVitalData(item)]]</span>
-                </div>
-              </template>
-              <div class="b-top m-top-8"></div>
-            </template>
-            <!-- Print - Vitals - end -->
-
-            <!-- Print - Test Advised - start -->
-            <template is="dom-if" if="[[!_isEmpty(addedInvestigationList.length)]]">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body">Advised Test</div>
-              </div>
-              <template is="dom-repeat" items="[[addedInvestigationList]]">
-                <div class="type caption-2 layout horizontal">
-                  <div class="type secondary m-right-8">[[_returnSerial(index)]]. </div>
-                  <div class="flex vertical layout">
-                    <div>{{item.investigationName}}</div>
-                    <template is="dom-if" if="[[_compareFn(item.testList.length, '==', 1)]]">
-                      <ol class="order-list">
-                        <li>{{item.testList.0.name}}</li>
-                      </ol>
-                    </template>
-                    <template is="dom-if" if="[[_compareFn(item.testList.length, '>', 1)]]">
-                      <ol class="order-list">
-                        <template is="dom-repeat" items="[[item.testList]]">
-                          <li>{{item.name}}</li>
-                        </template>
-                      </ol>
-                    </template>
-                  </div>
-                  <template is="dom-if" if="[[item.suggestedInstitutionName]]">
-                    <div class="type caption secondary m-left-16">
-                      <strong>Suggested Institution: </strong>
-                      <span class="flex">{{item.suggestedInstitutionName}}</span>
-                    </div>
-                  </template>
-                </div>
-              </template>
-              <div class="b-top"></div>
-            </template>
-            <!-- Print - Test Advised - end -->
-
-            <!-- Print - Diagnosis - start -->
-            <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body">Diagnosis</div>
-              </div>
-              <template is="dom-repeat" items="[[diagnosis.data.diagnosisList]]">
-                <div class="type caption-2">
-                  <span class="type secondary">[[_returnSerial(index)]]. </span>
-                  <span>{{item.name}}</span>
-                  <template is="dom-if" if="[[_compareFn(item.possibleValueList.length, '>', 0)]]">
-                    (
-                    <template is="dom-repeat" items="[[item.possibleValueList]]">
-                      <span>{{item}}, </span>
-                    </template>)
-                  </template>
-                </div>
-              </template>
-              <div class="b-top m-top-8"></div>
-            </template>
-            <!-- Print - Diagnosis - end -->
-
-            <!-- Print - Notes - start -->
-            <template is="dom-if" if="{{!_isEmpty(doctorNotes.data.messageList.length)}}">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body">Doctor Advised/Notes</div>
-              </div>
-              <ul class="unorderd-list-custom">
-                <template is="dom-repeat" items="[[doctorNotes.data.messageList]]">
-                  <li class="type caption-2" style="word-break: break-word; margin-right: 4px;">{{item}}</li>
-                </template>
-              </ul>
-              <div class="b-top m-top-8"></div>
-            </template>
-            <!-- Print - Notes - end -->
-
-            <!-- Print - Next Visit - start -->
-            <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body">Next Visit</div>
-              </div>
-              <div class="type caption-2">
-                <div>
-                  <strong>Date: </strong>
-                  <span>[[$formatDate(nextVisit.data.nextVisitDateTimestamp)]]</span>
-                </div>
-                <div>{{nextVisit.data.priorityType}}</div>
-              </div>
-              <div class="b-top m-top-8"></div>
-            </template>
-            <!-- Print - Next Visit - end -->
+        <!-- Print - Prescription - start -->
+        <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body p-left-16">Prescription</div>
           </div>
-          <!-- Print Content - Left - end -->
 
-          <!-- Print Content - right - start -->
-          <div class="right">
+          <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
+            <div class="m-vertical-8 p-left-16 horizontal layout center">
+              <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
+              <div>
+                <div>
+                  <span class="type caption-2 text-bold">{{item.data.brandName}}</span>
+                  <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
+                  <span class="type caption italic">{{item.data.genericName}} {{item.data.strength}}</span>
+                </div>
 
-            <!-- Print - History And Physical - start -->
-            <template is="dom-if" if="[[shouldRender]]">
-              <div class="horizontal layout center">
-                <div class="type body print-sub-header">[[recordPartTitle]]</div>
+
+                <div class="type caption">
+                  <strong>Instruction: </strong>
+                  <span>[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
+                    <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
+                  </span>
+                  <span>[[$TRANSLATE('By', LANG)]] </span>
+                  <span>[[$TRANSLATE(item.data.route, LANG)]]</span>
+                  <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
+                </div>
+                <div class="type caption">[[item.data.comments]]</div>
               </div>
-              <div class="p-horizontal-16">
-                <html-block html="[[recordPartHtmlContent]]"></html-block>
+            </div>
+          </template>
+        </template>
+        <!-- Print - Prescription - end -->
+
+        <!-- Print - Symptoms - start -->
+        <template is="dom-if" if="[[!_isEmpty(addedIdentifiedSymptomsList.length)]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body">Symptoms</div>
+          </div>
+          <template is="dom-repeat" items="[[addedIdentifiedSymptomsList]]">
+            <div class="type caption-2">
+              <span class="type secondary">[[_returnSerial(index)]]. </span>
+              <span>{{item.name}}</span>
+              <template is="dom-if" if="[[_compareFn(item.possibleValueList.length, '>', 0)]]">
+                (
+                <template is="dom-repeat" items="[[item.possibleValueList]]">
+                  <span>{{item}}, </span>
+                </template>)
+              </template>
+            </div>
+          </template>
+          <div class="b-top m-top-8"></div>
+        </template>
+        <!-- Print - Symptoms - end -->
+
+        <!-- Print - Examination - start -->
+        <template is="dom-if" if="[[!_isEmpty(addedExaminationList.length)]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body">Examination</div>
+          </div>
+          <template is="dom-repeat" items="[[addedExaminationList]]" as="examination">
+            <div class="type caption-2">
+              <span class="type secondary">[[_returnSerial(index)]]. </span>
+              <span>{{examination.name}}</span>
+              (
+              <template is="dom-repeat" items="[[examination.examinationValueList]]" as="examItem">
+                <span hidden$="{{!examItem.checked}}">{{examItem.value}}, </span>
+              </template>)
+            </div>
+          </template>
+          <div class="b-top m-top-8 "></div>
+        </template>
+        <!-- Print - Examination - end -->
+
+        <!-- Print - Vitals - start -->
+        <template is="dom-if" if="[[!_isEmpty(addedVitalList.length)]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body">Vitals</div>
+          </div>
+          <template is="dom-repeat" items="[[addedVitalList]]">
+            <div class="type caption-2">
+              <strong>{{item.vitalType}}: </strong>
+              <span>[[_pritifyVitalData(item)]]</span>
+            </div>
+          </template>
+          <div class="b-top m-top-8"></div>
+        </template>
+        <!-- Print - Vitals - end -->
+
+        <!-- Print - Test Advised - start -->
+        <template is="dom-if" if="[[!_isEmpty(addedInvestigationList.length)]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body">Advised Test</div>
+          </div>
+          <template is="dom-repeat" items="[[addedInvestigationList]]">
+            <div class="type caption-2 layout horizontal">
+              <div class="type secondary m-right-8">[[_returnSerial(index)]]. </div>
+              <div class="flex vertical layout">
+                <div>{{item.investigationName}}</div>
+                <template is="dom-if" if="[[_compareFn(item.testList.length, '==', 1)]]">
+                  <ol class="order-list">
+                    <li>{{item.testList.0.name}}</li>
+                  </ol>
+                </template>
+                <template is="dom-if" if="[[_compareFn(item.testList.length, '>', 1)]]">
+                  <ol class="order-list">
+                    <template is="dom-repeat" items="[[item.testList]]">
+                      <li>{{item.name}}</li>
+                    </template>
+                  </ol>
+                </template>
               </div>
-              <div class="b-top m-top-8"></div>
-            </template>
-            <!-- Print - History And Physical - end -->
-
-            <br>
-            <br>
-
-            <!-- Print - Prescription - start -->
-            <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body p-left-16">Prescription</div>
-              </div>
-
-              <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
-                <div class="m-vertical-8 p-left-16 horizontal layout center">
-                  <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
-                  <div>
-                    <div>
-                      <span class="type caption-2 text-bold">{{item.data.brandName}}</span>
-                      <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
-                      <span class="type caption italic">{{item.data.genericName}} {{item.data.strength}}</span>
-                    </div>
-
-
-                    <div class="type caption">
-                      <strong>Instruction: </strong>
-                      <span>[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                        <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
-                      </span>
-                      <span>[[$TRANSLATE('By', LANG)]] </span>
-                      <span>[[$TRANSLATE(item.data.route, LANG)]]</span>
-                      <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
-                    </div>
-                    <div class="type caption">[[item.data.comments]]</div>
-                  </div>
+              <template is="dom-if" if="[[item.suggestedInstitutionName]]">
+                <div class="type caption secondary m-left-16">
+                  <strong>Suggested Institution: </strong>
+                  <span class="flex">{{item.suggestedInstitutionName}}</span>
                 </div>
               </template>
+            </div>
+          </template>
+          <div class="b-top"></div>
+        </template>
+        <!-- Print - Test Advised - end -->
 
-            </template>
-            <!-- Print - Prescription - end -->
-            <br>
-            <!-- Patient Stay Preview -->
-            <template is="dom-if" if="[[patientStay.serial]]">
-              <div class="horizontal layout center print-sub-header">
-                <div class="type body p-left-16">Patient Stay</div>
-              </div>
-              <div class="p-horizontal-16">
-                <div class="layout horizontal">
-                  <span class="type bold"> Admission Date: </span>
-                  <span>&nbsp;[[$mkDate(patientStay.data.admissionDateTimeStamp)]]</span>
-                </div>
-                <div>
-                  <span class="type bold">Type: </span> [[patientStay.data.admissionType]]
-                </div>
-                <template is="dom-if" if="[[patientStay.adviseOnly]]">
-                  <div>
-                    <span class="type bold">Advice: </span> [[patientStay.data.advise]]
-                  </div>
-                </template>
-                <template is="dom-if" if="[[!patientStay.adviseOnly]]">
-                  <div>
-                    <span class="type bold">Referred By: </span> [[patientStay.data.referredByDoctorName]]
-                  </div>
-                  <div>
-                    <span class="type bold">Admitted By: </span> [[patientStay.data.admittedByDoctorName]]
-                  </div>
-                  <div class="type italic">
-                    <span>[[patientStay.data.locationHospitalName]]</span> >
-                    <span>[[patientStay.data.locationDepartment]]</span> >
-                    <span>[[patientStay.data.locationUnit]]</span> >
-                    <span>[[patientStay.data.locationWard]]</span> >
-                    <span>[[patientStay.data.locationBed]]</span>
-                  </div>
-                </template>
-                <template is="dom-if" if="[[patientStay.data.currentLocation.length]]">
-                  <div>
-                    <span class="type bold"> Current Location:</span>
-                    <span>[[patientStay.data.currentLocation.0.location]]</span>
-                  </div>
-                </template>
-                <template is="dom-if" if="[[patientStay.data.dischargeDatetimeStamp]]">
-                  <div>
-                    <span class="type bold"> Discharge Date:</span>
-                    <span>[[$mkDate(patientStay.data.dischargeDatetimeStamp)]]</span>
-                  </div>
-                  <div>
-                    <span class="type bold">Discharged By: </span> [[patientStay.data.dischargedByDoctorName]]
-                  </div>
-                  <div>
-                    <span class="type bold"> Length of Stay:</span>
-                    <span>[[calculateLengthOfStay(patientStay.data.admissionDateTimeStamp, patientStay.data.dischargeDatetimeStamp)]]
-                      Days
-                    </span>
-                  </div>
-                </template>
-                <template is="dom-if" if="[[patientStay.data.dischargeReason.length]]">
-                  <div>
-                    <span class="type bold">Discharge Reason: </span> [[patientStay.data.dischargeReason]]</div>
-                </template>
-                <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
-                  <div>
-                    <span class="type bold"> Discharged To:</span> [[patientStay.data.dischargeTo]]</div>
-                </template>
-              </div>
-            </template>
-            <!-- Patient Stay Preview End -->
+        <!-- Print - Diagnosis - start -->
+        <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body">Diagnosis</div>
           </div>
-          <!-- Print Content - right - end -->
-        </div>
-        <!-- Print Content [FULL] - end -->
+          <template is="dom-repeat" items="[[diagnosis.data.diagnosisList]]">
+            <div class="type caption-2">
+              <span class="type secondary">[[_returnSerial(index)]]. </span>
+              <span>{{item.name}}</span>
+              <template is="dom-if" if="[[_compareFn(item.possibleValueList.length, '>', 0)]]">
+                (
+                <template is="dom-repeat" items="[[item.possibleValueList]]">
+                  <span>{{item}}, </span>
+                </template>)
+              </template>
+            </div>
+          </template>
+          <div class="b-top m-top-8"></div>
+        </template>
+        <!-- Print - Diagnosis - end -->
+
+        <!-- Print - Notes - start -->
+        <template is="dom-if" if="{{!_isEmpty(doctorNotes.data.messageList.length)}}">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body">Doctor Advised/Notes</div>
+          </div>
+          <ul class="unorderd-list-custom">
+            <template is="dom-repeat" items="[[doctorNotes.data.messageList]]">
+              <li class="type caption-2" style="word-break: break-word; margin-right: 4px;">{{item}}</li>
+            </template>
+          </ul>
+          <div class="b-top m-top-8"></div>
+        </template>
+        <!-- Print - Notes - end -->
+
+        <!-- Print - Next Visit - start -->
+        <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body">Next Visit</div>
+          </div>
+          <div class="type caption-2">
+            <div>
+              <strong>Date: </strong>
+              <span>[[$formatDate(nextVisit.data.nextVisitDateTimestamp)]]</span>
+            </div>
+            <div>{{nextVisit.data.priorityType}}</div>
+          </div>
+          <div class="b-top m-top-8"></div>
+        </template>
+        <!-- Print - Next Visit - end -->
+
+        <!-- Print - History And Physical - start -->
+        <template is="dom-if" if="[[shouldRender]]">
+          <div class="horizontal layout center">
+            <div class="type body print-sub-header">[[recordPartTitle]]</div>
+          </div>
+          <div class="p-horizontal-16">
+            <html-block html="[[recordPartHtmlContent]]"></html-block>
+          </div>
+          <div class="b-top m-top-8"></div>
+        </template>
+        <!-- Print - History And Physical - end -->
+
+        <!-- Patient Stay Preview -->
+        <template is="dom-if" if="[[patientStay.serial]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body p-left-16">Patient Stay</div>
+          </div>
+          <div class="p-horizontal-16">
+            <div class="layout horizontal">
+              <span class="type bold"> Admission Date: </span>
+              <span>&nbsp;[[$mkDate(patientStay.data.admissionDateTimeStamp)]]</span>
+            </div>
+            <div>
+              <span class="type bold">Type: </span> [[patientStay.data.admissionType]]
+            </div>
+            <template is="dom-if" if="[[patientStay.adviseOnly]]">
+              <div>
+                <span class="type bold">Advice: </span> [[patientStay.data.advise]]
+              </div>
+            </template>
+            <template is="dom-if" if="[[!patientStay.adviseOnly]]">
+              <div>
+                <span class="type bold">Referred By: </span> [[patientStay.data.referredByDoctorName]]
+              </div>
+              <div>
+                <span class="type bold">Admitted By: </span> [[patientStay.data.admittedByDoctorName]]
+              </div>
+              <div class="type italic">
+                <span>[[patientStay.data.locationHospitalName]]</span> >
+                <span>[[patientStay.data.locationDepartment]]</span> >
+                <span>[[patientStay.data.locationUnit]]</span> >
+                <span>[[patientStay.data.locationWard]]</span> >
+                <span>[[patientStay.data.locationBed]]</span>
+              </div>
+            </template>
+            <template is="dom-if" if="[[patientStay.data.currentLocation.length]]">
+              <div>
+                <span class="type bold"> Current Location:</span>
+                <span>[[patientStay.data.currentLocation.0.location]]</span>
+              </div>
+            </template>
+            <template is="dom-if" if="[[patientStay.data.dischargeDatetimeStamp]]">
+              <div>
+                <span class="type bold"> Discharge Date:</span>
+                <span>[[$mkDate(patientStay.data.dischargeDatetimeStamp)]]</span>
+              </div>
+              <div>
+                <span class="type bold">Discharged By: </span> [[patientStay.data.dischargedByDoctorName]]
+              </div>
+              <div>
+                <span class="type bold"> Length of Stay:</span>
+                <span>[[calculateLengthOfStay(patientStay.data.admissionDateTimeStamp, patientStay.data.dischargeDatetimeStamp)]]
+                  Days
+                </span>
+              </div>
+            </template>
+            <template is="dom-if" if="[[patientStay.data.dischargeReason.length]]">
+              <div>
+                <span class="type bold">Discharge Reason: </span> [[patientStay.data.dischargeReason]]</div>
+            </template>
+            <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
+              <div>
+                <span class="type bold"> Discharged To:</span> [[patientStay.data.dischargeTo]]</div>
+            </template>
+          </div>
+        </template>
+        <!-- Patient Stay Preview End -->
       </div>
       <!-- content aka 'input' - end -->
 
