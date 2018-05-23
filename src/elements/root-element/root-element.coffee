@@ -386,7 +386,7 @@ Polymer {
     return (new Date).getFullYear()
 
   _callAfterUserLogsIn: (cbfn)->
-    @user = @getCurrentUser()
+    @set 'user', @getCurrentUser()
     @inAppNotificationSystemInitiate()
     @updateNotificationView()
     @initiateAdvertisement()
@@ -397,6 +397,13 @@ Polymer {
       @loadOrganizationSmsBalance currentOrganization.idOnServer
     else
       @set 'currentOrganization', null
+
+    bugsnagClient.user = {
+      id: @user.idOnServer
+      serial: @user.serial
+      name: @user.name
+      email: @user.email or @user.phone
+    }
 
     
 

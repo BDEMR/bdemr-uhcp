@@ -84,6 +84,13 @@ Polymer {
         @domHost.navigateToPage "#/dashboard"
         window.location.reload()
 
+      bugsnagClient.metaData.organization = {
+        name: @selectedOrganization.name
+        id: @selectedOrganization.idOnServer
+        isCurrentUserAnAdmin: @selectedOrganization.isCurrentUserAnAdmin
+      }
+        
+
     else
       @domHost.showModalDialog "Chose an Organization to Continue"
 
