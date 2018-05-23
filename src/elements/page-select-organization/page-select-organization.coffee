@@ -84,11 +84,13 @@ Polymer {
         @domHost.navigateToPage "#/dashboard"
         window.location.reload()
 
-      bugsnagClient.metaData.organization = {
-        name: @selectedOrganization.name
-        id: @selectedOrganization.idOnServer
-        isCurrentUserAnAdmin: @selectedOrganization.isCurrentUserAnAdmin
-      }
+      # error tracking js meta
+      if app.mode is 'production'
+        bugsnagClient.metaData.organization = {
+          name: @selectedOrganization.name
+          id: @selectedOrganization.idOnServer
+          isCurrentUserAnAdmin: @selectedOrganization.isCurrentUserAnAdmin
+        }
         
 
     else

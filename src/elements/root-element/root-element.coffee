@@ -397,13 +397,15 @@ Polymer {
       @loadOrganizationSmsBalance currentOrganization.idOnServer
     else
       @set 'currentOrganization', null
-
-    bugsnagClient.user = {
-      id: @user.idOnServer
-      serial: @user.serial
-      name: @user.name
-      email: @user.email or @user.phone
-    }
+    
+    # error tracking js meta
+    if app.mode is 'production'
+      bugsnagClient.user = {
+        id: @user.idOnServer
+        serial: @user.serial
+        name: @user.name
+        email: @user.email or @user.phone
+      }
 
     
 
