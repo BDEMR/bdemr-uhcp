@@ -114,7 +114,7 @@ app.pages.pageList = [
     preload: true
     hrefList: [ 'patient-signup' ]
     requireAuthentication : false
-    headerType: 'normal'
+    headerType: 'modal'
     leftMenuEnabled: false
     showPatientsDetails: false
     showToolbar: false

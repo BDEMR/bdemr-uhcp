@@ -15,7 +15,9 @@ app.behaviors.commonComputes =
     return string if string.length <= maxCount
     return (string.substr 0, (maxCount - 3)) + '...'
 
-  $mkDate: (date)-> lib.datetime.mkDate date
+  $mkDate: (date)-> 
+    return '' unless date
+    lib.datetime.mkDate date
 
 
   $compareFn: (left, op, right)->
@@ -37,6 +39,14 @@ app.behaviors.commonComputes =
       return lib.datetime.format((new Date ms), 'mmm d, yyyy h:MMTT')
 
   $mkTime: (ms)-> lib.datetime.format((new Date ms), 'HH-MM-ss')
+
+  $formatDate: (date)->
+    return '' unless date
+    lib.datetime.format((new Date date), 'mmm d, yyyy')
+  
+  $formatDateTime: (dateTime)->
+    return '' unless dateTime
+    lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
 
   $in: (item, list...)->
     item in list
