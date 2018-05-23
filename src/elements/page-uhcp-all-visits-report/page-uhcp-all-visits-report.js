@@ -184,12 +184,17 @@ Polymer({
       }
     }
     // search parent+child when selecting all
-    if (!this.selectedOrganizationId) {
-      organizationIdList = this.childOrganizationList.map(item => item.value);
-      organizationIdList.splice(0, 1, this.organization.idOnServer)
-      query.organizationIdList = organizationIdList
-    } else {
+    // if (!this.selectedOrganizationId) {
+    //   organizationIdList = this.childOrganizationList.map(item => item.value);
+    //   organizationIdList.splice(0, 1, this.organization.idOnServer)
+    //   query.organizationIdList = organizationIdList
+    // } else {
+    //   query.organizationIdList = [this.selectedOrganizationId]
+    // }
+    if (this.selectedOrganizationId) {
       query.organizationIdList = [this.selectedOrganizationId]
+    } else {
+      query.organizationIdList = []
     }
 
     this.loading = true;
