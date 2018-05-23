@@ -4602,16 +4602,20 @@ Polymer {
 
   printButtonPressed: (e)->
  
-    @set 'addedExaminationList2', []
+    # @set 'addedExaminationList2', []
 
-    @printPrescriptionOnly = @checkForPrintPreviewType()
+    # @printPrescriptionOnly = @checkForPrintPreviewType()
     
-    # hack for addedExamination List not updated on print preview
-    lib.util.delay 200, ()=>
-      @set 'addedExaminationList2', @addedExaminationList
-      lib.util.delay 200, ()=>
-        console.log 'addedExaminationList2', @addedExaminationList2
-        window.print()
+    # # hack for addedExamination List not updated on print preview
+    # lib.util.delay 200, ()=>
+    #   @set 'addedExaminationList2', @addedExaminationList
+    #   lib.util.delay 200, ()=>
+    #     console.log 'addedExaminationList2', @addedExaminationList2
+    #     window.print()
+    if @visit.serial
+      @domHost.navigateToPage "#/visit-preview/visit:" + @visit.serial + "/patient:" + @patient.serial
+    else
+      return @domHost.showModalDialog 'Save the Visit First'
 
   saveVisitSettings: ()->
     @recordTitleValueChanged()
