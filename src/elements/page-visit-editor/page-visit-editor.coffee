@@ -3893,9 +3893,10 @@ Polymer {
 
     if params['visit'] is 'new'
       @isThatNewVisit = false
-      @visit.serial = @generateSerialForVisit()
-      @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
-      @domHost.setSelectedVisitSerial @visit.serial
+      visitSerial = @generateSerialForVisit()
+      @set 'visit.serial', visitSerial
+      @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + visitSerial + '/patient:' + @patient.serial
+      @domHost.setSelectedVisitSerial visitSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
     

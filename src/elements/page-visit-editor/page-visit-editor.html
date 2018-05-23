@@ -2404,13 +2404,15 @@
     <!-- Print Preview Area - start -->
     <div id="printPreview">
       <div class="print-header horizontal layout center">
-        <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
-          <div class="m-right-16">
-            <img style="max-width: 42px; height: auto;" class="logo" src="[[settings.printDecoration.logoDataUri]]" alt="">
-          </div>
-        </template>
-        <h1>[[settings.printDecoration.headerLine]]</h1>
+        <div class="m-right-16">
+          <img style="max-width: 42px; height: auto;" class="logo" src="./../../assets/img/partners/uhcp.jpg" alt="UHCP Logo">
+        </div>
+        <h2 class="flex text-center type">Universal Health Coverage Plan (UHCP)</h2>
+        <div class="m-left-16">
+          <img style="max-width: 42px; height: auto;" class="logo" src="./../../assets/img/partners/badas.jpg" alt="BADAS Logo">
+        </div>
       </div>
+      <hr>
 
       <!-- Print Header - Main - start -->
       <div class="">
@@ -2833,7 +2835,10 @@
             </div>
           </div>
           <template is="dom-if" if="[[settings.flags.showFooterLine]]">
-            <div class="type caption secondary">[[settings.printDecoration.footerLine]]</div>
+            <div class="type caption secondary">Address: Dhaka: Ibrahim General Hospital, 27-28 Commercial Plot, main road-01, Section-06, Mirpur, Dhaka. Contact
+              No. : 01712222222, from 9.00 AM to 5.00 PM (Sat- Thu)
+              <br> Narayangonj: Narayangonj Diabetic Hospital, Dewbogh, Nagbari, Narayangonj. Contact No : 01712222222, from
+              9.00 AM to 5.00 PM (Sat- Thu)</div>
           </template>
         </div>
 
