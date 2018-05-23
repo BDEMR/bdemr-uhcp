@@ -1753,8 +1753,9 @@ Polymer {
         if ((node.offsetHeight + page.offsetHeight + footer.offsetHeight) > idealHeight)
           margin = idealHeight - (page.offsetHeight + footer.offsetHeight)
           console.log margin
-          page.setAttribute("style", page.getAttribute("style") + "margin-bottom: #{margin}px; border: 1px solid white;")
-          page.appendChild(footer.cloneNode(true))
+          newFooter = footer.cloneNode(true)
+          newFooter.setAttribute("style", "margin-top: #{margin}px;")
+          page.appendChild(newFooter)
           page = document.createElement('div')
           page.className = 'page'
           
@@ -1764,8 +1765,15 @@ Polymer {
           page.appendChild(header.cloneNode(true))
 
         page.appendChild node.cloneNode(true)
+
+      margin = idealHeight - (page.offsetHeight + footer.offsetHeight)
+      console.log margin
+      newFooter = footer.cloneNode(true)
+      newFooter.setAttribute("style", "margin-top: #{margin}px;")
+      page.appendChild(newFooter)
+      # page.setAttribute("style", page.getAttribute("style") + "margin-bottom: #{margin}px;")
     
-      page.appendChild footer.cloneNode(true)
+      # page.appendChild footer.cloneNode(true)
 
       print.removeChild header
       print.removeChild footer
