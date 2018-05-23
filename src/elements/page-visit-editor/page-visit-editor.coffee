@@ -886,7 +886,7 @@ Polymer {
       if response.hasError
         @domHost.showToast response.error.message
       else
-        if response.data.length
+        if Object.keys(response.data).length
           cbfn response.data
         else
           cbfn {outdoorBalance:0, indoorBalance:0}
@@ -4683,7 +4683,6 @@ Polymer {
   _loadVariousWallets: ->
     @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
       @set 'patientServiceBalance', patientServiceBalance
-      console.log patientServiceBalance
 
 
   onVitalIndexChange: ()->
