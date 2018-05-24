@@ -203,6 +203,7 @@ Polymer({
         this.domHost.showModalDialog(response.error.message);
         return this.loading = false;
       } else {
+        console.log(response)
         this.set('reportResults', response.data);
         return this.loading = false;
       }

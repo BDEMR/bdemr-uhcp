@@ -1673,6 +1673,7 @@ Polymer {
         # HACK End
         break
 
+
     for key, value of routeMap
       if key is item
         @set 'routeList', []
