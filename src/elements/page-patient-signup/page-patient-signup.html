@@ -376,7 +376,8 @@
 
                   <div class="custom-input paper-custom horizontal layout full">
                     <vaadin-date-picker on-keyup="checkNextBtnStatus" required auto-validate error-message="Date of Birth is Required!" class="flex m-right-16"
-                      type="date" value="{{patient.dateOfBirth}}" label="Date of Birth" on-value-changed="calculateAge"></vaadin-date-picker>
+                      type="date" value="{{patient.dateOfBirth}}" label="Date of Birth (MM/DD/YYYY)" on-value-changed="calculateAge"
+                      placeholder="Month/Date/Year"></vaadin-date-picker>
 
                     <paper-input label="Age" type="number" value="{{ageInYears}}" on-change="makeDOBFromYears"></paper-input>
                   </div>
