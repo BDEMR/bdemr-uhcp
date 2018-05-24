@@ -27,13 +27,13 @@ app.behaviors.local.patientStayMixin =
       value: -> [
         'Out patient/ Discharged with advice'
         'Out patient/ Advised admission'
-        'Seen in In-patient / Discharged with advice'
-        'Seen in In-patient / Advised admission'
+        'Seen in Emergency / Discharged with advice'
+        'In-Patient'
       ]
     
     locationList:
       type: Array
-      value: -> []
+      value: -> ['Out Patient']
 
     dischargeReasonList:
       type: Array
@@ -138,19 +138,7 @@ app.behaviors.local.patientStayMixin =
       else
         @set 'patientStayObject', response.data.patientStayObject
         unless @patientStayObject.locations
-          @patientStayObject.locations = [
-            "Absconded"
-            "Bed"
-            "CT"
-            "Discharged but waiting in bed"
-            "Doctors chamber outside hospital"
-            "Laboratory"
-            "Out of bed on permission"
-            "Pathology"
-            "Ultrasound"
-            "X-ray"
-            "Nil"
-          ]
+          @patientStayObject.locations = ['Out Patient']
         cbfn() if cbfn
 
   organizationSelected: (e)->
@@ -308,7 +296,7 @@ app.behaviors.local.patientStayMixin =
         locationUnit: ''
         locationWard: ''
         locationBed: ''
-        currentLocation: []
+        currentLocation: ['Out Patient']
         dischargedByDoctorName: ''
         dischargeDatetimeStamp: null
         dischargeReason: []
@@ -367,9 +355,7 @@ app.behaviors.local.patientStayMixin =
         unless patientStay.data.admissionDateTimeStamp
           @domHost.showToast 'Admission Date is required'
           return false
-        unless patientStay.data.currentLocation.length
-          @domHost.showToast 'Please spcify patient current location'
-          return false
+        
       else
         unless patientStay.data.advise
           @domHost.showToast 'Specify Advise to patient'
