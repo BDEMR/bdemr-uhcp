@@ -454,14 +454,13 @@ Polymer {
           # console.log 'publishing completed', updatedPatient
 
   _importPatient: (serial, pin, cbfn)->
-    @.$.importPatientDialog.toggle()
     @callApi '/bdemr-patient-import-new', {serial: serial, pin: pin, doctorName: @user.name, organizationId: @organization.idOnServer}, (err, response)=>
       console.log "bdemr-patient-import-new", response
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
+        @.$.importPatientDialog.toggle()
         patientList = response.data
-
         if patientList.length isnt 1
           return @domHost.showModalDialog 'Unknown error occurred.'
         patient = patientList[0]
