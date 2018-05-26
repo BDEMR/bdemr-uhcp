@@ -149,7 +149,6 @@ app.behaviors.local['root-element'].newSync = {
         return cbfn(response.error.message);
       } else {
 
-        console.log(JSON.stringify(response.data));
         app.db.__allowCommit = false;
         for (let index = 0; index < response.data.length; index++) {
           var item = response.data[index];
