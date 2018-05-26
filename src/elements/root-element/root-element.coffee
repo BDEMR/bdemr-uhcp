@@ -813,10 +813,11 @@ Polymer {
         @navigateToPage '#/patient-viewer/patient:' + @currentPatientsDetails.serial + '/selected:' + @selectedPatientPageIndex
         @pageElement.navigatedIn()
 
-  _changeToolbarClass: (showToolbar) ->
-    if showToolbar is true
+  _changeToolbarClass: (showTallToolbar)->
+    if showTallToolbar
       return 'medium-tall'
-    else return ''
+    else 
+      return ''
 
   _checkUserAccess: (accessId)->
     currentOrganization = @getCurrentOrganization()
