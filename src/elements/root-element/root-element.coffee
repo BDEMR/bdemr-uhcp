@@ -387,7 +387,7 @@ Polymer {
     return (new Date).getFullYear()
 
   _callAfterUserLogsIn: (cbfn)->
-    @user = @getCurrentUser()
+    @set 'user', @getCurrentUser()
     @inAppNotificationSystemInitiate()
     @updateNotificationView()
     @initiateAdvertisement()
@@ -398,6 +398,15 @@ Polymer {
       @loadOrganizationSmsBalance currentOrganization.idOnServer
     else
       @set 'currentOrganization', null
+    
+    # error tracking js meta
+    if app.mode is 'production'
+      bugsnagClient.user = {
+        id: @user.idOnServer
+        serial: @user.serial
+        name: @user.name
+        email: @user.email or @user.phone
+      }
 
     
 
@@ -606,7 +615,7 @@ Polymer {
       organizationId: organizationId
     }
     @callApi '/bdemr-get-organization-sms-balance', data, (err, response)=>
-      console.log 'ORG SMS BALNCE:', response
+      # console.log 'ORG SMS BALNCE:', response
       if err or not response
         return @domHost.showModalDialog 'Problem connecting wtih the server. Check your internet connection and try again.'
       if response.hasError

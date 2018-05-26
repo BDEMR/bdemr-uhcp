@@ -838,7 +838,7 @@
                     </tr>
                     <template is="dom-repeat" items="[[confirmedDiagnosisList]]" sort="_sortByImportantDiagnosis" id="confirmed-diagnosis-list-repeater">
                       <tr>
-                        <td>[[$mkDateTime(item.createdDatetimeStamp)]]</td>
+                        <td>[[$formatDateTime(item.createdDatetimeStamp)]]</td>
                         <td class="flex">[[item.diagnosis]]</td>
 
                         <td>
@@ -913,13 +913,9 @@
 
                                   <div>
                                     <div class="type caption m-horizontal-4">
-                                      [[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]]
-                                      <span hidden="[[!item.data.timesPerInterval]]">
-                                        [[$TRANSLATE('Every', LANG)]] [[$TRANSLATE_NUMBER(item.data.intervalInHours, LANG)]] [[$TRANSLATE('Hour', LANG)]] </span>
                                       <span hidden="[[!item.data.doseDirection]]">
                                         [[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]]</span>
-                                      for [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
-                                      <span hidden$="[[!item.data.endDateTimeStamp]]">[[$TRANSLATE('Days',LANG)]]</span>
+                                      [[$TRANSLATE('for',LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]] [[$TRANSLATE('Days',LANG)]]
                                     </div>
 
                                     <div class="type caption m-horizontal-4">
@@ -974,8 +970,8 @@
                                   </div>
 
                                   <div>
-                                    <div class="type caption secondary">Started: [[$mkDateTime(item.data.startDateTimeStamp)]]</div>
-                                    <div class="type caption bold">Stopped: [[$mkDateTime(item.lastModifiedDatetimeStamp)]]</div>
+                                    <div class="type caption secondary">Started: [[$formatDateTime(item.data.startDateTimeStamp)]]</div>
+                                    <div class="type caption bold">Stopped: [[$formatDateTime(item.lastModifiedDatetimeStamp)]]</div>
                                   </div>
 
                                 </div>
@@ -1051,7 +1047,7 @@
                                 <div class="flex m-left-16">
                                   <div class="type caption">Systolic/Diastolic</div>
                                   <div class="type body">[[vital.data.systolic]]/[[vital.data.diastolic]] mm Hg</div>
-                                  <div class="type caption secondary">[[$mkDateTime(vital.createdDatetimeStamp)]]</div>
+                                  <div class="type caption secondary">[[$formatDateTime(vital.createdDatetimeStamp)]]</div>
                                 </div>
                                 <div class="type danger" hidden$="[[!vital.data.flags.flagAsError]]">
                                   Flagged as Error
@@ -1112,7 +1108,7 @@
                                 <div class="type caption secondary">[[_returnSerial(index)]]</div>
                                 <div class="m-left-16 flex">
                                   <div class="type body">Herat Rate: [[vital.data.bpm]] bpm</div>
-                                  <div class="type caption secondary">[[$mkDateTime(vital.createdDatetimeStamp)]]</div>
+                                  <div class="type caption secondary">[[$formatDateTime(vital.createdDatetimeStamp)]]</div>
                                 </div>
                                 <div class="type warning" hidden$="[[!vital.data.flags.flagAsError]]">
                                   Flagged as Error
@@ -1182,7 +1178,7 @@
 
                                     <div>, BMI: [[vital.data.calculatedBmi]] - [[_calculateBMIVerdict(vital.data.calculatedBmi)]]</div>
                                   </div>
-                                  <div class="type caption secondary">[[$mkDateTime(vital.createdDatetimeStamp)]]</div>
+                                  <div class="type caption secondary">[[$formatDateTime(vital.createdDatetimeStamp)]]</div>
                                 </div>
 
                                 <div class="type warning" hidden$="[[!vital.data.flags.flagAsError]]">
@@ -1242,7 +1238,7 @@
                                 <div class="type caption secondary">[[_returnSerial(index)]]</div>
                                 <div class="m-left-16 flex">
                                   <div class="type body">RR: [[vital.data.respiratoryRate]] /min</div>
-                                  <div class="type caption secondary">[[$mkDateTime(vital.createdDatetimeStamp)]]</div>
+                                  <div class="type caption secondary">[[$formatDateTime(vital.createdDatetimeStamp)]]</div>
                                 </div>
                               </div>
 
@@ -1302,7 +1298,7 @@
                                 <div class="type caption secondary">[[_returnSerial(index)]]</div>
                                 <div class="m-left-16 flex">
                                   <div class="type body">SpO2: [[vital.data.spO2Percentage]]%</div>
-                                  <div class="type caption secondary">[[$mkDateTime(vital.createdDatetimeStamp)]]</div>
+                                  <div class="type caption secondary">[[$formatDateTime(vital.createdDatetimeStamp)]]</div>
                                 </div>
                               </div>
 
@@ -1360,7 +1356,7 @@
                                 <div class="type caption secondary">[[_returnSerial(index)]]</div>
                                 <div class="m-left-16 flex">
                                   <div class="type body">Temperature: [[vital.data.temperature]]°C</div>
-                                  <div class="type caption secondary">[[$mkDateTime(vital.createdDatetimeStamp)]]</div>
+                                  <div class="type caption secondary">[[$formatDateTime(vital.createdDatetimeStamp)]]</div>
                                 </div>
                               </div>
 
@@ -1468,7 +1464,7 @@
                       <div class="flex m-left-8">
                         <div class="type body-lead">{{item.visitReason.type}}</div>
                         <div class="type caption-2 secondary">
-                          <strong>Date: </strong>[[$mkDateTime(item.createdDatetimeStamp)]]</div>
+                          <strong>Date: </strong>[[$formatDateTime(item.createdDatetimeStamp)]]</div>
                         <div class="type caption-2 secondary">
                           <strong>Doctor Name: </strong>[[item.doctorName]]
                           <strong>Speciality: </strong> [[item.doctorSpeciality]]</div>
@@ -1529,7 +1525,7 @@
                         <div class="type body-lead">{{item.data.visitType}}</div>
                         <div class="type caption-2 secondary">
                           <strong>Serial: </strong> {{item.serial}}
-                          <strong>Created on: </strong>[[$mkDateTime(item.createdDatetimeStamp)]]
+                          <strong>Created on: </strong>[[$formatDateTime(item.createdDatetimeStamp)]]
                           <strong> by: </strong>[[item.doctorName]]
                           <i>[[item.doctorSpeciality]]</i>
                         </div>
@@ -1603,7 +1599,7 @@
                         <tr class="type body">
                           <td>[[item.serial]]</td>
                           <td>{{_checkRecordTitle(item)}}</td>
-                          <td>[[$mkDateTime(item.createdDatetimeStamp)]]</td>
+                          <td>[[$formatDateTime(item.createdDatetimeStamp)]]</td>
 
                           <td>[[item.doctorName]]
                             <span>[[item.doctorSpeciality]]</td>
@@ -1697,9 +1693,9 @@
                       <template id="next-visit-list-repeater" is="dom-repeat" items="[[matchingNextVisitList]]" sort="_sortByDate" filter="{{computeVisitFilter(searchString)}}">
                         <tr>
                           <td>
-                            <span class="text-muted">[[$mkDateTime(item.createdDatetimeStamp)]]</span>
+                            <span class="text-muted">[[$formatDateTime(item.createdDatetimeStamp)]]</span>
                           </td>
-                          <td>[[$mkDateTime(item.data.nextVisitDateTimestamp)]]</td>
+                          <td>[[$formatDateTime(item.data.nextVisitDateTimestamp)]]</td>
 
                           <td>[[item.doctorName]]</td>
                           <td>[[item.doctorSpeciality]]</td>
@@ -1770,8 +1766,8 @@
                                   </div>
                                 </div>
                                 <div class="type caption secondary layout vertical">
-                                  <span>Created: [[$mkDateTime(test.createdDatetimeStamp)]]</span>
-                                  <span>LastModified: [[$mkDateTime(test.lastModifiedDatetimeStamp)]]</span>
+                                  <span>Created: [[$formatDateTime(test.createdDatetimeStamp)]]</span>
+                                  <span>LastModified: [[$formatDateTime(test.lastModifiedDatetimeStamp)]]</span>
                                 </div>
                               </div>
 
@@ -1831,7 +1827,7 @@
                                 <div class="type caption secondary">[[_returnSerial(index)]]</div>
                                 <div class="m-left-16 flex">
                                   <div class="type body">{{item.data.name}}: {{item.data.result}} {{item.data.unit}} ({{item.data.institution}})</div>
-                                  <div class="type caption secondary">Test Date: [[$mkDateTime(item.data.date)]]</div>
+                                  <div class="type caption secondary">Test Date: [[$formatDateTime(item.data.date)]]</div>
                                 </div>
                               </div>
 
@@ -1931,7 +1927,7 @@
                                 <div class="m-left-16 flex">
                                   <div class="type body">{{comment.data.message}}</div>
                                   <div class="type caption italic">{{comment.doctorName}}, {{comment.doctorSpeciality}}</div>
-                                  <div class="type caption secondary">[[$mkDateTime(comment.createdDatetimeStamp)]]</div>
+                                  <div class="type caption secondary">[[$formatDateTime(comment.createdDatetimeStamp)]]</div>
                                 </div>
                               </div>
 
@@ -1964,7 +1960,7 @@
                                 <div class="type caption secondary">[[_returnSerial(index)]]</div>
                                 <div class="m-left-16 flex">
                                   <div class="type body">{{comment.data.message}}</div>
-                                  <div class="type caption secondary">[[$mkDateTime(test.createdDatetimeStamp)]]</div>
+                                  <div class="type caption secondary">[[$formatDateTime(test.createdDatetimeStamp)]]</div>
                                 </div>
                               </div>
 
@@ -2123,7 +2119,7 @@
                   <paper-listbox>
                     <template is="dom-repeat" items="[[activityLogs]]" sort="_sortByDate">
                       <paper-item class="layout horizontal">
-                        <div class="text-mute m-right-16">[[$mkDateTime(item.lastModifiedDatetimeStamp)]]</div>
+                        <div class="text-mute m-right-16">[[$formatDateTime(item.lastModifiedDatetimeStamp)]]</div>
                         <div class="flex">[[item.doctorName]] has [[item.action]]ed [[item.subject]]</div>
                       </paper-item>
                     </template>

@@ -952,7 +952,7 @@ Polymer {
 
   _loadUser:(cbfn)->
     list = app.db.find 'user'
-    console.log 'USER: ', list[0]
+    # console.log 'USER: ', list[0]
     if list.length is 1
       @user = list[0]
       @_getEmploymentList @user
@@ -983,7 +983,7 @@ Polymer {
     if list.length is 1
       @isPatientValid = true
       @patient = list[0]
-      console.log 'PATIENT:', @patient
+      # console.log 'PATIENT:', @patient
     else
       @_notifyInvalidPatient()
 
@@ -1000,7 +1000,7 @@ Polymer {
       return 0
 
     @matchingPrescribedMedicineList = medicineList
-    console.log "MEDICINE LIST:", @matchingPrescribedMedicineList
+    # console.log "MEDICINE LIST:", @matchingPrescribedMedicineList
 
 
   ## Load Prescription
@@ -1009,7 +1009,7 @@ Polymer {
     if list.length is 1
       @isPrescriptionValid = true
       @prescription = list[0]
-      console.log "PRESCRIPTION: ", @prescription
+      # console.log "PRESCRIPTION: ", @prescription
       @_listPrescribedMedications @prescription.serial
       return true
     else
@@ -1023,7 +1023,7 @@ Polymer {
     if list.length is 1
       @isIdentifiedSymptomsValid = true
       @identifiedSymptomsObject = list[0]
-      console.log 'SYMPTOMS: ', @identifiedSymptomsObject
+      # console.log 'SYMPTOMS: ', @identifiedSymptomsObject
       @addedIdentifiedSymptomsList = list[0].data.symptomsList
       
       return true
@@ -1038,7 +1038,7 @@ Polymer {
     if list.length is 1
       @isExaminationValid = true
       @examinationObject = list[0]
-      console.log 'EXAMINATION: ', @examinationObject
+      # console.log 'EXAMINATION: ', @examinationObject
       @addedExaminationList = list[0].data.examinationValueList
       
       return true
@@ -1053,7 +1053,7 @@ Polymer {
     if list.length is 1
       @isTestAdvisedValid = true
       @testAdvisedObject = list[0]
-      console.log "ADVISED TEST: ", @testAdvisedObject
+      # console.log "ADVISED TEST: ", @testAdvisedObject
       @addedInvestigationList = list[0].data.testAdvisedList
       return true
     else
@@ -1101,9 +1101,9 @@ Polymer {
     @domHost.showModalDialog 'Invalid Visit Provided'
 
   _loadVisit: (visitIdentifier, cbfn)->
-    console.log 'visitIdentifier', visitIdentifier
+    # console.log 'visitIdentifier', visitIdentifier
     list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
-    console.log "VISIT LIST", list
+    # console.log "VISIT LIST", list
     if list.length is 1
       @isVisitValid = true
       @visit = list[0]
@@ -1146,7 +1146,7 @@ Polymer {
 
     if list.length is 1
       vitalData = list[0]
-      console.log vitalType, ': ', vitalData
+      # console.log vitalType, ': ', vitalData
       @_addToVitalList vitalData, vitalType
       return true
     else
@@ -1190,7 +1190,7 @@ Polymer {
       @isNoteValid = true
       @isFullVisitValid = true
       @doctorNotes = list[0]
-      console.log 'NOTES: ', @doctorNotes
+      # console.log 'NOTES: ', @doctorNotes
       return true
     else
       @isNoteValid = false
@@ -1204,7 +1204,7 @@ Polymer {
       @isNextVisitValid = true
       @isFullVisitValid = true
       @nextVisit = list[0]
-      console.log "NEXT VISIT: ", @nextVisit
+      # console.log "NEXT VISIT: ", @nextVisit
       return true
     else
       @isNextVisitValid = false
@@ -1272,7 +1272,7 @@ Polymer {
             childHtml = @sanitizeOutput childHtml
             html += childHtml
     else
-      console.log 'end-case'
+      # console.log 'end-case'
     return html
 
   handle_type: (def, data)->
@@ -1716,6 +1716,7 @@ Polymer {
 
   printButtonPressed: (e)->
     @printPrescriptionOnly = @checkForPrintPreviewType()
+  
     window.print()
         
 
@@ -1723,8 +1724,64 @@ Polymer {
     list = app.db.find 'settings'
     @settings = list[0]
 
-    console.log @settings
+    # console.log @settings
     cbfn()
+
+
+  generatePrintPagination:()->
+    lib.util.delay 100, ()=>
+      print = @$$('.print')
+      header = @$$('.print .header')
+      footer = @$$('.print .footer')
+      content = @$$('.print .content')
+      output = @$$('.print .output')
+
+      console.log footer.offsetHeight
+
+      idealHeight = @$$('.print .ideal').offsetHeight
+
+      nodeList = content.childNodes
+
+      page = document.createElement('div')
+      page.className = 'page'
+      page.setAttribute("style", "page-break-after: always; border: 1px solid white;")
+      output.appendChild(page)
+      page.appendChild(header.cloneNode(true))
+
+      for node in nodeList
+
+        if ((node.offsetHeight + page.offsetHeight + footer.offsetHeight) > idealHeight)
+          margin = idealHeight - (page.offsetHeight + footer.offsetHeight)
+          console.log margin
+          newFooter = footer.cloneNode(true)
+          newFooter.setAttribute("style", "margin-top: #{margin}px;")
+          page.appendChild(newFooter)
+          page = document.createElement('div')
+          page.className = 'page'
+          
+          
+          page.setAttribute("style", "page-break-after: always; border: 1px solid white;")
+          output.appendChild(page)
+          page.appendChild(header.cloneNode(true))
+
+        page.appendChild node.cloneNode(true)
+
+      margin = idealHeight - (page.offsetHeight + footer.offsetHeight)
+      console.log margin
+      newFooter = footer.cloneNode(true)
+      newFooter.setAttribute("style", "margin-top: #{margin}px;")
+      page.appendChild(newFooter)
+      # page.setAttribute("style", page.getAttribute("style") + "margin-bottom: #{margin}px;")
+    
+      # page.appendChild footer.cloneNode(true)
+
+      print.removeChild header
+      print.removeChild footer
+      print.removeChild content
+
+      print.removeChild @$$('.print .ideal')
+
+    
 
   navigatedIn: ->
 
@@ -1832,6 +1889,8 @@ Polymer {
               if @visit.nextVisitSerial
                 @_loadNextVisit @visit.nextVisitSerial
 
+              @generatePrintPagination()
+
 
   navigatedOut: ->
   
@@ -1842,95 +1901,6 @@ Polymer {
     @_loadHistoryAndPhysicalRecord()
     @_loadRecordInClipboard()
 
-  historyAndPhysicalRecordCreate: (e)->
-    params = @domHost.getPageParams()
-    if params['visit'] is 'new'
-      @_saveVisit()
-    # console.log @visit.serial
-    @historyAndPhysicalRecord = {
-      lastModifiedDatetimeStamp: lib.datetime.now()
-      createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: 0
-      createdByUserSerial: @user.serial
-      serial: @generateSerialForHistoryAndPhysical()
-      patientSerial: @patient.serial
-      visitSerial: @visit.serial
-      availableToPatient: true
-    }
-
-    @visit.historyAndPhysicalRecordSerial = @historyAndPhysicalRecord.serial
-    @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-
-    # updated visit object for History and Physical
-    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
-
-
-    @_saveHistoryAndPhysicalRecord()
-    @_loadHistoryAndPhysicalRecord()
-    @domHost.navigateToPage '#/record-history-and-physical/record:' + @historyAndPhysicalRecord.serial
-    window.location.reload()
-
-
-  _loadRecordInClipboard: ->
-    recordInClipboard = sessionStorage.getItem 'HISTORY-AND-PHYSICAL-IN-CLIPBOARD'
-    if recordInClipboard
-      recordInClipboard = JSON.parse recordInClipboard
-    @recordInClipboard = recordInClipboard
-
-  historyAndPhysicalRecordCopy: (e)->
-    record = @historyAndPhysicalRecord
-    # console.log record
-
-    sessionStorage.setItem 'HISTORY-AND-PHYSICAL-IN-CLIPBOARD', JSON.stringify record
-    @domHost.showModalDialog "This record has been copied to clipboard"
-    @_loadRecordInClipboard()
-
-  pasteRecordPressed: (e)->
-    params = @domHost.getPageParams()
-    if params['visit'] is 'new'
-      @_saveVisit()
-
-    @recordInClipboard.patientSerial = @patient.serial
-    @recordInClipboard.visitSerial = @visit.serial
-    @recordInClipboard.lastChangedDatetimeStamp = lib.datetime.now()
-    @recordInClipboard.serial = @generateSerialForRecord()
-
-    @visit.historyAndPhysicalRecordSerial = @recordInClipboard.serial
-    @historyAndPhysicalRecord = @recordInClipboard
-
-
-    # updated visit object for History and Physical
-    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
-
-    @_saveHistoryAndPhysicalRecord()
-    @_loadHistoryAndPhysicalRecord()
-
-    @recordInClipboard = null
-    sessionStorage.removeItem 'HISTORY-AND-PHYSICAL-IN-CLIPBOARD'
-
-    @domHost.showModalDialog "Successfully Imported. Reloading Interface."
-
-    @domHost.navigateToPage '#/record-history-and-physical/record:' + @historyAndPhysicalRecord.serial
-    window.location.reload()
-
-
-    
-
-  _updateVisitForHistoryAndPhysicalRecord: (historyAndPhysicalRecordIdentifier)->
-
-
-  historyAndPhysicalRecordPrint: (e)->
-    @domHost.navigateToPage '#/print-history-and-physical-record/record:' + @historyAndPhysicalRecord.serial
-
-  historyAndPhysicalRecordEdit: (e)->
-    @domHost.navigateToPage '#/record-history-and-physical/record:' + @historyAndPhysicalRecord.serial
-
-  historyAndPhysicalRecordRemove: (e)->
-    @domHost.showModalPrompt 'Are you sure?', (answer)=>
-      if answer
-        app.db.remove 'history-and-physical-record', @historyAndPhysicalRecord._id
-        @_loadHistoryAndPhysicalRecord()
-
   _loadHistoryAndPhysicalRecord: ->
     currentVisitSerial = @visit.serial
     list = app.db.find 'history-and-physical-record', ({visitSerial})=> visitSerial is currentVisitSerial
@@ -1939,83 +1909,12 @@ Polymer {
     else
       @set 'historyAndPhysicalRecord', null
 
-    console.log '_loadHistoryAndPhysicalRecord', @historyAndPhysicalRecord
+    # console.log '_loadHistoryAndPhysicalRecord', @historyAndPhysicalRecord
 
-  _saveVisitPrescription:->
-    app.db.upsert 'visit-prescription', @prescription, ({serial})=> @prescription.serial is serial
-    @domHost.showToast 'Record Saved'
-
-  _saveVisitTestAdvised:->
-    app.db.upsert 'visit-advised-test', @testAdvised, ({serial})=> @testAdvised.serial is serial
-    @domHost.showToast 'Record Saved'
-
-
-  _saveHistoryAndPhysicalRecord:->
-    app.db.upsert 'history-and-physical-record', @historyAndPhysicalRecord, ({serial})=> @historyAndPhysicalRecord.serial is serial
-    @domHost.showToast 'Record Saved'
+  
 
 
   ## ------------------------------- History and physical - end
-
-  ## --- Patient Specific Sync - Start
-
-  _updatePatientSerialSyncByCollection: (collectionNameIdentifier, patientIdentifier, isSync)->
-
-    list = app.db.find 'filterd-patient-serial-list-for-sync', ({collectionName})-> collectionName is collectionNameIdentifier
-    if list.length is 1
-      itemObject = list[0]
-      # console.log 'itemObject', itemObject
-      newItemObject = {}
-      for item, index in itemObject.patientSerialList
-        if item.patientSerial is patientIdentifier
-          itemObject.patientSerialList[index].isSync = isSync
-          app.db.upsert 'filterd-patient-serial-list-for-sync', itemObject, ({_id})=> itemObject._id is _id
-          return true
-
-  historyAndPhysicalSyncCheckboxChanged: (e)->
-
-    params = @domHost.getPageParams()
-
-    if params['patient']
-      patientIdentifier = params['patient'] 
-
-    if e.target.checked
-      @_updatePatientSerialSyncByCollection 'history-and-physical-record', patientIdentifier, true
-     
-    else
-      @_updatePatientSerialSyncByCollection 'history-and-physical-record', patientIdentifier, false
-        
-  ## --- Patient Specific Sync - End
-
-
-  historyAndPhysicalAvailableToPatientCheckBoxChanged: (e)->
-    if @historyAndPhysicalRecord
-      if e.target.checked
-        @historyAndPhysicalRecord.availableToPatient = true
-        @_saveHistoryAndPhysicalRecord()
-      else
-        @historyAndPhysicalRecord.availableToPatient = false
-        @_saveHistoryAndPhysicalRecord()
-
-
-  prescriptionAvailableToPatientCheckBoxChanged: (e)->
-    if @prescription
-      if e.target.checked
-        @prescription.availableToPatient = true
-        @_saveVisitPrescription()
-      else
-        @prescription.availableToPatient = false
-        @_saveVisitPrescription()
-
-  testAdvisedAvailableToPatientCheckBoxChanged: (e)->
-    if @testAdvised
-      if e.target.checked
-        @testAdvised.availableToPatient = true
-        @_saveVisitTestAdvised()
-      else
-        @testAdvised.availableToPatient = false
-        @_saveVisitTestAdvised()
-
 
   ## diagnosis - start
   _loadDiagnosis: (diagnosisSerialIdentifier)->
@@ -2026,156 +1925,19 @@ Polymer {
         @isDiagnosisValid = true
         @isFullVisitValid = true
         @diagnosis = list[0]
-        console.log 'DIAGNOSIS:', @diagnosis
+        # console.log 'DIAGNOSIS:', @diagnosis
         return true
       else
         @isDiagnosisValid = false
         return false
 
-  _makeNewDiagnosis: ()->
-    @diagnosis =
-      serial: null
-      lastModifiedDatetimeStamp: lib.datetime.now()
-      createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: 0
-      createdByUserSerial: @user.serial
-      visitSerial: null
-      patientSerial: @patient.serial
-      doctorName: @visit.doctorName
-      doctorSpeciality: @visit.doctorSpeciality
-      organizationId: @currentOrganization.idOnServer
-      data:
-        diagnosisList: []
-
-  _saveDiagnosis: ()->
-
-    unless @visit.serial isnt null
-      @_saveVisit()
-      # @visit.serial = @generateSerialForVisit()
-      @diagnosis.visitSerial = @visit.serial
-      
-    
-    unless @diagnosis.serial isnt null
-      @diagnosis.serial = @generateSerialForDiagnosis()
-      @visit.diagnosisSerial = @diagnosis.serial
-      @diagnosis.visitSerial = @visit.serial
-      @_saveVisit()
-        
-    console.log 'visit', @visit
-    console.log 'diagnosis', @diagnosis
-
-    @diagnosis.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'diagnosis-record', @diagnosis, ({serial})=> @diagnosis.serial is serial
-
-    @comboBoxDiagnosisInputValue = ''
 
   arrowBackButtonPressed: (e)->
     @domHost.navigateToPreviousPage()
 
 
-  loadDiagnosisListData: ()->
-  
-    @domHost.getStaticData 'diagnosisList', (diagnosisList)=>
-      list = ({label: item.name, value: item.name} for item in diagnosisList when item.name)
-      @set 'diagnosisListArray', list
-      
-      # @diagnosisListArray.sort (left, right)->
-      #   return -1 if left.label < right.label
-      #   return 1 if left.label > right.label
-      #   return 0
-
-      # @push 'diagnosisListArray', {label: 'hello', value: 'hello'}
-
-      # console.log 'diagnosisList', diagnosisList
-
-  comboBoxKeyUpRecordTitleValueChanged: (e)->
-    if @visit.recordTitle isnt '' or @visit.recordTitle isnt null
-      if e.which is 13 # ENTER/RETURN
-        @_saveVisit()
-
-  recordTitleValueChanged: ()->
-    if @visit.recordTitle isnt '' or @visit.recordTitle isnt null
-      @_saveVisit()
 
 
-  openVisitSettingsDialog: (e)->
-    @$$('#dialogVisitSettings').toggle()
-
-
-
-  comboBoxKeyUpDiagnosisValueChanged: (e)->
-    # console.log @comboBoxDiagnosisInputValue
-
-    unless @comboBoxDiagnosisInputValue is ''
-
-      if e.which is 13 # ENTER/RETURN
-        diagnosis = ''
-        if typeof @comboBoxDiagnosisInputValue is 'object'
-          diagnosis = @comboBoxDiagnosisInputValue.name
-        else
-          diagnosis = @comboBoxDiagnosisInputValue
-
-        @push 'diagnosis.data.diagnosisList', { name: diagnosis }
-        @_saveDiagnosis()
-        @domHost.showToast 'Diagnosis Added!'
-        @comboBoxDiagnosisInputValue = ''
-
-  addDiagnosis: ()->
-    unless @comboBoxDiagnosisInputValue is ''
-      diagnosis = ''
-      if typeof @comboBoxDiagnosisInputValue is 'object'
-        diagnosis = @comboBoxDiagnosisInputValue.name
-      else
-        diagnosis = @comboBoxDiagnosisInputValue
-
-      @push 'diagnosis.data.diagnosisList', { name: diagnosis }
-      @_saveDiagnosis()
-      @domHost.showToast 'Diagnosis Added!'
-      @comboBoxDiagnosisInputValue = ''
-
-
-
-
-  _deleteSelectedDiagnosisButtonPressed: (e)->
-    index = e.model.index
-    @splice 'diagnosis.data.diagnosisList', index, 1
-    @_saveDiagnosis()
-    @domHost.showToast 'Diagnosis Deleted!'
-
-
-  
-
-  ## diagnosis - end
-
-
-
-  # INVOICE START 
-  # ================================================================
-  _getServiceRendered: (index)->
-    optionList = [ 'Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom' ]
-    if index is 5
-      return @invoice.customServiceRendered
-    else
-      return optionList[index]
-
-  
-  createInvoicePressed: ->
-    params = @domHost.getPageParams()
-
-    if params['visit'] is 'new'
-      @visit.serial = @generateSerialForVisit()
-      @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
-
-    @domHost.navigateToPage  '#/visit-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
-
-  editInvoicePressed: (e)->
-    @domHost.navigateToPage  '#/visit-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
-
-  printInvoicePressed: ()->
-    params = @domHost.getPageParams()
-    if params['visit-invoice'] != 'new'
-      @domHost.navigateToPage '#/print-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
 
 
 

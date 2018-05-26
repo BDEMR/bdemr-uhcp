@@ -29,6 +29,8 @@ Polymer {
       type: Array
       value: -> []
 
+    currentOrganization: Object
+
     managePatientLinkList:
       type: Array
       value: -> [
@@ -324,7 +326,7 @@ Polymer {
     
     @currentOrganization = @getCurrentOrganization()
     unless @currentOrganization
-      @domHost.navigateToPage "#/select-organization"
+      return @domHost.navigateToPage "#/select-organization"
 
     # Sync User Settings if availble or set as default settings. this is required.
     # @domHost._syncUserSettings ()=>

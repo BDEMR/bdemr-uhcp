@@ -361,6 +361,7 @@ Polymer {
       patient.name = @$getFullName patient.name
       patient.employmentInfo = patient.employmentDetailsList[0] or {}
       @set 'patient', patient
+      console.log patient
     else
       @_notifyInvalidPatient()
 

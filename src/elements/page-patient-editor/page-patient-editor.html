@@ -3,12 +3,7 @@
 <link rel="import" href="../../bower-assets/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower-assets/paper-tabs/paper-tab.html">
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
-<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
-<link rel="import" href="../../bower-assets/vaadin-date-picker/vaadin-date-picker.html">
-
-<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
 <link rel="import" href="../../bower-assets/vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
@@ -338,34 +333,56 @@
           </div>
           <!-- patient details - end -->
 
-          <!-- basic - start -->
           <div class="card-item p-8">
             <div class="type body-lead primary m-horizontal-4">Basic</div>
 
+            <div class="layout horizontal wrap">
+              <paper-input class="custom-input" label="Name" value="{{patient.name}}"></paper-input>
+              <paper-dropdown-menu class="custom-input" label="Gender" value="{{patient.gender}}">
+                <paper-listbox attr-for-selected="item-name" selected="{{patient.gender}}" class="dropdown-content">
+                  <paper-item item-name="Male">Male</paper-item>
+                  <paper-item item-name="Female">Female</paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
+            </div>
+
+
+            <div class="layout horizontal wrap">
+              <vaadin-date-picker class="custom-input" value="{{patient.dateOfBirth}}" label="Date of Birth"></vaadin-date-picker>
+              <paper-input class="custom-input" value="[[_computeAge(patient.dateOfBirth)]]" label="Years" disabled></paper-input>
+            </div>
+
+
+          </div>
+
+          <!-- basic - start -->
+          <div class="card-item p-8">
+            <div class="type body-lead primary m-horizontal-4">General</div>
+
             <paper-input class="custom-input full-width" type="number" value="{{patient.nationalIdCardNumber}}" label="National ID"></paper-input>
 
-            <paper-input class="custom-input full-width" value="{{patient.email}}" label="Email Address" pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
-              auto-validate error-message="Valid Email Address Required"></paper-input>
+            <!-- <paper-input class="custom-input full-width" value="{{patient.email}}" label="Email Address" pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
+              auto-validate error-message="Valid Email Address Required"></paper-input> -->
 
             <paper-input type="number" class="custom-input full-width" value="{{patient.numberOfFamilyMember}}" label="Number of Family Member"></paper-input>
 
 
             <div class="horizontal layout wrap">
               <paper-dropdown-menu class="custom-input" label="Blood Group" value="{{patient.bloodGroup}}">
-                <paper-menu class="dropdown-content">
-                  <paper-item>A+</paper-item>
-                  <paper-item>A-</paper-item>
-                  <paper-item>B+</paper-item>
-                  <paper-item>B-</paper-item>
-                  <paper-item>O+</paper-item>
-                  <paper-item>O-</paper-item>
-                  <paper-item>AB+</paper-item>
-                  <paper-item>AB-</paper-item>
-                </paper-menu>
+                <paper-listbox attr-for-selected="item-name" selected="{{patient.bloodGroup}}" class="dropdown-content">
+                  <paper-item item-name="A+">A+</paper-item>
+                  <paper-item item-name="A-">A-</paper-item>
+                  <paper-item item-name="B+">B+</paper-item>
+                  <paper-item item-name="B-">B-</paper-item>
+                  <paper-item item-name="O+">O+</paper-item>
+                  <paper-item item-name="O-">O-</paper-item>
+                  <paper-item item-name="AB+">AB+</paper-item>
+                  <paper-item item-name="AB-">AB-</paper-item>
+                </paper-listbox>
               </paper-dropdown-menu>
               <paper-input type="text" class="flex custom-input" value="{{patient.allergy}}" label="Allergy"></paper-input>
             </div>
-            <div class="horizontal layout wrap">
+            <div class="horizontal layout">
               <paper-input type="text" class="custom-input" value="{{patient.patientSpouseName}}" label="Spouse Name"></paper-input>
               <paper-input type="text" class="custom-input" value="{{patient.patientFatherName}}" label="Father's Name"></paper-input>
               <paper-input type="text" class="custom-input" value="{{patient.patientMotherName}}" label="Mother's Name"></paper-input>
@@ -422,20 +439,20 @@
             <div class="horizontal layout wrap">
 
               <paper-dropdown-menu class="custom-input" label="Division" value="{{patient.addressList.0.addressDivision}}">
-                <paper-menu class="dropdown-content" on-iron-select="onDivisionChange" selected="{{divisionIndex}}">
+                <paper-listbox class="dropdown-content" on-iron-select="onDivisionChange" selected="{{divisionIndex}}">
                   <template is="dom-repeat" items="[[divisionList]]">
                     <paper-item>{{item.divisionName}}</paper-item>
                   </template>
-                </paper-menu>
+                </paper-listbox>
               </paper-dropdown-menu>
 
               <template is="dom-if" if="[[!_isEmpty(districtList.length)]]">
                 <paper-dropdown-menu class="custom-input" label="District" value="{{patient.addressList.0.addressDistrict}}">
-                  <paper-menu class="dropdown-content" selected="[[districtIndex]]">
+                  <paper-listbox class="dropdown-content" selected="[[districtIndex]]">
                     <template is="dom-repeat" items="[[districtList]]">
                       <paper-item>{{item}}</paper-item>
                     </template>
-                  </paper-menu>
+                  </paper-listbox>
                 </paper-dropdown-menu>
               </template>
 

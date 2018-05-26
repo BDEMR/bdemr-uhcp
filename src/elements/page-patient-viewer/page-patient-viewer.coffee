@@ -290,9 +290,11 @@ Polymer {
       return false
 
   _computeTotalDaysCount: (endDate, startDate)->
-    return (@$TRANSLATE("As Needed", @LANG)) unless endDate
+    if !endDate or !startDate
+      return (@$TRANSLATE_NUMBER(1, @LANG))
     oneDay = 1000*60*60*24;
     startDate = new Date startDate
+    endDate = new Date endDate
     diffMs = endDate - startDate
     x =  Math.round(diffMs / oneDay)
     return @$TRANSLATE_NUMBER(x, @LANG)
