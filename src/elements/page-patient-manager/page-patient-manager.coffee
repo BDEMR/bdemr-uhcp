@@ -454,6 +454,7 @@ Polymer {
           # console.log 'publishing completed', updatedPatient
 
   _importPatient: (serial, pin, cbfn)->
+    @.$.importPatientDialog.toggle()
     @callApi '/bdemr-patient-import-new', {serial: serial, pin: pin, doctorName: @user.name, organizationId: @organization.idOnServer}, (err, response)=>
       console.log "bdemr-patient-import-new", response
       if response.hasError
@@ -477,8 +478,69 @@ Polymer {
         @removePatientIfAlreadyExist patient.serial
         
         _id = app.db.insert 'patient-list', patient
-        cbfn _id
 
+        @_importPatientData serial, _id, cbfn
+
+
+  _importPatientData: (serial, _id, cbfn)->
+    collectionNameMap = {
+      'bdemr--doctor-visit': 'doctor-visit',
+      'bdemr--visit-prescription': 'visit-prescription',
+      'bdemr--patient-medications': 'patient-medications',
+      'bdemr--doctor-notes': 'visit-note',
+      'bdemr--visit-next-visit': 'visit-next-visit',
+      'bdemr--visit-advised-test': 'visit-advised-test',
+      'bdemr--visit-examination': 'visit-examination',
+      'bdemr--visit-identified-symptoms': 'visit-identified-symptoms',
+      'bdemr--anaesmon-record': 'anaesmon-record',
+      'bdemr--patient-test-results': 'patient-test-results',
+      'bdemr--patient-stay': 'visit-patient-stay',
+      'history-and-physical-record': 'history-and-physical-record',
+      'diagnosis-record': 'diagnosis-record',
+      'bdemr--referral-record': 'referral-record',
+      'bdemr--employee-leave-data': 'employee-leave-data',
+      'bdemr--vital-blood-pressure': 'patient-vitals-blood-pressure',
+      'bdemr--vital-bmi': 'patient-vitals-bmi',
+      'bdemr--vital-pulse-rate': 'patient-vitals-pulse-rate',
+      'bdemr--vital-respiratory-rate': 'patient-vitals-respiratory-rate',
+      'bdemr--vital-spo2': 'patient-vitals-spo2',
+      'bdemr--vital-temperature': 'patient-vitals-temperature',
+      'bdemr--test-blood-sugar': 'patient-test-blood-sugar',
+      'bdemr--other-test': 'patient-test-other',
+      'bdemr--comment-patient': 'comment-patient',
+      'bdemr--comment-doctor': 'comment-doctor',
+      'bdemr--patient-gallery--online-attachment': 'patient-gallery--online-attachment',
+      'bdemr--user-activity-log': 'activity',
+      'bdemr--visit-invoice': 'visit-invoice',
+      'bdemr--visit-diagnosis': 'visit-diagnosis',
+      'bdemr--pcc-records': 'pcc-records',
+      'bdemr--ndr-records': 'ndr-records',
+    }
+
+    data = {
+      apiKey: @user.apiKey
+      knownPatientSerialList: [ serial ]
+    }
+    @callApi '/bdemr--get-patient-data-on-import', data, (err, response)=>
+      @.$.importPatientDialog.toggle()
+      if err
+        return cbfn(err)
+      else if response.hasError 
+        return cbfn(response.error.message);
+      else 
+        console.log(JSON.stringify(response.data));
+        app.db.__allowCommit = false
+        for item, index in response.data
+          collectionName = collectionNameMap[item.collection];
+          delete item.collection
+          if index is (response.data.length - 1) 
+            app.db.__allowCommit = true
+          app.db.upsert(collectionName, item, ({ serial })=> item.serial is serial)
+        
+        app.db.__allowCommit = true;
+        cbfn(_id)
+      
+  
   removePatientIfAlreadyExist: (patientIdentifier)->
     list = app.db.find 'patient-list', ({serial})-> serial is patientIdentifier
 
