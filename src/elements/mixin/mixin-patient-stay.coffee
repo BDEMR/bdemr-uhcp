@@ -27,8 +27,8 @@ app.behaviors.local.patientStayMixin =
       value: -> [
         'Out patient/ Discharged with advice'
         'Out patient/ Advised admission'
-        'Seen in Emergency / Discharged with advice'
         'In-Patient'
+        'Exclusion Criteria'
       ]
     
     locationList:

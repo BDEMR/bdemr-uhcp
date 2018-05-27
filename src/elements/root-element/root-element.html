@@ -422,7 +422,6 @@
             <a name="dashboard" href="#/dashboard" drawer-toggle>Dashboard</a>
             <a name="patient-manager" href="#/patient-manager" drawer-toggle hidden$="[[!_checkUserAccess('D001')]]">Patient Manager</a>
             <a name="patient-manager" href="#/reports-manager" drawer-toggle hidden$="[[!_checkUserAccess('D002')]]">Reports Manager</a>
-            <a name="medicine-dispension" href="#/medicine-dispension" drawer-toggle hidden$="[[!_checkUserAccess('D004')]]">Medicine Dispension</a>
             <template is="dom-if" if="[[!user.isUsingAsAssistant]]">
               <a name="assistant-manager" href="#/assistant-manager" drawer-toggle hidden$="[[!_checkUserAccess('D005')]]">Assistant Manager</a>
             </template>
