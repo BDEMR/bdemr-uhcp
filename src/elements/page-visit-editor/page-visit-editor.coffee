@@ -1750,7 +1750,7 @@ Polymer {
     unless @medicine.doseDirection
       @.$.doseDirection.invalid = true
       return @domHost.showToast 'Please select a dose value'
-      
+
     # HACK to match object signature with Doctor App Medication Object for syncing purpose
     medicine = {}
     medicine.data = @medicine
@@ -5323,8 +5323,8 @@ Polymer {
     invoiceItem = {
       name: matchedItem?.brandName or itemName
       qty: qty
-      price: matchedItem.retailPrice or 0
-      actualCost: matchedItem.actualCost or 0
+      price: matchedItem?.retailPrice or 0
+      actualCost: matchedItem?.actualCost or 0
       category: "medicine"
       subCategory: ""
       serial: null
