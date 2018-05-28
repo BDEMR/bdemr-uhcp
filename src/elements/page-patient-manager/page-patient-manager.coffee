@@ -267,7 +267,7 @@ Polymer {
         }
         patient.flags.isLocalOnly = true
 
-    @matchingPatientList = patientList 
+    @offlineMatchingPatientList = patientList 
 
   searchOfflineButtonPressed: (e)->
     if @searchFieldMainInput.length is 0
@@ -381,7 +381,7 @@ Polymer {
     unless patientList.length
       @domHost.showToast 'No Patient Found'
     
-    @matchingPatientList = patientList
+    @offlineMatchingPatientList = patientList
 
     @arbitaryCounter--
 
@@ -671,14 +671,17 @@ Polymer {
     el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
     el.opened = false
 
+    # search online tab
     if @selectedSearchViewIndex is 0
       repeater = @$$ '#online-patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @matchingPatientList[index]
+    
+    # imported/offline tab
     if @selectedSearchViewIndex is 1
       repeater = @$$ '#imported-patient-list-repeater'
-
-    index = repeater.indexForElement el
-
-    patient = @matchingPatientList[index]
+      index = repeater.indexForElement el
+      patient = @offlineMatchingPatientList[index]
 
     if patient
       @domHost.setCurrentPatientsDetails patient

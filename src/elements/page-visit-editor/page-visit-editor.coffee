@@ -5374,12 +5374,13 @@ Polymer {
   calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
 
   finishButtonPressed: ->
-    @domHost.showSuccessToast 'Visit Saved Successfully'
+    @domHost.showModalDialog 'Visit Saved Successfully'
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (err)=>
         if err
           console.log 'Something went wrong with balance deduction.'
         else
+          @domHost.showModalDialog "#{invoice.totalBilled} Deducted from Member Wallet"
           @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
             @set 'patientServiceBalance', patientServiceBalance
             @makeNewVisitButtonPressed()
