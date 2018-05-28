@@ -1965,7 +1965,7 @@
 
                   <div class="preview-title layout">
                     <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_patient_stay.png"></iron-icon> -->
-                    <div class="type title-2 flex">Patient Stay</div>
+                    <div class="type title-2 flex">Discharge</div>
                     <div class="action-area">
                       <paper-button class="btn-add m-vert" on-tap="savePatientStayPressed">
                         <iron-icon icon="icons:save"></iron-icon>
@@ -1977,7 +1977,6 @@
 
                     <section id="admission-section">
 
-                      <div class="type body-lead p-vertical-8 p-horizontal-16">Type</div>
                       <div class="card-content layout vertical types">
                         <paper-radio-group id="admissionTypeRadioGroup" selected="{{patientStay.data.admissionType}}" class="layout vertical" on-iron-select="admissionTypeChanged">
                           <template is="dom-repeat" items="[[admissionTypeList]]">

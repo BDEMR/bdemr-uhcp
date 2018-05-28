@@ -665,10 +665,16 @@ Polymer {
     @matchingPatientList = @resultedPatientList
     @resultedPatientList = []
 
+  
+  
   viewPatient: (e)->
     el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
     el.opened = false
-    repeater = @$$ '#patient-list-repeater'
+
+    if @selectedSearchViewIndex is 0
+      repeater = @$$ '#online-patient-list-repeater'
+    if @selectedSearchViewIndex is 1
+      repeater = @$$ '#imported-patient-list-repeater'
 
     index = repeater.indexForElement el
 
@@ -682,6 +688,7 @@ Polymer {
       @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
     else
       @domHost.showModalDialog 'Patient not found'
+
 
 
   # Visted Patient Log
