@@ -227,12 +227,12 @@ Polymer {
       @set 'advancedSearchParameters.createdDate.enabled', true
       @set 'advancedSearchParameters.createdDate.lowerBound', lib.datetime.mkDate lib.datetime.now()
       @set 'advancedSearchParameters.createdDate.upperBound', lib.datetime.mkDate lib.datetime.now()
-      @listAllImportedAndOfflinePatientsPressed null
+      # @listAllImportedAndOfflinePatientsPressed null
     else if params['filter'] and params['filter'] is 'clear'
       @domHost.modifyCurrentPagePath '#/patient-manager'
       @isAdvancedSearchEnabled = false
       @searchFieldMainInput = ''
-      @listAllImportedAndOfflinePatientsPressed null
+      # @listAllImportedAndOfflinePatientsPressed null
 
     else if params['query']
       @searchFieldMainInput = params['query']
@@ -244,7 +244,7 @@ Polymer {
       @searchOfflineButtonPressed()
 
     else
-      @listAllImportedAndOfflinePatientsPressed null
+      # @listAllImportedAndOfflinePatientsPressed null
 
 
     @_listVisitedPatientLog()
