@@ -255,6 +255,10 @@ Polymer {
       type: Array
       value: -> []
 
+    invoiceList:
+      type: Array
+      value: []
+
   # Helper
   # ================================
 
@@ -310,7 +314,7 @@ Polymer {
     
     return age
 
-  
+  _sortByCreatedDate: (a, b)-> b.createdDatetimeStamp - a.createdDatetimeStamp  
 
   _sortByDate: (a, b)->
     if a.date < b.date
@@ -2640,5 +2644,35 @@ Polymer {
         @splice 'leaveData.data', index, 1
         app.db.upsert 'employee-leave-data', @leaveData, ({serial})=> serial is @leaveData.serial
   
+  _loadInvoice: (patientSerialIdentifier, organizationIdentifier)->
+    invoiceList = app.db.find 'patient-invoice', ({patientSerial, organizationId})-> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier
+    notCompletedInvoiceList = (item for item in invoiceList when item.flags.markAsCompleted isnt true)
+    if invoiceList.length > 0
+      @set 'invoiceList', invoiceList
+    if notCompletedInvoiceList.length > 0
+      @set 'invoiceListWithoutCompleted', notCompletedInvoiceList
+
+  createNewInvoiceButtonClicked: (e)->
+    @domHost.navigateToPage '#/create-invoice/invoice:new/patient:' + @patient.serial
+
+  editInvoiceItemClicked: (e)->
+    @domHost.navigateToPage '#/create-invoice/invoice:' + e.model.item.serial + '/patient:' + @patient.serial
+
+  previewInvoiceItemClicked: (e)->
+    @domHost.navigateToPage '#/print-invoice/invoice:' + e.model.item.serial + '/patient:' + @patient.serial
+
+  invoiceMarkedAsCompleteButtonClicked: (e)->
+    item = e.model.item
+    item.flags.markAsCompleted = true
+    app.db.upsert 'patient-invoice', item, ({serial})=> item.serial is serial
+    @_loadInvoice @patient.serial, @organization.idOnServer
+    @$$('#invoiceMenuButton').close()
+    
+  flagAsErrorInvoiceItemClicked: (e)->
+    item = e.model.item
+    item.flags.flagAsError = true
+    app.db.upsert 'patient-invoice', item, ({serial})=> item.serial is serial
+    @_loadInvoice @patient.serial, @organization.idOnServer
+    @$$('#invoiceMenuButton').close()
 
 }
