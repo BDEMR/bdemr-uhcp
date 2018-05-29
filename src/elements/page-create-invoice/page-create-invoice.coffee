@@ -262,7 +262,7 @@ Polymer {
     item.totalPrice = item.price
     @push 'invoice.data', item
     console.log item
-    @.$.invoiceSearchInput.clear()
+    @$$("#invoiceSearchInput").clear()
   
   # =============================================
   
@@ -466,7 +466,7 @@ Polymer {
   _reduceInventoryItems: (invoice)->
     for item in invoice.data
       doc = (app.db.find 'organization-price-list', ({serial})=> serial is item.serial)[0]
-      if doc.qty
+      if doc?.qty
         doc.qty -= item.qty
         app.db.update 'organization-price-list', doc._id, doc
 
@@ -499,12 +499,6 @@ Polymer {
       @invoice.flags.markAsCompleted = true
     
     @_addModificationHistory()
-    
-    # check for inventory items and reduce
-    @_reduceInventoryItems @invoice
-
-    # Saving Custom Invoice Category List
-    app.db.upsert 'invoice-category-list', @invoiceCategoryList, ({serial})=> serial is @invoiceCategoryList.serial
     
     # Assign a referenceNumber if not present
     @_assignInvoiceRef @invoice.referenceNumber, (refNumber)=>
