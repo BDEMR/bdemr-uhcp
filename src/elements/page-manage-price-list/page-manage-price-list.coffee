@@ -120,32 +120,34 @@ Polymer {
   
   _prepareNewItemForDB: (data)->
     return Object.assign data, {
-      serial: @generateSerialForPriceListItem()
+      serial: @generateSerialForPriceListItem(@organization.idOnServer)
       organizationId: @organization.idOnServer
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
       createdByUserSerial: @user.serial
     }
   
-  _preparePriceListData: (priceList)-> 
+  _preparePriceListData: (priceList)->
     priceList.map (item)=> 
       newItem = @_prepareNewItemForDB item
       newItem.actualCost = newItem.actualCost or item.price
       newItem.qty = newItem.qty or null
       return newItem
   
-  _getPriceListFromFile: (fileName, cbfn)->
-    @domHost.getStaticData fileName, (priceList)=>
-      cbfn priceList
 
   _createNewPriceList: (organizationIdentifier, cbfn)->
-    @_getPriceListFromFile 'uhcpInvoicePriceList', (priceList)=>
+    
+    @domHost.getStaticData 'uhcpInvoicePriceList', (priceList)=>
       priceListData = @_preparePriceListData priceList
       cbfn priceListData
 
   _insertItemIntoDatabase: (priceList)->
-    for item in priceList
+    app.db.__allowCommit = false;
+    for item, index in priceList
+      if index is priceList.length-1
+        app.db.__allowCommit = true;
       app.db.insert 'organization-price-list', item
+    app.db.__allowCommit = true;
 
   # Prepare Price List Data End
   # ======================================
@@ -172,7 +174,7 @@ Polymer {
           @set 'priceList', priceListFromFile
           cbfn priceListFromFile
     else
-      @domHost._sync()
+      @domHost._newSync (errMessage)=> if errMessage then @async => @domHost.showModalDialog(errMessage) else @domHost.reloadPage()
 
   _loadCategories: (priceListData)->
     priceListCategories = @_getCategoriesFromPriceListData priceListData

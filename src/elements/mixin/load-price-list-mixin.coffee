@@ -11,29 +11,25 @@ app.behaviors.local.loadPriceListMixin =
 
   _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
   
-  # _loadPriceList: (organizationIdentifier, cbfn)->
-  #   lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
-
-  #   if lastSyncedDatetimeStamp
-  #     priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-  #     if priceListFromLocalStorage.length
-  #       @set 'priceList', priceListFromLocalStorage
-  #       cbfn priceListFromLocalStorage
-  #     else 
-  #       @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-  #         @_insertItemIntoDatabase priceListFromFile
-  #         @set 'priceList', priceListFromFile
-  #         cbfn priceListFromFile
-  #   else
-  #     @domHost._syncOnlyPriceList ()=> 
-  #       window.localStorage.setItem 'lastSyncedDatetimeStamp', lib.datetime.now()
-  #       @domHost.reloadPage() 
-
   _loadPriceList: (organizationIdentifier, cbfn)->
-    @_createNewPriceList (priceListFromFile)=>
-      # @_insertItemIntoDatabase priceListFromFile
-      @set 'priceList', priceListFromFile
-      cbfn priceListFromFile
+    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
+
+    if lastSyncedDatetimeStamp
+      priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
+      if priceListFromLocalStorage.length
+        @set 'priceList', priceListFromLocalStorage
+        cbfn()
+      else 
+        @domHost.showToast 'No Pricelist present for this Organization. Contact your Admin for Pricelist'
+        
+    else
+      @domHost._newSync (errMessage)=> if errMessage then @async => @domHost.showModalDialog(errMessage) else @domHost.reloadPage()
+
+  # _loadPriceList: (organizationIdentifier, cbfn)->
+  #   @_createNewPriceList (priceListFromFile)=>
+  #     # @_insertItemIntoDatabase priceListFromFile
+  #     @set 'priceList', priceListFromFile
+  #     cbfn priceListFromFile
 
   _prepareNewItemForDB: (data)->
     data.serial = @generateSerialForPriceListItem()

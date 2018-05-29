@@ -581,7 +581,7 @@
 
         <!-- App header - Start -->
         <app-header reveals>
-          <paper-toolbar class$="{{_changeToolbarClass(page.showToolbar)}}">
+          <paper-toolbar class$="{{_changeToolbarClass(page.showTallToolbar)}}" hidden="[[!page.showToolbar]]">
 
             <!--  header - start -->
             <template is="dom-if" if="[[$equals(page.headerType, 'normal')]]">
@@ -604,63 +604,61 @@
               </template>
             </div>
 
-            <template is="dom-if" if="[[!$equals(page.name, 'login')]]">
 
-              <paper-button id="orgSwitch" on-tap="changeOrganizationClicked">
-                <div>
-                  <strong>[[currentOrganization.name]]</strong>
-                </div>
-                <template is="dom-if" if="[[currentOrganization]]">
-                  <div class="type caption-2" style="text-transform: capitalize;">SMS Left: [[orgSmsBalance]]</div>
-                </template>
-
-              </paper-button>
-
-              <paper-menu-button no-overlap id="langSwitch">
-                <paper-button class="dropdown-trigger lang-button">
-                  <iron-icon icon="language"></iron-icon>
-                  [[languageName]]
-                </paper-button>
-                <paper-menu class="dropdown-content" selected="{{languageSelectedIndex}}">
-                  <paper-item>English (US)</paper-item>
-                  <paper-item>Bengali / বাংলা</paper-item>
-                </paper-menu>
-              </paper-menu-button>
-
-              <template is="dom-if" if="[[downloadActions.count]]">
-                <paper-icon-button id="fileDownloadIcon" icon="file-download"></paper-icon-button>
-                <paper-badge for="fileDownloadIcon" label="[[downloadActions.count]]"></paper-badge>
-              </template>
-
-              <template is="dom-if" if="[[apiActions.count]]">
-                <paper-icon-button id="apiActionsIcon" icon="swap-vertical-circle"></paper-icon-button>
-                <paper-badge for="apiActionsIcon" label="[[apiActions.count]]"></paper-badge>
-              </template>
-
-              <template is="dom-if" if="[[page.showPrintButton]]">
-                <paper-icon-button icon="print" on-tap="printButtonPressed"></paper-icon-button>
-              </template>
-
-              <template is="dom-if" if="[[page.showSaveButton]]">
-                <paper-icon-button icon="save" on-tap="saveButtonPressed"></paper-icon-button>
-              </template>
-
+            <paper-button id="orgSwitch" on-tap="changeOrganizationClicked">
+              <div>
+                <strong>[[currentOrganization.name]]</strong>
+              </div>
               <template is="dom-if" if="[[currentOrganization]]">
-                <template is="dom-if" if="[[_showSyncButton(syncActions.count,downloadActions.count)]]">
-                  <paper-icon-button icon="cloud-upload" on-tap="syncButtonPressed"></paper-icon-button>
-                </template>
+                <div class="type caption-2" style="text-transform: capitalize;">SMS Left: [[orgSmsBalance]]</div>
               </template>
-              <template is="dom-if" if="[[syncActions.count]]">
-                <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
-              </template>
-              <!-- <paper-icon-button icon="refresh" on-tap="refreshButtonPressed"></paper-icon-button> -->
-              <paper-icon-button icon="add-alert" on-tap="notificationToggleButtonPressed"></paper-icon-button>
-              <!--  header - end -->
 
+            </paper-button>
+
+            <paper-menu-button no-overlap id="langSwitch">
+              <paper-button class="dropdown-trigger lang-button">
+                <iron-icon icon="language"></iron-icon>
+                [[languageName]]
+              </paper-button>
+              <paper-menu class="dropdown-content" selected="{{languageSelectedIndex}}">
+                <paper-item>English (US)</paper-item>
+                <paper-item>Bengali / বাংলা</paper-item>
+              </paper-menu>
+            </paper-menu-button>
+
+            <template is="dom-if" if="[[downloadActions.count]]">
+              <paper-icon-button id="fileDownloadIcon" icon="file-download"></paper-icon-button>
+              <paper-badge for="fileDownloadIcon" label="[[downloadActions.count]]"></paper-badge>
             </template>
 
+            <template is="dom-if" if="[[apiActions.count]]">
+              <paper-icon-button id="apiActionsIcon" icon="swap-vertical-circle"></paper-icon-button>
+              <paper-badge for="apiActionsIcon" label="[[apiActions.count]]"></paper-badge>
+            </template>
 
-            <template is="dom-if" if="[[page.showToolbar]]">
+            <template is="dom-if" if="[[page.showPrintButton]]">
+              <paper-icon-button icon="print" on-tap="printButtonPressed"></paper-icon-button>
+            </template>
+
+            <template is="dom-if" if="[[page.showSaveButton]]">
+              <paper-icon-button icon="save" on-tap="saveButtonPressed"></paper-icon-button>
+            </template>
+
+            <template is="dom-if" if="[[currentOrganization]]">
+              <template is="dom-if" if="[[_showSyncButton(syncActions.count,downloadActions.count)]]">
+                <paper-icon-button icon="cloud-upload" on-tap="syncButtonPressed"></paper-icon-button>
+              </template>
+            </template>
+            <template is="dom-if" if="[[syncActions.count]]">
+              <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
+            </template>
+            <!-- <paper-icon-button icon="refresh" on-tap="refreshButtonPressed"></paper-icon-button> -->
+            <paper-icon-button icon="add-alert" on-tap="notificationToggleButtonPressed"></paper-icon-button>
+            <!--  header - end -->
+
+
+
+            <template is="dom-if" if="[[page.showTallToolbar]]">
               <div class="bottom">
 
                 <div class="flex custom-toolbar">
@@ -774,6 +772,7 @@
 
   </template>
   <script src="behavior-data-loader.coffee-compiled.js"></script>
+  <script src="behavior-sync.js"></script>
   <script src="behavior-user-data-sync.coffee-compiled.js"></script>
   <script src="behavior-user-data-sync-config.coffee-compiled.js"></script>
   <script src="behavior-patients-data-sync.coffee-compiled.js"></script>
