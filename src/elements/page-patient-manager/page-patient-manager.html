@@ -489,7 +489,7 @@
                 <div class="p-0">
                   <paper-listbox>
 
-                    <template id="patient-list-repeater" is="dom-repeat" items="[[matchingPatientList]]" as="patient">
+                    <template id="imported-patient-list-repeater" is="dom-repeat" items="[[offlineMatchingPatientList]]" as="patient">
                       <paper-item class="custom layout horizontal center">
                         <div class="type caption secondary">[[patient.serial]]</div>
 
@@ -512,14 +512,7 @@
                           <template is="dom-if" if="[[patient.flags.isLocalOnly]]">
                             <div class="modifier local-only">local only</div>
                           </template>
-                          <!-- <template is="dom-if" if="[[patient.flags.isLocallyUpdated]]">
-                            <div class="modifier locally-updated">locally updated</div>
-                          </template> -->
                         </div>
-
-                        <!-- <paper-icon-button icon="visibility" on-tap="viewPatientIconPressed" hidden="[[!patient.flags.isImported]]"></paper-icon-button> -->
-
-                        <!-- <paper-button raised class="btn-add colored" on-tap="viewPatientIconPressed" hidden="[[!patient.flags.isImported]]"><iron-icon icon="icons:visibility" class="m-right-8"></iron-icon>View</paper-button> -->
 
                         <paper-menu-button horizontal-align="right" no-animations>
                           <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>

@@ -357,9 +357,11 @@ Polymer {
         'Skin Patch'
         'Custom'
       ]
+
     doseUnitList:
       type: Array
-      value: ['Custom']
+      value: -> []
+
     endDateTimeTypeList:
       type: Array
       value: [
@@ -1048,7 +1050,6 @@ Polymer {
       return 0
 
     @matchingPrescribedMedicineList = medicineList
-    console.log "MEDICINE LIST:", @matchingPrescribedMedicineList
 
 
   _listCurrentMedications: (patientIdentifier) ->
@@ -1398,17 +1399,8 @@ Polymer {
     @set 'doseUnitList', []
 
 
-  _checkValidity: (inputsToValidate, cbfn)->
-    validationStatusList = []
-    for item in inputsToValidate
-      unless @medicine.item
-        isValid = @.$$("##{item}").validate()
-        validationStatusList.push isValid
-    
-    status = validationStatusList.every (value)->
-      return value
-    
-    cbfn status  
+  _checkValidity: (inputsToValidate)-> inputsToValidate.every (item)=> return @.$$("##{item}").validate()
+     
 
   validate: (e)->
     e.target.validate()
@@ -1461,12 +1453,6 @@ Polymer {
         @set 'medicineFormSelectedIndex', 0
       # HACK End
 
-    # @populateDoseGuideline()
-
-    # Validation
-    inputsToValidate = ['genericName', 'brandName', 'manufacturer']
-    @_checkValidity inputsToValidate, ()=>
-    
     @.$.form.invalid = false
     @.$.doseUnit.invalid = false
     
@@ -1541,6 +1527,7 @@ Polymer {
   _isStregnthCustom: ->
     return true if @matchingMedicineList.length is 0
     return true if @strengthSelectedIndex is @strengthList.length-1
+    return false
 
   _isFormCustom: ->
     return true if @medicineFormSelectedIndex is @medicineFormList.length-1
@@ -1593,35 +1580,24 @@ Polymer {
     item = @get ['directionList', @directionSelectedIndex]
     @set 'medicine.direction', item
 
-  _medicineFormSelectedIndexChanged: ()->
-    return if @medicineFormSelectedIndex is null
-    item = @get ['medicineFormList', @medicineFormSelectedIndex]
-    if @medicineFormSelectedIndex is @medicineFormList.length-1
-      # If Form is Custom Set Unit & Route to Custom
-      @doseUnitSelectedIndex = @doseUnitList.length-1
-      @routeSelectedIndex = @routeList.length-1
-      @set 'medicine.form', ''
-      @set 'medicine.doseUnit', ''
-      @set 'medicine.strength', ''
-    else
-      @set 'medicine.form', item
-
+  _changeStrengthByFormValue: (selectedForm)->
     # Change strength depending on form
-    if @matchingMedicineList
-      strengthList = []
-      for medicine in @matchingMedicineList
-        if medicine.type is item
-          strengthList.push medicine.strength
-     
-      @set 'strengthList', []
-      @set 'strengthList', strengthList
-      @push 'strengthList', 'Custom'
-      @set 'strengthSelectedIndex', null
-      # HACK - to fix setting selected index to other paper-menu element
-      lib.util.delay 10, =>
-        @set 'strengthSelectedIndex', 0
-      # HACK End
+    if @matchingMedicineList.length
+      strengthList = @matchingMedicineList.filter((medicine)=> medicine.type is selectedForm).map((item)-> item.strength)
+      if strengthList.length
+        @set 'strengthList', []
+        @set 'strengthList', strengthList
+        @push 'strengthList', 'Custom'
+        @set 'strengthSelectedIndex', null
+        # HACK - to fix setting selected index to other paper-menu element
+        lib.util.delay 10, =>
+          @set 'strengthSelectedIndex', 0
+        # HACK End
+      else
+        @set 'strengthList', ['n/a']
 
+  
+  _changeUnitByFormValue: (selectedForm)->
     # Change dose unit depending on form
     unitMap = {
       'Tablet': ['Tablet']
@@ -1643,6 +1619,22 @@ Polymer {
       'Skin Patch': ['skin patch']
     }
 
+    formToUnit = Object.keys(unitMap).find (formItem)=> formItem is selectedForm
+    if formToUnit
+      doseUnitList = unitMap[formToUnit]
+      @set 'doseUnitList', []
+      @set 'doseUnitList', doseUnitList
+      @push 'doseUnitList', 'Custom'
+      @set 'doseUnitSelectedIndex', null
+      # HACK - to fix setting selected index to other paper-menu element
+      lib.util.delay 10, =>
+        @set 'doseUnitSelectedIndex', 0
+      # HACK End
+    else
+      @set 'doseUnitList', ['Other']
+
+  
+  _changeRouteByFormValue: (selectedForm)->
     routeMap = {
       'Tablet': ['p.o']
       'Injection': ['i.v injection', 'i.m injection', 's/c injection']
@@ -1661,29 +1653,36 @@ Polymer {
       'Skin Patch': ['transdermal']
     }
 
-    for key, value of unitMap
-      if key is item
-        @set 'doseUnitList', []
-        @set 'doseUnitList', value
-        @push 'doseUnitList', 'Custom'
-        @set 'doseUnitSelectedIndex', null
-        # HACK - to fix setting selected index to other paper-menu element
-        lib.util.delay 10, =>
-          @set 'doseUnitSelectedIndex', 0
-        # HACK End
-        break
+    formToRoute = Object.keys(routeMap).find((formItem2)=> formItem2 is selectedForm)
+    if formToRoute is selectedForm
+      routeList = routeMap[formToRoute]
+      @set 'routeList', []
+      @set 'routeList', routeList
+      @push 'routeList', 'Custom'
+      @set 'routeSelectedIndex', null
+      # HACK - to fix setting selected index to other paper-menu element
+      lib.util.delay 10, =>
+        @set 'routeSelectedIndex', 0
+      # HACK End
+    else
+      @set 'routeList', ['Other']
 
-    for key, value of routeMap
-      if key is item
-        @set 'routeList', []
-        @set 'routeList', value
-        @push 'routeList', 'Custom'
-        @set 'routeSelectedIndex', null
-        # HACK - to fix setting selected index to other paper-menu element
-        lib.util.delay 10, =>
-          @set 'routeSelectedIndex', 0
-        # HACK End
-        break
+  _medicineFormSelectedIndexChanged: ()->
+    selectedForm = @get ['medicineFormList', @medicineFormSelectedIndex]
+    return unless selectedForm
+    if @medicineFormSelectedIndex is @medicineFormList.length-1
+      # If Form is Custom Set Unit & Route to Custom
+      @doseUnitSelectedIndex = @doseUnitList.length-1
+      @routeSelectedIndex = @routeList.length-1
+      @set 'medicine.form', ''
+      @set 'medicine.doseUnit', ''
+      @set 'medicine.strength', ''
+    else
+      @set 'medicine.form', selectedForm
+
+    @_changeStrengthByFormValue selectedForm
+    @_changeUnitByFormValue selectedForm
+    @_changeRouteByFormValue selectedForm
 
     @.$.form.invalid = false
     @.$.doseUnit.invalid = false
@@ -1722,7 +1721,6 @@ Polymer {
       diffMs = oneDay
     totalDay =  Math.round(diffMs / oneDay)
     quantityPerPrescription = Math.ceil (totalDay * intakePerDay)
-    console.log quantityPerPrescription
     @set 'medicine.quantityPerPrescription', quantityPerPrescription
 
   _computeTotalDaysCount: (endDate, startDate)->
@@ -1745,52 +1743,49 @@ Polymer {
   saveMedicineButtonClicked: (e)->
     params = @domHost.getPageParams()
 
-    # Check Validation then send
+    unless @medicine.brandName
+      @.$.brandName.validate()
+      return @domHost.showToast 'Please input a medicine name'
+
+    unless @medicine.doseDirection
+      @.$.doseDirection.invalid = true
+      return @domHost.showToast 'Please select a dose value'
+
+    # HACK to match object signature with Doctor App Medication Object for syncing purpose
+    medicine = {}
+    medicine.data = @medicine
+    medicine.serial = @medicine.serial
+    delete medicine.data.serial
+    #HACK end
+
+    medicine.createdDatetimeStamp = lib.datetime.now()
+    medicine.lastSyncedDatetimeStamp = null
+    medicine.createdByUserSerial = @user.serial
+    medicine.patientSerial = params['patient']
+    medicine.organizationId = @organization.idOnServer
     
-    if @medicineFormSelectedIndex is @medicineFormList.length-1
-      inputsToValidate = ['brandName', 'strength', 'custom-form', 'custom-dose-unit', 'custom-route']
+    if @visit.prescriptionSerial is null
+      @_savePrescription()
+      medicine.prescriptionSerial = @prescription.serial
     else
-      inputsToValidate = ['brandName', 'form', 'doseUnit']
+      medicine.prescriptionSerial = @prescription.serial
 
-    @_checkValidity inputsToValidate, (status)=>
-      if status
-        # HACK to match object signature with Doctor App Medication Object for syncing purpose
-        medicine = {}
-        medicine.data = @medicine
-        medicine.serial = @medicine.serial
-        delete medicine.data.serial
-        #HACK end
+    @_saveVisit() unless @visit.serial
 
-        medicine.createdDatetimeStamp = lib.datetime.now()
-        medicine.lastSyncedDatetimeStamp = null
-        medicine.createdByUserSerial = @user.serial
-        medicine.patientSerial = params['patient']
-        medicine.organizationId = @organization.idOnServer
-        
-        if @visit.prescriptionSerial is null
-          @_savePrescription()
-          medicine.prescriptionSerial = @prescription.serial
-        else
-          medicine.prescriptionSerial = @prescription.serial
+    medicine.visitSerial = @visit.serial
 
-        @_saveVisit() unless @visit.serial
+    medicine.lastModifiedDatetimeStamp = lib.datetime.now()
 
-        medicine.visitSerial = @visit.serial
+    app.db.insert 'patient-medications', medicine
 
-        medicine.lastModifiedDatetimeStamp = lib.datetime.now()
+    @domHost.showToast "Medicine Added!"
 
-        app.db.insert 'patient-medications', medicine
+    @_addMedicinePriceToInvoice medicine.data.brandName, medicine.data.quantityPerPrescription, @visit.serial
 
-        @domHost.showToast "Medicine Added!"
-
-        @_addMedicinePriceToInvoice medicine.data.brandName, medicine.data.quantityPerPrescription, @visit.serial
-
-        @_resetMedicineForm()
-        @_listPrescribedMedications @prescription.serial
+    @_resetMedicineForm()
+    @_listPrescribedMedications @prescription.serial
 
 
-      else
-        @domHost.showModalDialog "Enter Required Inputs"
 
 
   _makeNewFavoriteMedicine: (medicine) ->
@@ -1816,250 +1811,38 @@ Polymer {
 
   saveAndAddAsFavoriteMedicinePressed: (e)->
     params = @domHost.getPageParams()
-    # Check Validation then send
     
-    if @medicineFormSelectedIndex is @medicineFormList.length-1
-      inputsToValidate = ['genericName', 'brandName', 'manufacturer', 'strength', 'custom-form', 'custom-dose-unit', 'custom-route']
+    
+    # HACK to match object signature with Doctor App Medication Object for syncing purpose
+    medicine = {}
+    medicine.data = @medicine
+    medicine.serial = @medicine.serial
+    delete medicine.data.serial
+    #HACK end
+    medicine.createdDatetimeStamp = lib.datetime.now()
+    medicine.lastSyncedDatetimeStamp = null
+    medicine.createdByUserSerial = @user.serial
+    medicine.patientSerial = params['patient']
+
+    if @visit.prescriptionSerial is null
+      @_savePrescription()
+      medicine.prescriptionSerial = @prescription.serial
     else
-      inputsToValidate = ['genericName', 'brandName', 'manufacturer', 'strength', 'form', 'doseUnit']
+      medicine.prescriptionSerial = @prescription.serial
 
-    @_checkValidity inputsToValidate, (status)=>
-      if status
-        # HACK to match object signature with Doctor App Medication Object for syncing purpose
-        medicine = {}
-        medicine.data = @medicine
-        medicine.serial = @medicine.serial
-        delete medicine.data.serial
-        #HACK end
-        medicine.createdDatetimeStamp = lib.datetime.now()
-        medicine.lastSyncedDatetimeStamp = null
-        medicine.createdByUserSerial = @user.serial
-        medicine.patientSerial = params['patient']
+    medicine.lastModifiedDatetimeStamp = lib.datetime.now()
+    medicine.organizationId = @organization.idOnServer
+    @_saveVisit() unless @visit.serial
+    medicine.visitSerial = @visit.serial
+    # console.log medicine
+    app.db.insert 'patient-medications', medicine
 
-        if @visit.prescriptionSerial is null
-          @_savePrescription()
-          medicine.prescriptionSerial = @prescription.serial
-        else
-          medicine.prescriptionSerial = @prescription.serial
+    @_makeNewFavoriteMedicine medicine
+    @_resetMedicineForm()
+    @_listPrescribedMedications @prescription.serial
+    @_listFavoriteMedicine @user.serial
+    @domHost.showToast 'Added & Saved As a Favorite!'
 
-        medicine.lastModifiedDatetimeStamp = lib.datetime.now()
-        medicine.organizationId = @organization.idOnServer
-        @_saveVisit() unless @visit.serial
-        medicine.visitSerial = @visit.serial
-        # console.log medicine
-        app.db.insert 'patient-medications', medicine
-
-        @_makeNewFavoriteMedicine medicine
-        @_resetMedicineForm()
-        @_listPrescribedMedications @prescription.serial
-        @_listFavoriteMedicine @user.serial
-        @domHost.showToast 'Added & Saved As a Favorite!'
-
-      else
-        @domHost.showModalDialog "Enter Required Inputs"
-
-
-      
-
-  # editMedicinePressed: (e)->
-  #   # TODO - Validation message
-  #   unless @medicine.data.brandName is null
-  #     @medicine.lastModifiedDatetimeStamp = lib.datetime.now()
-  #     @_saveMedicine(@medicine)
-  #     @domHost.showToast 'Updated Successfully!'
-  #     window.history.back()
-
-
-
-
-
-
-
-  ## REGION: doseGuideline - Start
-  shouldShowDisclaimer: (showGuidelineDisclaimer)->
-    val = lib.localStorage.getItem 'showGuidelineDisclaimer'
-    if val or (val is 'null')
-      return true 
-    else 
-      return false
-
-  showGuidelineDisclaimerChanged: (e)->
-    lib.localStorage.setItem 'showGuidelineDisclaimer', !e.target.checked
-    @set 'showGuidelineDisclaimer', !e.target.checked
-    val = lib.localStorage.getItem 'showGuidelineDisclaimer'
-    # console.log val
-  
-  $doesPassFilter: (doseGuideline, dose, subDose, guidelineIndicationSelectedIndex, guidelineAgeSelectedIndex)->
-    guidelineAgeText = @guidelineAgeList[guidelineAgeSelectedIndex]
-    guidelineIndicationText = @guidelineIndicationList[guidelineIndicationSelectedIndex]
-
-    unless subDose is 'not-available'
-      alert 'something went wrong'
-
-    agePasses = false
-    if guidelineAgeText is 'No Age Indicated'
-      agePasses = true
-    else
-      agePasses = (guidelineAgeText is (@_ageToText dose))
-
-    indicationPasses = false
-    if guidelineIndicationText is 'No Special Indications'
-      indicationPasses = true
-    else
-      indicationPasses = (guidelineIndicationText in (@_extractIndication dose))
-
-    if agePasses and indicationPasses
-      return true
-    else
-      return false
-
-  _extractIndication: (item)->
-    keyList = [ 'indication', 'secondaryIndication', 'tertiaryIndication', 'condition', 'secondaryCondition' ]
-    array = []
-    for key in keyList
-      if key of item
-        array.push item[key]
-    return array
-
-  _ageToText: (dose)->
-    if 'ageGroup' of dose
-      text = dose.ageGroup
-
-    if 'ageRange' of dose
-
-      if 'min' of dose.ageRange
-        if 'max' of dose.ageRange
-          text = "from #{dose.ageRange.min} #{dose.ageRange.unit}(s) to #{dose.ageRange.max} #{dose.ageRange.unit}(s)"
-        else
-          text = "#{dose.ageRange.min} #{dose.ageRange.unit}(s) and upwards"
-      else
-        text = "Upto #{dose.ageRange.max} #{dose.ageRange.unit}(s)"
-
-    return text
-
-  _setActiveDoseGuideline: (doseGuideline)->
-    @set 'activeDoseGuideline', doseGuideline
-
-    guidelineIndicationList = []
-    for dose in doseGuideline.doseList
-      keyList = @_extractIndication dose
-      guidelineIndicationList = [].concat guidelineIndicationList, keyList
-
-      # for subDose in dose.subDoseList
-      #   keyList = @_extractIndication subDose
-      #   guidelineIndicationList = [].concat guidelineIndicationList, keyList
-
-    guidelineIndicationList = lib.array.unique guidelineIndicationList
-
-    guidelineIndicationList.unshift 'No Special Indications'
-
-    @set 'guidelineIndicationList', guidelineIndicationList
-    @set 'guidelineIndicationSelectedIndex', 0
-
-    guidelineAgeList = []
-    for dose in doseGuideline.doseList
-
-      text = @_ageToText dose
-
-      if text.length > 0
-        guidelineAgeList.push text
-
-    guidelineAgeList = lib.array.unique guidelineAgeList
-
-    guidelineAgeList.unshift 'No Age Indicated'
-
-    @set 'guidelineAgeList', guidelineAgeList
-    @set 'guidelineAgeSelectedIndex', 0
-
-
-  populateDoseGuideline: ->
-    genericName = @get 'medicine.genericName'
-
-    matchingDoseGuideline = null
-    for doseGuideline in @doseGuidelineList
-      if genericName is doseGuideline.genericName
-        matchingDoseGuideline = doseGuideline
-        break
-
-    if matchingDoseGuideline
-      @_setActiveDoseGuideline matchingDoseGuideline
-
-
-  runSanitizationCheckForDoseGuidelineList: (doseGuidelineList)->
-    handledDoseKeyList = [ 'subDoseList', 'route', 'ageGroup', 'description', 'ageRange', 'notRecommended', 'indication', 'secondaryIndication', 'notes', 'condition', 'alternateRoiute', "secondaryCondition", "tertiaryIndication" ]
-    handledDoseKeyList = [].concat handledDoseKeyList, []
-    knownMissingDoseKeyList = []
-
-    handledSubDoseKeyList = [ "type", "unit", "amount", "timesDaily", "connectionToMeal", "notes", "condition" ]
-    handledSubDoseKeyList = [].concat handledSubDoseKeyList, [ "Interval","treatmentPeriod","timesWeekly","notRecommended","secondaryIndication","timesMonthly","indication" ]
-    ## NOTE - the list below is ignored. they are too advanced for the interface we have currently.
-    # we don't even support most of them in our data structure.
-    handledSubDoseKeyList = [].concat handledSubDoseKeyList, [  ] # ignored
-    knownMissingSubDoseKeyList = []
-
-    for doseGuideline in doseGuidelineList
-
-      for dose in doseGuideline.doseList
-        missingKeyList = @$listMissingKeys dose, handledDoseKeyList
-        for missingKey in missingKeyList
-          unless missingKey in knownMissingDoseKeyList
-            knownMissingDoseKeyList.push missingKey
-
-        if 'subDoseList' of dose
-          for subDose in dose.subDoseList
-            # if 'route' of subDose
-            #   console.log 'continue'
-            #   continue
-            missingKeyList = @$listMissingKeys subDose, handledSubDoseKeyList
-            for missingKey in missingKeyList
-              if missingKey is 'condition'
-                console.log subDose
-              unless missingKey in knownMissingSubDoseKeyList
-                knownMissingSubDoseKeyList.push missingKey
-
-    # console.log 'missing dose keys', knownMissingDoseKeyList
-    # console.log 'missing sub dose keys', knownMissingSubDoseKeyList
-
-  _fillCommons: (dose, subDose)->
-
-    if subDose.connectionToMeal
-
-      strMap = {
-        "after meal": 'After meal'
-        "with meal": 'After meal'
-        "with food": 'After meal'
-        "after food": 'After meal'
-        "after a meal": 'After meal'
-        "with meals": 'After meal'
-        "before": "Before meal"
-      }
-
-      if subDose.connectionToMeal.when of strMap
-        index = @directionList.indexOf strMap[subDose.connectionToMeal.when]
-        @set 'directionSelectedIndex', index
-
-  _fillMinOrMax: (dose, subDose, minOrMaxKey)->
-    if subDose.timesDaily and subDose.timesDaily[minOrMaxKey]
-      @set 'medicine.timesPerInterval', subDose.timesDaily[minOrMaxKey]
-
-    if subDose.amount and subDose.amount[minOrMaxKey]
-      'todo when interface supports'
-
-    if subDose.route
-      'todo when interface supports. take hints from subDose.connectionToMeal'
-
-  fillMinimumPressed: (e)->
-    { dose, subDose } = e.model
-    @_fillCommons dose, subDose
-    @_fillMinOrMax dose, subDose, 'min'
-
-  fillMaximumPressed: (e)->
-    { dose, subDose } = e.model
-    @_fillCommons dose, subDose
-    @_fillMinOrMax dose, subDose, 'max'
-
-
-  ## REGION: doseGuideline - End
 
   #####################################################################
   ### Prescription - end
@@ -5540,8 +5323,8 @@ Polymer {
     invoiceItem = {
       name: matchedItem?.brandName or itemName
       qty: qty
-      price: matchedItem.retailPrice or 0
-      actualCost: matchedItem.actualCost or 0
+      price: matchedItem?.retailPrice or 0
+      actualCost: matchedItem?.actualCost or 0
       category: "medicine"
       subCategory: ""
       serial: null
@@ -5591,12 +5374,13 @@ Polymer {
   calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
 
   finishButtonPressed: ->
-    @domHost.showSuccessToast 'Visit Saved Successfully'
+    @domHost.showModalDialog 'Visit Saved Successfully'
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (err)=>
         if err
           console.log 'Something went wrong with balance deduction.'
         else
+          @domHost.showModalDialog "#{invoice.totalBilled} Deducted from Member Wallet"
           @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
             @set 'patientServiceBalance', patientServiceBalance
             @makeNewVisitButtonPressed()

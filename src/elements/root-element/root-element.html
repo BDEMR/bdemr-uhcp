@@ -422,19 +422,16 @@
             <a name="dashboard" href="#/dashboard" drawer-toggle>Dashboard</a>
             <a name="patient-manager" href="#/patient-manager" drawer-toggle hidden$="[[!_checkUserAccess('D001')]]">Patient Manager</a>
             <a name="patient-manager" href="#/reports-manager" drawer-toggle hidden$="[[!_checkUserAccess('D002')]]">Reports Manager</a>
-            <a name="patient-manager" href="#/chamber-manager" drawer-toggle hidden$="[[!_checkUserAccess('D003')]]">Chamber Manager</a>
-            <a name="medicine-dispension" href="#/medicine-dispension" drawer-toggle hidden$="[[!_checkUserAccess('D004')]]">Medicine Dispension</a>
-            <template is="dom-if" if="[[!user.isUsingAsAssistant]]">
+            <!-- <template is="dom-if" if="[[!user.isUsingAsAssistant]]">
               <a name="assistant-manager" href="#/assistant-manager" drawer-toggle hidden$="[[!_checkUserAccess('D005')]]">Assistant Manager</a>
-            </template>
-            <a name="search-record" href="#/search-record" drawer-toggle hidden$="[[!_checkUserAccess('D006')]]">Search Records</a>
+            </template> -->
+            <!-- <a name="search-record" href="#/search-record" drawer-toggle hidden$="[[!_checkUserAccess('D006')]]">Search Records</a> -->
             <!-- <a name="invoice-manager" href="#/invoice-manager" drawer-toggle hidden$="[[!_checkUserAccess('D007')]]">Invoice Manager</a> -->
-            <a name="booking" href="#/booking" drawer-toggle hidden$="[[!_checkUserAccess('D009')]]">Booking and Services</a>
             <a name="organization-manager" href="#/organization-manager" drawer-toggle hidden$="[[!_checkUserAccess()]]">Organization Manager</a>
             <a name="uhcp-report" href="#/uhcp-summary-report" drawer-toggle hidden$="[[!_checkUserAccess('R001')]]">Summary Reports</a>
             <a name="uhcp-all-visits-report" href="#/uhcp-all-visits-report" drawer-toggle hidden$="[[!_checkUserAccess('R002')]]">Visits Reports</a>
             <a name="notification-panel" href="#/notification-panel" drawer-toggle hidden$="[[!_checkUserAccess('D011')]]">Send Notification</a>
-            <a name="my-wallet" href="#/wallet" drawer-toggle>[[$TRANSLATE('My Wallet',LANG)]]</a>
+            <!-- <a name="my-wallet" href="#/wallet" drawer-toggle>[[$TRANSLATE('My Wallet',LANG)]]</a> -->
             <a name="send-feedback" href="#/send-feedback" drawer-toggle hidden$="[[!_checkUserAccess('D012')]]">Send Feedback</a>
             <a name="welcome-internal" href="#/welcome-internal" drawer-toggle>Welcome</a>
             <a name="settings" href="#/settings" drawer-toggle>Settings</a>

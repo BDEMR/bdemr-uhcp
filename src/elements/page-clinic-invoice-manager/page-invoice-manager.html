@@ -82,7 +82,7 @@
         border: 1px solid #dadada;
         padding: 0px 8px 12px 8px;
         margin: 4px;
-				margin-left: 0;
+        margin-left: 0;
       }
     </style>
 
@@ -94,7 +94,7 @@
 
         <!-- Card - Search - start -->
         <paper-card>
-          
+
           <div class="card-custom-header">
             <div class="layout horizontal center">
               <div class="title flex">Invoice Manager</div>
@@ -124,20 +124,13 @@
               </div>
             </div>
             <br>
-            
-            <vaadin-grid items="[[matchingInvoiceList]]" id="inoviceListGrid" >
+
+            <vaadin-grid items="[[matchingInvoiceList]]" id="inoviceListGrid">
               <vaadin-grid-column width="100px" flex-grow="0">
                 <template class="header">
                   <vaadin-grid-sorter path="serial">Serial</vaadin-grid-sorter>
                 </template>
-                <template>
-                  <template is="dom-if" if="[[!item.referenceNumber]]">
-                    <strong class="label">[[item.serial]]</strong>
-                  </template>
-                  <template is="dom-if" if="[[item.referenceNumber]]">
-                    <strong class="label">[[item.referenceNumber]]</strong>
-                  </template>
-                </template>
+                <strong class="label">[[item.serial]]</strong>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">
@@ -170,7 +163,9 @@
                 <template>
                   <div>[[item.totalAmountReceieved]]</div>
                 </template>
-                <template class="footer"><strong>[[$formatCurrency(totalInvoiceIncome)]]</strong></template>
+                <template class="footer">
+                  <strong>[[$formatCurrency(totalInvoiceIncome)]]</strong>
+                </template>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">
@@ -187,7 +182,9 @@
                 <template>
                   <div>[[calculateProfit(item)]]</div>
                 </template>
-                <template class="footer"><strong>[[$formatCurrency(totalProfit)]]</strong></template>
+                <template class="footer">
+                  <strong>[[$formatCurrency(totalProfit)]]</strong>
+                </template>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">Action

@@ -227,12 +227,12 @@ Polymer {
       @set 'advancedSearchParameters.createdDate.enabled', true
       @set 'advancedSearchParameters.createdDate.lowerBound', lib.datetime.mkDate lib.datetime.now()
       @set 'advancedSearchParameters.createdDate.upperBound', lib.datetime.mkDate lib.datetime.now()
-      @listAllImportedAndOfflinePatientsPressed null
+      # @listAllImportedAndOfflinePatientsPressed null
     else if params['filter'] and params['filter'] is 'clear'
       @domHost.modifyCurrentPagePath '#/patient-manager'
       @isAdvancedSearchEnabled = false
       @searchFieldMainInput = ''
-      @listAllImportedAndOfflinePatientsPressed null
+      # @listAllImportedAndOfflinePatientsPressed null
 
     else if params['query']
       @searchFieldMainInput = params['query']
@@ -244,7 +244,7 @@ Polymer {
       @searchOfflineButtonPressed()
 
     else
-      @listAllImportedAndOfflinePatientsPressed null
+      # @listAllImportedAndOfflinePatientsPressed null
 
 
     @_listVisitedPatientLog()
@@ -267,7 +267,7 @@ Polymer {
         }
         patient.flags.isLocalOnly = true
 
-    @matchingPatientList = patientList 
+    @offlineMatchingPatientList = patientList 
 
   searchOfflineButtonPressed: (e)->
     if @searchFieldMainInput.length is 0
@@ -381,7 +381,7 @@ Polymer {
     unless patientList.length
       @domHost.showToast 'No Patient Found'
     
-    @matchingPatientList = patientList
+    @offlineMatchingPatientList = patientList
 
     @arbitaryCounter--
 
@@ -665,14 +665,23 @@ Polymer {
     @matchingPatientList = @resultedPatientList
     @resultedPatientList = []
 
+  
+  
   viewPatient: (e)->
     el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
     el.opened = false
-    repeater = @$$ '#patient-list-repeater'
 
-    index = repeater.indexForElement el
-
-    patient = @matchingPatientList[index]
+    # search online tab
+    if @selectedSearchViewIndex is 0
+      repeater = @$$ '#patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @matchingPatientList[index]
+    
+    # imported/offline tab
+    if @selectedSearchViewIndex is 1
+      repeater = @$$ '#imported-patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @offlineMatchingPatientList[index]
 
     if patient
       @domHost.setCurrentPatientsDetails patient
@@ -682,6 +691,7 @@ Polymer {
       @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
     else
       @domHost.showModalDialog 'Patient not found'
+
 
 
   # Visted Patient Log
