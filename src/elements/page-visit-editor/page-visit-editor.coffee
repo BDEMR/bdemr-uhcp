@@ -5380,7 +5380,7 @@ Polymer {
         if err
           console.log 'Something went wrong with balance deduction.'
         else
-          @domHost.showModalDialog "#{invoice.totalBilled} Deducted from Member Wallet"
+          @domHost.showModalDialog "#{@invoice.totalBilled} Deducted from Member Wallet"
           @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
             @set 'patientServiceBalance', patientServiceBalance
             @makeNewVisitButtonPressed()

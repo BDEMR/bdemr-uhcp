@@ -277,10 +277,12 @@ Polymer {
 
   actualCostChanged: (e)->
     item = e.model.item
+    item.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
 
   priceChanged: (e)->
     item = e.model.item
+    item.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
   
   categorySelected: (e)->

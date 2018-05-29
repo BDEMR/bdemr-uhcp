@@ -31,7 +31,7 @@
 
       #scroller {
         overflow: auto;
-        max-height: var(--vaadin-combo-box-overlay-max-height, 65vh);
+        max-height: var(--vaadin-combo-box-overlay-max-height, 50vh);
 
         /* Fixes item background from getting on top of scrollbars on Safari */
         transform: translate3d(0, 0, 0);
@@ -44,7 +44,8 @@
         --iron-list-items-container: {
           border-top: 8px solid transparent;
           border-bottom: 8px solid transparent;
-        };
+        }
+        ;
       }
 
       #selector vaadin-combo-box-item {
@@ -73,28 +74,12 @@
     </style>
 
     <vaadin-spinner active="[[loading]]"></vaadin-spinner>
-    <div id="scroller" scroller="[[_getScroller()]]"
-        on-tap="_stopPropagation"
-        on-touchstart="_onTouchStart"
-        on-touchend="_preventDefault"
-        on-scroll="_onScroll"
-        hidden$="[[loading]]">
-      <iron-list
-          id="selector"
-          touch-device$="[[touchDevice]]"
-          role="listbox"
-          items="[[_items]]"
-          scroll-target="[[_getScroller()]]">
+    <div id="scroller" scroller="[[_getScroller()]]" on-tap="_stopPropagation" on-touchstart="_onTouchStart" on-touchend="_preventDefault"
+      on-scroll="_onScroll" hidden$="[[loading]]">
+      <iron-list id="selector" touch-device$="[[touchDevice]]" role="listbox" items="[[_items]]" scroll-target="[[_getScroller()]]">
         <template>
-          <vaadin-combo-box-item
-              on-tap="_onTap"
-              index="[[index]]"
-              item="[[item]]"
-              label="[[getItemLabel(item)]]"
-              selected="[[_isItemSelected(item, _selectedItem)]]"
-              role$="[[_getAriaRole(index)]]"
-              aria-selected$="[[_getAriaSelected(_focusedIndex,index)]]"
-              focused="[[_isItemFocused(_focusedIndex,index)]]">
+          <vaadin-combo-box-item on-tap="_onTap" index="[[index]]" item="[[item]]" label="[[getItemLabel(item)]]" selected="[[_isItemSelected(item, _selectedItem)]]"
+            role$="[[_getAriaRole(index)]]" aria-selected$="[[_getAriaSelected(_focusedIndex,index)]]" focused="[[_isItemFocused(_focusedIndex,index)]]">
           </vaadin-combo-box-item>
         </template>
       </iron-list>
@@ -118,7 +103,7 @@
       touchDevice: {
         type: Boolean,
         reflectToAttribute: true,
-        value: function() {
+        value: function () {
           try {
             document.createEvent('TouchEvent');
             return true;
@@ -173,7 +158,7 @@
       _ignoreTaps: Boolean,
     },
 
-    ready: function() {
+    ready: function () {
       this._patchWheelOverScrolling();
 
       // Fix for #182. Only relevant for iron-list 1.0.X and 1.1.X.
@@ -183,32 +168,32 @@
       }
     },
 
-    _getFocusedItem: function(focusedIndex) {
+    _getFocusedItem: function (focusedIndex) {
       if (focusedIndex >= 0) {
         return this._items[focusedIndex];
       }
     },
 
-    _isItemSelected: function(item, selectedItem) {
+    _isItemSelected: function (item, selectedItem) {
       return item === selectedItem;
     },
 
-    _onTap: function(e) {
+    _onTap: function (e) {
       if (!this._notTapping && !this._ignoreTaps) {
-        this.fire('selection-changed', {item: e.model.item});
+        this.fire('selection-changed', { item: e.model.item });
       }
     },
 
-    _onTouchStart: function() {
+    _onTouchStart: function () {
       this._notTapping = false;
-      this.async(function() {
+      this.async(function () {
         this._notTapping = true;
       }, 300);
     },
 
-    _onScroll: function() {
+    _onScroll: function () {
       this._ignoreTaps = true;
-      this.debounce('restore-taps', function() {
+      this.debounce('restore-taps', function () {
         this._ignoreTaps = false;
       }, 300);
     },
@@ -217,11 +202,11 @@
      * Gets the index of the item with the provided label.
      * @return {Number}
      */
-    indexOfLabel: function(label) {
+    indexOfLabel: function (label) {
       if (this._items && label) {
         for (var i = 0; i < this._items.length; i++) {
           if (this.getItemLabel(this._items[i]).toString().toLowerCase() ===
-              label.toString().toLowerCase()) {
+            label.toString().toLowerCase()) {
             return i;
           }
         }
@@ -234,7 +219,7 @@
      * Gets the label string for the item based on the `_itemLabelPath`.
      * @return {String}
      */
-    getItemLabel: function(item) {
+    getItemLabel: function (item) {
       var label = item ? this.get(this._itemLabelPath, item) : undefined;
       if (label === undefined) {
         label = item ? item.toString() : '';
@@ -242,25 +227,25 @@
       return label;
     },
 
-    _isItemFocused: function(focusedIndex, itemIndex) {
+    _isItemFocused: function (focusedIndex, itemIndex) {
       return focusedIndex == itemIndex;
     },
 
-    _getAriaSelected: function(focusedIndex, itemIndex) {
+    _getAriaSelected: function (focusedIndex, itemIndex) {
       return this._isItemFocused(focusedIndex, itemIndex).toString();
     },
 
-    _getAriaRole: function(itemIndex) {
+    _getAriaRole: function (itemIndex) {
       return itemIndex !== undefined ? 'option' : false;
     },
 
-    _focusedIndexChanged: function(index) {
+    _focusedIndexChanged: function (index) {
       if (index >= 0) {
         this._scrollIntoView(index);
       }
     },
 
-    _scrollIntoView: function(index) {
+    _scrollIntoView: function (index) {
       var visibleItemsCount = this._visibleItemsCount();
       if (visibleItemsCount === undefined) {
         // Scroller is not visible. Moving is unnecessary.
@@ -293,11 +278,11 @@
       }
     },
 
-    ensureItemsRendered: function() {
+    ensureItemsRendered: function () {
       this.$.selector.flushDebouncer('_debounceTemplate');
     },
 
-    adjustScrollPosition: function() {
+    adjustScrollPosition: function () {
       if (this._items) {
         this._scrollIntoView(this._focusedIndex);
       }
@@ -307,7 +292,7 @@
     // and features that use it like keyboard navigation in IE11 for iron-list 1.0.x.
     // Tested that iron-list 1.2.x works nicely even without the external scroller, but
     // left these here for now for backwards compatibility.
-    _getScroller: function() {
+    _getScroller: function () {
       return this.$.scroller;
     },
 
@@ -316,9 +301,9 @@
      * Further improvement ideas: after the contents have been scrolled to the top or bottom and scrolling has stopped, it could allow
      * scrolling the parent similarily to touch scrolling.
      */
-    _patchWheelOverScrolling: function() {
+    _patchWheelOverScrolling: function () {
       var selector = this.$.selector;
-      selector.addEventListener('wheel', function(e) {
+      selector.addEventListener('wheel', function (e) {
         var scroller = selector._scroller || selector.scrollTarget;
         var scrolledToTop = scroller.scrollTop === 0;
         var scrolledToBottom = (scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight) <= 1;
@@ -331,7 +316,7 @@
       });
     },
 
-    updateViewportBoundaries: function() {
+    updateViewportBoundaries: function () {
       this._cachedViewportTotalPaddingBottom = undefined;
       this.$.selector.updateViewportBoundaries();
     },
@@ -342,9 +327,9 @@
         this._cachedViewportTotalPaddingBottom = [
           itemsStyle.paddingBottom,
           itemsStyle.borderBottomWidth
-        ].map(function(v) {
+        ].map(function (v) {
           return parseInt(v, 10);
-        }).reduce(function(sum, v) {
+        }).reduce(function (sum, v) {
           return sum + v;
         });
       }
@@ -352,7 +337,7 @@
       return this._cachedViewportTotalPaddingBottom;
     },
 
-    _visibleItemsCount: function() {
+    _visibleItemsCount: function () {
       // Ensure items are rendered
       this.$.selector.flushDebouncer('_debounceTemplate');
       // Ensure items are positioned
@@ -362,20 +347,20 @@
       return this.$.selector.lastVisibleIndex - this.$.selector.firstVisibleIndex + 1;
     },
 
-    _selectItem: function(item) {
+    _selectItem: function (item) {
       item = (typeof item === 'number') ? this._items[item] : item;
       if (this.$.selector.selectedItem !== item) {
         this.$.selector.selectItem(item);
       }
     },
 
-    _preventDefault: function(e) {
+    _preventDefault: function (e) {
       if (e.cancelable) {
         e.preventDefault();
       }
     },
 
-    _stopPropagation: function(e) {
+    _stopPropagation: function (e) {
       e.stopPropagation();
     }
   });

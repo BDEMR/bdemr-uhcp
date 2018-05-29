@@ -20,16 +20,15 @@ app.behaviors.local.loadPriceListMixin =
         @set 'priceList', priceListFromLocalStorage
         cbfn()
       else 
-        @domHost.showToast 'No Pricelist present for this Organization. Contact your Admin for Pricelist'
+        @domHost.showModalDialog 'No Pricelist present for this Organization. Contact your Admin for Pricelist'
         
     else
-      @domHost._newSync (errMessage)=> if errMessage then @async => @domHost.showModalDialog(errMessage) else @domHost.reloadPage()
+      @domHost._newSync (errMessage)=> 
+        if errMessage
+          @async => @domHost.showModalDialog(errMessage) 
+        else
+          @domHost.reloadPage()
 
-  # _loadPriceList: (organizationIdentifier, cbfn)->
-  #   @_createNewPriceList (priceListFromFile)=>
-  #     # @_insertItemIntoDatabase priceListFromFile
-  #     @set 'priceList', priceListFromFile
-  #     cbfn priceListFromFile
 
   _prepareNewItemForDB: (data)->
     data.serial = @generateSerialForPriceListItem()

@@ -645,11 +645,11 @@
             </template>
 
             <template is="dom-if" if="[[currentOrganization]]">
-              <template is="dom-if" if="[[_showSyncButton(syncActions.count,downloadActions.count)]]">
-                <paper-icon-button icon="cloud-upload" on-tap="syncButtonPressed"></paper-icon-button>
+              <template is="dom-if" if="[[!apiActions.count]]">
+                <paper-icon-button icon="swap-vertical-circle" on-tap="syncButtonPressed"></paper-icon-button>
               </template>
             </template>
-            <template is="dom-if" if="[[syncActions.count]]">
+            <template is="dom-if" if="[[apiActions.count]]">
               <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
             </template>
             <!-- <paper-icon-button icon="refresh" on-tap="refreshButtonPressed"></paper-icon-button> -->
