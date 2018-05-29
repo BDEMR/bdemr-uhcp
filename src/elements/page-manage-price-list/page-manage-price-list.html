@@ -89,7 +89,6 @@
         width: 100%;
         --paper-progress-active-color: var(--paper-orange-500);
       }
-
     </style>
     <div class="master-container">
       <paper-progress indeterminate hidden="[[!loading]]"></paper-progress>
@@ -117,14 +116,14 @@
               </div>
               <div class="card-content">
                 <vaadin-grid items="[[priceListForSelectedCategory]]">
-                  <vaadin-grid-column width="100px" flex-grow="0">
-                    <template class="header">Cost</template>
+                  <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">BADAS Actual Cost</template>
                     <template>
                       <input is="iron-input" bind-value="{{item.actualCost}}" placeholder="Actual Cost" on-change="actualCostChanged">
                     </template>
                   </vaadin-grid-column>
-                  <vaadin-grid-column width="100px" flex-grow="0">
-                    <template class="header">Price</template>
+                  <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">UHCP Discounted Price</template>
                     <template>
                       <input is="iron-input" bind-value="{{item.price}}" placeholder="Price" on-change="priceChanged">
                     </template>
@@ -132,10 +131,10 @@
                   <vaadin-grid-column flex-grow="1">
                     <template class="header layout horizontal">
                       <vaadin-grid-sorter path="name" direction="asc">
-                      <vaadin-grid-filter aria-label="Name" path="name" value="[[searchString]]">
-                        <paper-input label="Search By Name" value="{{searchString}}" no-label-float></paper-input>
-                      </vaadin-grid-filter>
-                    </vaadin-grid-sorter>
+                        <vaadin-grid-filter aria-label="Name" path="name" value="[[searchString]]">
+                          <paper-input label="Search By Name" value="{{searchString}}" no-label-float></paper-input>
+                        </vaadin-grid-filter>
+                      </vaadin-grid-sorter>
                     </template>
                     <template>
                       <div>[[item.name]]</div>
@@ -173,7 +172,8 @@
           <paper-input label="Retail Price" type="number" value="{{customItem.price}}" required auto-validate></paper-input>
           <paper-input label="Cost" type="number" value="{{customItem.actualCost}}"></paper-input>
           <paper-input label="Quantity" type="number" value="{{customItem.qty}}"></paper-input>
-          <vaadin-combo-box class="category-combo-box" label="Category" items="[[priceListCategories]]" allow-custom-value value="{{customItem.category}}" selected-item="{{customItem.category}}" required auto-validate>
+          <vaadin-combo-box class="category-combo-box" label="Category" items="[[priceListCategories]]" allow-custom-value value="{{customItem.category}}"
+            selected-item="{{customItem.category}}" required auto-validate>
           </vaadin-combo-box>
           <paper-input label="Subcategory" value="{{customItem.subCategory}}"></paper-input>
         </div>

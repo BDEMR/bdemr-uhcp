@@ -152,9 +152,8 @@ Polymer {
 
     @_loadInvoiceCategoryList @organization.idOnServer
 
-    # @_loadItemSearchAutoComplete()
-
     @_loadPriceList @organization.idOnServer, (priceListData)=>
+      @_loadItemSearchAutoComplete priceListData
       @_loadCategories priceListData
 
   _loadUser:()->
@@ -246,6 +245,7 @@ Polymer {
   addCustomItemToInvoiceButtonPressed: ->  
     @_invokeCustomModal (data)->
       if data
+        data.category = 'custom'
         data.qty = 1
         data.totalPrice = data.price
         @push 'invoice.data', data
@@ -253,8 +253,8 @@ Polymer {
   # AUTOCOMPLETE SEARCH
   # ===========================================
   
-  _loadItemSearchAutoComplete: ->
-    
+  _loadItemSearchAutoComplete: (priceListData)->
+    @invoiceAutoCompleteSourceDataList = priceListData.map (item)=> return { text: item.name, value: item }
 
   invoiceItemAutocompleteSelected: (e)->
     item = e.detail.value

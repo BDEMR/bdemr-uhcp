@@ -209,10 +209,10 @@
             <div class="card-custom-header">
               <div class="layout horizontal center">
                 <div class="title flex">Invoice [[invoice.referenceNumber]]</div>
-                <paper-button class="btn btn-sm btn-default" on-tap="syncPriceListButtonClicked">
+                <!-- <paper-button class="btn btn-sm btn-default" on-tap="syncPriceListButtonClicked">
                   <iron-icon icon="autorenew"></iron-icon>
                   Update Price List
-                </paper-button>
+                </paper-button> -->
                 <paper-button class="btn btn-sm btn-primary" on-tap="addCustomItemToInvoiceButtonPressed">
                   <iron-icon icon="add"></iron-icon>
                   Add Custom Item
@@ -220,7 +220,7 @@
               </div>
             </div>
             <div class="card-content">
-              <paper-autocomplete id="invoiceSearchInput" label="Search Item" source="[[invoiceSourceDataList]]" on-autocomplete-selected="invoiceItemAutocompleteSelected">
+              <paper-autocomplete id="invoiceSearchInput" label="Search Item" source="[[invoiceAutoCompleteSourceDataList]]" on-autocomplete-selected="invoiceItemAutocompleteSelected">
               </paper-autocomplete>
             </div>
           </paper-card>
