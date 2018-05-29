@@ -208,7 +208,7 @@
           <paper-card>
             <div class="card-custom-header">
               <div class="layout horizontal center">
-                <div class="title flex">Invoice [[invoice.serial]]</div>
+                <div class="flex">Invoice : [[invoice.serial]]</div>
                 <!-- <paper-button class="btn btn-sm btn-default" on-tap="syncPriceListButtonClicked">
                   <iron-icon icon="autorenew"></iron-icon>
                   Update Price List
@@ -326,23 +326,25 @@
                 <table class="table">
                   <tr>
                     <th>Total</th>
-                    <td>[[invoice.totalBilled]] BDT</td>
+                    <td width="190">[[invoice.totalBilled]] BDT</td>
                   </tr>
-                  <tr>
-                    <th>Paid Amount</th>
-                    <td width="190">
-                      <input style="font-size: 16px" is="iron-input" type="number" bind-value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]"
-                        auto-validate prevent-invalid-input required/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Due</th>
-                    <td>[[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</td>
-                  </tr>
-                  <tr>
-                    <th>Total Amount Received:</th>
-                    <td>[[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</td>
-                  </tr>
+                  <template is="dom-if" if="[[exclusionCriteria]]">
+                    <tr>
+                      <th>Paid Amount</th>
+                      <td>
+                        <input style="font-size: 16px" is="iron-input" type="number" bind-value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]"
+                          auto-validate prevent-invalid-input required/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Due</th>
+                      <td>[[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</td>
+                    </tr>
+                    <tr>
+                      <th>Total Amount Received:</th>
+                      <td>[[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</td>
+                    </tr>
+                  </template>
                 </table>
 
               </div>

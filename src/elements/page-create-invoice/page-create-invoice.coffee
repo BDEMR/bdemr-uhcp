@@ -75,6 +75,8 @@ Polymer {
       type: Array
       value: -> []
 
+    exclusionCriteria: Boolean
+
   observers: [
     'calculateTotalPrice(invoice.data.splices, invoice.discount)'
     # '_calculateCommission(invoice.commission.billed, invoice.commission.percentage)'
@@ -124,6 +126,9 @@ Polymer {
   navigatedIn: ->
 
     params = @domHost.getPageParams()
+
+    if params['exclusion']
+      @set 'exclusionCriteria', true
 
     @_loadUser()
 
@@ -196,24 +201,6 @@ Polymer {
   _notifyInvalidVisit: ->
     @domHost.showModalDialog 'Invalid Visit Provided'
 
-  # _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
-  
-  # _loadPriceList: (organizationIdentifier, cbfn)->
-  #   lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
-    
-  #   if lastSyncedDatetimeStamp
-  #     priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-  #     if priceListFromLocalStorage.length
-  #       @set 'priceList', priceListFromLocalStorage
-  #       cbfn priceListFromLocalStorage
-  #     else 
-  #       @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-  #         @_insertItemIntoDatabase priceListFromFile
-  #         @set 'priceList', priceListFromFile
-  #         cbfn priceListFromFile
-  #   else
-  #     @domHost._sync()
-
   _getCategoriesFromPriceListData: (priceListData)->
     categoryMap = priceListData.reduce ((obj, item)=>
       obj[item.category] = null
@@ -276,17 +263,6 @@ Polymer {
       @set 'invoiceCategoryList', list[0]
     else
       @set 'invoiceCategoryList', @_makeNewInvoiceCategoryList organizationIdentifier
-
-  # _loadMedicineInventory: (organizationIdentifier)->
-  #   @domHost.getStaticData 'pccMedicineList', (medicineCompositionList)=>
-  #     brandNameMap = {}
-  #     for item in medicineCompositionList
-  #       brandNameMap[item.brandName] = null
-  #     generatedMedicineList = ({data: {name: item, actualCost: 0, price: 0, qty: 1, category: '', subCategory: ''}} for item in Object.keys brandNameMap)
-
-  #     inventory = app.db.find 'organization-inventory', ({organizationId})-> organizationId is organizationIdentifier
-  #     @medicineInventory = [].concat inventory, generatedMedicineList
-      
 
   # TOGGLE COLLAPSE
   convertCategoryNameToId: (categoryName)-> categoryName.toLowerCase().split(" ").join("")
@@ -458,9 +434,7 @@ Polymer {
     unless invoice.data.length
       @domHost.showToast 'Add some item into invoice'
       return false
-    unless invoice.totalAmountReceieved
-      @domHost.showToast 'Please Add some amount in Paid Amount'
-      return false
+    
     return true
   
   _reduceInventoryItems: (invoice)->
@@ -491,8 +465,8 @@ Polymer {
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
+  
   _saveInvoice: (markAsCompleted)->
-    
     return unless @_validateInvoice @invoice
     
     if markAsCompleted
