@@ -673,7 +673,7 @@ Polymer {
 
     # search online tab
     if @selectedSearchViewIndex is 0
-      repeater = @$$ '#online-patient-list-repeater'
+      repeater = @$$ '#patient-list-repeater'
       index = repeater.indexForElement el
       patient = @matchingPatientList[index]
     

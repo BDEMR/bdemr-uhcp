@@ -7,6 +7,7 @@ Polymer {
     app.behaviors.pageLike
     app.behaviors.apiCalling
     app.behaviors.commonComputes
+    app.behaviors.local.loadPriceListMixin
   ]
   
   properties:
@@ -196,23 +197,23 @@ Polymer {
   _notifyInvalidVisit: ->
     @domHost.showModalDialog 'Invalid Visit Provided'
 
-  _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
+  # _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
   
-  _loadPriceList: (organizationIdentifier, cbfn)->
-    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
+  # _loadPriceList: (organizationIdentifier, cbfn)->
+  #   lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
     
-    if lastSyncedDatetimeStamp
-      priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-      if priceListFromLocalStorage.length
-        @set 'priceList', priceListFromLocalStorage
-        cbfn priceListFromLocalStorage
-      else 
-        @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-          @_insertItemIntoDatabase priceListFromFile
-          @set 'priceList', priceListFromFile
-          cbfn priceListFromFile
-    else
-      @domHost._sync()
+  #   if lastSyncedDatetimeStamp
+  #     priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
+  #     if priceListFromLocalStorage.length
+  #       @set 'priceList', priceListFromLocalStorage
+  #       cbfn priceListFromLocalStorage
+  #     else 
+  #       @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
+  #         @_insertItemIntoDatabase priceListFromFile
+  #         @set 'priceList', priceListFromFile
+  #         cbfn priceListFromFile
+  #   else
+  #     @domHost._sync()
 
   _getCategoriesFromPriceListData: (priceListData)->
     categoryMap = priceListData.reduce ((obj, item)=>
