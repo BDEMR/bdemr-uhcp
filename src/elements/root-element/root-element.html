@@ -101,7 +101,7 @@
       .drawer-list a {
         display: block;
         @apply(--layout-horizontal);
-        padding: 10px 16px;
+        padding: 12px 16px;
         text-decoration: none;
         color: var(--app-secondary-color);
         border-bottom: 1px solid #f5f5f5;
@@ -646,13 +646,12 @@
 
             <template is="dom-if" if="[[currentOrganization]]">
               <template is="dom-if" if="[[!apiActions.count]]">
-                <paper-icon-button icon="swap-vertical-circle" on-tap="syncButtonPressed"></paper-icon-button>
+                <paper-icon-button icon="backup" on-tap="syncButtonPressed"></paper-icon-button>
               </template>
             </template>
             <template is="dom-if" if="[[apiActions.count]]">
               <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
             </template>
-            <!-- <paper-icon-button icon="refresh" on-tap="refreshButtonPressed"></paper-icon-button> -->
             <paper-icon-button icon="add-alert" on-tap="notificationToggleButtonPressed"></paper-icon-button>
             <!--  header - end -->
 
@@ -670,8 +669,6 @@
                       </div>
                     </paper-tab>
                     <paper-tab>[[$TRANSLATE('Details',LANG)]]</paper-tab>
-                    <!-- 
-                    <paper-tab><img class="m-right-8" width="24" height="24" src="../../assets/img/partners/badas_logo.png" alt="">[[$TRANSLATE('PCC Records',LANG)]]</paper-tab> -->
                     <paper-tab>[[$TRANSLATE('Confirmed Diagnosis',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Medicine',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Vitals',LANG)]]</paper-tab>
@@ -756,11 +753,10 @@
     <!-- generic-modal-dialog - end -->
 
     <!-- sync - start -->
-    <paper-dialog id="sync-dialog" modal>
+    <paper-dialog id="syncDialog" modal>
       <p>SYNC is in progress, please wait...</p>
       <div class="layout vertical center">
         <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
-        <span>[[syncCompleted]]/43</span>
       </div>
     </paper-dialog>
     <!-- sync - end -->

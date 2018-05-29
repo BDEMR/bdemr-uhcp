@@ -174,7 +174,11 @@ Polymer {
           @set 'priceList', priceListFromFile
           cbfn priceListFromFile
     else
-      @domHost._newSync (errMessage)=> if errMessage then @async => @domHost.showModalDialog(errMessage) else @domHost.reloadPage()
+      @domHost._newSync (errMessage)=> 
+        if errMessage 
+          @async => @domHost.showModalDialog(errMessage) 
+        else 
+          @domHost.reloadPage()
 
   _loadCategories: (priceListData)->
     priceListCategories = @_getCategoriesFromPriceListData priceListData
@@ -228,7 +232,6 @@ Polymer {
     indexOnPriceList = @priceList.findIndex (item)=> item.serial is removedItem.serial
     @splice "priceList", indexOnPriceList, 1
     x = app.db.remove 'organization-price-list', removedItem._id
-    console.log x
     app.db.insert 'organization-price-list--deleted', {serial: removedItem.serial}
     unless @priceListForSelectedCategory.length
       @_loadCategories @priceList

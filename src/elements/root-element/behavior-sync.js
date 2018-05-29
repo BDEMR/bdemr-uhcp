@@ -11,6 +11,8 @@ app.behaviors.local['root-element'].newSync = {
 
     apiActionId = this.notifyApiAction('start', null);
 
+    this.$.syncDialog.toggle();
+
     const collectionNameMap = {
       'bdemr--doctor-favorite-medications': 'favorite-medicine-list',
       'bdemr--doctor-app-settings': 'settings',
@@ -142,6 +144,9 @@ app.behaviors.local['root-element'].newSync = {
     this.callApi('/bdemr--sync', data, (err, response) => {
 
       this.notifyApiAction('done', null, apiActionId)
+
+      this.$.syncDialog.toggle()
+
       if (err) {
         return cbfn(err)
       }

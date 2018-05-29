@@ -142,7 +142,7 @@ Polymer({
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 0
+    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? invoiceItem.price : 0), 0) : 0
   },
 
   $getTotalCost(invoice) {
