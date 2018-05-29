@@ -500,13 +500,10 @@ Polymer {
     
     @_addModificationHistory()
     
-    # Assign a referenceNumber if not present
-    @_assignInvoiceRef @invoice.referenceNumber, (refNumber)=>
-      @invoice.referenceNumber = refNumber if refNumber
-      app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
-      @domHost.showToast 'Invoice Saved Successfully'
-      @_updateVisit @invoice.serial
-      @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
+    app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
+    @domHost.showToast 'Invoice Saved Successfully'
+    @_updateVisit @invoice.serial
+    @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
      
 
   # =====================================================================
