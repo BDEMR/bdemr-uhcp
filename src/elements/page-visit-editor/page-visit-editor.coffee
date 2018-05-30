@@ -733,6 +733,10 @@ Polymer {
       notify: true
       value: false
 
+    priceList:
+      type: Array
+      value: -> []
+
 
     #####################################################################
     # Full Visit Preview - start
@@ -4558,7 +4562,12 @@ Polymer {
             @_notifyInvalidVisit()
             return
 
-          @_loadPriceList @organization.idOnServer, ()=> console.log 'Price List Loaded'
+          @_loadPriceList @organization.idOnServer, (priceList)=>
+            if priceList.length
+              @set 'priceList', priceList
+            else
+              @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
+
 
           if params['visit'] is 'new'
             @_makeNewVisit =>

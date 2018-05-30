@@ -2,13 +2,6 @@ unless app.behaviors.local.loadPriceListMixin
   app.behaviors.local.loadPriceListMixin = {}
 app.behaviors.local.loadPriceListMixin =
 
-  properties:
-
-    priceList:
-      type: Object
-      value: -> {}
-
-
   _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
   
   _loadPriceList: (organizationIdentifier, cbfn)->
@@ -16,12 +9,7 @@ app.behaviors.local.loadPriceListMixin =
 
     if lastSyncedDatetimeStamp
       priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-      if priceListFromLocalStorage.length
-        @set 'priceList', priceListFromLocalStorage
-        cbfn()
-      else 
-        @domHost.showModalDialog 'No Pricelist present for this Organization. Contact your Admin for Pricelist'
-        
+      return cbfn priceListFromLocalStorage
     else
       @domHost._newSync (errMessage)=> 
         if errMessage

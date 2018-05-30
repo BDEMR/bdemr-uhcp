@@ -68,8 +68,8 @@ Polymer {
       value: {}
 
     priceList:
-      type: Object
-      value: -> {}
+      type: Array
+      value: -> []
 
     priceListCategories:
       type: Array
@@ -155,11 +155,15 @@ Polymer {
     else
       @_loadInvoice params['invoice']
 
-    @_loadInvoiceCategoryList @organization.idOnServer
+    # _loadPriceList from ../mixin/load-price-list-mixin.coffee
+    @_loadPriceList @organization.idOnServer, (priceList)=>
+      if priceList.length
+        @set 'priceList', priceList
+        @_loadItemSearchAutoComplete priceList
+        @_loadCategories priceList
+      else
+        @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
 
-    @_loadPriceList @organization.idOnServer, (priceListData)=>
-      @_loadItemSearchAutoComplete priceListData
-      @_loadCategories priceListData
 
   _loadUser:()->
     userList = app.db.find 'user'
