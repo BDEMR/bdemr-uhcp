@@ -312,7 +312,8 @@
       }
 
       .table {
-        width: 100%;
+        position: relative;
+        padding: 16px;
         border-collapse: collapse;
       }
 
@@ -328,8 +329,8 @@
       .table td,
       .table th {
         vertical-align: middle;
-        padding: 10px 20px;
-        border-bottom: 1px solid var(--paper-grey-100);
+        padding: 10px 0;
+        border-bottom: 1px solid var(--paper-grey-500);
       }
 
       .table tr:last-child td {
@@ -1586,11 +1587,13 @@
                         <th>Created Date</th>
                         <th>Created by</th>
                         <th>Organization/Hospital</th>
-                        <th>Action</th>
+                        <th>
+                          <span class="type text-right">Action</span>
+                        </th>
                       </tr>
                       <template is="dom-if" if="[[_isEmptyArray(matchingVisitList)]]">
                         <tr>
-                          <td colspan="5" class="text-center">
+                          <td colspan="6" class="text-center">
                             [[$TRANSLATE('No Data added yet',LANG)]]...
                           </td>
                         </tr>
@@ -1604,65 +1607,67 @@
                           <td>[[item.doctorName]]
                             <span>[[item.doctorSpeciality]]</td>
                           <td>[[item.hospitalName]]</td>
-                          <td class="horizontal layout center end-justified">
-                            <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
-                              <paper-button class="btn-add colored" on-tap="viewVisitRecord">View</paper-button>
-                            </template>
-                            <template is="dom-if" if="[[_compareFn(item.recordType, '==', 'anaesmon-record')]]">
-                              <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
-                                <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
-                                <paper-menu class="dropdown-content">
-                                  <paper-item on-tap="preopPreviewButtonClicked">
-                                    <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
-                                    PreOP
-                                  </paper-item>
-                                  <paper-item on-tap="postopPreviewButtonClicked">
-                                    <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
-                                    Post Op
-                                  </paper-item>
-                                  <paper-item on-tap="opAnaesthesiaPreviewButtonClicked">
-                                    <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
-                                    Op Anaesthesia
-                                  </paper-item>
-                                  <paper-item on-tap="opSurgeryPreviewButtonClicked">
-                                    <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
-                                    Op Surgery
-                                  </paper-item>
-                                </paper-menu>
-                              </paper-menu-button>
-                            </template>
-                            <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
-                              <div class="layout horizontal center">
-
-                                <template is="dom-if" if="[[!_isEmptyArray(item.testResults.attachmentSerialList)]]">
-                                  <paper-icon-button icon="attachment" on-tap="viewTestResultsAttachemntsBtnPressed"></paper-icon-button>
-                                </template>
-
+                          <td>
+                            <div class="horizontal layout center end-justified">
+                              <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
+                                <paper-button class="btn-add colored" on-tap="viewVisitRecord">View</paper-button>
+                              </template>
+                              <template is="dom-if" if="[[_compareFn(item.recordType, '==', 'anaesmon-record')]]">
                                 <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
                                   <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
                                   <paper-menu class="dropdown-content">
-                                    <!-- <paper-item on-tap="viewVisitRecord">View</paper-item> -->
-                                    <!-- <template is="dom-if" if="[[!_isEmptyArray(item.testResults.attachmentSerialList)]]">
+                                    <paper-item on-tap="preopPreviewButtonClicked">
+                                      <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                                      PreOP
+                                    </paper-item>
+                                    <paper-item on-tap="postopPreviewButtonClicked">
+                                      <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                                      Post Op
+                                    </paper-item>
+                                    <paper-item on-tap="opAnaesthesiaPreviewButtonClicked">
+                                      <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                                      Op Anaesthesia
+                                    </paper-item>
+                                    <paper-item on-tap="opSurgeryPreviewButtonClicked">
+                                      <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                                      Op Surgery
+                                    </paper-item>
+                                  </paper-menu>
+                                </paper-menu-button>
+                              </template>
+                              <template is="dom-if" if="[[!_compareFn(item.recordType, '==', 'anaesmon-record')]]">
+                                <div class="layout horizontal center">
+
+                                  <template is="dom-if" if="[[!_isEmptyArray(item.testResults.attachmentSerialList)]]">
+                                    <paper-icon-button icon="attachment" on-tap="viewTestResultsAttachemntsBtnPressed"></paper-icon-button>
+                                  </template>
+
+                                  <paper-menu-button class="p-0" vertical-align="bottom" horizontal-align="right">
+                                    <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
+                                    <paper-menu class="dropdown-content">
+                                      <!-- <paper-item on-tap="viewVisitRecord">View</paper-item> -->
+                                      <!-- <template is="dom-if" if="[[!_isEmptyArray(item.testResults.attachmentSerialList)]]">
                                                         <paper-item on-tap="viewTestResultsAttachemntsBtnPressed">View Attachment</paper-item>
                                                       </template> -->
-                                    <template is="dom-if" if="[[_compareFn(item.recordTypeName, '==' ,'History & Physical')]]">
-                                      <paper-item on-tap="visitReportCopyBtnPressed">
-                                        <iron-icon class="m-right-8" icon="icons:content-copy" item-icon></iron-icon>
-                                        Copy History & Physical
-                                      </paper-item>
-                                    </template>
+                                      <template is="dom-if" if="[[_compareFn(item.recordTypeName, '==' ,'History & Physical')]]">
+                                        <paper-item on-tap="visitReportCopyBtnPressed">
+                                          <iron-icon class="m-right-8" icon="icons:content-copy" item-icon></iron-icon>
+                                          Copy History & Physical
+                                        </paper-item>
+                                      </template>
 
-                                    <!-- <paper-item on-tap="authorizeRecordPressed">
+                                      <!-- <paper-item on-tap="authorizeRecordPressed">
                                                         Authorize
                                                       </paper-item> -->
 
-                                  </paper-menu>
-                                </paper-menu-button>
+                                    </paper-menu>
+                                  </paper-menu-button>
 
 
 
-                              </div>
-                            </template>
+                                </div>
+                              </template>
+                            </div>
                           </td>
 
                         </tr>

@@ -34,6 +34,7 @@ Polymer {
       type: Number
       notify: true
       value: 0
+      observer: 'subViewChanged'
 
     isPatientValid: 
       type: Boolean
@@ -350,6 +351,11 @@ Polymer {
     @isPatientValid = false
     @domHost.showModalDialog 'Invalid Patient Provided'
 
+  subViewChanged: (value)->
+    if value is 3
+      @set 'selectedVitalPage', 0
+
+
 
   searchGalleryTapped: (e)->
     data = { 
@@ -597,7 +603,7 @@ Polymer {
 
     @_loadUser()
     @set 'selectedMedicinePage', 0
-    @set 'selectedVitalPage', 0
+    
     @set 'selectedTestPage', 0
     @set 'selectedNextVisitPage', 0
     @set 'selectedCommentPage', 0
