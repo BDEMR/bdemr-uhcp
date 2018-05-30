@@ -17,7 +17,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
     hideAd: true
@@ -35,6 +35,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showPrintButton: false
     accessId: 'none'
+    showToolbar: true
   }
   {
     name: 'internal'
@@ -48,6 +49,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showPrintButton: false
     accessId: 'none'
+    showToolbar: true
   }
   {
     name: 'send-feedback'
@@ -61,6 +63,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showPatientsName: false
     accessId: 'D012'
+    showToolbar: true
   }
   {
     name: 'activate'
@@ -73,7 +76,7 @@ app.pages.pageList = [
     headerType: 'modal'
     leftMenuEnabled: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -117,7 +120,7 @@ app.pages.pageList = [
     headerType: 'modal'
     leftMenuEnabled: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
   }
   {
@@ -131,7 +134,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D001'
   }
@@ -148,7 +151,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: false
     showOrganizationsName: true
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D010'
   }
@@ -163,7 +166,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D003' 
   }
@@ -179,7 +182,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D005'
   }
@@ -195,6 +198,7 @@ app.pages.pageList = [
     leftMenuEnabled: false
     showPatientsName: false
     accessId: 'D006'
+    showToolbar: true
   }
   {
     name: 'booking'
@@ -207,7 +211,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D009'
   }
@@ -222,7 +226,7 @@ app.pages.pageList = [
     headerType: 'modal'
     leftMenuEnabled: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D003'
   }
@@ -237,7 +241,7 @@ app.pages.pageList = [
     headerType: 'modal'
     leftMenuEnabled: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     accessId: 'D003'
   }
   {
@@ -251,7 +255,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D010'
   }
@@ -267,7 +271,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: false
     showOrganizationsName: true
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D010'
   }
@@ -283,7 +287,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: false
     showOrganizationsName: true
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D010'
   }
@@ -299,7 +303,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: true
     showOrganizationsName: true
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D010'
   }
@@ -316,7 +320,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: false
     showOrganizationsName: true
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D010'
   }
@@ -333,7 +337,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: false
     showOrganizationsName: true
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D010'
   }
@@ -349,7 +353,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D002'
   }
@@ -365,7 +369,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'R001'
   }
@@ -381,7 +385,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'R002'
   }
@@ -396,6 +400,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     hideHeaderTitle: false
+    showToolbar: true
   }
 
   {
@@ -412,7 +417,7 @@ app.pages.pageList = [
     showPrintButton: false
     showPatientsDetails: false
     hideAd: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D002'
   }
@@ -431,7 +436,7 @@ app.pages.pageList = [
     showPrintButton: false
     showPatientsDetails: false
     hideAd: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D002'
   }
@@ -447,7 +452,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D001'
     # showPrintButton: true
@@ -465,7 +470,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'D001'
     # showPrintButton: true
@@ -483,7 +488,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
     showPrintButton: false
@@ -502,6 +507,7 @@ app.pages.pageList = [
     showSaveButton: false
     showPatientsDetails: true
     showToolbar: true
+    showTallToolbar: true
     hideHeaderTitle: true
     accessId: 'D014'
   }
@@ -519,6 +525,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     hideHeaderTitle: false
     accessId: 'D004'
+    showToolbar: true
   }
 
   {
@@ -537,6 +544,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -555,6 +563,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -573,6 +582,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -591,6 +601,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -609,6 +620,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -627,6 +639,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
 
@@ -646,6 +659,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -662,6 +676,7 @@ app.pages.pageList = [
     showOrganizationsName: true
     hideHeaderTitle: false
     accessId: 'D010'
+    showToolbar: true
   }
   {
     name: 'organization-manage-waitlist'
@@ -677,6 +692,7 @@ app.pages.pageList = [
     showOrganizationsName: true
     hideHeaderTitle: false
     accessId: 'D010'
+    showToolbar: true
   }
   {
     name: 'page-print-old-medicine'
@@ -693,6 +709,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
 
@@ -712,6 +729,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -730,6 +748,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -748,6 +767,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -766,6 +786,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -784,6 +805,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -802,6 +824,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -820,6 +843,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -838,6 +862,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -856,6 +881,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -874,6 +900,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -889,7 +916,7 @@ app.pages.pageList = [
     showSaveButton: true
     showPrintButton: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -909,6 +936,7 @@ app.pages.pageList = [
     hideAd: false
     showPrintButton: false
     showToolbar: true
+    showTallToolbar: true
     hideHeaderTitle: true
     accessId: 'D014'
   }
@@ -927,7 +955,7 @@ app.pages.pageList = [
     showPatientsDetails: true
     hideAd: false
     showPrintButton: true
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: true
     accessId: 'D014'
   }
@@ -944,7 +972,7 @@ app.pages.pageList = [
     leftMenuEnabled: false
     showSaveButton: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -961,7 +989,7 @@ app.pages.pageList = [
     leftMenuEnabled: false
     showSaveButton: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -978,7 +1006,7 @@ app.pages.pageList = [
     leftMenuEnabled: true
     showSaveButton: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -997,6 +1025,7 @@ app.pages.pageList = [
     showPatientsDetails: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -1011,7 +1040,7 @@ app.pages.pageList = [
     leftMenuEnabled: false
     showSaveButton: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -1031,7 +1060,7 @@ app.pages.pageList = [
     showPatientsDetails: true
     hideAd: true
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -1048,6 +1077,7 @@ app.pages.pageList = [
     leftMenuEnabled: false
     hideHeaderTitle: false
     accessId: 'D011'
+    showToolbar: true
   }
 
   {
@@ -1062,7 +1092,7 @@ app.pages.pageList = [
     leftMenuEnabled: false
     showSaveButton: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -1079,7 +1109,7 @@ app.pages.pageList = [
     leftMenuEnabled: false
     showSaveButton: false
     showPatientsDetails: false
-    showToolbar: false
+    showToolbar: true
     hideHeaderTitle: false
     accessId: 'none'
   }
@@ -1098,6 +1128,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     hideHeaderTitle: false
     accessId: 'D007'
+    showToolbar: true
   }
 
   {
@@ -1114,6 +1145,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -1129,6 +1161,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
   {
     name: 'welcome-internal'
@@ -1143,6 +1176,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -1158,6 +1192,7 @@ app.pages.pageList = [
     leftMenuEnabled: false
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -1175,7 +1210,7 @@ app.pages.pageList = [
     hideAd: false
     hideHeaderTitle: false
     accessId: 'none'
-    showToolbar: false
+    showToolbar: true
   }
 
   {
@@ -1193,6 +1228,7 @@ app.pages.pageList = [
     hideAd: false
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
 
   }
 
@@ -1209,6 +1245,7 @@ app.pages.pageList = [
     showSaveButton: true
     showPatientsDetails: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -1224,6 +1261,7 @@ app.pages.pageList = [
     showSaveButton: true
     showPatientsDetails: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -1239,6 +1277,7 @@ app.pages.pageList = [
     showSaveButton: false
     showPatientsDetails: false
     accessId: 'none'
+    showToolbar: true
   }
 
   {
@@ -1254,6 +1293,7 @@ app.pages.pageList = [
     showSaveButton: false
     showOrganizationsName: true
     accessId: 'D020'
+    showToolbar: true
   }
 
   {
@@ -1272,6 +1312,7 @@ app.pages.pageList = [
     hideAd: true
     hideHeaderTitle: false
     accessId: 'none'
+    showToolbar: true
   }
 
 ]

@@ -161,7 +161,7 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
-                  <template class="header">Advices</template>
+                  <template class="header">Test Advices</template>
                   <template>
                     <ul>
                       <template is="dom-repeat" items="[[item.advisedTests.testAdvisedList]]" as="advice">
@@ -184,7 +184,7 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
-                  <template class="header">Treatment</template>
+                  <template class="header">Treatment (Drugs)</template>
                   <template>
                     <ul>
                       <template is="dom-repeat" as="medicine" items="[[item.medication]]">
@@ -381,7 +381,7 @@
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 0
+    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? invoiceItem.price : 0), 0) : 0
   },
 
   $getTotalCost(invoice) {
@@ -442,6 +442,7 @@
         this.domHost.showModalDialog(response.error.message);
         return this.loading = false;
       } else {
+        console.log(response)
         this.set('reportResults', response.data);
         return this.loading = false;
       }

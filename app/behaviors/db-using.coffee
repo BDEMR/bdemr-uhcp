@@ -99,7 +99,7 @@ app.behaviors.dbUsing =
     
     if previousUser 
       unless user.serial is previousUser.serial
-        app.db.removeExistingDatabase()
+        window.localStorage.clear()
         app.db.initializeDatabase()
     
     app.db.insert 'user', user
@@ -562,15 +562,14 @@ app.behaviors.dbUsing =
     app.db.update '--serial-generator', serialGenerator._id, serialGenerator
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
-  generateSerialForPriceListItem: ()->
+  generateSerialForPriceListItem: (orgnizationId)->
     appIdentifier = 'U'
     itemType = 'PL'
-    { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
     serialGenerator = (app.db.find '--serial-generator')[0]
     seed = serialGenerator['price-list-seed']
     serialGenerator['price-list-seed'] += 1
     app.db.update '--serial-generator', serialGenerator._id, serialGenerator
-    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+    return (appIdentifier + orgnizationId + itemType + seed)
   
   generateSerialForInvestigationPriceList: (orgnizationId)->
     appIdentifier = 'U'
