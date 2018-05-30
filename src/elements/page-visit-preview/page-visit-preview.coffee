@@ -1896,9 +1896,8 @@ Polymer {
               if @visit.nextVisitSerial
                 @_loadNextVisit @visit.nextVisitSerial
 
-              @async => 
-                @generatePrintPagination() 
-              ,100
+       
+              @generatePrintPagination()
 
 
   navigatedOut: ->

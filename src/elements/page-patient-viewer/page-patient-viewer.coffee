@@ -811,7 +811,8 @@ Polymer {
       # @domHost.setSelectedVisitSerial visit.serial
       # @domHost.selectedPatientPageIndex = 0
       @domHost.navigateToPage '#/visit-preview/visit:' + visit.serial + '/patient:' + @patient.serial
-      return
+      window.location.reload()
+      # return
 
   
 
