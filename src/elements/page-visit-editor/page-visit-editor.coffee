@@ -2188,7 +2188,6 @@ Polymer {
         examinationValueList: []
 
     app.db.insert 'custom-examination-list', object
-    @_addToInvoice object.data.name @visit.serial
 
   removeExaminationMember: (e)->
     el = @locateParentNode e.target, 'PAPER-ICON-BUTTON'
@@ -2315,8 +2314,6 @@ Polymer {
           # Push on Added Examination List
 
           @unshift 'addedExaminationList', modifiedObject
-
-          @_addToInvoice modifiedObject.name, @visit.serial
 
 
 
@@ -2720,7 +2717,7 @@ Polymer {
   addInvestigation: ()->
     unless @comboBoxInvestigationInputValue is ''
       if typeof @comboBoxInvestigationInputValue is 'object'
-        @_addToInvoice @comboBoxInvestigationInputValue.name, @visit.serial
+        @_addToInvoice @comboBoxInvestigationInputValue.name, 'Investigation', @visit.serial
         @push 'addedInvestigationList', @_makeNewAddedInvestigationObject @comboBoxInvestigationInputValue
 
         @addInvestigationAsFavorite @comboBoxInvestigationInputValue
@@ -5148,7 +5145,6 @@ Polymer {
 
       @push 'diagnosis.data.diagnosisList', { name: diagnosis }
       @_saveDiagnosis()
-      @_addToInvoice diagnosis, @visit.serial
       @domHost.showToast 'Diagnosis Added!'
       @comboBoxDiagnosisInputValue = ''
        
@@ -5342,7 +5338,7 @@ Polymer {
     @_saveInvoice()
 
   
-  _addToInvoice: (itemName, visitSerial)->
+  _addToInvoice: (itemName, category, visitSerial)->
     matchedItem = (item for item in @priceList when item.name is itemName)[0]
     if matchedItem
       matchedItem.qty = 1
@@ -5353,7 +5349,7 @@ Polymer {
         qty: 1
         price: 0
         actualCost: 0
-        category: "custom"
+        category: category
         subCategory: ""
         serial: null
         visitSerial: visitSerial
