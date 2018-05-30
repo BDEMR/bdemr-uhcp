@@ -2721,7 +2721,7 @@ Polymer {
   addInvestigation: ()->
     unless @comboBoxInvestigationInputValue is ''
       if typeof @comboBoxInvestigationInputValue is 'object'
-        @_addToInvoice @comboBoxInvestigationInputValue.name, 'Investigation', @visit.serial
+        # @_addToInvoice @comboBoxInvestigationInputValue.name, 'Investigation', @visit.serial
         @push 'addedInvestigationList', @_makeNewAddedInvestigationObject @comboBoxInvestigationInputValue
 
         @addInvestigationAsFavorite @comboBoxInvestigationInputValue
