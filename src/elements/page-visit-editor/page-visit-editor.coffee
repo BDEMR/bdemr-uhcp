@@ -813,6 +813,19 @@ Polymer {
         "Radiology"
       ]
 
+    organizationsIBelongToList:
+      type: Array
+      value: -> []
+
+    admissionTypeList:
+      type: Array
+      value: -> [
+        'Out patient/ Discharged with advice'
+        'Out patient/ Advised admission'
+        'In-Patient'
+        'Exclusion Criteria'
+      ]
+
 
     #####################################################################
     # Full Visit Preview - end
@@ -5172,35 +5185,67 @@ Polymer {
 
   ## diagnosis - end
 
+  # PATIENT DISCHARGE START
+  # ============================================================
 
-
-  # INVOICE START 
-  # ================================================================
-  _getServiceRendered: (index)->
-    optionList = [ 'Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom' ]
-    if index is 5
-      return @invoice.customServiceRendered
-    else
-      return optionList[index]
+  _loadOrganizationsIBelongTo: (cbfn)->
+    data = { 
+      apiKey: @user.apiKey
+    }
+    @callApi '/bdemr-organization-list-those-user-belongs-to', data, (err, response)=>
+      if response.hasError
+        @domHost.showModalDialog response.error.message
+      else
+        @set 'organizationsIBelongToList', response.data.organizationObjectList
+        cbfn() if cbfn
 
   
-  createInvoicePressed: ->
-    params = @domHost.getPageParams()
+  # ===============================
+  # PATIENT DISCHARGE
+  # By @taufiq
+  # ===============================
+  
+  _makeNewPatientDischargeNote: ->
+    patientDischargeNote = {
+      serial: null
+      lastModifiedDatetimeStamp: lib.datetime.now()
+      createdDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
+      createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
+      visitSerial: null
+      patientSerial: @patient.serial
+      doctorName: @visit.doctorName
+      doctorSpeciality: @visit.doctorSpeciality 
+      data: {}
+    }
+    @set 'patientDischargeNote', {}
+    @set 'patientDischargeNote', patientDischargeNote
+    
 
-    if params['visit'] is 'new'
-      @visit.serial = @generateSerialForVisit()
-      @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
+  _savePatientDischargeNote: ()->
 
-    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
+    unless @visit.serial isnt null
+      @_saveVisit()
+      @patientDischargeNote.visitSerial = @visit.serial
+      
+    unless @patientDischargeNote.serial isnt null
+      @patientDischargeNote.serial = @generateSerialForUhcpPatientDischargeNote()
+      @visit.patientDischargeNoteSerial = @patientDischargeNote.serial
+      @patientDischargeNote.visitSerial = @visit.serial
+      @_saveVisit()
+        
+    console.log 'patientDischargeNote', @patientDischargeNote
 
-  editInvoicePressed: (e)->
-    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
+    @patientDischargeNote.lastModifiedDatetimeStamp = lib.datetime.now()
+    app.db.upsert 'uhcp-patient-discharge-note', @patientDischargeNote, ({serial})=> @patientDischargeNote.serial is serial
 
-  printInvoicePressed: ()->
-    params = @domHost.getPageParams()
-    if params['visit-invoice'] != 'new'
-      @domHost.navigateToPage '#/print-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
+
+  admissionTypeChanged: (e)->
+    switch @patientStay.data.admissionType
+      when 'Out patient/ Discharged with advice' then @advisedAdmission = false
+      when 'Out patient/ Advised admission', 'Seen in emergency/ Advised admission' then @advisedAdmission = true
+      else @showAdmission = true
 
 
   # ===============================
@@ -5322,7 +5367,41 @@ Polymer {
 
     @$.dialogReferral.toggle()
 
+  # REFERRAL END
+  # ==========================================
 
+
+  # ===============================
+  # INVOICE
+  # By @taufiq
+  # ===============================
+  _getServiceRendered: (index)->
+    optionList = [ 'Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom' ]
+    if index is 5
+      return @invoice.customServiceRendered
+    else
+      return optionList[index]
+
+  
+  createInvoicePressed: ->
+    params = @domHost.getPageParams()
+
+    if params['visit'] is 'new'
+      @visit.serial = @generateSerialForVisit()
+      @visit.lastModifiedDatetimeStamp = lib.datetime.now()
+      app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
+
+    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
+
+  editInvoicePressed: (e)->
+    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
+
+  printInvoicePressed: ()->
+    params = @domHost.getPageParams()
+    if params['visit-invoice'] != 'new'
+      @domHost.navigateToPage '#/print-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
+
+  
   _addMedicinePriceToInvoice: (itemName, qty, visitSerial)->
     matchedItem = (item for item in @medicineCompositionList when item.brandName is itemName)[0]
     invoiceItem = {

@@ -1965,9 +1965,9 @@
 
                   <div class="preview-title layout">
                     <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_patient_stay.png"></iron-icon> -->
-                    <div class="type title-2 flex">Discharge</div>
+                    <div class="type title-2 flex">Patient Discharge</div>
                     <div class="action-area">
-                      <paper-button class="btn-add m-vert" on-tap="savePatientStayPressed">
+                      <paper-button class="btn-add m-vert" on-tap="_savePatientDischargeNote">
                         <iron-icon icon="icons:save"></iron-icon>
                       </paper-button>
                     </div>
@@ -1978,18 +1978,19 @@
                     <section id="admission-section">
 
                       <div class="card-content layout vertical types">
-                        <paper-radio-group id="admissionTypeRadioGroup" selected="{{patientStay.data.admissionType}}" class="layout vertical" on-iron-select="admissionTypeChanged">
+                        <paper-radio-group id="admissionTypeRadioGroup" selected="{{patientDischargeNote.data.admissionType}}" class="layout vertical"
+                          on-iron-select="admissionTypeChanged">
                           <template is="dom-repeat" items="[[admissionTypeList]]">
                             <paper-radio-button name="[[item]]">[[item]]</paper-radio-button>
                           </template>
                         </paper-radio-group>
 
                         <template is="dom-if" if="[[!advisedAdmission]]">
-                          <paper-input class="p-16" label="Advice" value="{{patientStay.data.advise}}"></paper-input>
+                          <paper-input class="p-16" label="Advice" value="{{patientDischargeNote.data.advise}}"></paper-input>
                         </template>
                         <template is="dom-if" if="[[advisedAdmission]]">
-                          <paper-input label="Referred By" value="{{patientStay.data.referredByDoctorName}}"></paper-input>
-                          <paper-input label="Admitted By" value="{{patientStay.data.admittedByDoctorName}}"></paper-input>
+                          <paper-input label="Referred By" value="{{patientDischargeNote.data.referredByDoctorName}}"></paper-input>
+                          <paper-input label="Admitted By" value="{{patientDischargeNote.data.admittedByDoctorName}}"></paper-input>
                         </template>
                       </div>
 
@@ -2014,59 +2015,6 @@
 
                       </template>
                     </section>
-
-                    <section id="discharge-section">
-                      <template is="dom-if" if="[[patientDischarged]]">
-
-                        <!-- Discharged Reason - start -->
-                        <div class="type body-lead p-vertical-8 p-horizontal-16">Discharged Reason</div>
-                        <div class="card-content layout vertical discharge-reason">
-                          <div>
-                            <vaadin-date-picker class="m-left-16" label="Discharged Date" value="{{patientStay.data.dischargeDatetimeStamp}}"></vaadin-date-picker>
-                            <br>
-                          </div>
-                          <div class="checkbox-group layout vertical m-left-16">
-                            <template is="dom-repeat" items="[[dischargeReasonList]]">
-                              <paper-checkbox on-change="dischargeReasonChanged" name="[[item]]">[[item]]</paper-checkbox>
-                            </template>
-                          </div>
-
-                          <template is="dom-if" if="[[patientStay.data.dischargeReason.length]]">
-                            <div class="p-16 bg-gray" style="text-align: left;">
-                              <template is="dom-repeat" items="[[patientStay.data.dischargeReason]]">
-                                <span class="type italic bold m-right-8 primary">[[item]]</span>,
-                              </template>
-                            </div>
-                          </template>
-
-                          <paper-textarea class="m-left-16" label="Discharged Custom Resaon" on-keyup="customDischargeReasonAdded"></paper-textarea>
-                        </div>
-                        <!-- Discharged Reason - end -->
-
-                        <!-- Discharged - start -->
-                        <div class="type body-lead p-vertical-8 p-horizontal-16">Discharged to</div>
-                        <div class="card-content layout vertical discharge-reason">
-                          <div class="checkbox-group layout vertical m-left-16">
-                            <template is="dom-repeat" items="[[dischargedToList]]">
-                              <paper-checkbox on-change="dischargedToChanged" name="[[item]]">[[item]]</paper-checkbox>
-                            </template>
-                          </div>
-                          <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
-                            <div class="p-16 bg-gray" style="text-align: left;">
-                              <template is="dom-repeat" items="[[patientStay.data.dischargeTo]]">
-                                <span class="type italic bold m-right-8 primary">[[item]]</span>,
-                              </template>
-                            </div>
-                          </template>
-                          <paper-textarea class="m-left-16" label="Discharged To Custom Resaon" on-keyup="customDischargeToAdded"></paper-textarea>
-
-                          <paper-input label="Discharged By" value="{{patientStay.data.dischargedByDoctorName}}"></paper-input>
-                        </div>
-                        <!-- Discharged - end -->
-
-                      </template>
-                    </section>
-
                   </iron-pages>
                   </div>
               </template>
