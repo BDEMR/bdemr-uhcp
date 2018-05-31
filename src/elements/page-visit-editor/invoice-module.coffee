@@ -13,9 +13,10 @@ app.behaviors.local.invoiceMixin =
   ]
 
 
-  _makeNewInvoice: ->
+  _makeNewInvoice: (visitSerial)->
     invoice = {
       serial: @generateSerialForinvoice()
+      visitSerial: visitSerial
       referenceNumber: null
       createdDatetimeStamp: lib.datetime.now()
       createdByUserSerial: @user.serial

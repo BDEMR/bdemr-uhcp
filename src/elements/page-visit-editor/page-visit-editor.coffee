@@ -5342,7 +5342,7 @@ Polymer {
     if Object.keys(@invoice).length
       @push 'invoice.data', invoiceItem
     else
-      @_makeNewInvoice()
+      @_makeNewInvoice(visitSerial)
       @push 'invoice.data', invoiceItem
     @_saveInvoice()
 
@@ -5370,10 +5370,9 @@ Polymer {
     if Object.keys(@invoice).length
       @push 'invoice.data', matchedItem
     else
-      @_makeNewInvoice()
+      @_makeNewInvoice(visitSerial)
       @push 'invoice.data', matchedItem
     @_saveInvoice()
-    console.log @invoice
 
 
   calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
