@@ -9,15 +9,13 @@
 <dom-module id="custom-vital-search">
   <template>
     <style is="custom-style" include="iron-flex iron-flex-alignment">
-      
       :host {
         display: inline-block;
       }
 
       .filter paper-input {
-        --paper-input-container: {
-          margin-left: 10px;
-        }
+        width: 100%;
+        --paper-input-container: {}
         --paper-input-container-label: {
           font-size: 13px;
         }
@@ -31,7 +29,7 @@
         height: 36px
       }
 
-      @media only screen and (max-width : 380px){
+      @media only screen and (max-width: 380px) {
         .filter paper-input {
           --paper-input-container: {
             margin-left: 0;
@@ -46,14 +44,13 @@
           }
         }
       }
-
     </style>
-    
-    <div class="filter layout horizontal center wrap">
+
+    <div class="filter layout horizontal center">
       <paper-input label="Click to Filter By Date" no-label-float readonly value="[[filterDateRange]]" on-click="showFilterModalButtonClicked"></paper-input>
       <paper-icon-button icon="close" on-tap="clearIconClicked" hidden$="[[!filterDateRange]]"></paper-icon-button>
     </div>
-    
+
     <!--Filter Modal-->
     <paper-dialog id="filterModal">
       <h3>Filter By</h3>
@@ -71,7 +68,3 @@
   </template>
   <script src="custom-vital-search.coffee-compiled.js"></script>
 </dom-module>
-
-
-
-
