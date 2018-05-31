@@ -642,6 +642,8 @@ Polymer {
 
     @_loadPatientNextVisit params['patient']
 
+    @_loadInvoice(@patient.serial, @organization.idOnServer)
+
     @loadPatientPccRecords params['patient']
     @loadPatientNdrRecords params['patient']
 
@@ -2646,7 +2648,8 @@ Polymer {
         app.db.upsert 'employee-leave-data', @leaveData, ({serial})=> serial is @leaveData.serial
   
   _loadInvoice: (patientSerialIdentifier, organizationIdentifier)->
-    invoiceList = app.db.find 'patient-invoice', ({patientSerial, organizationId})-> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier
+    invoiceList = app.db.find 'visit-invoice', ({patientSerial, organizationId})-> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier
+    console.log invoiceList
     notCompletedInvoiceList = (item for item in invoiceList when item.flags.markAsCompleted isnt true)
     if invoiceList.length > 0
       @set 'invoiceList', invoiceList
@@ -2706,22 +2709,24 @@ Polymer {
     @domHost.navigateToPage '#/create-invoice/invoice:new/patient:' + @patient.serial + '/visit:' + visit.serial
 
   editInvoiceItemClicked: (e)->
-    @domHost.navigateToPage '#/create-invoice/invoice:' + e.model.item.serial + '/patient:' + @patient.serial
+    invoice = e.model.item
+    @domHost.navigateToPage '#/create-invoice/invoice:' + invoice.serial + '/patient:' + @patient.serial + '/visit:' + invoice.visitSerial
 
   previewInvoiceItemClicked: (e)->
-    @domHost.navigateToPage '#/print-invoice/invoice:' + e.model.item.serial + '/patient:' + @patient.serial
+    invoice = e.model.item
+    @domHost.navigateToPage '#/print-invoice/invoice:' + invoice.serial + '/patient:' + @patient.serial + '/visit:' + invoice.visitSerial
 
   invoiceMarkedAsCompleteButtonClicked: (e)->
     item = e.model.item
     item.flags.markAsCompleted = true
-    app.db.upsert 'patient-invoice', item, ({serial})=> item.serial is serial
+    app.db.upsert 'visit-invoice', item, ({serial})=> item.serial is serial
     @_loadInvoice @patient.serial, @organization.idOnServer
     @$$('#invoiceMenuButton').close()
     
   flagAsErrorInvoiceItemClicked: (e)->
     item = e.model.item
     item.flags.flagAsError = true
-    app.db.upsert 'patient-invoice', item, ({serial})=> item.serial is serial
+    app.db.upsert 'visit-invoice', item, ({serial})=> item.serial is serial
     @_loadInvoice @patient.serial, @organization.idOnServer
     @$$('#invoiceMenuButton').close()
 

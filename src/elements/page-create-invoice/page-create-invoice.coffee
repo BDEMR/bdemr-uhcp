@@ -196,7 +196,7 @@ Polymer {
   _loadVisit: (visitIdentifier)->
     list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
     if list.length is 1
-      @visit = list[0]
+      @set 'visit', list[0]
       return true
     else
       @_notifyInvalidVisit()
@@ -293,6 +293,7 @@ Polymer {
   _makeNewInvoice: ->
     invoice = {
       serial: @generateSerialForinvoice()
+      visitSerial: @visit.serial
       referenceNumber: null
       createdDatetimeStamp: lib.datetime.now()
       createdByUserSerial: @user.serial
@@ -481,7 +482,8 @@ Polymer {
     app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
     @domHost.showToast 'Invoice Saved Successfully'
     @_updateVisit @invoice.serial
-    @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
+    # @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
+    @domHost.navigateToPreviousPage()
      
 
   # =====================================================================
