@@ -12,6 +12,7 @@ Polymer {
     app.behaviors.dbUsing
     app.behaviors.debug
     app.behaviors.local['root-element'].dataLoader
+    app.behaviors.local['root-element'].newSync
     app.behaviors.local['root-element'].patientsDataSyncConfig
     app.behaviors.local['root-element'].patientsDataSync
     app.behaviors.local['root-element'].userDataSyncConfig
@@ -812,10 +813,11 @@ Polymer {
         @navigateToPage '#/patient-viewer/patient:' + @currentPatientsDetails.serial + '/selected:' + @selectedPatientPageIndex
         @pageElement.navigatedIn()
 
-  _changeToolbarClass: (showToolbar) ->
-    if showToolbar is true
+  _changeToolbarClass: (showTallToolbar)->
+    if showTallToolbar
       return 'medium-tall'
-    else return ''
+    else 
+      return ''
 
   _checkUserAccess: (accessId)->
     currentOrganization = @getCurrentOrganization()
@@ -949,8 +951,14 @@ Polymer {
   # = REGION ======================================
 
   syncButtonPressed: (e)->
-    @_sync()
+    @_newSync (errMessage)=>
+      if errMessage
+        # @$$('#sync-dialog').toggle()
+        @async => @showModalDialog(errMessage);
+      else
+        # @$$('#sync-dialog').toggle()
+        @reloadPage()
     
-  # sync code moved to 'mixin-call-sync.coffee' file
+  # old sync code moved to 'mixin-call-sync.coffee' file
 
 }

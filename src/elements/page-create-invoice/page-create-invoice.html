@@ -208,11 +208,11 @@
           <paper-card>
             <div class="card-custom-header">
               <div class="layout horizontal center">
-                <div class="title flex">Invoice [[invoice.referenceNumber]]</div>
-                <paper-button class="btn btn-sm btn-default" on-tap="syncPriceListButtonClicked">
+                <div class="flex">Invoice : [[invoice.serial]]</div>
+                <!-- <paper-button class="btn btn-sm btn-default" on-tap="syncPriceListButtonClicked">
                   <iron-icon icon="autorenew"></iron-icon>
                   Update Price List
-                </paper-button>
+                </paper-button> -->
                 <paper-button class="btn btn-sm btn-primary" on-tap="addCustomItemToInvoiceButtonPressed">
                   <iron-icon icon="add"></iron-icon>
                   Add Custom Item
@@ -220,7 +220,7 @@
               </div>
             </div>
             <div class="card-content">
-              <paper-autocomplete id="invoiceSearchInput" label="Search Item" source="[[invoiceSourceDataList]]" on-autocomplete-selected="invoiceItemAutocompleteSelected">
+              <paper-autocomplete id="invoiceSearchInput" label="Search Item" source="[[invoiceAutoCompleteSourceDataList]]" on-autocomplete-selected="invoiceItemAutocompleteSelected">
               </paper-autocomplete>
             </div>
           </paper-card>
@@ -243,6 +243,7 @@
                         <div class="item layout horizontal center">
                           <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
                           <div class="flex">[[item.name]]</div>
+                          <div class="type caption m-right-8 secondary">[[item.subCategory]]</div>
                           <div>[[item.price]] BDT</div>
                         </div>
                       </template>
@@ -275,7 +276,7 @@
                     <th width="80">Gross</th>
                     <th width="80"></th>
                   </tr>
-                  <template id="invoice-item-repeater" is="dom-repeat" items="{{invoice.data}}">
+                  <template id="invoice-item-repeater" is="dom-repeat" items="[[invoice.data]]">
                     <tr>
                       <td>
                         <template is="dom-if" if="[[item.price]]">
@@ -292,8 +293,8 @@
                         <div class="flex-7 layout vertical">
                           <div>
                             [[item.name]]
-                            <template is="dom-if" if="[[item.type]]">
-                              <span class="type secondary">[[item.type]]</span>
+                            <template is="dom-if" if="[[item.subCategory]]">
+                              <span class="type secondary">[[item.subCategory]]</span>
                             </template>
                           </div>
                           <template is="dom-if" if="[[item.itemList]]">
@@ -325,23 +326,25 @@
                 <table class="table">
                   <tr>
                     <th>Total</th>
-                    <td>[[invoice.totalBilled]] BDT</td>
+                    <td width="190">[[invoice.totalBilled]] BDT</td>
                   </tr>
-                  <tr>
-                    <th>Paid Amount</th>
-                    <td width="190">
-                      <input style="font-size: 16px" is="iron-input" type="number" bind-value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]"
-                        auto-validate prevent-invalid-input required/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Due</th>
-                    <td>[[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</td>
-                  </tr>
-                  <tr>
-                    <th>Total Amount Received:</th>
-                    <td>[[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</td>
-                  </tr>
+                  <template is="dom-if" if="[[exclusionCriteria]]">
+                    <tr>
+                      <th>Paid Amount</th>
+                      <td>
+                        <input style="font-size: 16px" is="iron-input" type="number" bind-value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]"
+                          auto-validate prevent-invalid-input required/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Due</th>
+                      <td>[[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</td>
+                    </tr>
+                    <tr>
+                      <th>Total Amount Received:</th>
+                      <td>[[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</td>
+                    </tr>
+                  </template>
                 </table>
 
               </div>
@@ -384,5 +387,6 @@
 
   </template>
 
+  <script src="../mixin/load-price-list-mixin.coffee-compiled.js "></script>
   <script src="page-create-invoice.coffee-compiled.js"></script>
 </dom-module>

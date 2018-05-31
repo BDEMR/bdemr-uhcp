@@ -100,10 +100,18 @@
 
       .drawer-list a {
         display: block;
-        padding: 0 16px;
-        line-height: 40px;
+        @apply(--layout-horizontal);
+        padding: 12px 16px;
         text-decoration: none;
         color: var(--app-secondary-color);
+        border-bottom: 1px solid #f5f5f5;
+      }
+
+      .drawer-list a>iron-icon {
+        color: var(--app-primary-color);
+        height: 18px;
+        width: 18px;
+        margin-right: 10px;
       }
 
       .drawer-list a.iron-selected {
@@ -418,28 +426,43 @@
               <span class="type caption">[[currentOrganization.userActiveRole.title]]</span>
             </div>
           </div>
-          <iron-selector selected="[[page.name]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="dashboard" href="#/dashboard" drawer-toggle>Dashboard</a>
-            <a name="patient-manager" href="#/patient-manager" drawer-toggle hidden$="[[!_checkUserAccess('D001')]]">Patient Manager</a>
-            <a name="patient-manager" href="#/reports-manager" drawer-toggle hidden$="[[!_checkUserAccess('D002')]]">Reports Manager</a>
-            <a name="patient-manager" href="#/chamber-manager" drawer-toggle hidden$="[[!_checkUserAccess('D003')]]">Chamber Manager</a>
-            <a name="medicine-dispension" href="#/medicine-dispension" drawer-toggle hidden$="[[!_checkUserAccess('D004')]]">Medicine Dispension</a>
-            <template is="dom-if" if="[[!user.isUsingAsAssistant]]">
+          <iron-selector selected="[[page.name]]" attr-for-selected="name" class="drawer-list flex" role="navigation">
+            <a name="dashboard" href="#/dashboard" drawer-toggle>
+              <iron-icon icon="home"></iron-icon> Dashboard
+            </a>
+            <a name="patient-manager" href="#/patient-manager" drawer-toggle hidden$="[[!_checkUserAccess('D001')]]">
+              <iron-icon icon="account-box"></iron-icon>
+              Patient Manager</a>
+
+            <a name="patient-manager" href="#/reports-manager" drawer-toggle hidden$="[[!_checkUserAccess('D002')]]">
+              <iron-icon icon="pageview"></iron-icon> Reports Manager</a>
+            <!-- <template is="dom-if" if="[[!user.isUsingAsAssistant]]">
               <a name="assistant-manager" href="#/assistant-manager" drawer-toggle hidden$="[[!_checkUserAccess('D005')]]">Assistant Manager</a>
-            </template>
-            <a name="search-record" href="#/search-record" drawer-toggle hidden$="[[!_checkUserAccess('D006')]]">Search Records</a>
+            </template> -->
+            <!-- <a name="search-record" href="#/search-record" drawer-toggle hidden$="[[!_checkUserAccess('D006')]]">Search Records</a> -->
             <!-- <a name="invoice-manager" href="#/invoice-manager" drawer-toggle hidden$="[[!_checkUserAccess('D007')]]">Invoice Manager</a> -->
-            <a name="booking" href="#/booking" drawer-toggle hidden$="[[!_checkUserAccess('D009')]]">Booking and Services</a>
-            <a name="organization-manager" href="#/organization-manager" drawer-toggle hidden$="[[!_checkUserAccess()]]">Organization Manager</a>
-            <a name="uhcp-report" href="#/uhcp-summary-report" drawer-toggle hidden$="[[!_checkUserAccess('R001')]]">Summary Reports</a>
-            <a name="uhcp-all-visits-report" href="#/uhcp-all-visits-report" drawer-toggle hidden$="[[!_checkUserAccess('R002')]]">Visits Reports</a>
-            <a name="notification-panel" href="#/notification-panel" drawer-toggle hidden$="[[!_checkUserAccess('D011')]]">Send Notification</a>
-            <a name="my-wallet" href="#/wallet" drawer-toggle>[[$TRANSLATE('My Wallet',LANG)]]</a>
-            <a name="send-feedback" href="#/send-feedback" drawer-toggle hidden$="[[!_checkUserAccess('D012')]]">Send Feedback</a>
-            <a name="welcome-internal" href="#/welcome-internal" drawer-toggle>Welcome</a>
-            <a name="settings" href="#/settings" drawer-toggle>Settings</a>
+            <a name="organization-manager" href="#/organization-manager" drawer-toggle hidden$="[[!_checkUserAccess()]]">
+              <iron-icon icon="account-balance"></iron-icon> Organization Manager</a>
+
+            <a name="uhcp-report" href="#/uhcp-summary-report" drawer-toggle hidden$="[[!_checkUserAccess('R001')]]">
+              <iron-icon icon="assessment"></iron-icon> Summary Reports</a>
+
+            <a name="uhcp-all-visits-report" href="#/uhcp-all-visits-report" drawer-toggle hidden$="[[!_checkUserAccess('R002')]]">
+              <iron-icon icon="assignment"></iron-icon> Visits Reports</a>
+
+            <a name="notification-panel" href="#/notification-panel" drawer-toggle hidden$="[[!_checkUserAccess('D011')]]">
+              <iron-icon icon="announcement"></iron-icon> Send Notification</a>
+            <!-- <a name="my-wallet" href="#/wallet" drawer-toggle>[[$TRANSLATE('My Wallet',LANG)]]</a> -->
+            <a name="send-feedback" href="#/send-feedback" drawer-toggle hidden$="[[!_checkUserAccess('D012')]]">
+              <iron-icon icon="thumbs-up-down"></iron-icon> Send Feedback</a>
+
+            <!-- <a name="welcome-internal" href="#/welcome-internal" drawer-toggle><iron-icon icon="assessment"></iron-icon> Welcome</a> -->
+
+            <a name="settings" href="#/settings" drawer-toggle>
+              <iron-icon icon="settings"></iron-icon> Settings</a>
             <hr>
-            <a on-tap="logoutPressed">Logout</a>
+            <a href="" on-tap="logoutPressed">
+              <iron-icon icon="exit-to-app"></iron-icon> Logout</a>
             <!-- <hr> -->
             <!-- <a name="dev-tools" href="#/dev-tools">Dev Tools</a> -->
           </iron-selector>
@@ -558,7 +581,7 @@
 
         <!-- App header - Start -->
         <app-header reveals>
-          <paper-toolbar class$="{{_changeToolbarClass(page.showToolbar)}}">
+          <paper-toolbar class$="{{_changeToolbarClass(page.showTallToolbar)}}" hidden="[[!page.showToolbar]]">
 
             <!--  header - start -->
             <template is="dom-if" if="[[$equals(page.headerType, 'normal')]]">
@@ -581,63 +604,60 @@
               </template>
             </div>
 
-            <template is="dom-if" if="[[!$equals(page.name, 'login')]]">
 
-              <paper-button id="orgSwitch" on-tap="changeOrganizationClicked">
-                <div>
-                  <strong>[[currentOrganization.name]]</strong>
-                </div>
-                <template is="dom-if" if="[[currentOrganization]]">
-                  <div class="type caption-2" style="text-transform: capitalize;">SMS Left: [[orgSmsBalance]]</div>
-                </template>
-
-              </paper-button>
-
-              <paper-menu-button no-overlap id="langSwitch">
-                <paper-button class="dropdown-trigger lang-button">
-                  <iron-icon icon="language"></iron-icon>
-                  [[languageName]]
-                </paper-button>
-                <paper-menu class="dropdown-content" selected="{{languageSelectedIndex}}">
-                  <paper-item>English (US)</paper-item>
-                  <paper-item>Bengali / বাংলা</paper-item>
-                </paper-menu>
-              </paper-menu-button>
-
-              <template is="dom-if" if="[[downloadActions.count]]">
-                <paper-icon-button id="fileDownloadIcon" icon="file-download"></paper-icon-button>
-                <paper-badge for="fileDownloadIcon" label="[[downloadActions.count]]"></paper-badge>
-              </template>
-
-              <template is="dom-if" if="[[apiActions.count]]">
-                <paper-icon-button id="apiActionsIcon" icon="swap-vertical-circle"></paper-icon-button>
-                <paper-badge for="apiActionsIcon" label="[[apiActions.count]]"></paper-badge>
-              </template>
-
-              <template is="dom-if" if="[[page.showPrintButton]]">
-                <paper-icon-button icon="print" on-tap="printButtonPressed"></paper-icon-button>
-              </template>
-
-              <template is="dom-if" if="[[page.showSaveButton]]">
-                <paper-icon-button icon="save" on-tap="saveButtonPressed"></paper-icon-button>
-              </template>
-
+            <paper-button id="orgSwitch" on-tap="changeOrganizationClicked">
+              <div>
+                <strong>[[currentOrganization.name]]</strong>
+              </div>
               <template is="dom-if" if="[[currentOrganization]]">
-                <template is="dom-if" if="[[_showSyncButton(syncActions.count,downloadActions.count)]]">
-                  <paper-icon-button icon="cloud-upload" on-tap="syncButtonPressed"></paper-icon-button>
-                </template>
+                <div class="type caption-2" style="text-transform: capitalize;">SMS Left: [[orgSmsBalance]]</div>
               </template>
-              <template is="dom-if" if="[[syncActions.count]]">
-                <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
-              </template>
-              <!-- <paper-icon-button icon="refresh" on-tap="refreshButtonPressed"></paper-icon-button> -->
-              <paper-icon-button icon="add-alert" on-tap="notificationToggleButtonPressed"></paper-icon-button>
-              <!--  header - end -->
 
+            </paper-button>
+
+            <paper-menu-button no-overlap id="langSwitch">
+              <paper-button class="dropdown-trigger lang-button">
+                <iron-icon icon="language"></iron-icon>
+                [[languageName]]
+              </paper-button>
+              <paper-menu class="dropdown-content" selected="{{languageSelectedIndex}}">
+                <paper-item>English (US)</paper-item>
+                <paper-item>Bengali / বাংলা</paper-item>
+              </paper-menu>
+            </paper-menu-button>
+
+            <template is="dom-if" if="[[downloadActions.count]]">
+              <paper-icon-button id="fileDownloadIcon" icon="file-download"></paper-icon-button>
+              <paper-badge for="fileDownloadIcon" label="[[downloadActions.count]]"></paper-badge>
             </template>
 
+            <template is="dom-if" if="[[apiActions.count]]">
+              <paper-icon-button id="apiActionsIcon" icon="swap-vertical-circle"></paper-icon-button>
+              <paper-badge for="apiActionsIcon" label="[[apiActions.count]]"></paper-badge>
+            </template>
 
-            <template is="dom-if" if="[[page.showToolbar]]">
+            <template is="dom-if" if="[[page.showPrintButton]]">
+              <paper-icon-button icon="print" on-tap="printButtonPressed"></paper-icon-button>
+            </template>
+
+            <template is="dom-if" if="[[page.showSaveButton]]">
+              <paper-icon-button icon="save" on-tap="saveButtonPressed"></paper-icon-button>
+            </template>
+
+            <template is="dom-if" if="[[currentOrganization]]">
+              <template is="dom-if" if="[[!apiActions.count]]">
+                <paper-icon-button icon="backup" on-tap="syncButtonPressed"></paper-icon-button>
+              </template>
+            </template>
+            <template is="dom-if" if="[[apiActions.count]]">
+              <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
+            </template>
+            <paper-icon-button icon="add-alert" on-tap="notificationToggleButtonPressed"></paper-icon-button>
+            <!--  header - end -->
+
+
+
+            <template is="dom-if" if="[[page.showTallToolbar]]">
               <div class="bottom">
 
                 <div class="flex custom-toolbar">
@@ -649,8 +669,6 @@
                       </div>
                     </paper-tab>
                     <paper-tab>[[$TRANSLATE('Details',LANG)]]</paper-tab>
-                    <!-- 
-                    <paper-tab><img class="m-right-8" width="24" height="24" src="../../assets/img/partners/badas_logo.png" alt="">[[$TRANSLATE('PCC Records',LANG)]]</paper-tab> -->
                     <paper-tab>[[$TRANSLATE('Confirmed Diagnosis',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Medicine',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Vitals',LANG)]]</paper-tab>
@@ -736,11 +754,10 @@
     <!-- generic-modal-dialog - end -->
 
     <!-- sync - start -->
-    <paper-dialog id="sync-dialog" modal>
+    <paper-dialog id="syncDialog" modal>
       <p>SYNC is in progress, please wait...</p>
       <div class="layout vertical center">
         <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
-        <span>[[syncCompleted]]/43</span>
       </div>
     </paper-dialog>
     <!-- sync - end -->
@@ -752,6 +769,7 @@
 
   </template>
   <script src="behavior-data-loader.coffee-compiled.js"></script>
+  <script src="behavior-sync.js"></script>
   <script src="behavior-user-data-sync.coffee-compiled.js"></script>
   <script src="behavior-user-data-sync-config.coffee-compiled.js"></script>
   <script src="behavior-patients-data-sync.coffee-compiled.js"></script>

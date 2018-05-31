@@ -7,6 +7,7 @@ Polymer {
     app.behaviors.pageLike
     app.behaviors.apiCalling
     app.behaviors.commonComputes
+    app.behaviors.local.loadPriceListMixin
   ]
   
   properties:
@@ -67,12 +68,14 @@ Polymer {
       value: {}
 
     priceList:
-      type: Object
-      value: -> {}
+      type: Array
+      value: -> []
 
     priceListCategories:
       type: Array
       value: -> []
+
+    exclusionCriteria: Boolean
 
   observers: [
     'calculateTotalPrice(invoice.data.splices, invoice.discount)'
@@ -124,6 +127,9 @@ Polymer {
 
     params = @domHost.getPageParams()
 
+    if params['exclusion']
+      @set 'exclusionCriteria', true
+
     @_loadUser()
 
     @_loadOrganization()
@@ -149,12 +155,15 @@ Polymer {
     else
       @_loadInvoice params['invoice']
 
-    @_loadInvoiceCategoryList @organization.idOnServer
+    # _loadPriceList from ../mixin/load-price-list-mixin.coffee
+    @_loadPriceList @organization.idOnServer, (priceList)=>
+      if priceList.length
+        @set 'priceList', priceList
+        @_loadItemSearchAutoComplete priceList
+        @_loadCategories priceList
+      else
+        @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
 
-    # @_loadItemSearchAutoComplete()
-
-    @_loadPriceList @organization.idOnServer, (priceListData)=>
-      @_loadCategories priceListData
 
   _loadUser:()->
     userList = app.db.find 'user'
@@ -196,24 +205,6 @@ Polymer {
   _notifyInvalidVisit: ->
     @domHost.showModalDialog 'Invalid Visit Provided'
 
-  _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
-  
-  _loadPriceList: (organizationIdentifier, cbfn)->
-    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
-    
-    if lastSyncedDatetimeStamp
-      priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-      if priceListFromLocalStorage.length
-        @set 'priceList', priceListFromLocalStorage
-        cbfn priceListFromLocalStorage
-      else 
-        @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-          @_insertItemIntoDatabase priceListFromFile
-          @set 'priceList', priceListFromFile
-          cbfn priceListFromFile
-    else
-      @domHost._sync()
-
   _getCategoriesFromPriceListData: (priceListData)->
     categoryMap = priceListData.reduce ((obj, item)=>
       obj[item.category] = null
@@ -245,6 +236,7 @@ Polymer {
   addCustomItemToInvoiceButtonPressed: ->  
     @_invokeCustomModal (data)->
       if data
+        data.category = 'custom'
         data.qty = 1
         data.totalPrice = data.price
         @push 'invoice.data', data
@@ -252,8 +244,8 @@ Polymer {
   # AUTOCOMPLETE SEARCH
   # ===========================================
   
-  _loadItemSearchAutoComplete: ->
-    
+  _loadItemSearchAutoComplete: (priceListData)->
+    @invoiceAutoCompleteSourceDataList = priceListData.map (item)=> return { text: item.name, value: item }
 
   invoiceItemAutocompleteSelected: (e)->
     item = e.detail.value
@@ -261,7 +253,7 @@ Polymer {
     item.totalPrice = item.price
     @push 'invoice.data', item
     console.log item
-    @.$.invoiceSearchInput.clear()
+    @$$("#invoiceSearchInput").clear()
   
   # =============================================
   
@@ -275,17 +267,6 @@ Polymer {
       @set 'invoiceCategoryList', list[0]
     else
       @set 'invoiceCategoryList', @_makeNewInvoiceCategoryList organizationIdentifier
-
-  # _loadMedicineInventory: (organizationIdentifier)->
-  #   @domHost.getStaticData 'pccMedicineList', (medicineCompositionList)=>
-  #     brandNameMap = {}
-  #     for item in medicineCompositionList
-  #       brandNameMap[item.brandName] = null
-  #     generatedMedicineList = ({data: {name: item, actualCost: 0, price: 0, qty: 1, category: '', subCategory: ''}} for item in Object.keys brandNameMap)
-
-  #     inventory = app.db.find 'organization-inventory', ({organizationId})-> organizationId is organizationIdentifier
-  #     @medicineInventory = [].concat inventory, generatedMedicineList
-      
 
   # TOGGLE COLLAPSE
   convertCategoryNameToId: (categoryName)-> categoryName.toLowerCase().split(" ").join("")
@@ -457,15 +438,13 @@ Polymer {
     unless invoice.data.length
       @domHost.showToast 'Add some item into invoice'
       return false
-    unless invoice.totalAmountReceieved
-      @domHost.showToast 'Please Add some amount in Paid Amount'
-      return false
+    
     return true
   
   _reduceInventoryItems: (invoice)->
     for item in invoice.data
       doc = (app.db.find 'organization-price-list', ({serial})=> serial is item.serial)[0]
-      if doc.qty
+      if doc?.qty
         doc.qty -= item.qty
         app.db.update 'organization-price-list', doc._id, doc
 
@@ -490,8 +469,8 @@ Polymer {
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
+  
   _saveInvoice: (markAsCompleted)->
-    
     return unless @_validateInvoice @invoice
     
     if markAsCompleted
@@ -499,19 +478,10 @@ Polymer {
     
     @_addModificationHistory()
     
-    # check for inventory items and reduce
-    @_reduceInventoryItems @invoice
-
-    # Saving Custom Invoice Category List
-    app.db.upsert 'invoice-category-list', @invoiceCategoryList, ({serial})=> serial is @invoiceCategoryList.serial
-    
-    # Assign a referenceNumber if not present
-    @_assignInvoiceRef @invoice.referenceNumber, (refNumber)=>
-      @invoice.referenceNumber = refNumber if refNumber
-      app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
-      @domHost.showToast 'Invoice Saved Successfully'
-      @_updateVisit @invoice.serial
-      @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
+    app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
+    @domHost.showToast 'Invoice Saved Successfully'
+    @_updateVisit @invoice.serial
+    @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
      
 
   # =====================================================================

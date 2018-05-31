@@ -647,7 +647,7 @@ Polymer {
 
     addedVitalList:
       type: Array
-      value: []
+      value: -> []
 
     #####################################################################
     # Vitals - end
@@ -1008,7 +1008,8 @@ Polymer {
     list = app.db.find 'visit-prescription', ({serial})-> serial is prescriptionIdentifier
     if list.length is 1
       @isPrescriptionValid = true
-      @prescription = list[0]
+      @set 'prescription', {}
+      @set 'prescription', list[0]
       # console.log "PRESCRIPTION: ", @prescription
       @_listPrescribedMedications @prescription.serial
       return true
@@ -1022,7 +1023,8 @@ Polymer {
     list = app.db.find 'visit-identified-symptoms', ({serial})-> serial is symptomsIdentifier
     if list.length is 1
       @isIdentifiedSymptomsValid = true
-      @identifiedSymptomsObject = list[0]
+      @set 'identifiedSymptomsObject', {}
+      @set 'identifiedSymptomsObject', list[0]
       # console.log 'SYMPTOMS: ', @identifiedSymptomsObject
       @addedIdentifiedSymptomsList = list[0].data.symptomsList
       
@@ -1037,7 +1039,8 @@ Polymer {
     list = app.db.find 'visit-examination', ({serial})-> serial is examinationIdentifier
     if list.length is 1
       @isExaminationValid = true
-      @examinationObject = list[0]
+      @set 'examinationObject', {}
+      @set 'examinationObject', list[0]
       # console.log 'EXAMINATION: ', @examinationObject
       @addedExaminationList = list[0].data.examinationValueList
       
@@ -1052,7 +1055,8 @@ Polymer {
     list = app.db.find 'visit-advised-test', ({serial})-> serial is adviseTestIdentifier
     if list.length is 1
       @isTestAdvisedValid = true
-      @testAdvisedObject = list[0]
+      @set 'testAdvisedObject', {}
+      @set 'testAdvisedObject', list[0]
       # console.log "ADVISED TEST: ", @testAdvisedObject
       @addedInvestigationList = list[0].data.testAdvisedList
       return true
@@ -1101,13 +1105,14 @@ Polymer {
     @domHost.showModalDialog 'Invalid Visit Provided'
 
   _loadVisit: (visitIdentifier, cbfn)->
-    # console.log 'visitIdentifier', visitIdentifier
+    console.log 'visitIdentifier', visitIdentifier
     list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
-    # console.log "VISIT LIST", list
+    console.log "VISIT LIST", list
     if list.length is 1
       @isVisitValid = true
-      @visit = list[0]
-      
+      @set 'visit', {}
+      @set 'visit', list[0]
+      console.log @visit
     else
       @_notifyInvalidVisit()
       return
@@ -1173,7 +1178,8 @@ Polymer {
     if list.length is 1
       @isPrescriptionValid = true
       @isFullVisitValid = true
-      @prescription = list[0]
+      @set 'prescription', {}
+      @set 'prescription', list[0]
       @_listPrescribedMedications @prescription.serial
       # console.log "PrescriptionObj:",  @prescription
       return true
@@ -1189,7 +1195,8 @@ Polymer {
     if list.length is 1
       @isNoteValid = true
       @isFullVisitValid = true
-      @doctorNotes = list[0]
+      @set 'doctorNotes', {}
+      @set 'doctorNotes', list[0]
       # console.log 'NOTES: ', @doctorNotes
       return true
     else
@@ -1203,7 +1210,8 @@ Polymer {
     if list.length is 1
       @isNextVisitValid = true
       @isFullVisitValid = true
-      @nextVisit = list[0]
+      @set 'nextVisit', {}
+      @set 'nextVisit', list[0]
       # console.log "NEXT VISIT: ", @nextVisit
       return true
     else
@@ -1722,7 +1730,8 @@ Polymer {
 
   _getSettings: (cbfn) ->
     list = app.db.find 'settings'
-    @settings = list[0]
+    @set 'settings', {}
+    @set 'settings', list[0]
 
     # console.log @settings
     cbfn()
@@ -1736,8 +1745,7 @@ Polymer {
       content = @$$('.print .content')
       output = @$$('.print .output')
 
-      console.log footer.offsetHeight
-
+      console.log @$$('.print .ideal')
       idealHeight = @$$('.print .ideal').offsetHeight
 
       nodeList = content.childNodes
@@ -1759,7 +1767,6 @@ Polymer {
           page = document.createElement('div')
           page.className = 'page'
           
-          
           page.setAttribute("style", "page-break-after: always; border: 1px solid white;")
           output.appendChild(page)
           page.appendChild(header.cloneNode(true))
@@ -1767,7 +1774,6 @@ Polymer {
         page.appendChild node.cloneNode(true)
 
       margin = idealHeight - (page.offsetHeight + footer.offsetHeight)
-      console.log margin
       newFooter = footer.cloneNode(true)
       newFooter.setAttribute("style", "margin-top: #{margin}px;")
       page.appendChild(newFooter)
@@ -1855,6 +1861,7 @@ Polymer {
                 @_loadExamination @visit.examinationSerial
 
               ## Visit - Vitals - start
+              @set 'addedVitalList', []
               if @visit.vitalSerial.bp
                  @_loadVitalsForVisit @visit.vitalSerial.bp, 'Blood Pressure'
 
@@ -1889,10 +1896,13 @@ Polymer {
               if @visit.nextVisitSerial
                 @_loadNextVisit @visit.nextVisitSerial
 
+       
               @generatePrintPagination()
 
 
   navigatedOut: ->
+    @set 'visit', null
+
   
 
   ## ------------------------------- History and physical - start

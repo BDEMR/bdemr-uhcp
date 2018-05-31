@@ -73,9 +73,6 @@ app.behaviors.local.invoiceMixin =
       @invoice.flags.markAsCompleted = true
     
     @_addModificationHistory()
-    
-    # check for inventory items and reduce
-    @_reduceInventoryItems @invoice
 
     app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
     @domHost.showToast 'Invoice Saved Successfully'

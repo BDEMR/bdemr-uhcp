@@ -7,16 +7,13 @@ app.behaviors.local['root-element'].syncCall =
       cbfn()
 
   _syncOnlyPatientGallery: (cbfn)->
-    @_syncPatients @syncPatientGalleryAttachmentConfig, ()->
-      cbfn()
+    @_sync cbfn
 
   _syncUserSettings: (cbfn)->
-    @_syncUser @syncSettings, ()->
-      cbfn()
+    @_sync cbfn
 
   _syncOnlyInvoice: (cbfn)->
-    @_syncPatients @syncVisitInvoice, ()->
-      cbfn()
+    @_sync cbfn
 
   _syncOnlyPriceList: (cbfn)->
     @_syncOrganizationData @syncOrganizationPriceList, cbfn

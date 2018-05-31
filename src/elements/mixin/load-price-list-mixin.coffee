@@ -2,38 +2,21 @@ unless app.behaviors.local.loadPriceListMixin
   app.behaviors.local.loadPriceListMixin = {}
 app.behaviors.local.loadPriceListMixin =
 
-  properties:
-
-    priceList:
-      type: Object
-      value: -> {}
-
-
   _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
   
-  # _loadPriceList: (organizationIdentifier, cbfn)->
-  #   lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
-
-  #   if lastSyncedDatetimeStamp
-  #     priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-  #     if priceListFromLocalStorage.length
-  #       @set 'priceList', priceListFromLocalStorage
-  #       cbfn priceListFromLocalStorage
-  #     else 
-  #       @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-  #         @_insertItemIntoDatabase priceListFromFile
-  #         @set 'priceList', priceListFromFile
-  #         cbfn priceListFromFile
-  #   else
-  #     @domHost._syncOnlyPriceList ()=> 
-  #       window.localStorage.setItem 'lastSyncedDatetimeStamp', lib.datetime.now()
-  #       @domHost.reloadPage() 
-
   _loadPriceList: (organizationIdentifier, cbfn)->
-    @_createNewPriceList (priceListFromFile)=>
-      # @_insertItemIntoDatabase priceListFromFile
-      @set 'priceList', priceListFromFile
-      cbfn priceListFromFile
+    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
+
+    if lastSyncedDatetimeStamp
+      priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
+      return cbfn priceListFromLocalStorage
+    else
+      @domHost._newSync (errMessage)=> 
+        if errMessage
+          @async => @domHost.showModalDialog(errMessage) 
+        else
+          @domHost.reloadPage()
+
 
   _prepareNewItemForDB: (data)->
     data.serial = @generateSerialForPriceListItem()

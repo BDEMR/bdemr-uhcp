@@ -142,7 +142,7 @@ Polymer({
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + invoiceItem.price, 0) : 0
+    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? invoiceItem.price : 0), 0) : 0
   },
 
   $getTotalCost(invoice) {
@@ -203,6 +203,7 @@ Polymer({
         this.domHost.showModalDialog(response.error.message);
         return this.loading = false;
       } else {
+        console.log(response)
         this.set('reportResults', response.data);
         return this.loading = false;
       }
