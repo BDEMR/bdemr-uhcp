@@ -443,10 +443,17 @@ Polymer {
   publishPatientPressed: (e)->
     el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
     el.opened = false
-    repeater = @$$ '#patient-list-repeater'
-
-    index = repeater.indexForElement el
-    patient = @matchingPatientList[index]
+    
+    if @selectedSearchViewIndex is 0
+      repeater = @$$ '#patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @matchingPatientList[index]
+    
+    # imported/offline tab
+    if @selectedSearchViewIndex is 1
+      repeater = @$$ '#imported-patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @offlineMatchingPatientList[index]
 
     @domHost.showModalPrompt "Publishing will overwrite remote changes (if any). Continue?", (answer)=>
       if answer
@@ -459,7 +466,7 @@ Polymer {
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
-        @.$.importPatientDialog.toggle()
+        @domHost.toggleModalLoader 'Importing Patient Data. Please Wait...'
         patientList = response.data
         if patientList.length isnt 1
           return @domHost.showModalDialog 'Unknown error occurred.'
@@ -521,13 +528,12 @@ Polymer {
       knownPatientSerialList: [ serial ]
     }
     @callApi '/bdemr--get-patient-data-on-import', data, (err, response)=>
-      @.$.importPatientDialog.toggle()
+      @domHost.toggleModalLoader()
       if err
         return cbfn(err)
       else if response.hasError 
         return cbfn(response.error.message);
       else 
-        console.log(JSON.stringify(response.data));
         app.db.__allowCommit = false
         for item, index in response.data
           collectionName = collectionNameMap[item.collection];
@@ -599,10 +605,17 @@ Polymer {
   importLatestPatientPressed: (e)->
     el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
     el.opened = false
-    repeater = @$$ '#patient-list-repeater'
 
-    index = repeater.indexForElement el
-    patient = @matchingPatientList[index]
+    if @selectedSearchViewIndex is 0
+      repeater = @$$ '#patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @matchingPatientList[index]
+    
+    # imported/offline tab
+    if @selectedSearchViewIndex is 1
+      repeater = @$$ '#imported-patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @offlineMatchingPatientList[index]
 
     @domHost.showModalPrompt "Fetching latest will discard local changes. Continue?", (answer)=>
       if answer
@@ -615,83 +628,54 @@ Polymer {
 
     el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
     el.opened = false
-    repeater = @$$ '#patient-list-repeater'
-
-    index = repeater.indexForElement el
-    patient = @matchingPatientList[index]
+    
+    if @selectedSearchViewIndex is 0
+      repeater = @$$ '#patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @matchingPatientList[index]
+    
+    # imported/offline tab
+    if @selectedSearchViewIndex is 1
+      repeater = @$$ '#imported-patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @offlineMatchingPatientList[index]
 
     # console.log patient
 
     @domHost.navigateToPage "#/organization-manage-waitlist/organization:#{organization.idOnServer}/patient:#{patient.serial}"
 
 
-    # @domHost.showModalInput "Department/Waitlist/Subwaitlist [optional]", "None", (answer)=>
-    #   return unless typeof answer is 'string'
-    #   obj = {
-    #     apiKey: @user.apiKey
-    #     patientSerial: patient.serial
-    #     patientNameManuallyEntered: patient.name
-    #     details: answer
-    #     organizationId: organization.idOnServer
-    #   }
-    #   @callApi '/bdemr-organization-waitlist-add-entry', obj, (err, response)=>
-    #     if response.hasError
-    #       @domHost.showModalDialog response.error.message
-    #     else
-    #       @domHost.showModalDialog response.data
-
-
-  ## ------------------ import / publish end
-
-  
-
-
-  viewPatientPressed: (e)->
-    el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
-    el.opened = false
-    repeater = @$$ '#patient-list-repeater'
-
-    index = repeater.indexForElement el
-    patient = @matchingPatientList[index]
-
-    console.log 'PATIENT', patient
-
-    @createdPatientVisitedLog patient
-
-    @domHost.setCurrentPatientsDetails patient
-
-    # @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
-    @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
-    @domHost.selectedPatientPageIndex = 5
-
-  # editPatientPreconceptionRecord: (e)->
-  #   el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
-  #   el.opened = false
-  #   repeater = @$$ '#patient-list-repeater'
-
-  #   index = repeater.indexForElement el
-  #   patient = @matchingPatientList[index]
-
-  #   @domHost.navigateToPage '#/preconception-record/patients:' + patient.serial
-
-
   editPatientPressed: (e)->
     el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
     el.opened = false
-    repeater = @$$ '#patient-list-repeater'
 
-    index = repeater.indexForElement el
-    patient = @matchingPatientList[index]
-
+    if @selectedSearchViewIndex is 0
+      repeater = @$$ '#patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @matchingPatientList[index]
+    
+    # imported/offline tab
+    if @selectedSearchViewIndex is 1
+      repeater = @$$ '#imported-patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @offlineMatchingPatientList[index]
+   
     @domHost.navigateToPage  '#/patient-editor/patient:' + patient.serial
 
+  
   deletePatientPressed: (e)->
     el = @locateParentNode e.target, 'PAPER-MENU-BUTTON'
     el.opened = false
-    repeater = @$$ '#patient-list-repeater'
-
-    index = repeater.indexForElement el
-    patient = @matchingPatientList[index]
+    if @selectedSearchViewIndex is 0
+      repeater = @$$ '#patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @matchingPatientList[index]
+    
+    # imported/offline tab
+    if @selectedSearchViewIndex is 1
+      repeater = @$$ '#imported-patient-list-repeater'
+      index = repeater.indexForElement el
+      patient = @offlineMatchingPatientList[index]
 
     @domHost.showModalPrompt 'Are you sure?', (answer)=>
       if answer is true
@@ -699,7 +683,8 @@ Polymer {
         if not _id and _id isnt 0
           _id = patient._tempLocalDbId
         app.db.remove 'patient-list', (_id)
-        @searchButtonPressed null
+        @searchContextDropdownSelectedIndex = 0
+        @searchButtonPressed()
 
   $or: (a, b)-> a or b
 
