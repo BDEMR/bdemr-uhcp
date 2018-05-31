@@ -285,6 +285,41 @@
             </template>
           </paper-card>
 
+          <paper-card class="organization-info-cards">
+
+
+            <div class="card-custom-header">
+              <div class="layout horizontal center">
+                <div class="title flex">[[childOrganizationList.length]] Child organizations.</div>
+              </div>
+            </div>
+
+            <template is="dom-if" if="[[childOrganizationList.length]]">
+              <div class="p-0">
+                <paper-listbox>
+
+                  <template id="" is="dom-repeat" items="[[childOrganizationList]]" as="child">
+                    <paper-item class="custom layout horizontal center">
+
+                      <div class="flex m-left-8">
+                        <div class="type body capitalize">[[child.name]]</div>
+                        <div class="type caption secondary">[[child.idOnServer]]</div>
+                      </div>
+
+                      <div class="layout horizontal m-horizontal-4 wrap">
+                        <div class="type caption">[[child.address]]&nbsp;</div>
+                        <div class="type caption">([[child.effectiveRegion]])</div>
+                      </div>
+
+                    </paper-item>
+                  </template>
+
+                </paper-listbox>
+
+              </div>
+            </template>
+          </paper-card>
+
         </template>
         <!-- editing organization - end -->
 

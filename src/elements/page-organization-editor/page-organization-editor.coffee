@@ -36,6 +36,13 @@ Polymer {
       type: Array
       value: -> []
 
+    childOrganizationList:
+      type: Array
+      value: -> []
+    
+
+    loadingCounter: Number
+
   _loadUser:()->
     userList = app.db.find 'user'
     if userList.length is 1
@@ -70,6 +77,7 @@ Polymer {
     @domHost.showModalDialog 'Invalid Organization Provided'
 
   _createOrganization: (cbfn)->
+    @loadingCounter++
     data = { 
       apiKey: @user.apiKey
       name: @organization.name
@@ -79,12 +87,14 @@ Polymer {
       parentOrganizationIdList: @organization.parentOrganizationIdList
     }
     @callApi '/bdemr-organization-create', data, (err, response)=>
+      @loadingCounter--
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
         cbfn()
 
   _updateOrganization: (cbfn)->
+    @loadingCounter++
     data = { 
       apiKey: @user.apiKey
       organizationId: @organization.idOnServer
@@ -95,6 +105,7 @@ Polymer {
       parentOrganizationIdList: @organization.parentOrganizationIdList
     }
     @callApi '/bdemr-organization-update', data, (err, response)=>
+      @loadingCounter--
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -102,11 +113,7 @@ Polymer {
 
   navigatedIn: ->
     @_loadUser()
-    
-    # currentOrganization = @getCurrentOrganization()
-    # unless currentOrganization
-    #   @domHost.navigateToPage "#/select-organization"
-    
+   
     params = @domHost.getPageParams()
     if params['organization']
       if params['organization'] is 'new'
@@ -123,11 +130,13 @@ Polymer {
     @parentList = []
 
   searchParentOrganizationTapped: (e)->
+    @loadingCounter++
     data = { 
       apiKey: @user.apiKey
       searchString: @parentOrganizationSearchString
     }
     @callApi '/bdemr-organization-search', data, (err, response)=>
+      @loadingCounter--
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -148,11 +157,13 @@ Polymer {
     @splice 'parentList', (@parentList.indexOf parent), 1
 
   _loadOrganization: (idOnServer)->
+    @loadingCounter++
     data = { 
       apiKey: @user.apiKey
       idList: [ idOnServer ]
     }
     @callApi '/bdemr-organization-list-organizations-by-ids', data, (err, response)=>
+      @loadingCounter--
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
@@ -162,16 +173,33 @@ Polymer {
         @set 'organization', response.data.matchingOrganizationList[0]
         @set 'isOrganizationValid', true
         @_loadParentList()
+        @_loadChildOrganizationList()
+        
 
   _loadParentList: ->
+    @loadingCounter++
     data = { 
       apiKey: @user.apiKey
       idList: @organization.parentOrganizationIdList
     }
     @callApi '/bdemr-organization-list-organizations-by-ids', data, (err, response)=>
+      @loadingCounter--
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
         @set 'parentList', response.data.matchingOrganizationList
+
+  _loadChildOrganizationList: () ->
+    @loadingCounter++
+    query = {
+      apiKey: this.user.apiKey,
+      organizationId: @organization.idOnServer
+    }
+    this.callApi '/bdemr--get-child-organization-list', query, (err, response) =>
+      @loadingCounter--
+      organizationList = response.data
+      if organizationList.length 
+        this.set('childOrganizationList', organizationList)
+  
 
 }
