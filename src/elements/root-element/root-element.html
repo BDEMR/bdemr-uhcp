@@ -752,14 +752,12 @@
     </paper-dialog>
     <!-- generic-modal-dialog - end -->
 
-    <!-- sync - start -->
-    <paper-dialog id="syncDialog" modal>
-      <p>SYNC is in progress, please wait...</p>
-      <div class="layout vertical center">
-        <paper-spinner alt="Syncing to Cloud" active></paper-spinner>
+    <paper-dialog id="generic-loader-dialog" modal>
+      <div class="layout horizontal center">
+        <paper-spinner active></paper-spinner>
+        <span class="m-left-16">[[loaderMessage]]</span>
       </div>
     </paper-dialog>
-    <!-- sync - end -->
 
     <paper-toast id="toast1" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
     <paper-toast id="successToast" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>

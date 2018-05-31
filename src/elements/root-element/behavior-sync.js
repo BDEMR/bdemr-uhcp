@@ -11,7 +11,7 @@ app.behaviors.local['root-element'].newSync = {
 
     apiActionId = this.notifyApiAction('start', null);
 
-    this.$.syncDialog.toggle();
+    this.domHost.toggleModalLoader('SYNC is in progress, please wait...');
 
     const collectionNameMap = {
       'bdemr--doctor-favorite-medications': 'favorite-medicine-list',
@@ -145,7 +145,7 @@ app.behaviors.local['root-element'].newSync = {
 
       this.notifyApiAction('done', null, apiActionId)
 
-      this.$.syncDialog.toggle()
+      this.domHost.toggleModalLoader()
 
       if (err) {
         return cbfn(err)

@@ -104,7 +104,7 @@ Polymer {
     }
 
     @loading = true
-    @callApi '/uhcp--get-reports', query, (err, response)=>
+    @callApi '/uhcp--get-summary-reports', query, (err, response)=>
       if response.hasError
         @domHost.showModalDialog response.error.message
         @loading = false

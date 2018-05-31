@@ -492,6 +492,10 @@ Polymer {
     @$$('#generic-modal-input').toggle()
     @genericModalInputDoneCallback = doneCallback
 
+  toggleModalLoader: (message=null)->
+    @set 'loaderMessage', message
+    @$$("#generic-loader-dialog").toggle()
+
   genericModalInputClosed: (e)->
     if e.detail.confirmed
       @genericModalInputDoneCallback @genericModalInputFieldValue
