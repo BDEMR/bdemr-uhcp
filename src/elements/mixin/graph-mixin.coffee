@@ -177,66 +177,68 @@ window.__SOURAV_MIXIN_graphMixin = {
     return pointList
 
   showGraphPressed: (e)->
+
+    lib.util.delay 100, =>
   
-    if @selectedSubViewIndex is 4
-      if @selectedTestPage is 0
-        pointList = @_generatePointList_bloodSugar()
-      else if @selectedTestPage is 1
-        pointList = @_generatePointList_otherTest()
+      if @selectedSubViewIndex is 4
+        if @selectedTestPage is 0
+          pointList = @_generatePointList_bloodSugar()
+        else if @selectedTestPage is 1
+          pointList = @_generatePointList_otherTest()
 
-      parentEl = @$$('.element-insertion-point2')
-      for child in (Array.from parentEl.childNodes)
-        parentEl.removeChild child
+        parentEl = @$$('.element-insertion-point2')
+        for child in (Array.from parentEl.childNodes)
+          parentEl.removeChild child
 
-    else
-      if @selectedVitalPage is 0
-        pointList = @_generatePointList_bloodPressure()
-      else if @selectedVitalPage is 1
-        pointList = @_generatePointList_heartRate()
-      else if @selectedVitalPage is 2
-        pointList = @_generatePointList_bmi()
-      else if @selectedVitalPage is 3
-        pointList = @_generatePointList_respiratoryRate()
-      else if @selectedVitalPage is 4
-        pointList = @_generatePointList_oxygenSaturation()
-      else if @selectedVitalPage is 5
-        pointList = @_generatePointList_temperature()
+      else
+        if @selectedVitalPage is 0
+          pointList = @_generatePointList_bloodPressure()
+        else if @selectedVitalPage is 1
+          pointList = @_generatePointList_heartRate()
+        else if @selectedVitalPage is 2
+          pointList = @_generatePointList_bmi()
+        else if @selectedVitalPage is 3
+          pointList = @_generatePointList_respiratoryRate()
+        else if @selectedVitalPage is 4
+          pointList = @_generatePointList_oxygenSaturation()
+        else if @selectedVitalPage is 5
+          pointList = @_generatePointList_temperature()
 
-      parentEl = @$$('.element-insertion-point')
-      for child in (Array.from parentEl.childNodes)
-        parentEl.removeChild child        
-    # console.log pointList
+        parentEl = @$$('.element-insertion-point')
+        for child in (Array.from parentEl.childNodes)
+          parentEl.removeChild child        
+      # console.log pointList
 
-    maxMagnitude = 1
-    start = (new Date).getTime()
-    end = (new Date).getTime() + (24 * 60 * 60 * 1000)    
-    for point in pointList
-      if point.magnitude > maxMagnitude
-        maxMagnitude = point.magnitude  
-      if point.originalCreatedDatetimeStamp < start
-        start = point.originalCreatedDatetimeStamp
-      if point.originalCreatedDatetimeStamp > end
-        end = point.originalCreatedDatetimeStamp
-    
-    ## Comment out to get per page
-    # for point in pointList
-    #   point.datetimeStamp = point.originalCreatedDatetimeStamp - start
+      maxMagnitude = 1
+      start = (new Date).getTime()
+      end = (new Date).getTime() + (24 * 60 * 60 * 1000)    
+      for point in pointList
+        if point.magnitude > maxMagnitude
+          maxMagnitude = point.magnitude  
+        if point.originalCreatedDatetimeStamp < start
+          start = point.originalCreatedDatetimeStamp
+        if point.originalCreatedDatetimeStamp > end
+          end = point.originalCreatedDatetimeStamp
+      
+      ## Comment out to get per page
+      # for point in pointList
+      #   point.datetimeStamp = point.originalCreatedDatetimeStamp - start
 
-    el = document.createElement 'custom-graph'
+      el = document.createElement 'custom-graph'
 
-    el.setTimeRange start, end
+      el.setTimeRange start, end
 
-    el.setCurrentTime start
-     
-    el.yAxisMaxValue = Math.ceil (maxMagnitude + 0* (10 * maxMagnitude / 100))
+      el.setCurrentTime start
+      
+      el.yAxisMaxValue = Math.ceil (maxMagnitude + 0* (10 * maxMagnitude / 100))
 
-    el.setPointList pointList
+      el.setPointList pointList
 
-    el.computeExternalOptions()
+      el.computeExternalOptions()
 
-    parentEl.appendChild el
+      parentEl.appendChild el
 
-    # el.scrollIntoView()
+      # el.scrollIntoView()
 
 
 }
