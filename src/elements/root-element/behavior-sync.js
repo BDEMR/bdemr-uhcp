@@ -53,7 +53,7 @@ app.behaviors.local['root-element'].newSync = {
       'bdemr--visit-diagnosis': 'visit-diagnosis',
       'bdemr--pcc-records': 'pcc-records',
       'bdemr--ndr-records': 'ndr-records',
-      'bdemr--organization-price-list': 'organization-price-list',
+      // 'bdemr--organization-price-list': 'organization-price-list',
       'bdemr--clinic-organization-inventory': 'organization-inventory',
       'bdemr--clinic-third-party-user-list': 'third-party-user-list',
       'bdemr--clinic-invoice-category-list': 'invoice-category-list',

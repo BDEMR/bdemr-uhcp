@@ -167,12 +167,12 @@ Polymer {
       priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
       if priceListFromLocalStorage.length
         @set 'priceList', priceListFromLocalStorage
-        cbfn priceListFromLocalStorage
+        return cbfn priceListFromLocalStorage
       else 
         @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
           @_insertItemIntoDatabase priceListFromFile
           @set 'priceList', priceListFromFile
-          cbfn priceListFromFile
+          return cbfn priceListFromFile
     else
       @domHost._newSync (errMessage)=> 
         if errMessage 
