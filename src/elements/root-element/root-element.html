@@ -360,11 +360,15 @@
       }
 
       #successToast {
-        --paper-toast-background-color: var(--paper-green-800);
+        --paper-toast-background-color: var(--paper-green-500);
+        text-align: center;
+        font-size: 16px;
       }
 
       #warningToast {
-        --paper-toast-background-color: var(--paper-red-900);
+        --paper-toast-background-color: var(--paper-orange-500);
+        text-align: center;
+        font-size: 16px;
       }
 
       /*paper-tab {
@@ -759,10 +763,11 @@
       </div>
     </paper-dialog>
 
-    <paper-toast id="toast1" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
-    <paper-toast id="successToast" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <paper-toast id="toast1" class="fit-bottom" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <!-- Success Toast -->
+    <paper-toast id="successToast" class="fit-bottom" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
     <!-- Warning Toast -->
-    <paper-toast id="warningToast" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <paper-toast id="warningToast" class="fit-bottom" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
 
   </template>
   <script src="behavior-data-loader.coffee-compiled.js"></script>

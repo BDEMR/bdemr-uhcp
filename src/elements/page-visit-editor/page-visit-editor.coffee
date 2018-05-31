@@ -3678,6 +3678,14 @@ Polymer {
         name: null
         attachmentSerialList: []
       }
+      dischargeNote: {
+        dischargeType: 'OPD'
+        admissionDateTimeStamp: null
+        advise: null
+        referredByDoctorName: null
+        admittedByDoctorName: null
+        admittedToOrganization: null
+      }
 
     @isVisitValid = true
     @isThatNewVisit = true
@@ -3696,6 +3704,8 @@ Polymer {
       @domHost.setSelectedVisitSerial visitSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
+
+    @domHost.showSuccessToast 'Visit Saved!'
     
 
   _notifyInvalidPatient: ->
@@ -5200,52 +5210,36 @@ Polymer {
         cbfn() if cbfn
 
   
-  # ===============================
-  # PATIENT DISCHARGE
-  # By @taufiq
-  # ===============================
+  admissionToOrganizationSelected: (e)->
+    selectedIndex = e.detail.selected
+    selectedOrganization = @organizationsIBelongToList[selectedIndex]
+    unless @visit.dischargeNote
+      @visit.dischargeNote = {}
+    @visit.dischargeNote.admittedToOrganization = {name: selectedOrganization.name, idOnServer: selectedOrganization.idOnServer}
+
   
-  _makeNewPatientDischargeNote: ->
-    patientDischargeNote = {
-      serial: null
-      lastModifiedDatetimeStamp: lib.datetime.now()
-      createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: 0
-      createdByUserSerial: @user.serial
-      organizationId: @organization.idOnServer
-      visitSerial: null
-      patientSerial: @patient.serial
-      doctorName: @visit.doctorName
-      doctorSpeciality: @visit.doctorSpeciality 
-      data: {}
-    }
-    @set 'patientDischargeNote', {}
-    @set 'patientDischargeNote', patientDischargeNote
+  dischargeTypeChanged: (e)->
+    unless @visit.dischargeNote
+      @visit.dischargeNote = {}
+    if @selectedDischargeType is 'Out patient/ Discharged with advice'
+      @visit.dischargeNote.dischargeType = 'OPD'
+      @advisedAdmission = false
+    else if @selectedDischargeType is 'Out patient/ Advised admission'
+      @visit.dischargeNote.dischargeType = 'OPD'
+      @advisedAdmission = true
+    else if @selectedDischargeType is 'In-Patient'
+      @visit.dischargeNote.dischargeType = 'IPD'
+      @advisedAdmission = true
+    else if @selectedDischargeType is 'Exclusion Criteria'
+      @visit.dischargeNote.dischargeType = 'Exclusion Criteria'
+      @advisedAdmission = false
+    else
+      @visit.dischargeNote.dischargeType = 'OPD'
+      @advisedAdmission = false
+
+  saveDischargeButtonClicked: -> @_saveVisit()
     
-
-  _savePatientDischargeNote: ()->
-
-    unless @visit.serial isnt null
-      @_saveVisit()
-      @patientDischargeNote.visitSerial = @visit.serial
-      
-    unless @patientDischargeNote.serial isnt null
-      @patientDischargeNote.serial = @generateSerialForUhcpPatientDischargeNote()
-      @visit.patientDischargeNoteSerial = @patientDischargeNote.serial
-      @patientDischargeNote.visitSerial = @visit.serial
-      @_saveVisit()
-        
-    console.log 'patientDischargeNote', @patientDischargeNote
-
-    @patientDischargeNote.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'uhcp-patient-discharge-note', @patientDischargeNote, ({serial})=> @patientDischargeNote.serial is serial
-
-
-  admissionTypeChanged: (e)->
-    switch @patientStay.data.admissionType
-      when 'Out patient/ Discharged with advice' then @advisedAdmission = false
-      when 'Out patient/ Advised admission', 'Seen in emergency/ Advised admission' then @advisedAdmission = true
-      else @showAdmission = true
+   
 
 
   # ===============================
@@ -5457,6 +5451,7 @@ Polymer {
   calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
 
   finishButtonPressed: ->
+    @_saveVisit()
     @domHost.showModalDialog 'Visit Saved Successfully'
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (err)=>

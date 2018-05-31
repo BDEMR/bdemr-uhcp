@@ -418,70 +418,34 @@
         <!-- Print - History And Physical - end -->
 
         <!-- Patient Stay Preview -->
-        <template is="dom-if" if="[[patientStay.serial]]">
-          <div class="horizontal layout center print-sub-header">
-            <div class="type body p-left-16">Patient Stay</div>
+        <div class="horizontal layout center print-sub-header">
+          <div class="type body">Patient Discharge Note</div>
+        </div>
+        <div class="p-horizontal-16">
+          <div>
+            <span class="type bold">Type: </span> [[visit.dischargeNote.dischargeType]]
           </div>
-          <div class="p-horizontal-16">
+          <div>
+            <span class="type bold">Advice: </span> [[visit.dischargeNote.advise]]
+          </div>
+          <template is="dom-if" if="[[$equals(visit.dischargeNote.dischargeType, 'IPD')]]">
             <div class="layout horizontal">
               <span class="type bold"> Admission Date: </span>
-              <span>&nbsp;[[$mkDate(patientStay.data.admissionDateTimeStamp)]]</span>
+              <span>&nbsp;[[$mkDate(visit.dischargeNote.admissionDateTimeStamp)]]</span>
             </div>
             <div>
-              <span class="type bold">Type: </span> [[patientStay.data.admissionType]]
+              <span class="type bold">Admitted To</span>
+              <span>[[visit.dischargeNote.admittedToOrganization.name]]</span>
             </div>
-            <template is="dom-if" if="[[patientStay.adviseOnly]]">
-              <div>
-                <span class="type bold">Advice: </span> [[patientStay.data.advise]]
-              </div>
-            </template>
+            <div>
+              <span class="type bold">Referred By: </span> [[visit.dischargeNote.referredByDoctorName]]
+            </div>
+            <div>
+              <span class="type bold">Admitted By: </span> [[visit.dischargeNote.admittedByDoctorName]]
+            </div>
+          </template>
 
-            <template is="dom-if" if="[[!patientStay.adviseOnly]]">
-              <div>
-                <span class="type bold">Referred By: </span> [[patientStay.data.referredByDoctorName]]
-              </div>
-              <div>
-                <span class="type bold">Admitted By: </span> [[patientStay.data.admittedByDoctorName]]
-              </div>
-              <div class="type italic">
-                <span>[[patientStay.data.locationHospitalName]]</span> >
-                <span>[[patientStay.data.locationDepartment]]</span> >
-                <span>[[patientStay.data.locationUnit]]</span> >
-                <span>[[patientStay.data.locationWard]]</span> >
-                <span>[[patientStay.data.locationBed]]</span>
-              </div>
-            </template>
-            <template is="dom-if" if="[[patientStay.data.currentLocation.length]]">
-              <div>
-                <span class="type bold"> Current Location:</span>
-                <span>[[patientStay.data.currentLocation.0.location]]</span>
-              </div>
-            </template>
-            <template is="dom-if" if="[[patientStay.data.dischargeDatetimeStamp]]">
-              <div>
-                <span class="type bold"> Discharge Date:</span>
-                <span>[[$mkDate(patientStay.data.dischargeDatetimeStamp)]]</span>
-              </div>
-              <div>
-                <span class="type bold">Discharged By: </span> [[patientStay.data.dischargedByDoctorName]]
-              </div>
-              <div>
-                <span class="type bold"> Length of Stay:</span>
-                <span>[[calculateLengthOfStay(patientStay.data.admissionDateTimeStamp, patientStay.data.dischargeDatetimeStamp)]]
-                  Days
-                </span>
-              </div>
-            </template>
-            <template is="dom-if" if="[[patientStay.data.dischargeReason.length]]">
-              <div>
-                <span class="type bold">Discharge Reason: </span> [[patientStay.data.dischargeReason]]</div>
-            </template>
-            <template is="dom-if" if="[[patientStay.data.dischargeTo.length]]">
-              <div>
-                <span class="type bold"> Discharged To:</span> [[patientStay.data.dischargeTo]]</div>
-            </template>
-          </div>
-        </template>
+        </div>
         <!-- Patient Stay Preview End -->
       </div>
       <!-- print - content - end -->

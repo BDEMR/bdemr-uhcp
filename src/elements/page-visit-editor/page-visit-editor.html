@@ -1959,63 +1959,56 @@
               </div>
               <!-- Card :: Prescription - end -->
 
-              <!-- Card :: Patient Stay - start -->
+              <!-- Card :: Patient Discharge - start -->
               <template is="dom-if" if="[[_checkUserAccess('D015')]]">
+
                 <div class="card-item-2">
 
-                  <div class="preview-title layout">
-                    <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_patient_stay.png"></iron-icon> -->
-                    <div class="type title-2 flex">Patient Discharge</div>
-                    <div class="action-area">
-                      <paper-button class="btn-add m-vert" on-tap="_savePatientDischargeNote">
-                        <iron-icon icon="icons:save"></iron-icon>
-                      </paper-button>
-                    </div>
+                  <div class="preview-title">
+                    <div class="type title-2 flex">Discharge</div>
+                    <paper-icon-button icon="save" on-tap="saveDischargeButtonClicked"></paper-icon-button>
                   </div>
 
-                  <iron-pages selected="{{selectedView}}">
 
-                    <section id="admission-section">
+                  <div class="card-content layout vertical types">
 
-                      <div class="card-content layout vertical types">
-                        <paper-radio-group id="admissionTypeRadioGroup" selected="{{patientDischargeNote.data.admissionType}}" class="layout vertical"
-                          on-iron-select="admissionTypeChanged">
-                          <template is="dom-repeat" items="[[admissionTypeList]]">
-                            <paper-radio-button name="[[item]]">[[item]]</paper-radio-button>
-                          </template>
-                        </paper-radio-group>
-
-                        <template is="dom-if" if="[[!advisedAdmission]]">
-                          <paper-input class="p-16" label="Advice" value="{{patientDischargeNote.data.advise}}"></paper-input>
-                        </template>
-                        <template is="dom-if" if="[[advisedAdmission]]">
-                          <paper-input label="Referred By" value="{{patientDischargeNote.data.referredByDoctorName}}"></paper-input>
-                          <paper-input label="Admitted By" value="{{patientDischargeNote.data.admittedByDoctorName}}"></paper-input>
-                        </template>
-                      </div>
-
-
-                      <template is="dom-if" if="[[advisedAdmission]]">
-
-                        <!-- Admission to - start -->
-                        <div class="type body-lead p-vertical-8 p-horizontal-16">Admission to</div>
-                        <div class="card-content layout horizontal">
-                          <div class="m-right-8">
-                            <vaadin-date-picker label="Admission Date" value="{{patientStay.data.admissionDateTimeStamp}}" style="width: 200px;"></vaadin-date-picker>
-                          </div>
-                          <paper-dropdown-menu class="m-right-8" label="Clinic/Hospital" id="organizationDropdown">
-                            <paper-listbox class="dropdown-content" on-iron-select="organizationSelected" selected="{{selectedOrganizationIndex}}">
-                              <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
-                                <paper-item>[[organization.name]]</paper-item>
-                              </template>
-                            </paper-listbox>
-                          </paper-dropdown-menu>
-
-                          <!-- Admission to - end -->
-
+                    <paper-radio-group id="dischargeTypeRadioGroup" selected="{{selectedDischargeType}}" class="layout vertical" on-iron-select="dischargeTypeChanged">
+                      <template is="dom-repeat" items="[[admissionTypeList]]">
+                        <paper-radio-button name="[[item]]">[[item]]</paper-radio-button>
                       </template>
-                    </section>
-                  </iron-pages>
+                    </paper-radio-group>
+
+                    <template is="dom-if" if="[[!advisedAdmission]]">
+                      <paper-input class="p-16" label="Advice" value="{{visit.dischargeNote.advise}}"></paper-input>
+                    </template>
+                    <template is="dom-if" if="[[advisedAdmission]]">
+                      <paper-input label="Referred By" value="{{visit.dischargeNote.referredByDoctorName}}"></paper-input>
+                      <paper-input label="Admitted By" value="{{visit.dischargeNote.admittedByDoctorName}}"></paper-input>
+                    </template>
+
+                  </div>
+
+
+                  <template is="dom-if" if="[[advisedAdmission]]">
+                    <!-- Admission to - start -->
+                    <div class="type body-lead p-vertical-8 p-horizontal-16">Admission to</div>
+                    <div class="card-content layout horizontal">
+                      <div class="m-right-8">
+                        <vaadin-date-picker label="Admission Date" value="{{visit.dischargeNote.admissionDateTimeStamp}}" style="width: 200px;"></vaadin-date-picker>
+                      </div>
+                      <paper-dropdown-menu class="m-right-8" label="Clinic/Hospital" id="organizationDropdown">
+                        <paper-listbox class="dropdown-content" on-iron-activate="admissionToOrganizationSelected" selected="{{selectedOrganizationIndex}}">
+                          <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
+                            <paper-item>[[organization.name]]</paper-item>
+                          </template>
+                        </paper-listbox>
+                      </paper-dropdown-menu>
+
+                      <!-- Admission to - end -->
+                  </template>
+
+
+
                   </div>
               </template>
               <!-- Card :: Patient Stay - end -->
