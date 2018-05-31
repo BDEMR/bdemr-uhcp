@@ -81,7 +81,7 @@
       }
 
       .organization-dropdown {
-        width: 250px;
+        width: 210px;
       }
     </style>
 
@@ -93,18 +93,43 @@
 
           <div class="card-content">
 
-            <div class="search layout horizontal center">
+            <div class="search layout horizontal justified end">
 
-              <vaadin-combo-box class="organization-dropdown" no-label-float label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected"
+              <vaadin-combo-box class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected"
                 loading="[[organizationLoading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
-              <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
-              <div class="flex"></div>
-              <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
+              <paper-dropdown-menu label="Filter by Gender" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="genderSelected" selected="0">
+                  <paper-item>All</paper-item>
+                  <paper-item>Male</paper-item>
+                  <paper-item>Female</paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-dropdown-menu label="Filter by Age Group" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="ageGroupSelected" selected="0">
+                  <template is="dom-repeat" items="[[ageGroupList]]">
+                    <paper-item>[[item]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-dropdown-menu label="Filter by Salary Range" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="salaryRangeSelected" selected="0">
+                  <template is="dom-repeat" items="[[salaryRangeList]]">
+                    <paper-item>[[item]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-input label="Search by Name" class="m-right-8" value="{{searchString}}"></paper-input>
+
+              <custom-vital-search style="width:210px" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
 
             </div>
             <div class="layout horizontal">
               <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
             </div>
 
             <h4>Total Visit: [[reportResults.length]]</h4>

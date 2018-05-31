@@ -34,6 +34,40 @@ Polymer({
       value: false
     },
 
+    categoryList: {
+      type: Array,
+      value() { return ['Symptoms', 'Diagnosis', 'Investigation', 'Medicine']; }
+    },
+
+    ageGroupList: {
+      type: Array,
+      value() {
+        return [
+          'All',
+          '0 to 18',
+          '18 to 25',
+          '25 to 35',
+          '35 to 50',
+          '50 to above'
+        ];
+      }
+    },
+
+    salaryRangeList: {
+      type: Array,
+      value() {
+        return [
+          "All",
+          "0 to 10,000",
+          "10,000 to 20,000",
+          "20,000 to 30,000",
+          "30,000 to 40,000",
+          "40,000 to 50,000",
+          "50,000 to above"
+        ];
+      }
+    },
+
     reportResults: {
       type: Array,
       value: []
@@ -175,12 +209,72 @@ Polymer({
 
   resetButtonClicked() { return this.domHost.reloadPage(); },
 
+  genderSelected(e) {
+    const index = e.detail.selected;
+    let gender;
+    if (index == 1) {
+      gender = 'male'
+    } else if (index == 2) {
+      gender = 'female'
+    } else {
+      gender = ''
+    }
+    return this.set('selectedGender', gender);
+  },
+
+  _createAgeGroupFromString(ageGroupString) {
+    const ageGroupStringArr = ageGroupString.split('to');
+    const fromAge = parseInt(ageGroupStringArr[0]);
+    const toAge = (isNaN(parseInt(ageGroupStringArr[1])) ? 999 : (parseInt(ageGroupStringArr[1])));
+    return [fromAge, toAge];
+  },
+
+  ageGroupSelected(e) {
+    const index = e.detail.selected;
+    let selectedAgeGroup;
+    if (index == 0) {
+      // all selected
+      selectedAgeGroup = []
+    } else {
+      let selectedAgeGroupString = this.ageGroupList[index];
+      selectedAgeGroup = this._createAgeGroupFromString(selectedAgeGroupString);
+    }
+    return this.set('selectedAgeGroup', selectedAgeGroup);
+  },
+
+
+  _createSalarRangeFromString(salaryRangeString) {
+    const salaryRangeStringArr = salaryRangeString.split('to');
+    salaryRangeStringArr.splice(0, 1, (salaryRangeStringArr[0].split(",").join("")));
+    salaryRangeStringArr.splice(1, 1, (salaryRangeStringArr[1].split(",").join("")));
+    const fromSalary = (isNaN(parseInt(salaryRangeStringArr[0])) ? 0 : (parseInt(salaryRangeStringArr[0])));
+    const toSalary = (isNaN(parseInt(salaryRangeStringArr[1])) ? 99999999999 : (parseInt(salaryRangeStringArr[1])));
+    return [fromSalary, toSalary];
+  },
+
+  salaryRangeSelected(e) {
+    const index = e.detail.selected;
+    let selectedSalaryRange;
+    if (index == 0) {
+      // all selected
+      selectedSalaryRange = []
+    } else {
+      let selectedSalaryRangeString = this.salaryRangeList[index];
+      selectedSalaryRange = this._createSalarRangeFromString(selectedSalaryRangeString);
+    }
+    return this.set('selectedSalaryRange', selectedSalaryRange);
+  },
+
   searchButtonClicked() {
     let query = {
       apiKey: this.user.apiKey,
       searchParameters: {
         dateCreatedFrom: this.dateCreatedFrom || '',
         dateCreatedTo: this.dateCreatedTo || '',
+        searchString: this.searchString || '',
+        gender: this.selectedGender || '',
+        ageGroup: this.selectedAgeGroup || [],
+        salaryRange: this.selectedSalaryRange || []
       }
     }
     // search parent+child when selecting all
@@ -196,6 +290,8 @@ Polymer({
     } else {
       query.organizationIdList = []
     }
+
+    console.log(query);
 
     this.loading = true;
     this.callApi('/uhcp--get-visit-reports', query, (err, response) => {
