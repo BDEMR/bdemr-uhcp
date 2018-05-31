@@ -593,9 +593,9 @@ Polymer {
     @domHost.navigateToPage "#/patient-editor/patient:" + @patient.serial
 
   navigatedIn: ->
-    currentOrganization = @getCurrentOrganization()
-    unless currentOrganization
-      @domHost.navigateToPage "#/select-organization"
+    @organization = @getCurrentOrganization()
+    unless @organization
+      return @domHost.navigateToPage "#/select-organization"
 
     params = @domHost.getPageParams()
 
@@ -2652,8 +2652,57 @@ Polymer {
     if notCompletedInvoiceList.length > 0
       @set 'invoiceListWithoutCompleted', notCompletedInvoiceList
 
+  _makeNewVisit: ()->
+    return {
+      serial: @generateSerialForVisit()
+      idOnServer: null
+      source: 'local'
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: lib.datetime.now()
+      lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
+      createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
+      doctorsPrivateNote: ''
+      patientSerial: @patient.serial
+      recordType: 'doctor-visit'
+      doctorName: @user.name
+      hospitalName: @organization.name
+      doctorSpeciality: @getDoctorSpeciality()
+      prescriptionSerial: null
+      doctorNotesSerial: null
+      nextVisitSerial: null
+      advisedTestSerial: null
+      patientStaySerial: null
+      invoiceSerial: null
+      historyAndPhysicalRecordSerial: null
+      diagnosisSerial: null
+      identifiedSymptomsSerial: null
+      examinationSerial: null
+      referralSerial: null
+      recordTitle: 'Complete Visit'
+      vitalSerial: {
+        bp: null
+        hr: null
+        bmi: null
+        rr: null
+        spo2: null
+        temp: null
+      }
+      testResults: {
+        serial: null
+        name: null
+        attachmentSerialList: []
+      }
+    }
+      
+
   createNewInvoiceButtonClicked: (e)->
-    @domHost.navigateToPage '#/create-invoice/invoice:new/patient:' + @patient.serial
+
+    visit = @_makeNewVisit()
+    app.db.upsert 'doctor-visit', visit, ({serial})=> visit.serial is serial
+
+    @domHost.navigateToPage '#/create-invoice/invoice:new/patient:' + @patient.serial + '/visit:' + visit.serial
 
   editInvoiceItemClicked: (e)->
     @domHost.navigateToPage '#/create-invoice/invoice:' + e.model.item.serial + '/patient:' + @patient.serial
