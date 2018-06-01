@@ -180,7 +180,7 @@ Polymer({
   },
 
   $getTotalCost(invoice) {
-    return invoice ? invoice.totalBilled : 0
+    return invoice && invoice.totalBilled ? invoice.totalBilled : 0
   },
 
   $computeAge(dateString) {
