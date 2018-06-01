@@ -173,6 +173,10 @@ Polymer {
         }
       ]
 
+    loadingCounter:
+      type: Number
+      value: -> 0
+
 
   goToUrlForManagePatientList: (e)->
     index = e.model.index
@@ -198,8 +202,9 @@ Polymer {
     data = { 
       apiKey: @user.apiKey
     }
-
+    @loadingCounter++
     @callApi '/bdemr-organization-list-those-user-belongs-to', data, (err, response)=>
+      @loadingCounter--
       if response.hasError
         @domHost.showModalDialog response.error.message
       else

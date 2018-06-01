@@ -29,13 +29,14 @@
         margin-top: 10px;
         margin-bottom: 10px;
       }
-      
+
       .row.one .card-group {
         @apply(--layout-horizontal);
         @apply(--layout-flex);
         margin-left: 5px;
         margin-right: 5px;
       }
+
       /*.row.one .card-group:first-child {
         margin-left: 10px;
       }
@@ -43,21 +44,21 @@
       .row.one .card-group:last-child {
         margin-right: 10px;
       }*/
-      
+
       .card {
         @apply(--layout-flex);
         min-height: 100px;
         margin: 3px;
       }
-      
+
       .row.one .card:first-child {
         margin-left: 0px;
       }
-      
+
       .row.one .card:last-child {
         margin-right: 0px;
       }
-      
+
       @media screen and (max-width: 740px) {
         .row.one .card-group:first-child {
           margin-right: 10px;
@@ -67,7 +68,7 @@
           margin-left: 10px;
         }
       }
-      
+
       @media screen and (max-width: 480px) {
         .row.one .card-group {
           display: block;
@@ -80,32 +81,32 @@
           margin-left: 0px;
         }
       }
-      
+
       .card-content.single-block .number {
         font-size: 72px;
       }
-      
+
       .card-content.single-block .subtitle {
         text-transform: uppercase;
       }
-      
+
       .row.two {
         @apply(--layout-horizontal);
         margin-left: 10px;
         margin-right: 10px;
       }
-      
+
       .row.two .card.one {
         @apply(--layout-flex);
         margin-right: 5px;
       }
-      
+
       .row.two .card.two {
         margin-left: 5px;
         padding-left: 10px;
         @apply(--layout-flex-3);
       }
-      
+
       @media screen and (max-width: 740px) {
         .row.two {
           margin-left: 5px;
@@ -122,18 +123,18 @@
           margin-right: 5px;
         }
       }
-      
+
       .right-hand-text {
         padding-left: 20px;
       }
-      
+
       .language-strip {
         margin: 10px;
         @apply(--layout-horizontal);
         @apply(--layout-center);
         @apply(--layout-end-justified);
       }
-      
+
 
       .footer-text {
         margin-top: 30px;
@@ -148,6 +149,7 @@
         width: calc(20% - 26px);
         text-align: center;
       }
+
       .dashboard-item-2 {
         position: relative;
         margin: 8px 16px;
@@ -162,7 +164,8 @@
         text-transform: uppercase !important;
       }
 
-      .dashboard-item:hover, .dashboard-item-2:hover  {
+      .dashboard-item:hover,
+      .dashboard-item-2:hover {
         cursor: pointer;
       }
 
@@ -187,6 +190,7 @@
       .hide-on-mobile {
         display: block;
       }
+
       @media screen and (max-width: 639px) {
         .hide-on-mobile {
           display: none;
@@ -204,7 +208,6 @@
         }
 
       }
-
     </style>
 
     <!-- local DOM -->
@@ -221,7 +224,7 @@
               <template is="dom-repeat" items="[[managePatientLinkList]]">
                 <div class="dashboard-item-2" on-tap="goToUrlForManagePatientList">
                   <div class="icon">
-                    <img width="96" height="96" src$="{{item.imagePath}}"/>
+                    <img width="96" height="96" src$="{{item.imagePath}}" />
                   </div>
                   <div class="type body secondary hide-on-mobile">{{item.subTitle}}</div>
                   <div class="type body-lead uppercase">{{item.title}}</div>
@@ -235,6 +238,12 @@
         <paper-card heading="Authorize records to" class="m-top-8">
           <div class="card-content">
 
+            <template is="dom-if" if="[[loadingCounter]]">
+              <paper-spinner active></paper-spinner>
+              <span class="m-left-8">Loading Authorized Organization List</span>
+            </template>
+            <br>
+
             <template is="dom-repeat" items="{{settings.authorizedOrganiztionList}}">
               <paper-checkbox class="custom-checkbox" checked="{{item.isChecked}}" on-change="onCheckAuthorizedOrganization">{{item.name}}</paper-checkbox>
             </template>
@@ -242,7 +251,7 @@
           </div>
         </paper-card>
 
-        <paper-card heading="Navigate to" class="m-top-8">
+        <!-- <paper-card heading="Navigate to" class="m-top-8">
           <div class="p-12">
             <div class="layout horizontal wrap">
 
@@ -259,7 +268,7 @@
 
             </div>
           </div>
-        </paper-card>
+        </paper-card> -->
 
         <paper-card heading="My App license" class="m-top-8">
           <div class="card-content single-block horizontal layout center">
@@ -284,7 +293,7 @@
 
     </div>
 
-    
+
 
   </template>
   <script src="page-dashboard.coffee-compiled.js"></script>
