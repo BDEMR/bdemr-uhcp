@@ -618,6 +618,7 @@ Polymer {
       index = params['selected']
       index = parseInt index
       
+      @domHost.selectedPatientPageIndex = index
       @set "selectedSubViewIndex", (index - 1)
     
     if params['patient']

@@ -804,18 +804,22 @@ Polymer {
     else
       return 'বাংলা'
 
-  patientPageSelectedIndexChanged: ->
-
+  patientPageSelectedIndexChanged: (selectedPageIndex)->
     return unless @currentPatientsDetails
 
-    if @selectedPatientPageIndex is 0
-      @async ()=>
-        @selectedVisitSerial = localStorage.getItem("selectedVisitSerial")
-        @navigateToPage '#/visit-editor/visit:' + @selectedVisitSerial + '/patient:' + @currentPatientsDetails.serial
-    else
-      @async => 
-        @navigateToPage '#/patient-viewer/patient:' + @currentPatientsDetails.serial + '/selected:' + @selectedPatientPageIndex
-        @pageElement.navigatedIn()
+    @debounce 'selectPage', ()=>
+      if selectedPageIndex is 0
+        @async ()=>
+          @selectedVisitSerial = localStorage.getItem("selectedVisitSerial")
+          @navigateToPage '#/visit-editor/visit:' + @selectedVisitSerial + '/patient:' + @currentPatientsDetails.serial
+      else
+        @async => 
+          @navigateToPage '#/patient-viewer/patient:' + @currentPatientsDetails.serial + '/selected:' + selectedPageIndex
+          @pageElement.navigatedIn()
+
+    ,10
+
+    
 
   _changeToolbarClass: (showTallToolbar)->
     if showTallToolbar

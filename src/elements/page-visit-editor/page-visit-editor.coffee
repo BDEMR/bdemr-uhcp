@@ -4501,11 +4501,11 @@ Polymer {
     
   navigatedIn: ->
 
-    @domHost.selectedPatientPageIndex = 0
+    # @domHost.selectedPatientPageIndex = 0
 
     @organization = @getCurrentOrganization()
     unless @organization
-      @domHost.navigateToPage "#/select-organization"
+      return @domHost.navigateToPage "#/select-organization"
 
  
     # Load User
