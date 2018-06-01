@@ -53,7 +53,7 @@
       }
 
       .organization-dropdown {
-        width: 250px;
+        width: 210px;
       }
     </style>
 
@@ -65,17 +65,42 @@
 
           <div class="card-content">
 
-            <div class="search layout horizontal center">
+            <div class="search layout horizontal justified end">
 
-              <vaadin-combo-box class="organization-dropdown" no-label-float="" label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected" loading="[[organizationLoading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
+              <vaadin-combo-box class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected" loading="[[organizationLoading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
-              <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
-              <div class="flex"></div>
-              <paper-button raised="" on-tap="resetButtonClicked">Reset</paper-button>
+              <paper-dropdown-menu label="Filter by Gender" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="genderSelected" selected="0">
+                  <paper-item>All</paper-item>
+                  <paper-item>Male</paper-item>
+                  <paper-item>Female</paper-item>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-dropdown-menu label="Filter by Age Group" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="ageGroupSelected" selected="0">
+                  <template is="dom-repeat" items="[[ageGroupList]]">
+                    <paper-item>[[item]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-dropdown-menu label="Filter by Salary Range" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="salaryRangeSelected" selected="0">
+                  <template is="dom-repeat" items="[[salaryRangeList]]">
+                    <paper-item>[[item]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu>
+
+              <paper-input label="Search by Name" class="m-right-8" value="{{searchString}}"></paper-input>
+
+              <custom-vital-search style="width:210px" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
 
             </div>
             <div class="layout horizontal">
               <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-button raised="" on-tap="resetButtonClicked">Reset</paper-button>
             </div>
 
             <h4>Total Visit: [[reportResults.length]]</h4>
@@ -138,6 +163,14 @@
                   </template>
                   <template>
                     <span>[[$formatDateTime(item.visit.createdDatetimeStamp)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Type</template>
+                  <template>
+                    <div>
+                      <span class="type caption-2 bg-gray">[[item.visit.dischargeNote.dischargeType]]</span>
+                    </div>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
@@ -273,6 +306,40 @@
       value: false
     },
 
+    categoryList: {
+      type: Array,
+      value() { return ['Symptoms', 'Diagnosis', 'Investigation', 'Medicine']; }
+    },
+
+    ageGroupList: {
+      type: Array,
+      value() {
+        return [
+          'All',
+          '0 to 18',
+          '18 to 25',
+          '25 to 35',
+          '35 to 50',
+          '50 to above'
+        ];
+      }
+    },
+
+    salaryRangeList: {
+      type: Array,
+      value() {
+        return [
+          "All",
+          "0 to 10,000",
+          "10,000 to 20,000",
+          "20,000 to 30,000",
+          "30,000 to 40,000",
+          "40,000 to 50,000",
+          "50,000 to above"
+        ];
+      }
+    },
+
     reportResults: {
       type: Array,
       value: []
@@ -385,7 +452,7 @@
   },
 
   $getTotalCost(invoice) {
-    return invoice ? invoice.totalBilled : 0
+    return invoice && invoice.totalBilled ? invoice.totalBilled : 0
   },
 
   $computeAge(dateString) {
@@ -414,12 +481,72 @@
 
   resetButtonClicked() { return this.domHost.reloadPage(); },
 
+  genderSelected(e) {
+    const index = e.detail.selected;
+    let gender;
+    if (index == 1) {
+      gender = 'male'
+    } else if (index == 2) {
+      gender = 'female'
+    } else {
+      gender = ''
+    }
+    return this.set('selectedGender', gender);
+  },
+
+  _createAgeGroupFromString(ageGroupString) {
+    const ageGroupStringArr = ageGroupString.split('to');
+    const fromAge = parseInt(ageGroupStringArr[0]);
+    const toAge = (isNaN(parseInt(ageGroupStringArr[1])) ? 999 : (parseInt(ageGroupStringArr[1])));
+    return [fromAge, toAge];
+  },
+
+  ageGroupSelected(e) {
+    const index = e.detail.selected;
+    let selectedAgeGroup;
+    if (index == 0) {
+      // all selected
+      selectedAgeGroup = []
+    } else {
+      let selectedAgeGroupString = this.ageGroupList[index];
+      selectedAgeGroup = this._createAgeGroupFromString(selectedAgeGroupString);
+    }
+    return this.set('selectedAgeGroup', selectedAgeGroup);
+  },
+
+
+  _createSalarRangeFromString(salaryRangeString) {
+    const salaryRangeStringArr = salaryRangeString.split('to');
+    salaryRangeStringArr.splice(0, 1, (salaryRangeStringArr[0].split(",").join("")));
+    salaryRangeStringArr.splice(1, 1, (salaryRangeStringArr[1].split(",").join("")));
+    const fromSalary = (isNaN(parseInt(salaryRangeStringArr[0])) ? 0 : (parseInt(salaryRangeStringArr[0])));
+    const toSalary = (isNaN(parseInt(salaryRangeStringArr[1])) ? 99999999999 : (parseInt(salaryRangeStringArr[1])));
+    return [fromSalary, toSalary];
+  },
+
+  salaryRangeSelected(e) {
+    const index = e.detail.selected;
+    let selectedSalaryRange;
+    if (index == 0) {
+      // all selected
+      selectedSalaryRange = []
+    } else {
+      let selectedSalaryRangeString = this.salaryRangeList[index];
+      selectedSalaryRange = this._createSalarRangeFromString(selectedSalaryRangeString);
+    }
+    return this.set('selectedSalaryRange', selectedSalaryRange);
+  },
+
   searchButtonClicked() {
     let query = {
       apiKey: this.user.apiKey,
       searchParameters: {
         dateCreatedFrom: this.dateCreatedFrom || '',
         dateCreatedTo: this.dateCreatedTo || '',
+        searchString: this.searchString || '',
+        gender: this.selectedGender || '',
+        ageGroup: this.selectedAgeGroup || [],
+        salaryRange: this.selectedSalaryRange || []
       }
     }
     // search parent+child when selecting all
@@ -435,6 +562,8 @@
     } else {
       query.organizationIdList = []
     }
+
+    console.log(query);
 
     this.loading = true;
     this.callApi('/uhcp--get-visit-reports', query, (err, response) => {

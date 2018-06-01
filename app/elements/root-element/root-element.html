@@ -30056,11 +30056,21 @@ The following imports are available:
       }
 
       #successToast {
-        --paper-toast-background-color: var(--paper-green-800);
+        --paper-toast-background-color: var(--paper-green-500);
+        text-align: center;
+        font-size: 16px;
+      }
+
+      .generic-toast {
+        --paper-toast-background-color: var(--app-primary-color);
+        text-align: center;
+        font-size: 16px;
       }
 
       #warningToast {
-        --paper-toast-background-color: var(--paper-red-900);
+        --paper-toast-background-color: var(--paper-orange-500);
+        text-align: center;
+        font-size: 16px;
       }
 
       /*paper-tab {
@@ -30369,6 +30379,7 @@ The following imports are available:
                     <paper-tab>[[$TRANSLATE('Medicine',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Vitals',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Visits &amp; Report',LANG)]]</paper-tab>
+                    <paper-tab>[[$TRANSLATE('Invoice',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Test Results',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Doctor Patient Notes',LANG)]]</paper-tab>
                     <paper-tab>[[$TRANSLATE('Patient Gallery',LANG)]]</paper-tab>
@@ -30376,6 +30387,7 @@ The following imports are available:
                     <template is="dom-if" if="[[_checkUserAccess('D022')]]">
                       <paper-tab>[[$TRANSLATE('Leave Info',LANG)]]</paper-tab>
                     </template>
+
                   </paper-tabs>
                 </div>
               </div>
@@ -30447,19 +30459,18 @@ The following imports are available:
     </paper-dialog>
     <!-- generic-modal-dialog - end -->
 
-    <!-- sync - start -->
-    <paper-dialog id="syncDialog" modal="">
-      <p>SYNC is in progress, please wait...</p>
-      <div class="layout vertical center">
-        <paper-spinner alt="Syncing to Cloud" active=""></paper-spinner>
+    <paper-dialog id="generic-loader-dialog" modal="">
+      <div class="layout horizontal center">
+        <paper-spinner active=""></paper-spinner>
+        <span class="m-left-16">[[loaderMessage]]</span>
       </div>
     </paper-dialog>
-    <!-- sync - end -->
 
-    <paper-toast id="toast1" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
-    <paper-toast id="successToast" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <paper-toast id="toast1" class="fit-bottom generic-toast" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <!-- Success Toast -->
+    <paper-toast id="successToast" class="fit-bottom" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
     <!-- Warning Toast -->
-    <paper-toast id="warningToast" duration="2000" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <paper-toast id="warningToast" class="fit-bottom" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
 
   </template>
   <script>(function(){var t,n;n=null,t=[],app.behaviors.local["root-element"]||(app.behaviors.local["root-element"]={}),app.behaviors.local["root-element"].dataLoader={loadStaticData:function(){return this.requestForLoadingStaticData()},getStaticData:function(e,i){if(!(e in n))throw new Error('Unknown static data "'+e+'" requested');return null!==n[e]?lib.util.setImmediate(i,n[e]):t.push({cbfn:i,name:e})},afterLoadingStaticData:function(e){var i,a,s,o;for(n=e,o=[],i=0,s=t.length;i<s;i++)a=t[i],o.push(lib.util.setImmediate(a.cbfn,n[a.name]));return o},requestForLoadingStaticData:function(){var t,e,i,a,s,o,r,l;for(r=[{name:"investigationList",url:"static-data/uhcp-investigation-list.json"},{name:"symptomsList",url:"static-data/symptoms-list.json"},{name:"examinationList",url:"static-data/examination-list.json"},{name:"pccMedicineList",url:"static-data/uhcp-drug-list-with-price.json"},{name:"operationList",url:"static-data/operation-list.json"},{name:"diagnosisList",url:"static-data/diagnosis-list.json"},{name:"dynamicElementDefinitionPostoperativeAssessment",url:"static-data/de-def-postop-assessment.json"},{name:"dynamicElementDefinitionOperationAnaesthesia",url:"static-data/de-def-op-anaesthesia.json"},{name:"dynamicElementDefinitionOperationSurgery",url:"static-data/de-def-op-surgery.json"},{name:"dynamicElementDefinitionPreoperativeAssessment",url:"static-data/de-def-doctor-app-history-and-physical-examination.json"},{name:"uhcpInvoicePriceList",url:"static-data/uhcp-invoice-price-list.json"}],l=[{name:"investigationList",url:"https://bdemr.b-cdn.net/uhcp-investigation-list-2-4-2018.json"},{name:"symptomsList",url:"https://bdemr.b-cdn.net/symptoms-list-25-10-2017.json"},{name:"examinationList",url:"https://bdemr.b-cdn.net/examination-list-25-10-2017.json"},{name:"medicineList",url:"https://bdemr.b-cdn.net/medicine-list-19-10-2017.json"},{name:"operationList",url:"https://bdemr.b-cdn.net/operation-list-19-10-2017.json"},{name:"diagnosisList",url:"https://bdemr.b-cdn.net/diagnosis-list-19-10-2017.json"},{name:"dynamicElementDefinitionPostoperativeAssessment",url:"https://bdemr.b-cdn.net/de-def-postop-assessment-19-10-2017.json"},{name:"dynamicElementDefinitionOperationAnaesthesia",url:"https://bdemr.b-cdn.net/de-def-op-anaesthesia-19-10-2017.json"},{name:"dynamicElementDefinitionOperationSurgery",url:"https://bdemr.b-cdn.net/de-def-op-surgery-22-10-2017.json"},{name:"dynamicElementDefinitionPreoperativeAssessment",url:"https://bdemr.b-cdn.net/de-def-doctor-app-history-and-physical-examination-10-12-2017.json"},{name:"pccMedicineList",url:"https://bdemr.b-cdn.net/uhcp-drug-list-with-price-6-5-2018.json"},{name:"uhcpInvoicePriceList",url:"https://bdemr.b-cdn.net/uhcp-invoice-price-list-2-4-2018.json"}],o="production"===app.mode&&"web"===app.config.clientPlatform?l:r,n={},e=0,s=o.length;e<s;e++)a=o[e],n[a.name]=null;return t=new lib.util.Collector(o.length),i=new lib.util.Iterator(o),i.forEach(function(n){return function(e,i,a){var s,o;return s=n.notifyDownloadAction("start",a.url),o=lib.network.ensureBaseNetworkDelay(function(){return n.notifyDownloadAction("done",a.url,s)}),lib.network.request(a.url,"GET",{fromApp:app.config.clientIdentifier+"-"+app.config.clientVersion},function(e,i){var r;return e?void n.notifyDownloadAction("error",a.url,s):(o(),r=JSON.parse(i.target.responseText),t.collect(a.name,r))}),e()}}(this)),i["finally"](function(){return null}),t["finally"](function(t){return function(n){return t.afterLoadingStaticData(n)}}(this))}}}).call(this);
@@ -30477,7 +30488,7 @@ app.behaviors.local['root-element'].newSync = {
 
     apiActionId = this.notifyApiAction('start', null);
 
-    this.$.syncDialog.toggle();
+    this.toggleModalLoader('SYNC is in progress, please wait...');
 
     const collectionNameMap = {
       'bdemr--doctor-favorite-medications': 'favorite-medicine-list',
@@ -30611,7 +30622,7 @@ app.behaviors.local['root-element'].newSync = {
 
       this.notifyApiAction('done', null, apiActionId)
 
-      this.$.syncDialog.toggle()
+      this.toggleModalLoader()
 
       if (err) {
         return cbfn(err)
@@ -30654,7 +30665,7 @@ app.behaviors.local['root-element'].newSync = {
 //# sourceMappingURL=behavior-organization-data-sync-config.coffee-compiled.js.map</script>
   <script>(function(){app.behaviors.local["root-element"]||(app.behaviors.local["root-element"]={}),app.behaviors.local["root-element"].syncCall={_syncOnlyPatientTestResults:function(n){return this._syncPatients(this.syncPatientTestResultsConfig,function(){return n()})},_syncOnlyPatientGallery:function(n){return this._sync(n)},_syncUserSettings:function(n){return this._sync(n)},_syncOnlyInvoice:function(n){return this._sync(n)},_syncOnlyPriceList:function(n){return this._syncOrganizationData(this.syncOrganizationPriceList,n)},_sync:function(n){return null==n&&(n=null),this.$$("#sync-dialog").toggle(),this._syncTemporaryOfflinePatients(function(n){return function(){var t;return t=new lib.util.Collector(42),n._syncUser(n.syncDoctorFavoriteMedicationConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncUser(n.syncSettings,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncUser(n.syncFavoriteAdvisedTestConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncUser(n.syncUserAddedInstitutionConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncUser(n.syncVisitedPatientLogConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncUser(n.syncUserAddedCustomSymptomsConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncUser(n.syncUserAddedCustomExaminationConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVisitConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncPrescriptionConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncPatientMedicationConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncDoctorNotesConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncNextVisitConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncTestAdvisedConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncExaminationConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncIdentifiedSymptomsConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncCustomInvestigationConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncAnaesmonRecordConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncPatientTestResultsConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncPatientStayConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncHistoryAndPhysicalConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncDiagnosisConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncReferral,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncEmployeeLeaveData,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVitalBloodPressureConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVitalBMIConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVitalPulseRateConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVitalRespiratoryRateConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVitalSpO2Config,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVitalTemperatureConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncTestBloodSugarConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncOtherTestConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncCommentPatientConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncCommentDoctorConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncPatientGalleryAttachmentConfig,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncActivityLog,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVisitInvoice,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncVisitDiagnosis,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncPccRecords,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncPatients(n.syncNdrRecords,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncOrganizationData(n.syncInventoryList,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncOrganizationData(n.syncThirdPartyUserList,function(){return n.syncCompleted++,t.collect("A1",null)}),n._syncOrganizationData(n.syncInvoiceCategoryList,function(){return n.syncCompleted++,t.collect("A1",null)}),t["finally"](function(){return n.async(function(){return n.$$("#sync-dialog").close(),n.syncCompleted=0,window.localStorage.setItem("lastSyncedDatetimeStamp",lib.datetime.now()),n.reloadPage()})})}}(this))}}}).call(this);
 //# sourceMappingURL=mixin-call-sync.coffee-compiled.js.map</script>
-  <script>(function(){var t,e=[].slice,i=[].indexOf||function(t){for(var e=0,i=this.length;e<i;e++)if(e in this&&this[e]===t)return e;return-1};t=!1,Polymer({is:"root-element",behaviors:[app.behaviors.translating,app.behaviors.commonComputes,app.behaviors.apiCalling,app.behaviors.dbUsing,app.behaviors.debug,app.behaviors.local["root-element"].dataLoader,app.behaviors.local["root-element"].newSync,app.behaviors.local["root-element"].patientsDataSyncConfig,app.behaviors.local["root-element"].patientsDataSync,app.behaviors.local["root-element"].userDataSyncConfig,app.behaviors.local["root-element"].userDataSync,app.behaviors.local["root-element"].organizationDataSyncConfig,app.behaviors.local["root-element"].organizationDataSync,app.behaviors.local["root-element"].syncCall],properties:{selectedPatientPageIndex:{type:Number,value:0,notify:!0,observer:"patientPageSelectedIndexChanged"},page:{type:Object,observer:"_mainViewPageChanged"},languageSelectedIndex:{type:Number,value:app.lang.defaultLanguageIndex,notify:!0,observer:"languageSelectedIndexChanged"},languageName:{type:String,computed:"_showLanguageName(languageSelectedIndex)"},downloadActions:{type:Object,value:{count:0,seed:0,list:[]}},syncActions:{type:Object,value:{count:0,seed:0,list:[]}},apiActions:{type:Object,value:{count:0,seed:0,list:[]}},currentOrganization:{type:Object,value:null},currentNavigationCandidate:{type:String,value:""},readyPageNodeNameList:{type:Array,value:[]},genericModalDialogContents:{type:String,value:"Content goes here..."},genericToastContents:{type:String,value:"Content goes here..."},genericModalInputFieldValue:{type:String,value:"",notify:!0},currentPatientsDetails:{type:Object,value:null,notify:!0},selectedVisitSerial:{type:String,value:"new",notify:!0,observer:"setSelectedVisitSerial"},currentAd:{type:Object},user:{type:Object,value:null},hideAd:{type:Boolean,value:!1},isMobileView:{type:Boolean,value:!1},orgSmsBalance:{type:Number,value:0},syncCompleted:{type:Number,value:function(){return 0}}},observers:["_routerHrefChanged(routeData.page)"],saveDefaultSettings:function(){var t;return t={createdByUserSerial:this.user.serial,lastModifiedDatetimeStamp:0,createdDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:null,serial:this.user.serial,printDecoration:{leftSideLine1:"My Institution",leftSideLine2:"My Institution Address",leftSideLine3:"My Institution Contact",rightSideLine1:"My Name",rightSideLine2:"My Degrees",rightSideLine3:"My Contact",footerLine:"A simple message on the bottom",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT",otherSettings:{patientSignUpDefaultPassword:"123456"}},app.db.upsert("settings",t,function(t){return function(e){var i;return i=e.serial,t.user.serial===i}}(this))},notifyApiAction:function(){var t,i,n,a,r;return t=arguments[0],i=2<=arguments.length?e.call(arguments,1):[],"start"===t?(this.apiActions.count+=1,this.notifyPath("apiActions.count"),a=i[0],n={id:this.apiActions.seed++,path:i[a],time:lib.datetime.now(),action:"start"},this.apiActions.list.push(n),n.id):"done"===t?(0!==this.apiActions.count&&(this.apiActions.count-=1),this.notifyPath("apiActions.count"),a=i[0],r=i[1],n={id:this.apiActions.seed++,path:a,refId:r,action:"done"},this.apiActions.list.push(n),n.id):"error"===t?(0!==this.apiActions.count&&(this.apiActions.count-=1),this.notifyPath("apiActions.count"),a=i[0],r=i[1],n={id:this.apiActions.seed++,path:a,refId:r,action:"error"},this.apiActions.list.push(n),n.id):void 0},notifyDownloadAction:function(){var t,i,n,a,r;return t=arguments[0],i=2<=arguments.length?e.call(arguments,1):[],"start"===t?(this.downloadActions.count+=1,this.notifyPath("downloadActions.count"),a=i[0],n={id:this.downloadActions.seed++,path:i[a],time:lib.datetime.now(),action:"start"},this.downloadActions.list.push(n),n.id):"done"===t?(0!==this.downloadActions.count&&(this.downloadActions.count-=1),this.notifyPath("downloadActions.count"),a=i[0],r=i[1],n={id:this.downloadActions.seed++,path:a,refId:r,action:"done"},this.downloadActions.list.push(n),n.id):"error"===t?(0!==this.downloadActions.count&&(this.downloadActions.count-=1),this.notifyPath("downloadActions.count"),a=i[0],r=i[1],n={id:this.downloadActions.seed++,path:a,refId:r,action:"error"},this.downloadActions.list.push(n),n.id):void 0},notifySyncAction:function(){var t,i,n,a,r;return t=arguments[0],i=2<=arguments.length?e.call(arguments,1):[],"start"===t?(this.syncActions.count+=1,this.notifyPath("syncActions.count"),a=i[0],n={id:this.syncActions.seed++,path:i[a],time:lib.datetime.now(),action:"start"},this.syncActions.list.push(n),n.id):"done"===t?(0!==this.syncActions.count&&(this.syncActions.count-=1),this.notifyPath("syncActions.count"),a=i[0],r=i[1],n={id:this.syncActions.seed++,path:a,refId:r,action:"done"},this.syncActions.list.push(n),n.id):"error"===t?(0!==this.apiActions.count&&(this.apiActions.count-=1),this.notifyPath("apiActions.count"),a=i[0],r=i[1],n={id:this.apiActions.seed++,path:a,refId:r,action:"error"},this.apiActions.list.push(n),n.id):void 0},_routerHrefChanged:function(t){var e,n,a,r,o,s;for(t||(t="/"),s=!1,r=null,o=app.pages.pageList,e=0,n=o.length;e<n;e++)if(a=o[e],i.call(a.hrefList,t)>=0){r=a,s=!0;break}return s?r.requireAuthentication?this.isUserLoggedIn()?this._checkUserAccess(r.accessId)?this.page=r:this.page=app.pages.error404:this.skipWelcomePage()?this.navigateToPage("#/login"):this.navigateToPage("#/welcome"):this.page=r:this.page=app.pages.error404},_preloadOtherPages:function(){var t,e,i,n,a;for(t=[].concat(app.pages.pageList,[app.pages.error404]),a=[],e=0,i=t.length;e<i;e++)n=t[e],a.push(function(t){return function(e){var i,n,a,r;if(e.name!==t.page.name)return a=t.resolveUrl("../"+e.element+"/"+e.element+".html"),n=t.notifyDownloadAction("start",a),r=lib.network.ensureBaseNetworkDelay(function(){return t.notifyDownloadAction("done",a,n)}),i=lib.network.ensureBaseNetworkDelay(function(){return t.notifyDownloadAction("error",a,n)}),t.importHref(a,r,i,!0)}}(this)(n));return a},_mainViewPageChanged:function(e){var i,n;return i=function(e){return function(){if(!t)return t=!0}}(this),n=this.resolveUrl("../"+e.element+"/"+e.element+".html"),this.importHref(n,i,i,!1),this._hideAd(e.name)},_fillIronPagesFromPageList:function(){var t,e,i,n,a,r,o;for(i=Polymer.dom(this.root).querySelector("iron-pages"),t=[].concat(app.pages.pageList,app.pages.error404),o=[],e=0,n=t.length;e<n;e++)a=t[e],r=document.createElement(a.element),r.setAttribute("name",a.name),o.push(Polymer.dom(i).appendChild(r));return o},_computeAge:function(t){var e,i,n,a;return a=new Date,i=new Date(t),e=a.getFullYear()-i.getFullYear(),n=a.getMonth()-i.getMonth(),(n<0||0===n&&a.getDate()<i.getDate())&&e--,e},created:function(){return this.removeUserUnlessSessionIsPersistent(),this.loadStaticData()},ready:function(){var t,e;if(this._fillIronPagesFromPageList(),null===localStorage.getItem("selectedVisitSerial")?localStorage.setItem("selectedVisitSerial","new"):this.selectedVisitSerial=localStorage.getItem("selectedVisitSerial"),e=localStorage.getItem("currentPatientsDetails"),this.currentPatientsDetails=JSON.parse(e),this.user=function(){try{return app.db.find("user")[0]}catch(e){return t=e,null}}()||null,this.isUserLoggedIn()&&this._callAfterUserLogsIn(),document.title="UHCP App "+app.config.clientVersion,"production"===app.mode&&(bugsnagClient.app.version=app.config.clientVersion,this.currentOrganization&&(bugsnagClient.metaData={organization:{name:this.currentOrganization.name,id:this.currentOrganization.idOnServer,isCurrentUserAnAdmin:this.currentOrganization.isCurrentUserAnAdmin}}),this.user))return bugsnagClient.user={id:this.user.idOnServer,serial:this.user.serial,name:this.user.name,email:this.user.email||this.user.phone}},getYear:function(){return(new Date).getFullYear()},_callAfterUserLogsIn:function(t){var e;if(this.set("user",this.getCurrentUser()),this.inAppNotificationSystemInitiate(),this.updateNotificationView(),this.initiateAdvertisement(),e=this.getCurrentOrganization(),e?(this.set("currentOrganization",e),this.loadOrganizationSmsBalance(e.idOnServer)):this.set("currentOrganization",null),"production"===app.mode)return bugsnagClient.user={id:this.user.idOnServer,serial:this.user.serial,name:this.user.name,email:this.user.email||this.user.phone}},_showSyncButton:function(t,e){return!e&&!t},_hideAd:function(t){var e;return e=this.isMobileView?["login","patient-manager","manage-price-list"]:["login","manage-price-list"],i.call(e,t)>=0?(this.set("hideAd",!0),this.toggleClass("show-ad",!1,this.$.mainHeader)):(this.set("hideAd",!1),this.toggleClass("show-ad",!0,this.$.mainHeader))},setCurrentPatientsDetails:function(t){return this.currentPatientsDetails=t,localStorage.setItem("currentPatientsDetails",JSON.stringify(this.currentPatientsDetails))},setSelectedVisitSerial:function(t){return this.set("selectedVisitSerial",t),localStorage.setItem("selectedVisitSerial",t)},_compareFn:function(t,e,i){return"<"===e?t<i:">"===e?t>i:"=="===e?t===i:">="===e?t>=i:"<="===e?t<=i:void 0},refreshButtonPressed:function(t){return this.reloadPage()},logoutPressed:function(t){var e;return e=app.db.find("user")[0],e.apiKey="",app.db.update("user",e._id,e),this.$$("app-drawer").toggle(),this.navigateToPage("#/login"),this.reloadPage()},showModalDialog:function(t){return"string"==typeof t?(this.genericModalDialogContents=t,this.genericModalDialogContentArray=[]):(this.genericModalDialogContents="",this.genericModalDialogContentArray=t),this.$$("#generic-modal-dialog").toggle()},showModalPrompt:function(t,e){return this.$$("#generic-modal-prompt").toggle(),this.genericModalPromptContents=t,this.genericModalPromptDoneCallback=e},showModalInput:function(t,e,i){return this.genericModalInputContents=t,this.genericModalInputFieldValue=e,this.$$("#generic-modal-input").toggle(),this.genericModalInputDoneCallback=i},genericModalInputClosed:function(t){return t.detail.confirmed?this.genericModalInputDoneCallback(this.genericModalInputFieldValue):this.genericModalInputDoneCallback(!1),this.genericModalInputDoneCallback=null},genericModalPromptClosed:function(t){return t.detail.confirmed?this.genericModalPromptDoneCallback(!0):this.genericModalPromptDoneCallback(!1),this.genericModalPromptDoneCallback=null},showToast:function(t){return this.genericToastContents=t,this.$$("#toast1").open()},genericToastTapped:function(t){return this.$$("#toast1").close()},showSuccessToast:function(t){return this.genericToastContents=t,this.$$("#successToast").open()},successToastTapped:function(t){return this.$$("#successToast").close()},showWarningToast:function(t){return this.genericToastContents=t,this.$$("#warningToast").open()},warningToastTapped:function(t){return this.$$("#warningToast").close()},saveButtonPressed:function(t){return this.$$("iron-pages").selectedItem.saveButtonPressed(t)},printButtonPressed:function(t){return this.$$("iron-pages").selectedItem.printButtonPressed(t)},arrowBackButtonPressed:function(t){return this.$$("iron-pages").selectedItem.arrowBackButtonPressed(t)},getPageParams:function(){var t,e,i,n,a,r,o,s,l;for(t=window.location.hash,t=t.replace("#/",""),o=t.split("/"),o.shift(),a={},e=0,n=o.length;e<n;e++){if(r=o[e],r.indexOf(":")===-1){this.showModalDialog("Malformatted Url Given");break}s=r.split(":"),i=s[0],l=s[1],a[i]=l}return a},navigateToPage:function(t){var e;return this.user=function(){try{return app.db.find("user")[0]}catch(t){return e=t,null}}()||null,window.history.pushState({},null,t),window.dispatchEvent(new CustomEvent("location-changed"))},navigateToPreviousPage:function(){return window.history.back()},modifyCurrentPagePath:function(t){return window.history.replaceState({},t,t)},reloadPage:function(){return window.location.reload()},ironPagesSelectedEvent:function(t){var e,i,n,a,r;if("IRON-PAGES"===Polymer.dom(t).rootTarget.nodeName){for(n=t.detail.item.nodeName,r=this.readyPageNodeNameList,e=0,i=r.length;e<i;e++)if(a=r[e],a===n)return void(t.detail.item.navigatedIn&&(t.detail.item.navigatedIn(),this.pageElement=t.detail.item));return this.currentNavigationCandidate=n}},pageReady:function(t){if(this.readyPageNodeNameList.push(t.nodeName),this.currentNavigationCandidate===t.nodeName&&(this.currentNavigationCandidate="",t.navigatedIn))return t.navigatedIn(),this.pageElement=t},ironPagesDeselectedEvent:function(t){var e,i,n,a,r;if("IRON-PAGES"===Polymer.dom(t).rootTarget.nodeName)for(n=t.detail.item.nodeName,r=this.readyPageNodeNameList,e=0,i=r.length;e<i;e++)if(a=r[e],a===n)return void(t.detail.item.navigatedOut&&t.detail.item.navigatedOut())},changeOrganizationClicked:function(){return this.navigateToPage("#/select-organization")},loadOrganizationSmsBalance:function(t){var e;return e={apiKey:this.user.apiKey,organizationId:t},this.callApi("/bdemr-get-organization-sms-balance",e,function(t){return function(e,i){return e||!i?t.domHost.showModalDialog("Problem connecting wtih the server. Check your internet connection and try again."):i.hasError?"No data found"===i.error.message?t.set("orgSmsBalance",0):void 0:t.set("orgSmsBalance",i.data.smsBalance)}}(this))},_formatDateTime:function(t){if(t)return lib.datetime.format(t,"mmm d, yyyy h:MMTT")},inAppNotificationSystemInitiate:function(){var t;return t=app.config.variableConfigs[app.mode].serverWsHost,this.ws=new WebSocket(t,["soap","xmpp"]),this.ws.addEventListener("open",function(t){return function(e){return t.inAppNotificationRegister(),t.ws.addEventListener("message",function(e){return t.inAppNotificationMessageHandler(e)},!1,!1)}}(this))},inAppNotificationMessageHandler:function(t){var e;return e=JSON.parse(t.data),"register"===e.operation&&"successful"===e.status?this.inAppNotificationMyId=e.userId:"incoming-notification"===e.operation?(e.markedAsRead=!1,app.db.insert("in-app-notification",e),this.updateNotificationView(),this.showNotification(e)):void 0},inAppNotificationRegister:function(){var t,e;return t=this.getCurrentUser().apiKey,e={operation:"register",apiKey:t},this.ws.send(JSON.stringify(e))},showNotification:function(t){var e,i,n,a;switch(t.category){case"patientNote":a="New Patient Note";break;case"report":a="Report";break;case"onlineConsultation":a="New Consulation Request";break;case"general":a="General";break;default:a="New Notification"}return n={body:t.message,icon:"../../images/web-app-icon/app-icon-72.png",timestamp:t.createdDateTimeStamp,sound:"../../assets/notification.mp3"},"Notification"in window?"granted"===Notification.permission?(i=new Notification(a,n),e=new Audio("../../assets/notification.mp3"),e.play()):"denied"!==Notification.permission?Notification.requestPermission(function(t){if("granted"===t)return i=new Notification(a,n),e=new Audio("../../assets/notification.mp3"),e.play()}):void 0:alert(message)},updateNotificationView:function(){return this.reportNotification=app.db.find("in-app-notification",function(t){return function(t){var e;if(e=t.category,"report"===e)return!0}}(this)),this.patientNoteNotification=app.db.find("in-app-notification",function(t){return function(t){var e;if(e=t.category,"patientNote"===e)return!0}}(this)),this.onlineConsultationNotification=app.db.find("in-app-notification",function(t){return function(t){var e;if(e=t.category,"onlineConsultation"===e)return!0}}(this)),this.generalNotification=app.db.find("in-app-notification",function(t){return function(t){var e;if(e=t.category,"general"===e)return!0}}(this))},markAllDonePressed:function(){return this.reportNotification=[],this.patientNoteNotification=[],this.onlineConsultationNotification=[],this.generalNotification=[]},markAsRead:function(t){return app.db.remove("in-app-notification",t.model.item._id),"report"===t.model.item.category?this.splice("reportNotification",t.model.index,1):"patientNote"===t.model.item.category?this.splice("patientNoteNotification",t.model.index,1):"onlineConsultation"===t.model.item.category?this.splice("onlineConsultationNotification",t.model.index,1):"general"===t.model.item.category?this.splice("generalNotification",t.model.index,1):void 0},notificationToggleButtonPressed:function(t){return this.$.notificationDrawer.toggle()},toggleReportNotification:function(){return this.$.reportNotification.toggle()},togglePatientNoteNotification:function(){return this.$.patientNoteNotification.toggle()},toggleOnlineConsultationNotification:function(){return this.$.onlineConsultationNotification.toggle()},toggleGeneralNotification:function(){return this.$.generalNotification.toggle()},_callGetAdvertisementApi:function(t){var e;return e=app.db.find("user")[0].apiKey,this.callApi("/get-advertisement-list",{apiKey:e},{automaticallyHandleNetworkErrors:!1},function(e){return function(i,n){var a;return i?void 0:n.hasError?e.showModalDialog(n.error.message):(a=n.data.advertisementLongList,t(a))}}(this))},switchAdvertisement:function(){var t;return 0===this.adList.length?this.set("currentAd",null):this.currentAd&&"audio"in this.currentAd&&(t=this.$$("#audioPlayer"),!t.paused)?void lib.util.delay(1e4,function(t){return function(){return t.switchAdvertisement()}}(this)):(null===this.adListSelectedIndex?this.adListSelectedIndex=0:(this.adListSelectedIndex+=1,this.adListSelectedIndex===this.adList.length&&(this.adListSelectedIndex=0)),this.currentAd=this.adList[this.adListSelectedIndex],lib.util.delay(1e4,function(t){return function(){return t.switchAdvertisement()}}(this)))},initiateAdvertisement:function(){var t;if(t=app.db.find("user"),0!==t.length)return this._callGetAdvertisementApi(function(t){return function(e){return t.adList=e,t.adListSelectedIndex=null,t.switchAdvertisement()}}(this))},addActivityLog:function(t,e,i){var n;return n={serial:this.generateSerialForActivity(),doctorSerial:this.getCurrentUserSerial(),patientSerial:i.patientSerial||null,doctorName:this.getCurrentUser().name,subject:t,action:e,data:i,lastModifiedDatetimeStamp:(new Date).getTime()},app.db.insert("activity",n)},languageSelectedIndexChanged:function(){var t;return t=this.supportedLanguageList[this.languageSelectedIndex],this.setActiveLanguage(t)},_showLanguageName:function(t){return 0===t?"EN":"বাংলা"},patientPageSelectedIndexChanged:function(){if(this.currentPatientsDetails)return 0===this.selectedPatientPageIndex?this.async(function(t){return function(){return t.selectedVisitSerial=localStorage.getItem("selectedVisitSerial"),t.navigateToPage("#/visit-editor/visit:"+t.selectedVisitSerial+"/patient:"+t.currentPatientsDetails.serial)}}(this)):this.async(function(t){return function(){return t.navigateToPage("#/patient-viewer/patient:"+t.currentPatientsDetails.serial+"/selected:"+t.selectedPatientPageIndex),t.pageElement.navigatedIn()}}(this))},_changeToolbarClass:function(t){return t?"medium-tall":""},_checkUserAccess:function(t){var e,i,n,a,r;if(e=this.getCurrentOrganization(),"none"===t||!t)return!0;if(!e)return this.navigateToPage("#/select-organization");if(e.isCurrentUserAnAdmin)return!0;if(!e.isCurrentUserAMember)return!1;if(!e.userActiveRole)return!1;if(r=e.userActiveRole.privilegeList,0!==r.length)for(i=0,n=r.length;i<n;i++)if(a=r[i],a.serial===t)return!0},_createOnlinePatient:function(t,e){return t.apiKey=this.user.apiKey,this.callApi("/bdemr-app-patient-signup-partial",t,function(i){return function(n,a){var r;return a.hasError?"Phone number already exists."===a.error.message?(t.userAlreadyExist=!0,i.getExisitingPatientInfo(t.name,t.serial,t.phone,function(){return e(t)})):i.showModalDialog(a.error.message):(r=a.data.patientSerial,t.serial=r,t.userAlreadyExist=!1,e(t))}}(this))},getExisitingPatientInfo:function(t,e,i,n){var a;return a={apiKey:this.user.apiKey,phoneNumber:i},this.callApi("/bdemr-get-patient-info",a,function(i){return function(i,a){var r;if(!a.hasError)return r={oldSerial:e,patientOldName:t,doctorAccessPin:"0000",data:null},r.data=a.data,app.db.insert("conflicted-patient-list",r),n()}}(this))},_updateLocalPatient:function(t,e){var i;return i=app.db.find("patient-list",function(t){var i;return i=t.serial,i===e})[0]._id,t.isTemporaryOfflinePatient=!1,t.flags={isImported:!1,isLocalOnly:!1,isOnlineOnly:!1},t.flags.isImported=!0,app.db.remove("patient-list",i),app.db.insert("patient-list",t)},_removeLocalPatient:function(t){var e;return e=app.db.find("patient-list",function(e){var i;return i=e.serial,i===t})[0]._id,app.db.remove("patient-list",e)},_convertOfflinePatientToOnline:function(t,e){var i;return i=t.serial,this._createOnlinePatient(t,function(t){return function(n){n.userAlreadyExist?e():t.updatePatientSerialOnExisitingRecords(n.serial,i,function(){return t._updateLocalPatient(n,i),e()})}}(this))},checkAndupdateSerialOnCollection:function(t,e,i){var n,a,r,o,s;if(o=app.db.find(i,function(t){var i;return i=t.patientSerial,i===e}),o.length>0){for(s=[],n=0,r=o.length;n<r;n++)a=o[n],a.patientSerial=t,s.push(app.db.update(i,a._id,a));return s}},updatePatientSerialOnExisitingRecords:function(t,e,i){var n,a,r,o;for(n=["unregsitered-patient-details","anaesmon-record","progress-note-record","visited-patient-log","history-and-physical-record","diagnosis-record","doctor-visit","doctor-visit","visit-note","visit-patient-stay","visit-next-visit","custom-investigation-list","visit-advised-test","patient-test-results","patient-medications","patient-vitals-blood-pressure","patient-vitals-pulse-rate","patient-vitals-respiratory-rate","patient-vitals-spo2","patient-vitals-temperature","patient-vitals-bmi","patient-test-blood-sugar","patient-test-other","comment-patient","comment-doctor","patient-gallery--local-attachment","patient-gallery--online-attachment","patient-test-results","in-app-notification","local-patient-pin-code-list","activity","visit-invoice","visit-diagnosis","visit-identified-symptoms","visit-examination","offline-patient-pin","in-patient-medicine-dispense-log","pcc-records","ndr-records","patient-insulin-list"],r=0,o=n.length;r<o;r++)a=n[r],this.checkAndupdateSerialOnCollection(t,e,a);return i()},_syncTemporaryOfflinePatients:function(t){var e,i;return i=app.db.find("patient-list",function(t){return function(t){return t.isTemporaryOfflinePatient===!0}}(this)),0===i.length?t():(e=new lib.util.Iterator(i),e.forEach(function(t){return function(e,i,n){return t._convertOfflinePatientToOnline(n,function(){return e()})}}(this)),e["finally"](function(e){return function(){return t()}}(this)))},syncButtonPressed:function(t){return this._newSync(function(t){return function(e){return e?t.async(function(){return t.showModalDialog(e)}):t.reloadPage()}}(this))}})}).call(this);
+  <script>(function(){var t,e=[].slice,i=[].indexOf||function(t){for(var e=0,i=this.length;e<i;e++)if(e in this&&this[e]===t)return e;return-1};t=!1,Polymer({is:"root-element",behaviors:[app.behaviors.translating,app.behaviors.commonComputes,app.behaviors.apiCalling,app.behaviors.dbUsing,app.behaviors.debug,app.behaviors.local["root-element"].dataLoader,app.behaviors.local["root-element"].newSync,app.behaviors.local["root-element"].patientsDataSyncConfig,app.behaviors.local["root-element"].patientsDataSync,app.behaviors.local["root-element"].userDataSyncConfig,app.behaviors.local["root-element"].userDataSync,app.behaviors.local["root-element"].organizationDataSyncConfig,app.behaviors.local["root-element"].organizationDataSync,app.behaviors.local["root-element"].syncCall],properties:{selectedPatientPageIndex:{type:Number,value:0,notify:!0,observer:"patientPageSelectedIndexChanged"},page:{type:Object,observer:"_mainViewPageChanged"},languageSelectedIndex:{type:Number,value:app.lang.defaultLanguageIndex,notify:!0,observer:"languageSelectedIndexChanged"},languageName:{type:String,computed:"_showLanguageName(languageSelectedIndex)"},downloadActions:{type:Object,value:{count:0,seed:0,list:[]}},syncActions:{type:Object,value:{count:0,seed:0,list:[]}},apiActions:{type:Object,value:{count:0,seed:0,list:[]}},currentOrganization:{type:Object,value:null},currentNavigationCandidate:{type:String,value:""},readyPageNodeNameList:{type:Array,value:[]},genericModalDialogContents:{type:String,value:"Content goes here..."},genericToastContents:{type:String,value:"Content goes here..."},genericModalInputFieldValue:{type:String,value:"",notify:!0},currentPatientsDetails:{type:Object,value:null,notify:!0},selectedVisitSerial:{type:String,value:"new",notify:!0,observer:"setSelectedVisitSerial"},currentAd:{type:Object},user:{type:Object,value:null},hideAd:{type:Boolean,value:!1},isMobileView:{type:Boolean,value:!1},orgSmsBalance:{type:Number,value:0},syncCompleted:{type:Number,value:function(){return 0}}},observers:["_routerHrefChanged(routeData.page)"],saveDefaultSettings:function(){var t;return t={createdByUserSerial:this.user.serial,lastModifiedDatetimeStamp:0,createdDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:null,serial:this.user.serial,printDecoration:{leftSideLine1:"My Institution",leftSideLine2:"My Institution Address",leftSideLine3:"My Institution Contact",rightSideLine1:"My Name",rightSideLine2:"My Degrees",rightSideLine3:"My Contact",footerLine:"A simple message on the bottom",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT",otherSettings:{patientSignUpDefaultPassword:"123456"}},app.db.upsert("settings",t,function(t){return function(e){var i;return i=e.serial,t.user.serial===i}}(this))},notifyApiAction:function(){var t,i,n,a,o;return t=arguments[0],i=2<=arguments.length?e.call(arguments,1):[],"start"===t?(this.apiActions.count+=1,this.notifyPath("apiActions.count"),a=i[0],n={id:this.apiActions.seed++,path:i[a],time:lib.datetime.now(),action:"start"},this.apiActions.list.push(n),n.id):"done"===t?(0!==this.apiActions.count&&(this.apiActions.count-=1),this.notifyPath("apiActions.count"),a=i[0],o=i[1],n={id:this.apiActions.seed++,path:a,refId:o,action:"done"},this.apiActions.list.push(n),n.id):"error"===t?(0!==this.apiActions.count&&(this.apiActions.count-=1),this.notifyPath("apiActions.count"),a=i[0],o=i[1],n={id:this.apiActions.seed++,path:a,refId:o,action:"error"},this.apiActions.list.push(n),n.id):void 0},notifyDownloadAction:function(){var t,i,n,a,o;return t=arguments[0],i=2<=arguments.length?e.call(arguments,1):[],"start"===t?(this.downloadActions.count+=1,this.notifyPath("downloadActions.count"),a=i[0],n={id:this.downloadActions.seed++,path:i[a],time:lib.datetime.now(),action:"start"},this.downloadActions.list.push(n),n.id):"done"===t?(0!==this.downloadActions.count&&(this.downloadActions.count-=1),this.notifyPath("downloadActions.count"),a=i[0],o=i[1],n={id:this.downloadActions.seed++,path:a,refId:o,action:"done"},this.downloadActions.list.push(n),n.id):"error"===t?(0!==this.downloadActions.count&&(this.downloadActions.count-=1),this.notifyPath("downloadActions.count"),a=i[0],o=i[1],n={id:this.downloadActions.seed++,path:a,refId:o,action:"error"},this.downloadActions.list.push(n),n.id):void 0},notifySyncAction:function(){var t,i,n,a,o;return t=arguments[0],i=2<=arguments.length?e.call(arguments,1):[],"start"===t?(this.syncActions.count+=1,this.notifyPath("syncActions.count"),a=i[0],n={id:this.syncActions.seed++,path:i[a],time:lib.datetime.now(),action:"start"},this.syncActions.list.push(n),n.id):"done"===t?(0!==this.syncActions.count&&(this.syncActions.count-=1),this.notifyPath("syncActions.count"),a=i[0],o=i[1],n={id:this.syncActions.seed++,path:a,refId:o,action:"done"},this.syncActions.list.push(n),n.id):"error"===t?(0!==this.apiActions.count&&(this.apiActions.count-=1),this.notifyPath("apiActions.count"),a=i[0],o=i[1],n={id:this.apiActions.seed++,path:a,refId:o,action:"error"},this.apiActions.list.push(n),n.id):void 0},_routerHrefChanged:function(t){var e,n,a,o,r,s;for(t||(t="/"),s=!1,o=null,r=app.pages.pageList,e=0,n=r.length;e<n;e++)if(a=r[e],i.call(a.hrefList,t)>=0){o=a,s=!0;break}return s?o.requireAuthentication?this.isUserLoggedIn()?this._checkUserAccess(o.accessId)?this.page=o:this.page=app.pages.error404:this.skipWelcomePage()?this.navigateToPage("#/login"):this.navigateToPage("#/welcome"):this.page=o:this.page=app.pages.error404},_preloadOtherPages:function(){var t,e,i,n,a;for(t=[].concat(app.pages.pageList,[app.pages.error404]),a=[],e=0,i=t.length;e<i;e++)n=t[e],a.push(function(t){return function(e){var i,n,a,o;if(e.name!==t.page.name)return a=t.resolveUrl("../"+e.element+"/"+e.element+".html"),n=t.notifyDownloadAction("start",a),o=lib.network.ensureBaseNetworkDelay(function(){return t.notifyDownloadAction("done",a,n)}),i=lib.network.ensureBaseNetworkDelay(function(){return t.notifyDownloadAction("error",a,n)}),t.importHref(a,o,i,!0)}}(this)(n));return a},_mainViewPageChanged:function(e){var i,n;return i=function(e){return function(){if(!t)return t=!0}}(this),n=this.resolveUrl("../"+e.element+"/"+e.element+".html"),this.importHref(n,i,i,!1),this._hideAd(e.name)},_fillIronPagesFromPageList:function(){var t,e,i,n,a,o,r;for(i=Polymer.dom(this.root).querySelector("iron-pages"),t=[].concat(app.pages.pageList,app.pages.error404),r=[],e=0,n=t.length;e<n;e++)a=t[e],o=document.createElement(a.element),o.setAttribute("name",a.name),r.push(Polymer.dom(i).appendChild(o));return r},_computeAge:function(t){var e,i,n,a;return a=new Date,i=new Date(t),e=a.getFullYear()-i.getFullYear(),n=a.getMonth()-i.getMonth(),(n<0||0===n&&a.getDate()<i.getDate())&&e--,e},created:function(){return this.removeUserUnlessSessionIsPersistent(),this.loadStaticData()},ready:function(){var t,e;if(this._fillIronPagesFromPageList(),null===localStorage.getItem("selectedVisitSerial")?localStorage.setItem("selectedVisitSerial","new"):this.selectedVisitSerial=localStorage.getItem("selectedVisitSerial"),e=localStorage.getItem("currentPatientsDetails"),this.currentPatientsDetails=JSON.parse(e),this.user=function(){try{return app.db.find("user")[0]}catch(e){return t=e,null}}()||null,this.isUserLoggedIn()&&this._callAfterUserLogsIn(),document.title="UHCP App "+app.config.clientVersion,"production"===app.mode&&(bugsnagClient.app.version=app.config.clientVersion,this.currentOrganization&&(bugsnagClient.metaData={organization:{name:this.currentOrganization.name,id:this.currentOrganization.idOnServer,isCurrentUserAnAdmin:this.currentOrganization.isCurrentUserAnAdmin}}),this.user))return bugsnagClient.user={id:this.user.idOnServer,serial:this.user.serial,name:this.user.name,email:this.user.email||this.user.phone}},getYear:function(){return(new Date).getFullYear()},_callAfterUserLogsIn:function(t){var e;if(this.set("user",this.getCurrentUser()),this.inAppNotificationSystemInitiate(),this.updateNotificationView(),this.initiateAdvertisement(),e=this.getCurrentOrganization(),e?(this.set("currentOrganization",e),this.loadOrganizationSmsBalance(e.idOnServer)):this.set("currentOrganization",null),"production"===app.mode)return bugsnagClient.user={id:this.user.idOnServer,serial:this.user.serial,name:this.user.name,email:this.user.email||this.user.phone}},_showSyncButton:function(t,e){return!e&&!t},_hideAd:function(t){var e;return e=this.isMobileView?["login","patient-manager","manage-price-list"]:["login","manage-price-list"],i.call(e,t)>=0?(this.set("hideAd",!0),this.toggleClass("show-ad",!1,this.$.mainHeader)):(this.set("hideAd",!1),this.toggleClass("show-ad",!0,this.$.mainHeader))},setCurrentPatientsDetails:function(t){return this.currentPatientsDetails=t,localStorage.setItem("currentPatientsDetails",JSON.stringify(this.currentPatientsDetails))},setSelectedVisitSerial:function(t){return this.set("selectedVisitSerial",t),localStorage.setItem("selectedVisitSerial",t)},_compareFn:function(t,e,i){return"<"===e?t<i:">"===e?t>i:"=="===e?t===i:">="===e?t>=i:"<="===e?t<=i:void 0},refreshButtonPressed:function(t){return this.reloadPage()},logoutPressed:function(t){var e;return e=app.db.find("user")[0],e.apiKey="",app.db.update("user",e._id,e),this.$$("app-drawer").toggle(),this.navigateToPage("#/login"),this.reloadPage()},showModalDialog:function(t){return"string"==typeof t?(this.genericModalDialogContents=t,this.genericModalDialogContentArray=[]):(this.genericModalDialogContents="",this.genericModalDialogContentArray=t),this.$$("#generic-modal-dialog").toggle()},showModalPrompt:function(t,e){return this.$$("#generic-modal-prompt").toggle(),this.genericModalPromptContents=t,this.genericModalPromptDoneCallback=e},showModalInput:function(t,e,i){return this.genericModalInputContents=t,this.genericModalInputFieldValue=e,this.$$("#generic-modal-input").toggle(),this.genericModalInputDoneCallback=i},toggleModalLoader:function(t){return null==t&&(t=null),this.set("loaderMessage",t),this.$$("#generic-loader-dialog").toggle()},genericModalInputClosed:function(t){return t.detail.confirmed?this.genericModalInputDoneCallback(this.genericModalInputFieldValue):this.genericModalInputDoneCallback(!1),this.genericModalInputDoneCallback=null},genericModalPromptClosed:function(t){return t.detail.confirmed?this.genericModalPromptDoneCallback(!0):this.genericModalPromptDoneCallback(!1),this.genericModalPromptDoneCallback=null},showToast:function(t){return this.genericToastContents=t,this.$$("#toast1").open()},genericToastTapped:function(t){return this.$$("#toast1").close()},showSuccessToast:function(t){return this.genericToastContents=t,this.$$("#successToast").open()},successToastTapped:function(t){return this.$$("#successToast").close()},showWarningToast:function(t){return this.genericToastContents=t,this.$$("#warningToast").open()},warningToastTapped:function(t){return this.$$("#warningToast").close()},saveButtonPressed:function(t){return this.$$("iron-pages").selectedItem.saveButtonPressed(t)},printButtonPressed:function(t){return this.$$("iron-pages").selectedItem.printButtonPressed(t)},arrowBackButtonPressed:function(t){return this.$$("iron-pages").selectedItem.arrowBackButtonPressed(t)},getPageParams:function(){var t,e,i,n,a,o,r,s,l;for(t=window.location.hash,t=t.replace("#/",""),r=t.split("/"),r.shift(),a={},e=0,n=r.length;e<n;e++){if(o=r[e],o.indexOf(":")===-1){this.showModalDialog("Malformatted Url Given");break}s=o.split(":"),i=s[0],l=s[1],a[i]=l}return a},navigateToPage:function(t){return window.history.pushState({},null,t),window.dispatchEvent(new CustomEvent("location-changed"))},navigateToPreviousPage:function(){return window.history.back()},modifyCurrentPagePath:function(t){return window.history.replaceState({},t,t)},reloadPage:function(){return window.location.reload()},ironPagesSelectedEvent:function(t){var e,i,n,a,o;if("IRON-PAGES"===Polymer.dom(t).rootTarget.nodeName){for(n=t.detail.item.nodeName,o=this.readyPageNodeNameList,e=0,i=o.length;e<i;e++)if(a=o[e],a===n)return void(t.detail.item.navigatedIn&&(t.detail.item.navigatedIn(),this.pageElement=t.detail.item));return this.currentNavigationCandidate=n}},pageReady:function(t){if(this.readyPageNodeNameList.push(t.nodeName),this.currentNavigationCandidate===t.nodeName&&(this.currentNavigationCandidate="",t.navigatedIn))return t.navigatedIn(),this.pageElement=t},ironPagesDeselectedEvent:function(t){var e,i,n,a,o;if("IRON-PAGES"===Polymer.dom(t).rootTarget.nodeName)for(n=t.detail.item.nodeName,o=this.readyPageNodeNameList,e=0,i=o.length;e<i;e++)if(a=o[e],a===n)return void(t.detail.item.navigatedOut&&t.detail.item.navigatedOut())},changeOrganizationClicked:function(){return this.navigateToPage("#/select-organization")},loadOrganizationSmsBalance:function(t){var e;return e={apiKey:this.user.apiKey,organizationId:t},this.callApi("/bdemr-get-organization-sms-balance",e,function(t){return function(e,i){return e||!i?t.domHost.showModalDialog("Problem connecting wtih the server. Check your internet connection and try again."):i.hasError?"No data found"===i.error.message?t.set("orgSmsBalance",0):void 0:t.set("orgSmsBalance",i.data.smsBalance)}}(this))},_formatDateTime:function(t){if(t)return lib.datetime.format(t,"mmm d, yyyy h:MMTT")},inAppNotificationSystemInitiate:function(){var t;return t=app.config.variableConfigs[app.mode].serverWsHost,this.ws=new WebSocket(t,["soap","xmpp"]),this.ws.addEventListener("open",function(t){return function(e){return t.inAppNotificationRegister(),t.ws.addEventListener("message",function(e){return t.inAppNotificationMessageHandler(e)},!1,!1)}}(this))},inAppNotificationMessageHandler:function(t){var e;return e=JSON.parse(t.data),"register"===e.operation&&"successful"===e.status?this.inAppNotificationMyId=e.userId:"incoming-notification"===e.operation?(e.markedAsRead=!1,app.db.insert("in-app-notification",e),this.updateNotificationView(),this.showNotification(e)):void 0},inAppNotificationRegister:function(){var t,e;return t=this.getCurrentUser().apiKey,e={operation:"register",apiKey:t},this.ws.send(JSON.stringify(e))},showNotification:function(t){var e,i,n,a;switch(t.category){case"patientNote":a="New Patient Note";break;case"report":a="Report";break;case"onlineConsultation":a="New Consulation Request";break;case"general":a="General";break;default:a="New Notification"}return n={body:t.message,icon:"../../images/web-app-icon/app-icon-72.png",timestamp:t.createdDateTimeStamp,sound:"../../assets/notification.mp3"},"Notification"in window?"granted"===Notification.permission?(i=new Notification(a,n),e=new Audio("../../assets/notification.mp3"),e.play()):"denied"!==Notification.permission?Notification.requestPermission(function(t){if("granted"===t)return i=new Notification(a,n),e=new Audio("../../assets/notification.mp3"),e.play()}):void 0:alert(message)},updateNotificationView:function(){return this.reportNotification=app.db.find("in-app-notification",function(t){return function(t){var e;if(e=t.category,"report"===e)return!0}}(this)),this.patientNoteNotification=app.db.find("in-app-notification",function(t){return function(t){var e;if(e=t.category,"patientNote"===e)return!0}}(this)),this.onlineConsultationNotification=app.db.find("in-app-notification",function(t){return function(t){var e;if(e=t.category,"onlineConsultation"===e)return!0}}(this)),this.generalNotification=app.db.find("in-app-notification",function(t){return function(t){var e;if(e=t.category,"general"===e)return!0}}(this))},markAllDonePressed:function(){return this.reportNotification=[],this.patientNoteNotification=[],this.onlineConsultationNotification=[],this.generalNotification=[]},markAsRead:function(t){return app.db.remove("in-app-notification",t.model.item._id),"report"===t.model.item.category?this.splice("reportNotification",t.model.index,1):"patientNote"===t.model.item.category?this.splice("patientNoteNotification",t.model.index,1):"onlineConsultation"===t.model.item.category?this.splice("onlineConsultationNotification",t.model.index,1):"general"===t.model.item.category?this.splice("generalNotification",t.model.index,1):void 0},notificationToggleButtonPressed:function(t){return this.$.notificationDrawer.toggle()},toggleReportNotification:function(){return this.$.reportNotification.toggle()},togglePatientNoteNotification:function(){return this.$.patientNoteNotification.toggle()},toggleOnlineConsultationNotification:function(){return this.$.onlineConsultationNotification.toggle()},toggleGeneralNotification:function(){return this.$.generalNotification.toggle()},_callGetAdvertisementApi:function(t){var e;return e=app.db.find("user")[0].apiKey,this.callApi("/get-advertisement-list",{apiKey:e},{automaticallyHandleNetworkErrors:!1},function(e){return function(i,n){var a;return i?void 0:n.hasError?e.showModalDialog(n.error.message):(a=n.data.advertisementLongList,t(a))}}(this))},switchAdvertisement:function(){var t;return 0===this.adList.length?this.set("currentAd",null):this.currentAd&&"audio"in this.currentAd&&(t=this.$$("#audioPlayer"),!t.paused)?void lib.util.delay(1e4,function(t){return function(){return t.switchAdvertisement()}}(this)):(null===this.adListSelectedIndex?this.adListSelectedIndex=0:(this.adListSelectedIndex+=1,this.adListSelectedIndex===this.adList.length&&(this.adListSelectedIndex=0)),this.currentAd=this.adList[this.adListSelectedIndex],lib.util.delay(1e4,function(t){return function(){return t.switchAdvertisement()}}(this)))},initiateAdvertisement:function(){var t;if(t=app.db.find("user"),0!==t.length)return this._callGetAdvertisementApi(function(t){return function(e){return t.adList=e,t.adListSelectedIndex=null,t.switchAdvertisement()}}(this))},addActivityLog:function(t,e,i){var n;return n={serial:this.generateSerialForActivity(),doctorSerial:this.getCurrentUserSerial(),patientSerial:i.patientSerial||null,doctorName:this.getCurrentUser().name,subject:t,action:e,data:i,lastModifiedDatetimeStamp:(new Date).getTime()},app.db.insert("activity",n)},languageSelectedIndexChanged:function(){var t;return t=this.supportedLanguageList[this.languageSelectedIndex],this.setActiveLanguage(t)},_showLanguageName:function(t){return 0===t?"EN":"বাংলা"},patientPageSelectedIndexChanged:function(t){if(this.currentPatientsDetails)return this.debounce("selectPage",function(e){return function(){return 0===t?e.async(function(){return e.selectedVisitSerial=localStorage.getItem("selectedVisitSerial"),e.navigateToPage("#/visit-editor/visit:"+e.selectedVisitSerial+"/patient:"+e.currentPatientsDetails.serial)}):e.async(function(){return e.navigateToPage("#/patient-viewer/patient:"+e.currentPatientsDetails.serial+"/selected:"+t),e.pageElement.navigatedIn()})}}(this),10)},_changeToolbarClass:function(t){return t?"medium-tall":""},_checkUserAccess:function(t){var e,i,n,a,o;if(e=this.getCurrentOrganization(),"none"===t||!t)return!0;if(!e)return this.navigateToPage("#/select-organization");if(e.isCurrentUserAnAdmin)return!0;if(!e.isCurrentUserAMember)return!1;if(!e.userActiveRole)return!1;if(o=e.userActiveRole.privilegeList,0!==o.length)for(i=0,n=o.length;i<n;i++)if(a=o[i],a.serial===t)return!0},_createOnlinePatient:function(t,e){return t.apiKey=this.user.apiKey,this.callApi("/bdemr-app-patient-signup-partial",t,function(i){return function(n,a){var o;return a.hasError?"Phone number already exists."===a.error.message?(t.userAlreadyExist=!0,i.getExisitingPatientInfo(t.name,t.serial,t.phone,function(){return e(t)})):i.showModalDialog(a.error.message):(o=a.data.patientSerial,t.serial=o,t.userAlreadyExist=!1,e(t))}}(this))},getExisitingPatientInfo:function(t,e,i,n){var a;return a={apiKey:this.user.apiKey,phoneNumber:i},this.callApi("/bdemr-get-patient-info",a,function(i){return function(i,a){var o;if(!a.hasError)return o={oldSerial:e,patientOldName:t,doctorAccessPin:"0000",data:null},o.data=a.data,app.db.insert("conflicted-patient-list",o),n()}}(this))},_updateLocalPatient:function(t,e){var i;return i=app.db.find("patient-list",function(t){var i;return i=t.serial,i===e})[0]._id,t.isTemporaryOfflinePatient=!1,t.flags={isImported:!1,isLocalOnly:!1,isOnlineOnly:!1},t.flags.isImported=!0,app.db.remove("patient-list",i),app.db.insert("patient-list",t)},_removeLocalPatient:function(t){var e;return e=app.db.find("patient-list",function(e){var i;return i=e.serial,i===t})[0]._id,app.db.remove("patient-list",e)},_convertOfflinePatientToOnline:function(t,e){var i;return i=t.serial,this._createOnlinePatient(t,function(t){return function(n){n.userAlreadyExist?e():t.updatePatientSerialOnExisitingRecords(n.serial,i,function(){return t._updateLocalPatient(n,i),e()})}}(this))},checkAndupdateSerialOnCollection:function(t,e,i){var n,a,o,r,s;if(r=app.db.find(i,function(t){var i;return i=t.patientSerial,i===e}),r.length>0){for(s=[],n=0,o=r.length;n<o;n++)a=r[n],a.patientSerial=t,s.push(app.db.update(i,a._id,a));return s}},updatePatientSerialOnExisitingRecords:function(t,e,i){var n,a,o,r;for(n=["unregsitered-patient-details","anaesmon-record","progress-note-record","visited-patient-log","history-and-physical-record","diagnosis-record","doctor-visit","doctor-visit","visit-note","visit-patient-stay","visit-next-visit","custom-investigation-list","visit-advised-test","patient-test-results","patient-medications","patient-vitals-blood-pressure","patient-vitals-pulse-rate","patient-vitals-respiratory-rate","patient-vitals-spo2","patient-vitals-temperature","patient-vitals-bmi","patient-test-blood-sugar","patient-test-other","comment-patient","comment-doctor","patient-gallery--local-attachment","patient-gallery--online-attachment","patient-test-results","in-app-notification","local-patient-pin-code-list","activity","visit-invoice","visit-diagnosis","visit-identified-symptoms","visit-examination","offline-patient-pin","in-patient-medicine-dispense-log","pcc-records","ndr-records","patient-insulin-list"],o=0,r=n.length;o<r;o++)a=n[o],this.checkAndupdateSerialOnCollection(t,e,a);return i()},_syncTemporaryOfflinePatients:function(t){var e,i;return i=app.db.find("patient-list",function(t){return function(t){return t.isTemporaryOfflinePatient===!0}}(this)),0===i.length?t():(e=new lib.util.Iterator(i),e.forEach(function(t){return function(e,i,n){return t._convertOfflinePatientToOnline(n,function(){return e()})}}(this)),e["finally"](function(e){return function(){return t()}}(this)))},syncButtonPressed:function(t){return this._newSync(function(t){return function(e){return e?t.async(function(){return t.showModalDialog(e)}):t.reloadPage()}}(this))}})}).call(this);
 //# sourceMappingURL=root-element.coffee-compiled.js.map</script>
 </dom-module><!--
 @license
@@ -44402,6 +44413,186 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <!--
+Material design: [Radio button](https://www.google.com/design/spec/components/selection-controls.html#selection-controls-radio-button)
+
+`paper-radio-group` allows user to select at most one radio button from a set.
+Checking one radio button that belongs to a radio group unchecks any
+previously checked radio button within the same group. Use
+`selected` to get or set the selected radio button.
+
+The <paper-radio-buttons> inside the group must have the `name` attribute
+set.
+
+Example:
+
+    <paper-radio-group selected="small">
+      <paper-radio-button name="small">Small</paper-radio-button>
+      <paper-radio-button name="medium">Medium</paper-radio-button>
+      <paper-radio-button name="large">Large</paper-radio-button>
+    </paper-radio-group>
+
+Radio-button-groups can be made optional, and allow zero buttons to be selected:
+
+    <paper-radio-group selected="small" allow-empty-selection>
+      <paper-radio-button name="small">Small</paper-radio-button>
+      <paper-radio-button name="medium">Medium</paper-radio-button>
+      <paper-radio-button name="large">Large</paper-radio-button>
+    </paper-radio-group>
+
+See <a href="paper-radio-button">paper-radio-button</a> for more
+information about `paper-radio-button`.
+
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--paper-radio-group-item-padding` | The padding of the item | `12px`
+
+@group Paper Elements
+@element paper-radio-group
+@hero hero.svg
+@demo demo/index.html
+-->
+
+<dom-module id="paper-radio-group" assetpath="../../bower-assets/paper-radio-group/">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+
+      :host ::content > * {
+        padding: var(--paper-radio-group-item-padding, 12px);
+      }
+    </style>
+
+    <content id="items" select="*"></content>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'paper-radio-group',
+
+    behaviors: [
+      Polymer.IronMenubarBehavior
+    ],
+
+    hostAttributes: {
+      role: 'radiogroup',
+      tabindex: 0
+    },
+
+    properties: {
+      /**
+       * Fired when the radio group selection changes.
+       *
+       * @event paper-radio-group-changed
+       */
+
+      /**
+       * Overriden from Polymer.IronSelectableBehavior
+       */
+      attrForSelected: {
+        type: String,
+        value: 'name'
+      },
+
+      /**
+       * Overriden from Polymer.IronSelectableBehavior
+       */
+      selectedAttribute: {
+        type: String,
+        value: 'checked'
+      },
+
+      /**
+       * Overriden from Polymer.IronSelectableBehavior
+       */
+      selectable: {
+        type: String,
+        value: 'paper-radio-button'
+      },
+
+      /**
+       * If true, radio-buttons can be deselected
+       */
+      allowEmptySelection: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    /**
+     * Selects the given value.
+     */
+    select: function(value) {
+      var newItem = this._valueToItem(value);
+      if (newItem && newItem.hasAttribute('disabled')) {
+        return;
+      }
+
+      if (this.selected) {
+        var oldItem = this._valueToItem(this.selected);
+
+        if (this.selected == value) {
+          // If deselecting is allowed we'll have to apply an empty selection.
+          // Otherwise, we should force the selection to stay and make this
+          // action a no-op.
+          if (this.allowEmptySelection) {
+            value = '';
+          } else {
+            if (oldItem)
+              oldItem.checked = true;
+            return;
+          }
+        }
+
+        if (oldItem)
+          oldItem.checked = false;
+      }
+
+      Polymer.IronSelectableBehavior.select.apply(this, [value]);
+      this.fire('paper-radio-group-changed');
+    },
+
+    _activateFocusedItem: function() {
+      this._itemActivate(this._valueForItem(this.focusedItem), this.focusedItem);
+    },
+
+    _onUpKey: function(event) {
+      this._focusPrevious();
+      event.preventDefault();
+      this._activateFocusedItem();
+    },
+
+    _onDownKey: function(event) {
+      this._focusNext();
+      event.preventDefault();
+      this._activateFocusedItem();
+    },
+
+    _onLeftKey: function(event) {
+      Polymer.IronMenubarBehaviorImpl._onLeftKey.apply(this, arguments);
+      this._activateFocusedItem();
+    },
+
+    _onRightKey: function(event) {
+      Polymer.IronMenubarBehaviorImpl._onRightKey.apply(this, arguments);
+      this._activateFocusedItem();
+    }
+  });
+</script>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
 
 `iron-list` displays a virtual, 'infinite' list. The template inside
 the iron-list element represents the DOM to create for each list item.
@@ -48235,186 +48426,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   });
 
-</script>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!--
-Material design: [Radio button](https://www.google.com/design/spec/components/selection-controls.html#selection-controls-radio-button)
-
-`paper-radio-group` allows user to select at most one radio button from a set.
-Checking one radio button that belongs to a radio group unchecks any
-previously checked radio button within the same group. Use
-`selected` to get or set the selected radio button.
-
-The <paper-radio-buttons> inside the group must have the `name` attribute
-set.
-
-Example:
-
-    <paper-radio-group selected="small">
-      <paper-radio-button name="small">Small</paper-radio-button>
-      <paper-radio-button name="medium">Medium</paper-radio-button>
-      <paper-radio-button name="large">Large</paper-radio-button>
-    </paper-radio-group>
-
-Radio-button-groups can be made optional, and allow zero buttons to be selected:
-
-    <paper-radio-group selected="small" allow-empty-selection>
-      <paper-radio-button name="small">Small</paper-radio-button>
-      <paper-radio-button name="medium">Medium</paper-radio-button>
-      <paper-radio-button name="large">Large</paper-radio-button>
-    </paper-radio-group>
-
-See <a href="paper-radio-button">paper-radio-button</a> for more
-information about `paper-radio-button`.
-
-
-Custom property | Description | Default
-----------------|-------------|----------
-`--paper-radio-group-item-padding` | The padding of the item | `12px`
-
-@group Paper Elements
-@element paper-radio-group
-@hero hero.svg
-@demo demo/index.html
--->
-
-<dom-module id="paper-radio-group" assetpath="../../bower-assets/paper-radio-group/">
-  <template>
-    <style>
-      :host {
-        display: inline-block;
-      }
-
-      :host ::content > * {
-        padding: var(--paper-radio-group-item-padding, 12px);
-      }
-    </style>
-
-    <content id="items" select="*"></content>
-  </template>
-</dom-module>
-
-<script>
-  Polymer({
-    is: 'paper-radio-group',
-
-    behaviors: [
-      Polymer.IronMenubarBehavior
-    ],
-
-    hostAttributes: {
-      role: 'radiogroup',
-      tabindex: 0
-    },
-
-    properties: {
-      /**
-       * Fired when the radio group selection changes.
-       *
-       * @event paper-radio-group-changed
-       */
-
-      /**
-       * Overriden from Polymer.IronSelectableBehavior
-       */
-      attrForSelected: {
-        type: String,
-        value: 'name'
-      },
-
-      /**
-       * Overriden from Polymer.IronSelectableBehavior
-       */
-      selectedAttribute: {
-        type: String,
-        value: 'checked'
-      },
-
-      /**
-       * Overriden from Polymer.IronSelectableBehavior
-       */
-      selectable: {
-        type: String,
-        value: 'paper-radio-button'
-      },
-
-      /**
-       * If true, radio-buttons can be deselected
-       */
-      allowEmptySelection: {
-        type: Boolean,
-        value: false
-      }
-    },
-
-    /**
-     * Selects the given value.
-     */
-    select: function(value) {
-      var newItem = this._valueToItem(value);
-      if (newItem && newItem.hasAttribute('disabled')) {
-        return;
-      }
-
-      if (this.selected) {
-        var oldItem = this._valueToItem(this.selected);
-
-        if (this.selected == value) {
-          // If deselecting is allowed we'll have to apply an empty selection.
-          // Otherwise, we should force the selection to stay and make this
-          // action a no-op.
-          if (this.allowEmptySelection) {
-            value = '';
-          } else {
-            if (oldItem)
-              oldItem.checked = true;
-            return;
-          }
-        }
-
-        if (oldItem)
-          oldItem.checked = false;
-      }
-
-      Polymer.IronSelectableBehavior.select.apply(this, [value]);
-      this.fire('paper-radio-group-changed');
-    },
-
-    _activateFocusedItem: function() {
-      this._itemActivate(this._valueForItem(this.focusedItem), this.focusedItem);
-    },
-
-    _onUpKey: function(event) {
-      this._focusPrevious();
-      event.preventDefault();
-      this._activateFocusedItem();
-    },
-
-    _onDownKey: function(event) {
-      this._focusNext();
-      event.preventDefault();
-      this._activateFocusedItem();
-    },
-
-    _onLeftKey: function(event) {
-      Polymer.IronMenubarBehaviorImpl._onLeftKey.apply(this, arguments);
-      this._activateFocusedItem();
-    },
-
-    _onRightKey: function(event) {
-      Polymer.IronMenubarBehaviorImpl._onRightKey.apply(this, arguments);
-      this._activateFocusedItem();
-    }
-  });
 </script>
 <!--
 @license

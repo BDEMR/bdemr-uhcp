@@ -246,6 +246,7 @@
           <strong>Invoice#: [[invoice.serial]]</strong>
           <span>Date :[[_formatDateTime(invoice.createdDatetimeStamp)]]</span>
           <span>Created By : [[user.name]]</span>
+          <span>Organization: [[invoice.organizationName]]</span>
         </div>
 
       </div>
@@ -275,10 +276,11 @@
               <paper-item class="invoice-item">
                 <div>[[_returnSerial(index)]]</div>
                 <div class="flex-7 layout vertical m-left-8">
-                  <div>
+                  <div class="layout horizontal">
                     <strong>[[item.name]]</strong> &nbsp;
-                    <template is="dom-if" if="[[item.type]]">
-                      <span class="type secondary">[[item.type]]</span>
+                    <span class="flex"></span>
+                    <template is="dom-if" if="[[item.category]]">
+                      <span class="type secondary m-right-8">[[item.category]]</span>
                     </template>
                   </div>
                   <div>
@@ -297,14 +299,13 @@
           </template>
           <div class="horiline"></div>
           <div class="layout vertical end">
-            <div class="text-mute">Discount -[[invoice.discount]]</div>
             <h3>Total
               <strong>[[invoice.totalBilled]]</strong> BDT</h3>
           </div>
           <div class="layout vertical end">
             <h4>Paid [[invoice.paid]]</h4>
             <h4>Due
-              <strong>[[$calculateRemaining(invoice.paid, invoice.totalBilled)]]</strong>
+              <strong>[[$calculateRemaining(invoice.totalBilled, invoice.totalAmountReceieved)]]</strong>
             </h4>
           </div>
         </div>
@@ -314,6 +315,6 @@
     </div>
 
   </template>
-  <script>(function(){Polymer({is:"page-print-invoice",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.pageLike,app.behaviors.translating],properties:{isVisitValid:{type:Boolean,notify:!1,value:!1},isPatientValid:{type:Boolean,notify:!1,value:!1},user:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},invoice:{type:Object,notify:!0,value:null},settings:{type:Object,notify:!0}},navigatedIn:function(){var t;return this._loadUser(),t=this.domHost.getPageParams(),t.invoice?t.patient?(this._loadPatient(t.patient),this._loadVisit(t.visit),this._loadInvoice(t.invoice),this.set("settings",this._getSettings())):void this._notifyInvalidPatient():void this._notifyInvalidVisit()},_makeSettings:function(){var t;return t={serial:"only",isSyncEnabled:!1,printDecoration:{leftSideLine1:"My Institution",leftSideLine2:"My Institution Address",leftSideLine3:"My Institution Contact",rightSideLine1:"My Name",rightSideLine2:"My Degrees",rightSideLine3:"My Contact",footerLine:"A simple message on the bottom",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT"}},_getSettings:function(){var t,i;return t=app.db.find("settings",function(t){var i;return i=t.serial,"only"===i}),i=0===t.length?this._makeSettings():t[0]},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},getFullName:function(t){var i,n,e,a;return n="",i="",e="",a="",t.honorifics&&(n=t.honorifics+". "),t.first&&(i=t.first),t.middle&&(a=" "+t.middle),t.last&&(e=" "+t.last),n+i+a+e},_loadPatient:function(t){var i;return i=app.db.find("patient-list",function(i){var n;return n=i.serial,n===t}),1===i.length?(this.isPatientValid=!0,this.patient=i[0]):this._notifyInvalidPatient()},$of:function(t,i){return i in t||(t[i]=null),t[i]},_loadVisit:function(t){var i;return i=app.db.find("doctor-visit",function(i){var n;return n=i.serial,n===t}),1===i.length?(this.isVisitValid=!0,this.visit=i[0]):(this._notifyInvalidVisit(),!1)},_loadInvoice:function(t){var i;return i=app.db.find("visit-invoice",function(i){var n;return n=i.serial,n===t}),1===i.length?(this.set("invoice",i[0]),!0):(this._notifyInvalidInvoice(),!1)},_notifyInvalidInvoice:function(){return this.domHost.showModalDialog("Invalid Invoice Provided")},printButtonPressed:function(t){return window.print()},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},_notifyInvalidPatient:function(){return this.isPatientValid=!1,this.domHost.showModalDialog("Invalid Patient Provided")},_notifyInvalidVisit:function(){return this.isVisitValid=!1,this.domHost.showModalDialog("Invalid Visit Provided")},_isEmpty:function(t){return 0===t},_isEmptyArray:function(t){return 0===t.length},_isEmptyString:function(t){return null===t||""===t||"undefined"===t},_computeTotalDaysCount:function(t,i){var n,e;return e=864e5,n=t-i,Math.round(n/e)},_returnSerial:function(t){return t+1},_computeAge:function(t){var i,n,e,a;return t?(a=new Date,n=new Date(t),i=a.getFullYear()-n.getFullYear(),e=a.getMonth()-n.getMonth(),(e<0||0===e&&a.getDate()<n.getDate())&&i--,i):""},_formatDateTime:function(t){return lib.datetime.format(new Date(t),"mmm d, yyyy")},navigatedOut:function(){return this.patient={},this.invoice={},this.isVisitValid=!1,this.isPatientValid=!1},_formatDateTime:function(t){return lib.datetime.format(t,"mmm d, yyyy h:MMTT")},_formatDate:function(t){return lib.datetime.format(t,"mmm d, yyyy")},$fromListOrCustom:function(t,i,n){return i===t.length-1?n:t[i]},possiblePaymentStatusses:{notBilled:"Not Billed",unpaid:"Unpaid",partiallyPaid:"Partially Paid",fullyPaid:"Fully Paid"},$toReadbleStatus:function(t){return this.possiblePaymentStatusses[t]},$calculateRemaining:function(t,i){return parseInt(i)-parseInt(t)}})}).call(this);
+  <script>(function(){Polymer({is:"page-print-invoice",behaviors:[app.behaviors.commonComputes,app.behaviors.dbUsing,app.behaviors.pageLike,app.behaviors.translating],properties:{isVisitValid:{type:Boolean,notify:!1,value:!1},isPatientValid:{type:Boolean,notify:!1,value:!1},user:{type:Object,notify:!0,value:null},patient:{type:Object,notify:!0,value:null},invoice:{type:Object,notify:!0,value:null},settings:{type:Object,notify:!0}},navigatedIn:function(){var t;return this._loadUser(),t=this.domHost.getPageParams(),t.invoice?t.patient?(this._loadPatient(t.patient),this._loadVisit(t.visit),this._loadInvoice(t.invoice),this.set("settings",this._getSettings())):void this._notifyInvalidPatient():void this._notifyInvalidVisit()},_getSettings:function(){var t,i;return t=app.db.find("settings",function(t){var i;return i=t.serial,"only"===i}),i=t[0]},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},getFullName:function(t){var i,n,e,a;return n="",i="",e="",a="",t.honorifics&&(n=t.honorifics+". "),t.first&&(i=t.first),t.middle&&(a=" "+t.middle),t.last&&(e=" "+t.last),n+i+a+e},_loadPatient:function(t){var i;return i=app.db.find("patient-list",function(i){var n;return n=i.serial,n===t}),1===i.length?(this.isPatientValid=!0,this.patient=i[0]):this._notifyInvalidPatient()},$of:function(t,i){return i in t||(t[i]=null),t[i]},_loadVisit:function(t){var i;return i=app.db.find("doctor-visit",function(i){var n;return n=i.serial,n===t}),1===i.length?(this.isVisitValid=!0,this.visit=i[0]):(this._notifyInvalidVisit(),!1)},_loadInvoice:function(t){var i;return i=app.db.find("visit-invoice",function(i){var n;return n=i.serial,n===t}),1===i.length?(this.set("invoice",i[0]),!0):(this._notifyInvalidInvoice(),!1)},_notifyInvalidInvoice:function(){return this.domHost.showModalDialog("Invalid Invoice Provided")},printButtonPressed:function(t){return window.print()},arrowBackButtonPressed:function(t){return this.domHost.navigateToPreviousPage()},_notifyInvalidPatient:function(){return this.isPatientValid=!1,this.domHost.showModalDialog("Invalid Patient Provided")},_notifyInvalidVisit:function(){return this.isVisitValid=!1,this.domHost.showModalDialog("Invalid Visit Provided")},_isEmpty:function(t){return 0===t},_isEmptyArray:function(t){return 0===t.length},_isEmptyString:function(t){return null===t||""===t||"undefined"===t},_computeTotalDaysCount:function(t,i){var n,e;return e=864e5,n=t-i,Math.round(n/e)},_returnSerial:function(t){return t+1},_computeAge:function(t){var i,n,e,a;return t?(a=new Date,n=new Date(t),i=a.getFullYear()-n.getFullYear(),e=a.getMonth()-n.getMonth(),(e<0||0===e&&a.getDate()<n.getDate())&&i--,i):""},_formatDateTime:function(t){return lib.datetime.format(new Date(t),"mmm d, yyyy")},navigatedOut:function(){return this.patient={},this.invoice={},this.isVisitValid=!1,this.isPatientValid=!1},_formatDateTime:function(t){return lib.datetime.format(t,"mmm d, yyyy h:MMTT")},_formatDate:function(t){return lib.datetime.format(t,"mmm d, yyyy")},$fromListOrCustom:function(t,i,n){return i===t.length-1?n:t[i]},possiblePaymentStatusses:{notBilled:"Not Billed",unpaid:"Unpaid",partiallyPaid:"Partially Paid",fullyPaid:"Fully Paid"},$toReadbleStatus:function(t){return this.possiblePaymentStatusses[t]},$calculateRemaining:function(t,i){return null==t&&(t=0),null==i&&(i=0),parseInt(t)-parseInt(i)}})}).call(this);
 //# sourceMappingURL=page-print-invoice.coffee-compiled.js.map</script>
 </dom-module>

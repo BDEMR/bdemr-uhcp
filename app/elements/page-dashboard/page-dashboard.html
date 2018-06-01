@@ -8,13 +8,14 @@
         margin-top: 10px;
         margin-bottom: 10px;
       }
-      
+
       .row.one .card-group {
         @apply(--layout-horizontal);
         @apply(--layout-flex);
         margin-left: 5px;
         margin-right: 5px;
       }
+
       /*.row.one .card-group:first-child {
         margin-left: 10px;
       }
@@ -22,21 +23,21 @@
       .row.one .card-group:last-child {
         margin-right: 10px;
       }*/
-      
+
       .card {
         @apply(--layout-flex);
         min-height: 100px;
         margin: 3px;
       }
-      
+
       .row.one .card:first-child {
         margin-left: 0px;
       }
-      
+
       .row.one .card:last-child {
         margin-right: 0px;
       }
-      
+
       @media screen and (max-width: 740px) {
         .row.one .card-group:first-child {
           margin-right: 10px;
@@ -46,7 +47,7 @@
           margin-left: 10px;
         }
       }
-      
+
       @media screen and (max-width: 480px) {
         .row.one .card-group {
           display: block;
@@ -59,32 +60,32 @@
           margin-left: 0px;
         }
       }
-      
+
       .card-content.single-block .number {
         font-size: 72px;
       }
-      
+
       .card-content.single-block .subtitle {
         text-transform: uppercase;
       }
-      
+
       .row.two {
         @apply(--layout-horizontal);
         margin-left: 10px;
         margin-right: 10px;
       }
-      
+
       .row.two .card.one {
         @apply(--layout-flex);
         margin-right: 5px;
       }
-      
+
       .row.two .card.two {
         margin-left: 5px;
         padding-left: 10px;
         @apply(--layout-flex-3);
       }
-      
+
       @media screen and (max-width: 740px) {
         .row.two {
           margin-left: 5px;
@@ -101,18 +102,18 @@
           margin-right: 5px;
         }
       }
-      
+
       .right-hand-text {
         padding-left: 20px;
       }
-      
+
       .language-strip {
         margin: 10px;
         @apply(--layout-horizontal);
         @apply(--layout-center);
         @apply(--layout-end-justified);
       }
-      
+
 
       .footer-text {
         margin-top: 30px;
@@ -127,6 +128,7 @@
         width: calc(20% - 26px);
         text-align: center;
       }
+
       .dashboard-item-2 {
         position: relative;
         margin: 8px 16px;
@@ -141,7 +143,8 @@
         text-transform: uppercase !important;
       }
 
-      .dashboard-item:hover, .dashboard-item-2:hover  {
+      .dashboard-item:hover,
+      .dashboard-item-2:hover {
         cursor: pointer;
       }
 
@@ -166,6 +169,7 @@
       .hide-on-mobile {
         display: block;
       }
+
       @media screen and (max-width: 639px) {
         .hide-on-mobile {
           display: none;
@@ -183,7 +187,6 @@
         }
 
       }
-
     </style>
 
     <!-- local DOM -->
@@ -214,6 +217,12 @@
         <paper-card heading="Authorize records to" class="m-top-8">
           <div class="card-content">
 
+            <template is="dom-if" if="[[loadingCounter]]">
+              <paper-spinner active=""></paper-spinner>
+              <span class="m-left-8">Loading Authorized Organization List</span>
+            </template>
+            <br>
+
             <template is="dom-repeat" items="{{settings.authorizedOrganiztionList}}">
               <paper-checkbox class="custom-checkbox" checked="{{item.isChecked}}" on-change="onCheckAuthorizedOrganization">{{item.name}}</paper-checkbox>
             </template>
@@ -221,7 +230,7 @@
           </div>
         </paper-card>
 
-        <paper-card heading="Navigate to" class="m-top-8">
+        <!-- <paper-card heading="Navigate to" class="m-top-8">
           <div class="p-12">
             <div class="layout horizontal wrap">
 
@@ -238,7 +247,7 @@
 
             </div>
           </div>
-        </paper-card>
+        </paper-card> -->
 
         <paper-card heading="My App license" class="m-top-8">
           <div class="card-content single-block horizontal layout center">
@@ -263,9 +272,9 @@
 
     </div>
 
-    
+
 
   </template>
-  <script>(function(){Polymer({is:"page-dashboard",behaviors:[app.behaviors.translating,app.behaviors.pageLike,app.behaviors.dbUsing,app.behaviors.apiCalling],properties:{languageSelectedIndex:{type:Number,value:app.lang.defaultLanguageIndex,notify:!0,observer:"languageSelectedIndexChanged"},daysLeft:{type:Number,value:0},authorizeToSelectedIndex:{type:Number,value:0},organizationsIBelongToList:{type:Array,value:function(){return[]}},currentOrganization:Object,managePatientLinkList:{type:Array,value:function(){return[{title:"Create",subTitle:"New Patient",info:"",imagePath:"assets/img/partners/uhcp.jpg",urlPath:"#/patient-signup",accessId:""},{title:"FOLLOW UP",subTitle:"Patient",info:"",imagePath:"assets/img/partners/uhcp.jpg",urlPath:"#/patient-manager/selected:0",accessId:""},{title:"Patients Log",subTitle:"patient history from",info:"",imagePath:"images/icons/ico_history_and_physical.png",urlPath:"#/patient-manager/selected:1",accessId:""}]}},sortcutList:{type:Array,value:function(){return[{title:"Create New Patient",info:"",icon:"icons:open-in-new",urlPath:"#/patient-signup",accessId:""},{title:"Patient Manager",info:"",icon:"icons:open-in-new",urlPath:"#/patient-manager",accessId:""},{title:"Report Manager",info:"",icon:"icons:open-in-new",urlPath:"#/reports-manager",accessId:""},{title:"Chamber Manager",icon:"icons:open-in-new",info:"",urlPath:"#/chamber-manager",accessId:""},{title:"Medicine Dispension",icon:"icons:open-in-new",info:"",urlPath:"#/medicine-dispension",accessId:""},{title:"Assistant Manager",icon:"icons:open-in-new",info:"",urlPath:"#/assistant-manager",accessId:""},{title:"Search Records",icon:"icons:open-in-new",info:"",urlPath:"#/search-record",accessId:""},{title:"Invoice Manager",icon:"icons:open-in-new",info:"",urlPath:"#/invoice-manager",accessId:""},{title:"Booking and Searvices",icon:"icons:open-in-new",info:"",urlPath:"#/booking",accessId:""},{title:"Organization Manager",icon:"icons:open-in-new",info:"",urlPath:"#/organization-manager",accessId:""},{title:"Send Notification",icon:"icons:open-in-new",info:"",urlPath:"#/notification-panel",accessId:""},{title:"My Wallet",icon:"icons:open-in-new",info:"",urlPath:"#/wallet",accessId:""},{title:"Send Feedback",icon:"icons:open-in-new",info:"",urlPath:"#/send-feedback",accessId:""},{title:"Settings",icon:"settings",info:"",urlPath:"#/settings",accessId:""}]}}},goToUrlForManagePatientList:function(t){var e,i;return e=t.model.index,i=this.managePatientLinkList[e],window.location=i.urlPath},goToUrlForShortcutNav:function(t){var e,i;return e=t.model.index,i=this.sortcutList[e],window.location=i.urlPath},ready:function(){return this.version=app.config.clientVersion},_organizationNavigatedIn:function(){var t;return localStorage.getItem("authorizedOrganiztionId")?this.authorizedOrganiztionId=localStorage.getItem("authorizedOrganiztionId"):(this.authorizedOrganiztionId=this.currentOrganization.idOnServer,localStorage.setItem("authorizedOrganiztionId",this.authorizedOrganiztionId)),t={apiKey:this.user.apiKey},this.callApi("/bdemr-organization-list-those-user-belongs-to",t,function(t){return function(e,i){var n,a,o,r,s;if(i.hasError)return t.domHost.showModalDialog(i.error.message);for(t.organizationsIBelongToList=i.data.organizationObjectList,s=t.organizationsIBelongToList,a=n=0,r=s.length;n<r;a=++n)o=s[a],o.idOnServer===t.authorizedOrganiztionId&&t.set("authorizeToSelectedIndex",a);return t.checkForAuthorizedOrganiztionListFromUserSettings(function(){return t._saveSettings()})}}(this))},_saveSettings:function(){var t,e,i,n;for(this.settings.lastModifiedDatetimeStamp=lib.datetime.now(),n=app.db.find("settings"),t=0,i=n.length;t<i;t++)e=n[t],app.db.remove("settings",e._id);return app.db.insert("settings",this.settings)},isOrganizationFoundOnAuthorizedOrganiztionList:function(t){var e,i,n,a;for(a=this.settings.authorizedOrganiztionList,e=0,n=a.length;e<n;e++)if(i=a[e],i.idOnServer===t.idOnServer)return!0;return!1},checkForAuthorizedOrganiztionListFromUserSettings:function(t){var e,i,n,a,o,r,s,g,d;if(e=this.settings.authorizedOrganiztionList,e.length>0)for(g=this.organizationsIBelongToList,i=0,o=g.length;i<o;i++)n=g[i],this.isOrganizationFoundOnAuthorizedOrganiztionList(n)||(s={idOnServer:n.idOnServer,isChecked:!1,name:n.name},this.settings.authorizedOrganiztionList.push(s));else for(d=this.organizationsIBelongToList,a=0,r=d.length;a<r;a++)n=d[a],s={idOnServer:n.idOnServer,isChecked:!1,name:n.name},this.settings.authorizedOrganiztionList.push(s);return t()},onCheckAuthorizedOrganization:function(t){var e,i;return i=t.target.checked,e=t.model.index,i?this.settings.authorizedOrganiztionList[e].isChecked=i:this.settings.authorizedOrganiztionList[e].isChecked=!1,this._saveSettings()},loadSettings:function(t){var e;return e=app.db.find("settings",function(t){return function(e){var i;return i=e.serial,t.user.serial===i}}(this)),e.length>0?this.settings=e[0]:this._makeSettings(),t()},_makeSettings:function(){return this.settings={createdByUserSerial:this.user.serial,lastModifiedDatetimeStamp:0,createdDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:null,serial:this.user.serial,printDecoration:{headerLine:"",leftSideLine1:"",leftSideLine2:"",leftSideLine3:"",rightSideLine1:"",rightSideLine2:"",rightSideLine3:"",footerLine:"",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT",otherSettings:{patientSignUpDefaultPassword:"123456"},flags:{showFooterLine:!0,showUserNameOnPrintPreview:!0},authorizedOrganiztionList:[]},this._saveSettings()},navigatedIn:function(){var t;return this.currentOrganization=this.getCurrentOrganization(),this.currentOrganization?(t=this.getDashboardMetrics(),this.user=app.db.find("user")[0],this.newPatientCount=t.newPatientCount,this.totalPatientCount=t.totalPatientCount,this.newRecordCount=t.newRecordCount,this.totalRecordCount=t.totalRecordCount,this.totalUnpaidInvoiceCount=t.totalUnpaidInvoiceCount,this.daysLeft=t.daysLeft,this.daysLeft<0&&this.domHost.navigateToPage("#/activate"),this.loadSettings(function(t){return function(){return t._organizationNavigatedIn()}}(this))):this.domHost.navigateToPage("#/select-organization")},languageSelectedIndexChanged:function(){var t;return t=this.supportedLanguageList[this.languageSelectedIndex],this.setActiveLanguage(t)},$getString1:function(t,e){return"en-us"===e?"Your license for UHCP App will <br>expire in "+t+" days.":"bn-bd"===e?(t=this.$TRANSLATE_NUMBER(t,e),"আপনার UHCP App এর লাইসেন্স বাতিল <br>হতে "+t+" দিন বাকি আছে।"):"TRANSLATION_FAILED"},viewNewPatientsTapped:function(t){return this.domHost.navigateToPage("#/patient-manager/filter:today-only")},viewNewRecordsTapped:function(t){return this.domHost.navigateToPage("#/record-manager/filter:today-only")},viewAllRecordsTapped:function(t){return this.domHost.navigateToPage("#/record-manager/filter:clear")},viewAllPatientsTapped:function(t){return this.domHost.navigateToPage("#/patient-manager/filter:clear")},viewUnpaidInvoicesTapped:function(t){return this.domHost.navigateToPage("#/invoices/unpaid-only")},purchaseAnaesMonTapped:function(t){return window.open("https://my.bdemr.com/#/apps/anaesmon/purchase")},renewAnaesMonTapped:function(t){return this.domHost.navigateToPage("#/activate")}})}).call(this);
+  <script>(function(){Polymer({is:"page-dashboard",behaviors:[app.behaviors.translating,app.behaviors.pageLike,app.behaviors.dbUsing,app.behaviors.apiCalling],properties:{languageSelectedIndex:{type:Number,value:app.lang.defaultLanguageIndex,notify:!0,observer:"languageSelectedIndexChanged"},daysLeft:{type:Number,value:0},authorizeToSelectedIndex:{type:Number,value:0},organizationsIBelongToList:{type:Array,value:function(){return[]}},currentOrganization:Object,managePatientLinkList:{type:Array,value:function(){return[{title:"Create",subTitle:"New Patient",info:"",imagePath:"assets/img/partners/uhcp.jpg",urlPath:"#/patient-signup",accessId:""},{title:"FOLLOW UP",subTitle:"Patient",info:"",imagePath:"assets/img/partners/uhcp.jpg",urlPath:"#/patient-manager/selected:0",accessId:""},{title:"Patients Log",subTitle:"patient history from",info:"",imagePath:"images/icons/ico_history_and_physical.png",urlPath:"#/patient-manager/selected:1",accessId:""}]}},sortcutList:{type:Array,value:function(){return[{title:"Create New Patient",info:"",icon:"icons:open-in-new",urlPath:"#/patient-signup",accessId:""},{title:"Patient Manager",info:"",icon:"icons:open-in-new",urlPath:"#/patient-manager",accessId:""},{title:"Report Manager",info:"",icon:"icons:open-in-new",urlPath:"#/reports-manager",accessId:""},{title:"Chamber Manager",icon:"icons:open-in-new",info:"",urlPath:"#/chamber-manager",accessId:""},{title:"Medicine Dispension",icon:"icons:open-in-new",info:"",urlPath:"#/medicine-dispension",accessId:""},{title:"Assistant Manager",icon:"icons:open-in-new",info:"",urlPath:"#/assistant-manager",accessId:""},{title:"Search Records",icon:"icons:open-in-new",info:"",urlPath:"#/search-record",accessId:""},{title:"Invoice Manager",icon:"icons:open-in-new",info:"",urlPath:"#/invoice-manager",accessId:""},{title:"Booking and Searvices",icon:"icons:open-in-new",info:"",urlPath:"#/booking",accessId:""},{title:"Organization Manager",icon:"icons:open-in-new",info:"",urlPath:"#/organization-manager",accessId:""},{title:"Send Notification",icon:"icons:open-in-new",info:"",urlPath:"#/notification-panel",accessId:""},{title:"My Wallet",icon:"icons:open-in-new",info:"",urlPath:"#/wallet",accessId:""},{title:"Send Feedback",icon:"icons:open-in-new",info:"",urlPath:"#/send-feedback",accessId:""},{title:"Settings",icon:"settings",info:"",urlPath:"#/settings",accessId:""}]}},loadingCounter:{type:Number,value:function(){return 0}}},goToUrlForManagePatientList:function(t){var e,i;return e=t.model.index,i=this.managePatientLinkList[e],window.location=i.urlPath},goToUrlForShortcutNav:function(t){var e,i;return e=t.model.index,i=this.sortcutList[e],window.location=i.urlPath},ready:function(){return this.version=app.config.clientVersion},_organizationNavigatedIn:function(){var t;return localStorage.getItem("authorizedOrganiztionId")?this.authorizedOrganiztionId=localStorage.getItem("authorizedOrganiztionId"):(this.authorizedOrganiztionId=this.currentOrganization.idOnServer,localStorage.setItem("authorizedOrganiztionId",this.authorizedOrganiztionId)),t={apiKey:this.user.apiKey},this.loadingCounter++,this.callApi("/bdemr-organization-list-those-user-belongs-to",t,function(t){return function(e,i){var n,a,o,r,s;if(t.loadingCounter--,i.hasError)return t.domHost.showModalDialog(i.error.message);for(t.organizationsIBelongToList=i.data.organizationObjectList,s=t.organizationsIBelongToList,a=n=0,r=s.length;n<r;a=++n)o=s[a],o.idOnServer===t.authorizedOrganiztionId&&t.set("authorizeToSelectedIndex",a);return t.checkForAuthorizedOrganiztionListFromUserSettings(function(){return t._saveSettings()})}}(this))},_saveSettings:function(){var t,e,i,n;for(this.settings.lastModifiedDatetimeStamp=lib.datetime.now(),n=app.db.find("settings"),t=0,i=n.length;t<i;t++)e=n[t],app.db.remove("settings",e._id);return app.db.insert("settings",this.settings)},isOrganizationFoundOnAuthorizedOrganiztionList:function(t){var e,i,n,a;for(a=this.settings.authorizedOrganiztionList,e=0,n=a.length;e<n;e++)if(i=a[e],i.idOnServer===t.idOnServer)return!0;return!1},checkForAuthorizedOrganiztionListFromUserSettings:function(t){var e,i,n,a,o,r,s,g,d;if(e=this.settings.authorizedOrganiztionList,e.length>0)for(g=this.organizationsIBelongToList,i=0,o=g.length;i<o;i++)n=g[i],this.isOrganizationFoundOnAuthorizedOrganiztionList(n)||(s={idOnServer:n.idOnServer,isChecked:!1,name:n.name},this.settings.authorizedOrganiztionList.push(s));else for(d=this.organizationsIBelongToList,a=0,r=d.length;a<r;a++)n=d[a],s={idOnServer:n.idOnServer,isChecked:!1,name:n.name},this.settings.authorizedOrganiztionList.push(s);return t()},onCheckAuthorizedOrganization:function(t){var e,i;return i=t.target.checked,e=t.model.index,i?this.settings.authorizedOrganiztionList[e].isChecked=i:this.settings.authorizedOrganiztionList[e].isChecked=!1,this._saveSettings()},loadSettings:function(t){var e;return e=app.db.find("settings",function(t){return function(e){var i;return i=e.serial,t.user.serial===i}}(this)),e.length>0?this.settings=e[0]:this._makeSettings(),t()},_makeSettings:function(){return this.settings={createdByUserSerial:this.user.serial,lastModifiedDatetimeStamp:0,createdDatetimeStamp:lib.datetime.now(),lastSyncedDatetimeStamp:null,serial:this.user.serial,printDecoration:{headerLine:"",leftSideLine1:"",leftSideLine2:"",leftSideLine3:"",rightSideLine1:"",rightSideLine2:"",rightSideLine3:"",footerLine:"",logoDataUri:null},billingTargetEmailAddress:"",nsqipTargetEmailAddress:"",monetaryUnit:"BDT",otherSettings:{patientSignUpDefaultPassword:"123456"},flags:{showFooterLine:!0,showUserNameOnPrintPreview:!0},authorizedOrganiztionList:[]},this._saveSettings()},navigatedIn:function(){var t;return this.currentOrganization=this.getCurrentOrganization(),this.currentOrganization?(t=this.getDashboardMetrics(),this.user=app.db.find("user")[0],this.newPatientCount=t.newPatientCount,this.totalPatientCount=t.totalPatientCount,this.newRecordCount=t.newRecordCount,this.totalRecordCount=t.totalRecordCount,this.totalUnpaidInvoiceCount=t.totalUnpaidInvoiceCount,this.daysLeft=t.daysLeft,this.daysLeft<0&&this.domHost.navigateToPage("#/activate"),this.loadSettings(function(t){return function(){return t._organizationNavigatedIn()}}(this))):this.domHost.navigateToPage("#/select-organization")},languageSelectedIndexChanged:function(){var t;return t=this.supportedLanguageList[this.languageSelectedIndex],this.setActiveLanguage(t)},$getString1:function(t,e){return"en-us"===e?"Your license for UHCP App will <br>expire in "+t+" days.":"bn-bd"===e?(t=this.$TRANSLATE_NUMBER(t,e),"আপনার UHCP App এর লাইসেন্স বাতিল <br>হতে "+t+" দিন বাকি আছে।"):"TRANSLATION_FAILED"},viewNewPatientsTapped:function(t){return this.domHost.navigateToPage("#/patient-manager/filter:today-only")},viewNewRecordsTapped:function(t){return this.domHost.navigateToPage("#/record-manager/filter:today-only")},viewAllRecordsTapped:function(t){return this.domHost.navigateToPage("#/record-manager/filter:clear")},viewAllPatientsTapped:function(t){return this.domHost.navigateToPage("#/patient-manager/filter:clear")},viewUnpaidInvoicesTapped:function(t){return this.domHost.navigateToPage("#/invoices/unpaid-only")},purchaseAnaesMonTapped:function(t){return window.open("https://my.bdemr.com/#/apps/anaesmon/purchase")},renewAnaesMonTapped:function(t){return this.domHost.navigateToPage("#/activate")}})}).call(this);
 //# sourceMappingURL=page-dashboard.coffee-compiled.js.map</script>
 </dom-module>
