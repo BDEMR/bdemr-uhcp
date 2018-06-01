@@ -73,6 +73,9 @@ app.behaviors.local.invoiceMixin =
     if markAsCompleted
       @invoice.flags.markAsCompleted = true
     
+    @invoice.paid = @invoice.totalBilled
+    @invoice.totalAmountReceieved = @invoice.totalBilled
+    
     @_addModificationHistory()
 
     app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial

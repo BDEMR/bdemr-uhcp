@@ -261,6 +261,7 @@
           <strong>Invoice#: [[invoice.serial]]</strong>
           <span>Date :[[_formatDateTime(invoice.createdDatetimeStamp)]]</span>
           <span>Created By : [[user.name]]</span>
+          <span>Organization: [[invoice.organizationName]]</span>
         </div>
 
       </div>
@@ -312,14 +313,13 @@
           </template>
           <div class="horiline"></div>
           <div class="layout vertical end">
-            <div class="text-mute">Discount -[[invoice.discount]]</div>
             <h3>Total
               <strong>[[invoice.totalBilled]]</strong> BDT</h3>
           </div>
           <div class="layout vertical end">
             <h4>Paid [[invoice.paid]]</h4>
             <h4>Due
-              <strong>[[$calculateRemaining(invoice.paid, invoice.totalBilled)]]</strong>
+              <strong>[[$calculateRemaining(invoice.totalBilled, invoice.totalAmountReceieved)]]</strong>
             </h4>
           </div>
         </div class="p-16">

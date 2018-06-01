@@ -327,19 +327,15 @@
                           </template> -->
                         </div>
 
-                        <!-- <paper-icon-button icon="visibility" on-tap="viewPatientIconPressed" hidden="[[!patient.flags.isImported]]"></paper-icon-button> -->
 
-                        <!-- <paper-button raised class="btn-add colored" on-tap="viewPatient" hidden="[[!patient.flags.isImported]]"><iron-icon icon="icons:visibility" class="m-right-8"></iron-icon>View</paper-button> -->
 
                         <paper-menu-button horizontal-align="right" no-animations>
                           <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
                           <paper-menu class="dropdown-content">
                             <template is="dom-if" if="[[$or(patient.flags.isImported, patient.flags.isLocalOnly)]]">
-                              <!-- <paper-item on-tap="viewPatientPressed">View</paper-item> -->
                               <paper-item on-tap="viewPatient">View Patient</paper-item>
                               <paper-item on-tap="editPatientPressed">Edit Patient Info</paper-item>
-                              <!-- <paper-item on-tap="editPatientPreconceptionRecord">Edit PCC Record <img class="m-left-8" width="24" height="24" src="../../assets/img/partners/badas_logo.png" alt=""></paper-item> -->
-                              <!-- <paper-item on-tap="_shortcutToNewPrescription">New Prescription</paper-item> -->
+
                             </template>
                             <!-- export/import start -->
                             <template is="dom-if" if="[[patient.flags.isOnlineOnly]]">
@@ -351,9 +347,10 @@
                             <template is="dom-if" if="[[patient.flags.isImported]]">
                               <paper-item on-tap="importLatestPatientPressed">Import Latest from Cloud</paper-item>
                             </template>
-                            <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
+
+                            <!-- <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
                               <paper-item on-tap="putInWaitlistTapped">Put in [[organization.name]]'s Waitlist</paper-item>
-                            </template>
+                            </template> -->
 
 
                             <!-- export/import end -->
@@ -521,8 +518,6 @@
                               <!-- <paper-item on-tap="viewPatientPressed">View</paper-item> -->
                               <paper-item on-tap="viewPatient">View Patient</paper-item>
                               <paper-item on-tap="editPatientPressed">Edit</paper-item>
-                              <!-- <paper-item on-tap="editPatientPreconceptionRecord">Edit PCC Record <img class="m-left-8" width="24" height="24" src="../../assets/img/partners/badas_logo.png" alt=""></paper-item> -->
-                              <!-- <paper-item on-tap="_shortcutToNewPrescription">New Prescription</paper-item> -->
                             </template>
                             <!-- export/import start -->
                             <template is="dom-if" if="[[patient.flags.isOnlineOnly]]">
@@ -534,10 +529,10 @@
                             <template is="dom-if" if="[[patient.flags.isImported]]">
                               <paper-item on-tap="importLatestPatientPressed">Import Latest from Cloud</paper-item>
                             </template>
-                            <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
-                              <paper-item on-tap="putInWaitlistTapped">Put in [[organization.name]]'s Waitlist</paper-item>
-                            </template>
 
+                            <!-- <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
+                              <paper-item on-tap="putInWaitlistTapped">Put in [[organization.name]]'s Waitlist</paper-item>
+                            </template> -->
 
                             <!-- export/import end -->
 

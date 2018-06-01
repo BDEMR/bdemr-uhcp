@@ -365,6 +365,12 @@
         font-size: 16px;
       }
 
+      .generic-toast {
+        --paper-toast-background-color: var(--app-primary-color);
+        text-align: center;
+        font-size: 16px;
+      }
+
       #warningToast {
         --paper-toast-background-color: var(--paper-orange-500);
         text-align: center;
@@ -765,7 +771,7 @@
       </div>
     </paper-dialog>
 
-    <paper-toast id="toast1" class="fit-bottom" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
+    <paper-toast id="toast1" class="fit-bottom generic-toast" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
     <!-- Success Toast -->
     <paper-toast id="successToast" class="fit-bottom" duration="2500" text="[[genericToastContents]]" on-tap="genericToastTapped"></paper-toast>
     <!-- Warning Toast -->

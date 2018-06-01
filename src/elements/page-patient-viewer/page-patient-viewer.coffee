@@ -34,7 +34,6 @@ Polymer {
       type: Number
       notify: true
       value: 0
-      observer: 'subViewChanged'
 
     isPatientValid: 
       type: Boolean
@@ -355,12 +354,6 @@ Polymer {
     @isPatientValid = false
     @domHost.showModalDialog 'Invalid Patient Provided'
 
-  subViewChanged: (value)->
-    if value is 3
-      @set 'selectedVitalPage', 0
-
-
-
   searchGalleryTapped: (e)->
     data = { 
       apiKey: @user.apiKey
@@ -599,6 +592,7 @@ Polymer {
     @domHost.navigateToPage "#/patient-editor/patient:" + @patient.serial
 
   navigatedIn: ->
+    
     @organization = @getCurrentOrganization()
     unless @organization
       return @domHost.navigateToPage "#/select-organization"
@@ -606,13 +600,19 @@ Polymer {
     params = @domHost.getPageParams()
 
     @_loadUser()
-    @set 'selectedMedicinePage', 0
+
+    if params['patient']
+      @_loadPatient params['patient']
+    else
+      @_notifyInvalidPatient()
     
-    @set 'selectedTestPage', 0
-    @set 'selectedNextVisitPage', 0
-    @set 'selectedCommentPage', 0
+    # @_organizationNavigatedIn()
+    
     @set 'matchingVisitList', []
     @set 'modifiedVisitList', []
+
+    if @isPatientValid
+      @_listVisits()
 
     if params['selected']
       index = params['selected']
@@ -620,57 +620,53 @@ Polymer {
       
       @domHost.selectedPatientPageIndex = index
       @set "selectedSubViewIndex", (index - 1)
+      @_subViewChanged @selectedSubViewIndex, params
     
-    if params['patient']
-      @_loadPatient params['patient']
-    else
-      @_notifyInvalidPatient()
-
-    if @isPatientValid
-      @_listVisits()
-
-    @_getActivityLogs()
-    
-    @_organizationNavigatedIn()
-
-    @_listConfirmedDiagnosis params['patient']
-    @_listCurrentMedications params['patient']
-    @_listOldMedications params['patient']
-    @_listVitalBloodPressure params['patient']
-    @_listVitalPulseRate params['patient']
-    @_listVitalBMI params['patient']
-    @_listVitalRespiratoryRate params['patient']
-    @_listVitalSpO2 params['patient']
-    @_listVitalTemperature params['patient']
-    @_listTestBloodSugar params['patient']
-    @_listOtherTest params['patient']
-    @_listDoctorComment params['patient']
-    @_listPatientComment params['patient']
-
-    @_loadPatientNextVisit params['patient']
-
-    @_loadInvoice(@patient.serial, @organization.idOnServer)
-
-    @loadPatientPccRecords params['patient']
-    @loadPatientNdrRecords params['patient']
-
-    @_makeDoctorComment()
-
-    @_openLocalDataUriDb()
-    @_makeBlankAttachment()
-    # @_loadAttachmentList(params['patient'])
-    @_updateSpaceCalculation()
-
-    # @_updatePatientSerialForSync params['patient']
-
-    @_loadDiagnosisNameList()
-
-    # @showGraphPressed()
-
-    @_loadLeaveData @patient.serial
-
       
 
+  _subViewChanged: (selectedSubViewIndex, params)->
+    
+    switch selectedSubViewIndex
+      when 1
+        @_listConfirmedDiagnosis params['patient']
+        @_loadDiagnosisNameList()
+      when 2
+        @set 'selectedMedicinePage', 0
+        @_listCurrentMedications params['patient']
+        @_listOldMedications params['patient']
+      when 3
+        @set 'selectedVitalPage', 0
+        @_listVitalBloodPressure params['patient']
+        @_listVitalPulseRate params['patient']
+        @_listVitalBMI params['patient']
+        @_listVitalRespiratoryRate params['patient']
+        @_listVitalSpO2 params['patient']
+        @_listVitalTemperature params['patient']
+      when 4
+        @_loadPatientNextVisit params['patient']
+      when 5
+        @_loadInvoice @patient.serial, @organization.idOnServer
+      when 6
+        @set 'selectedTestPage', 0
+        @_listTestBloodSugar params['patient']
+        @_listOtherTest params['patient']
+      when 7
+        @set 'selectedCommentPage', 0
+        @_listDoctorComment params['patient']
+        @_listPatientComment params['patient']
+        @_makeDoctorComment()
+      when 8
+        @_openLocalDataUriDb()
+        @_makeBlankAttachment()
+        # @_loadAttachmentList(params['patient'])
+        @_updateSpaceCalculation()
+      when 9
+        @_getActivityLogs()
+      when 10
+        @_loadLeaveData @patient.serial
+
+    
+  
   navigatedOut: ->
     @patient = null
     @isPatientValid = false
@@ -2716,7 +2712,10 @@ Polymer {
   _loadInvoice: (patientSerialIdentifier, organizationIdentifier)->
     invoiceSerialList = @matchingVisitList.filter((visit)-> visit.invoiceSerial).map((visit)-> visit.invoiceSerial)
     invoiceList = app.db.find 'visit-invoice', ({patientSerial, organizationId, serial})=> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier and serial in invoiceSerialList
+    console.log invoiceList
     @set 'invoiceList', invoiceList
+  
+  calculateDue: (billed = 0, amtReceived = 0)-> (parseInt billed) - (parseInt amtReceived)
   
   getVisitSerial: (invoice)->
     if invoice.visitSerial

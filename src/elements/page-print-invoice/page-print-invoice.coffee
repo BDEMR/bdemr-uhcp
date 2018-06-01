@@ -60,6 +60,8 @@ Polymer {
     else
       @_loadPatient(params['patient'])
 
+    
+    
     @_loadVisit(params['visit'])
 
     @_loadInvoice(params['invoice'])
@@ -214,8 +216,7 @@ Polymer {
 
   $toReadbleStatus: (status)-> @possiblePaymentStatusses[status]
 
-  $calculateRemaining: (feePaidAmount, feeBilledAmount)->
-    return (parseInt feeBilledAmount) - (parseInt feePaidAmount)
+  $calculateRemaining: (billed = 0, amtReceived = 0)-> (parseInt billed) - (parseInt amtReceived)
 
 
 }

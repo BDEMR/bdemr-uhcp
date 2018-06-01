@@ -233,11 +233,11 @@
         <!-- Print - Prescription - start -->
         <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body p-left-16">Prescription</div>
+            <div class="type body">Prescription</div>
           </div>
 
           <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
-            <div class="m-vertical-8 p-left-16 horizontal layout center">
+            <div class="m-vertical-8 horizontal layout center">
               <div class="type caption secondary m-right-8">[[_returnSerial(index)]].</div>
               <div>
                 <div>
@@ -417,11 +417,11 @@
         </template>
         <!-- Print - History And Physical - end -->
 
-        <!-- Patient Stay Preview -->
+        <!-- Patient Discharge Note -->
         <div class="horizontal layout center print-sub-header">
           <div class="type body">Patient Discharge Note</div>
         </div>
-        <div class="p-horizontal-16">
+        <div class="">
           <div>
             <span class="type bold">Type: </span> [[visit.dischargeNote.dischargeType]]
           </div>
