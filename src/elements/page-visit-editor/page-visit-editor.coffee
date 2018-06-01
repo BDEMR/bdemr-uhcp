@@ -135,7 +135,7 @@ Polymer {
 
     isInvoiceValid:
       type: Boolean
-      notify: false
+      notify: true
       value: false
 
     isTestAdvisedValid:
@@ -736,6 +736,10 @@ Polymer {
     priceList:
       type: Array
       value: -> []
+
+    selectedDischargeType:
+      type: String
+      value: -> 'Out patient/ Discharged with advice'
 
 
     #####################################################################
@@ -1431,9 +1435,9 @@ Polymer {
 
   makeNewVisitButtonPressed: (e)->
     @domHost.setSelectedVisitSerial 'new'
-    @domHost.selectedPatientPageIndex = 1
-    @domHost.selectedPatientPageIndex = 0
-    # @domHost.navigateToPage '#/visit-editor/visit:new'
+    @domHost.modifyCurrentPagePath '#/visit-editor/visit:new' + '/patient:' + @patient.serial
+    @domHost.reloadPage()
+    
 
   toggleGuideline: (e)->
     @.$.guidelineContainer.toggle()
@@ -4501,8 +4505,6 @@ Polymer {
     
   navigatedIn: ->
 
-    # @domHost.selectedPatientPageIndex = 0
-
     @organization = @getCurrentOrganization()
     unless @organization
       return @domHost.navigateToPage "#/select-organization"
@@ -4609,7 +4611,7 @@ Polymer {
               @_makeNewDiagnosis()
               @_makeNewNote()
               @_makeNewNextVisit()
-              @invoice = {}
+              @set 'invoice', {}
               @_loadOrganizationsIBelongTo()
               @_makeNewPatientStay()
 
@@ -4658,16 +4660,6 @@ Polymer {
               else
                 @visit.prescriptionSerial = null
                 @_makeNewPrescription()
-
-              # hack medicine object timesPerInterval
-              @medicine.timesPerInterval = 1
-
-              # showGuidelineDisclaimer = lib.localStorage.getItem 'showGuidelineDisclaimer'
-              # if showGuidelineDisclaimer is null
-              #   @set 'showGuidelineDisclaimer', true
-              # else
-              #   @set 'showGuidelineDisclaimer', showGuidelineDisclaimer
-
               ## Visit - Prescription - end
 
               ## Visit - Symptoms - start
@@ -4805,15 +4797,6 @@ Polymer {
 
               ## Visit - Patient Stay - start
               @_loadOrganizationsIBelongTo()
-
-              if @visit.hasOwnProperty('patientStaySerial')
-                if @visit.patientStaySerial
-                  @_loadVisitPatientStay @visit.patientStaySerial
-                else
-                  @_makeNewPatientStay()
-              else
-                @visit.patientStaySerial = null
-                @_makeNewPatientStay() is null
               
               ## Visit - Patient Stay - end
 
@@ -4821,11 +4804,14 @@ Polymer {
               if @visit.hasOwnProperty('invoiceSerial')
                 if @visit.invoiceSerial
                   @_loadInvoice @visit.invoiceSerial
+                  @isInvoiceValid = true;
                 else
-                  @invoice = {}
+                  @set 'invoice', {}
+                  @isInvoiceValid = false;
               else
                 @visit.invoiceSerial = null
-                @invoice = {}
+                @set 'invoice', {}
+                @isInvoiceValid = false;
               ## Visit - Invoice - end
 
           
@@ -5385,6 +5371,7 @@ Polymer {
       @visit.lastModifiedDatetimeStamp = lib.datetime.now()
       app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
 
+    @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
     @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
 
   editInvoicePressed: (e)->
@@ -5418,6 +5405,7 @@ Polymer {
       @_makeNewInvoice(visitSerial)
       @push 'invoice.data', invoiceItem
     @_saveInvoice()
+    @isInvoiceValid = true
 
   
   _addToInvoice: (itemName, category, visitSerial)->
@@ -5446,6 +5434,7 @@ Polymer {
       @_makeNewInvoice(visitSerial)
       @push 'invoice.data', matchedItem
     @_saveInvoice()
+    @isInvoiceValid = true
 
 
   calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)

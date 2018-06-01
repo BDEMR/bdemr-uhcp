@@ -30,6 +30,12 @@ Polymer {
       type: Object
       notify: true
       value: -> {}
+
+    visit:
+      type: Object
+      notify: true
+      value: -> {}
+
         
     discountType:
       type: Number
@@ -466,7 +472,7 @@ Polymer {
   
   _updateVisit: (invoiceSerial)->
     if @visit.invoiceSerial is null
-      @visit.invoiceSerial = invoiceSerial
+      @visit.invoiceSerial = @invoice.serial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
@@ -478,11 +484,9 @@ Polymer {
       @invoice.flags.markAsCompleted = true
     
     @_addModificationHistory()
-    
     app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
-    @domHost.showToast 'Invoice Saved Successfully'
-    @_updateVisit @invoice.serial
-    # @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
+    @domHost.showSuccessToast 'Invoice Saved Successfully'
+    @_updateVisit()
     @domHost.navigateToPreviousPage()
      
 
@@ -506,7 +510,7 @@ Polymer {
 
 
   chargeOutdoorWalletButtonPressed: ->
-    @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, ()=> console.log 'deduction successful'
+    @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalAmountReceieved, indoorBalanceToDeduct: 0}, ()=> console.log 'deduction successful'
 
   getDoctorSpeciality: () ->
     unless @user.specializationList.length is 0

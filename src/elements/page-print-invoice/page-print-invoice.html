@@ -291,10 +291,11 @@
               <paper-item class="invoice-item">
                 <div>[[_returnSerial(index)]]</div>
                 <div class="flex-7 layout vertical m-left-8">
-                  <div>
+                  <div class="layout horizontal">
                     <strong>[[item.name]]</strong> &nbsp;
-                    <template is="dom-if" if="[[item.type]]">
-                      <span class="type secondary">[[item.type]]</span>
+                    <span class="flex"></span>
+                    <template is="dom-if" if="[[item.category]]">
+                      <span class="type secondary m-right-8">[[item.category]]</span>
                     </template>
                   </div>
                   <div>

@@ -559,7 +559,7 @@ Polymer {
     return params
 
   navigateToPage: (path)->
-    @user = (try (app.db.find 'user')[0] catch ex then null) or null
+    # @user = (try (app.db.find 'user')[0] catch ex then null) or null
     # window.location = path
     window.history.pushState({}, null, path)
     window.dispatchEvent(new CustomEvent('location-changed'))
@@ -806,7 +806,6 @@ Polymer {
 
   patientPageSelectedIndexChanged: (selectedPageIndex)->
     return unless @currentPatientsDetails
-
     @debounce 'selectPage', ()=>
       if selectedPageIndex is 0
         @async ()=>

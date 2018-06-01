@@ -2700,7 +2700,7 @@ Polymer {
         attachmentSerialList: []
       }
       dischargeNote: {
-        dischargeType: 'Exclusion Criteria'
+        dischargeType: ''
         admissionDateTimeStamp: null
         advise: null
         referredByDoctorName: null
@@ -2712,7 +2712,6 @@ Polymer {
   _loadInvoice: (patientSerialIdentifier, organizationIdentifier)->
     invoiceSerialList = @matchingVisitList.filter((visit)-> visit.invoiceSerial).map((visit)-> visit.invoiceSerial)
     invoiceList = app.db.find 'visit-invoice', ({patientSerial, organizationId, serial})=> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier and serial in invoiceSerialList
-    console.log invoiceList
     @set 'invoiceList', invoiceList
   
   calculateDue: (billed = 0, amtReceived = 0)-> (parseInt billed) - (parseInt amtReceived)

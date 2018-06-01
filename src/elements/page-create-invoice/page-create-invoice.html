@@ -1,9 +1,8 @@
 <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
 <link rel="import" href="../../bower-assets/paper-input/paper-input.html">
-<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower-assets/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower-assets/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
-<link rel="import" href="../../bower-assets/paper-ripple/paper-ripple.html">
 <link rel="import" href="../../bower-assets/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower-assets/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
@@ -16,7 +15,6 @@
 <link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
 
 <link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
-<link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -263,6 +261,15 @@
 
           <paper-card heading="Invoice">
             <div class="card-content">
+              <div class="layout horizontal p-horizontal-16 center">
+                <div class="type bold m-right-16">Type: </div>
+                <paper-radio-group selected="{{visit.dischargeNote.dischargeType}}" class="layout horizontal">
+                  <paper-radio-button name="OPD">OPD</paper-radio-button>
+                  <paper-radio-button name="IPD">IPD</paper-radio-button>
+                  <paper-radio-button name="Exclusion Criteria">Exclusion Criteria</paper-radio-button>
+                </paper-radio-group>
+              </div>
+
               <template is="dom-if" if="[[!invoice.data.length]]">
                 <div class="layout horizontal center center-justified p-16">Add Item</div>
               </template>
@@ -328,23 +335,21 @@
                     <th>Total</th>
                     <td width="190">[[invoice.totalBilled]] BDT</td>
                   </tr>
-                  <template is="dom-if" if="[[exclusionCriteria]]">
-                    <tr>
-                      <th>Paid Amount</th>
-                      <td>
-                        <input style="font-size: 16px" is="iron-input" type="number" bind-value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]"
-                          auto-validate prevent-invalid-input required/>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>Due</th>
-                      <td>[[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</td>
-                    </tr>
-                    <tr>
-                      <th>Total Amount Received:</th>
-                      <td>[[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</td>
-                    </tr>
-                  </template>
+                  <tr>
+                    <th>Paid Amount</th>
+                    <td>
+                      <input style="font-size: 16px" is="iron-input" type="number" bind-value="{{invoice.paid}}" min="0" max="[[invoice.totalBilled]]"
+                        auto-validate prevent-invalid-input required/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Due</th>
+                    <td>[[_calculateDue(invoice.totalBilled, invoice.paid, invoice.lastPaid)]] BDT</td>
+                  </tr>
+                  <tr>
+                    <th>Total Amount Received:</th>
+                    <td>[[_calculateTotalAmtReceived(invoice.paid, invoice.lastPaid)]] BDT</td>
+                  </tr>
                 </table>
 
               </div>
