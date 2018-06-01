@@ -65,30 +65,11 @@ Polymer {
     @_loadInvoice(params['invoice'])
 
     @set 'settings', @_getSettings()
-  
-  _makeSettings: ->
-    settings = 
-      serial: 'only'
-      isSyncEnabled: false
-      printDecoration: 
-        leftSideLine1: 'My Institution'
-        leftSideLine2: 'My Institution Address'
-        leftSideLine3: 'My Institution Contact'
-        rightSideLine1: 'My Name'
-        rightSideLine2: 'My Degrees'
-        rightSideLine3: 'My Contact'
-        footerLine: 'A simple message on the bottom'
-        logoDataUri: null
-      billingTargetEmailAddress: ''
-      nsqipTargetEmailAddress: ''
-      monetaryUnit: 'BDT'
 
+  
   _getSettings: ->
     list = app.db.find 'settings', ({serial})-> serial is 'only'
-    if list.length is 0
-      settings = @_makeSettings()
-    else
-      settings = list[0]
+    settings = list[0]
     return settings
   
   _loadUser:()->

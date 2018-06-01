@@ -2205,6 +2205,94 @@
                 </paper-card>
               </section>
             </template>
+            <!-- <Invoice Start> -->
+            <section>
+              <paper-card>
+                <div class="card-custom-header">
+                  <div class="layout horizontal center">
+                    <div class="title flex">Invoice</div>
+                    <paper-button class="btn btn-success" on-tap="createNewInvoiceButtonClicked">Create New Invoice</paper-button>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <paper-item class="heading">
+                    <div class="flex-2">
+                      <strong>Date</strong>
+                    </div>
+                    <div class="flex-2">
+                      <strong># Invoice</strong>
+                    </div>
+                    <div class="flex-2">
+                      <strong>Total Billed</strong>
+                    </div>
+                    <div class="flex-2">
+                      <strong>Amt. Received</strong>
+                    </div>
+                    <div class="flex-4">
+                      <strong></strong>
+                    </div>
+                  </paper-item>
+                  <template is="dom-if" if="[[_isEmptyArray(invoiceList.length)]]">
+                    <div class="card-content layout horizontal center center-justified">
+                      <div class="type body secondary">-- empty --</div>
+                    </div>
+                  </template>
+                  <template id="invoice-list-repeater" is="dom-repeat" items="[[invoiceList]]" sort="_sortByCreatedDate">
+                    <paper-item>
+                      <div class="flex-2">[[_formatDateTime(item.lastModifiedDatetimeStamp)]]</div>
+                      <div class="flex-2">
+                        <template is="dom-if" if="[[!item.referenceNumber]]">
+                          <strong class="label">[[item.serial]]</strong>
+                        </template>
+                        <template is="dom-if" if="[[item.referenceNumber]]">
+                          <strong class="label">[[item.referenceNumber]]</strong>
+                        </template>
+                      </div>
+                      <div class="flex-2">[[item.totalBilled]]
+                        <span class="text-muted">BDT</span>
+                      </div>
+                      <div class="flex-2">[[item.totalAmountReceieved]]
+                        <span class="text-muted">BDT</span>
+                      </div>
+                      <div class="flex-4 layout horizontal end-justified center">
+                        <div class="type warning" hidden$="[[!item.flags.flagAsError]]">Flagged as Error</div>
+                        <div class="type success" hidden$="[[!item.flags.markAsCompleted]]">Flagged as Completed</div>
+                        <paper-menu-button id="invoiceMenuButton" class="p-0" vertical-align="bottom" horizontal-align="right" hidden$="[[item.flags.flagAsError]]"
+                          close-on-activate>
+                          <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
+                          <paper-menu class="dropdown-content">
+                            <paper-item on-tap="previewInvoiceItemClicked">
+                              <iron-icon class="m-right-8" icon="icons:launch" item-icon></iron-icon>
+                              Print Preview
+                            </paper-item>
+                            <!--Do not show if invoice is marked as Completed-->
+                            <template is="dom-if" if="[[!item.flags.markAsCompleted]]">
+                              <paper-item on-tap="editInvoiceItemClicked">
+                                <iron-icon class="m-right-8" icon="icons:create" item-icon></iron-icon>
+                                Edit
+                              </paper-item>
+                              <paper-item on-tap="invoiceMarkedAsCompleteButtonClicked">
+                                <iron-icon class="m-right-8" icon="icons:done" item-icon style="color: green"></iron-icon>
+                                Complete
+                              </paper-item>
+                              <div hidden>[[item]]</div>
+                            </template>
+                            <paper-item on-tap="flagAsErrorInvoiceItemClicked">
+                              <iron-icon class="m-right-8" icon="icons:info-outline" item-icon style="color: red"></iron-icon>
+                              Flag as Error
+                            </paper-item>
+                          </paper-menu>
+                        </paper-menu-button>
+                      </div>
+                    </paper-item>
+                  </template>
+                </div>
+                <div class="card-actions">
+
+                </div>
+              </paper-card>
+            </section>
+            <!-- <Invoice End> -->
           </iron-pages>
 
           </paper-card>

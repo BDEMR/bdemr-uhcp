@@ -908,7 +908,6 @@ app.db.defineCollection {
 app.db.defineCollection {
   name: 'visit-invoice--deleted'
 }
-
 ###
   Separate Diagnosis List from History Physical
     serial
