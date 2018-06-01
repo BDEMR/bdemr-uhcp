@@ -11,7 +11,7 @@ app.behaviors.local['root-element'].newSync = {
 
     apiActionId = this.notifyApiAction('start', null);
 
-    this.domHost.toggleModalLoader('SYNC is in progress, please wait...');
+    this.toggleModalLoader('SYNC is in progress, please wait...');
 
     const collectionNameMap = {
       'bdemr--doctor-favorite-medications': 'favorite-medicine-list',
@@ -53,7 +53,7 @@ app.behaviors.local['root-element'].newSync = {
       'bdemr--visit-diagnosis': 'visit-diagnosis',
       'bdemr--pcc-records': 'pcc-records',
       'bdemr--ndr-records': 'ndr-records',
-      // 'bdemr--organization-price-list': 'organization-price-list',
+      'bdemr--organization-price-list': 'organization-price-list',
       'bdemr--clinic-organization-inventory': 'organization-inventory',
       'bdemr--clinic-third-party-user-list': 'third-party-user-list',
       'bdemr--clinic-invoice-category-list': 'invoice-category-list',
@@ -145,7 +145,7 @@ app.behaviors.local['root-element'].newSync = {
 
       this.notifyApiAction('done', null, apiActionId)
 
-      this.domHost.toggleModalLoader()
+      this.toggleModalLoader()
 
       if (err) {
         return cbfn(err)

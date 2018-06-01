@@ -466,7 +466,7 @@ Polymer {
       if response.hasError
         @domHost.showModalDialog response.error.message
       else
-        @domHost.toggleModalLoader 'Importing Patient Data. Please Wait...'
+        
         patientList = response.data
         if patientList.length isnt 1
           return @domHost.showModalDialog 'Unknown error occurred.'
@@ -489,6 +489,7 @@ Polymer {
 
 
   _importPatientData: (serial, _id, cbfn)->
+    @domHost.toggleModalLoader 'Importing Patient Data. Please Wait...'
     collectionNameMap = {
       'bdemr--doctor-visit': 'doctor-visit',
       'bdemr--visit-prescription': 'visit-prescription',

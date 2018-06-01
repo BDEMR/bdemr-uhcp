@@ -764,7 +764,7 @@ Polymer {
 
       # console.log 'modifiedList', modifiedList
 
-    @matchingVisitList = modifiedList
+    @set 'matchingVisitList', modifiedList
 
 
   _makeVisitRecordForReportType: (visitObject, visitRecordTypeName, visitRecordTypeSerial, visitHasTestResult, visitTestResultName) ->
@@ -2653,16 +2653,14 @@ Polymer {
         @splice 'leaveData.data', index, 1
         app.db.upsert 'employee-leave-data', @leaveData, ({serial})=> serial is @leaveData.serial
   
-  _loadInvoice: (patientSerialIdentifier, organizationIdentifier)->
-    invoiceList = app.db.find 'visit-invoice', ({patientSerial, organizationId})-> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier
-    console.log invoiceList
-    notCompletedInvoiceList = (item for item in invoiceList when item.flags.markAsCompleted isnt true)
-    if invoiceList.length > 0
-      @set 'invoiceList', invoiceList
-    if notCompletedInvoiceList.length > 0
-      @set 'invoiceListWithoutCompleted', notCompletedInvoiceList
+  
+  
 
-  _makeNewVisit: ()->
+  # ===========================
+  # INVOICE
+  # ===========================
+  
+  _makeNewVisitForInvoice: ()->
     return {
       serial: @generateSerialForVisit()
       idOnServer: null
@@ -2704,23 +2702,52 @@ Polymer {
         name: null
         attachmentSerialList: []
       }
+      dischargeNote: {
+        dischargeType: 'Exclusion Criteria'
+        admissionDateTimeStamp: null
+        advise: null
+        referredByDoctorName: null
+        admittedByDoctorName: null
+        admittedToOrganization: null
+      }
     }
       
-
+  _loadInvoice: (patientSerialIdentifier, organizationIdentifier)->
+    invoiceSerialList = @matchingVisitList.filter((visit)-> visit.invoiceSerial).map((visit)-> visit.invoiceSerial)
+    invoiceList = app.db.find 'visit-invoice', ({patientSerial, organizationId, serial})=> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier and serial in invoiceSerialList
+    @set 'invoiceList', invoiceList
+  
+  getVisitSerial: (invoice)->
+    if invoice.visitSerial
+      return invoice.visitSerial
+    else
+      visit = @matchingVisitList.find (visit)=> visit.invoiceSerial is invoice.serial
+      return visit.serial
+  
   createNewInvoiceButtonClicked: (e)->
 
-    visit = @_makeNewVisit()
+    visit = @_makeNewVisitForInvoice()
     app.db.upsert 'doctor-visit', visit, ({serial})=> visit.serial is serial
 
     @domHost.navigateToPage '#/create-invoice/invoice:new/patient:' + @patient.serial + '/visit:' + visit.serial
 
   editInvoiceItemClicked: (e)->
     invoice = e.model.item
-    @domHost.navigateToPage '#/create-invoice/invoice:' + invoice.serial + '/patient:' + @patient.serial + '/visit:' + invoice.visitSerial
+    if invoice.visitSerial
+      visitSerial = invoice.visitSerial
+    else
+      visit = @matchingVisitList.find (visit)=> visit.invoiceSerial is invoice.serial
+      visitSerial = visit.serial
+    @domHost.navigateToPage '#/create-invoice/invoice:' + invoice.serial + '/patient:' + @patient.serial + '/visit:' + visitSerial
 
   previewInvoiceItemClicked: (e)->
     invoice = e.model.item
-    @domHost.navigateToPage '#/print-invoice/invoice:' + invoice.serial + '/patient:' + @patient.serial + '/visit:' + invoice.visitSerial
+    if invoice.visitSerial
+      visitSerial = invoice.visitSerial
+    else
+      visit = @matchingVisitList.find (visit)=> visit.invoiceSerial is invoice.serial
+      visitSerial = visit.serial
+    @domHost.navigateToPage '#/print-invoice/invoice:' + invoice.serial + '/patient:' + @patient.serial + '/visit:' + visitSerial
 
   invoiceMarkedAsCompleteButtonClicked: (e)->
     item = e.model.item
