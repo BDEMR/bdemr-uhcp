@@ -86,12 +86,13 @@ Polymer {
 
       # error tracking js meta
       if app.mode is 'production'
+        unless bugsnagClient.metaData['organization']
+          bugsnagClient.metaData['organization'] = {}
         bugsnagClient.metaData.organization = {
           name: @selectedOrganization.name
           id: @selectedOrganization.idOnServer
           isCurrentUserAnAdmin: @selectedOrganization.isCurrentUserAnAdmin
         }
-        
 
     else
       @domHost.showModalDialog "Chose an Organization to Continue"
