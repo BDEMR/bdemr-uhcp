@@ -22,6 +22,11 @@ Polymer {
       notify: true
       value: null
 
+    childOrganizationList:
+      type: Array
+      notify: true
+      value: -> []
+
     loading:
      type: Boolean
      value: -> false
@@ -78,9 +83,32 @@ Polymer {
     organizationList = app.db.find 'organization'
     if organizationList.length is 1
       @set 'organization', organizationList[0]
+      @_loadChildOrganizationList @organization.idOnServer
 
   resetButtonClicked: -> @domHost.reloadPage()
 
+  organizationSelected: (e)->
+    organizationId = e.detail.value;
+    this.set('selectedOrganizationId', organizationId)
+  
+  _loadChildOrganizationList: (organizationIdentifier)-> 
+    this.loading = true
+    query = {
+      apiKey: this.user.apiKey
+      organizationId: organizationIdentifier
+    }
+    this.callApi '/bdemr--get-child-organization-list', query, (err, response) => 
+      this.loading = false;
+      organizationList = response.data
+      if organizationList.length
+        mappedValue = organizationList.map (item) => 
+          return { label: item.name, value: item._id }
+        mappedValue.unshift({ label: 'All', value: '' })
+        this.set('childOrganizationList', mappedValue)
+      else
+        this.domHost.showToast('No Child Organization Found')
+      
+   
   
   searchButtonClicked: ->
     @reportResults = []
@@ -91,7 +119,7 @@ Polymer {
     
     query = {
       apiKey: @user.apiKey
-      organizationId: @organization.idOnServer
+      organizationIdList: []
       reportType: @selectedReportType
       searchParameters: {
         searchString: @searchString
@@ -102,6 +130,9 @@ Polymer {
         salaryRange: @selectedSalaryRange?=[]
       }
     }
+
+    if this.selectedOrganizationId 
+      query.organizationIdList = [this.selectedOrganizationId]
 
     @loading = true
     @callApi '/uhcp--get-summary-reports', query, (err, response)=>

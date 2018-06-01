@@ -197,7 +197,9 @@
                 <vaadin-grid-column resizable>
                   <template class="header">Type</template>
                   <template>
-                    <span>[[item.visit.dischargeNote.type]]</span>
+                    <div>
+                      <span class="type caption-2 bg-gray">[[item.visit.dischargeNote.dischargeType]]</span>
+                    </div>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>

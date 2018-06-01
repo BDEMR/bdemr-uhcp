@@ -15,6 +15,7 @@
 <link rel="import" href="../../bower-assets/vaadin-grid/vaadin-grid-sorter.html">
 
 <link rel="import" href="../custom-vital-search/custom-vital-search.html">
+<link rel="import" href="../../bower-assets/vaadin-combo-box/vaadin-combo-box.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -119,6 +120,9 @@
           <div class="card-content">
 
             <div class="search layout horizontal end wrap">
+
+              <vaadin-combo-box class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected"
+                loading="[[loading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
               <paper-dropdown-menu label="Filter by Category" class="m-right-8">
                 <paper-listbox class="dropdown-content" on-iron-activate="categorySelected">
