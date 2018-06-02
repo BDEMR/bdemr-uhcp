@@ -1,0 +1,125 @@
+service: 'uhcp'
+runtime: python27
+api_version: 1
+threadsafe: yes
+default_expiration: "1m"
+skip_files:
+- node_modules/
+- build-debug/
+- polymer-build/
+
+handlers:
+- url: /app/assets
+  static_dir: app/assets
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private
+
+- url: /app/behaviors
+  static_dir: app/behaviors
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private
+
+- url: /app/bower-assets
+  static_dir: app/bower-assets
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private
+
+- url: /app/elements
+  static_dir: app/elements
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private
+
+- url: /app/images
+  static_dir: app/images
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private
+
+- url: /app/all.js
+  static_files: app/all.js
+  upload: app/all.js
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private
+    Content-Type: text/javascript
+
+- url: /app/favicon.png
+  static_files: app/favicon.png
+  upload: app/favicon.png
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private
+
+# - url: app/manifest.json
+#   static_files: app/manifest.json
+#   upload: app/manifest.json
+#   secure: always
+#   expiration: "1m"
+#   http_headers:
+#     Cache-Control: private
+
+- url: /app/service-worker.js
+  static_files: app/service-worker.js
+  upload: app/service-worker.js
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private 
+    Content-Type: text/javascript 
+
+- url: /app/.*
+  static_files: app/index.html
+  upload: app/index.html
+  secure: always
+  expiration: "1m"
+  http_headers:
+    Cache-Control: private
+
+
+- url: /css
+  static_dir: css
+  secure: always
+  expiration: "1d"
+  http_headers:
+    Cache-Control: private
+
+- url: /images
+  static_dir: images
+  secure: always
+  expiration: "1d"
+  http_headers:
+    Cache-Control: private
+
+- url: /js
+  static_dir: js
+  secure: always
+  expiration: "1d"
+  http_headers:
+    Cache-Control: private
+
+- url: /favicon.png
+  static_files: favicon.png
+  upload: favicon.png
+  secure: always
+  expiration: "1d"
+  http_headers:
+    Cache-Control: private
+
+- url: /.*
+  static_files: index.html
+  upload: index.html
+  secure: always
+  expiration: "1d"
+  http_headers:
+    Cache-Control: private
