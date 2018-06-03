@@ -312,11 +312,11 @@
               <div class="type secondary m-right-8">[[_returnSerial(index)]]. </div>
               <div class="flex vertical layout">
                 <div>{{item.investigationName}}</div>
-                <template is="dom-if" if="[[_compareFn(item.testList.length, '==', 1)]]">
+                <!-- <template is="dom-if" if="[[_compareFn(item.testList.length, '==', 1)]]">
                   <ol class="order-list">
                     <li>{{item.testList.0.name}}</li>
                   </ol>
-                </template>
+                </template> -->
                 <template is="dom-if" if="[[_compareFn(item.testList.length, '>', 1)]]">
                   <ol class="order-list">
                     <template is="dom-repeat" items="[[item.testList]]">
