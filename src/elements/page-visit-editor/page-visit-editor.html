@@ -1298,9 +1298,9 @@
                             <div class="type body-lead">{{item.investigationName}}</div>
                             <div class="horizontal layout wrap">
 
-                              <template is="dom-if" if="[[_compareFn(item.testList.length, '==', 1)]]">
+                              <!-- <template is="dom-if" if="[[_compareFn(item.testList.length, '==', 1)]]">
                                 <div class="type body">{{item.testList.0.name}}</div>
-                              </template>
+                              </template> -->
 
                               <template is="dom-if" if="[[_compareFn(item.testList.length, '>', 1)]]">
                                 <template is="dom-repeat" items="[[item.testList]]">
