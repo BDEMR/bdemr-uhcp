@@ -1113,7 +1113,8 @@ Polymer {
     @prescription = 
       serial: null
       lastModifiedDatetimeStamp: 0
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
@@ -1231,7 +1232,7 @@ Polymer {
 
     duplicateMedicine = 
       serial: @generateSerialForMedication 'DPMD'
-      createdDatetimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @prescription.createdDatetimeStamp
       lastModifiedDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
@@ -1252,7 +1253,8 @@ Polymer {
   _makeDuplicatedMedicineFromCurrent: ()->
     duplicateMedicine = 
       serial: @generateSerialForMedication 'DP'
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastModifiedDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
@@ -1878,7 +1880,8 @@ Polymer {
     @identifiedSymptomsObject =
       serial: null
       lastModifiedDatetimeStamp: 0
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
@@ -2158,7 +2161,8 @@ Polymer {
     @examinationObject =
       serial: null
       lastModifiedDatetimeStamp: 0
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
@@ -2408,7 +2412,8 @@ Polymer {
     @testAdvisedObject =
       serial: null
       lastModifiedDatetimeStamp: 0
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
@@ -4851,7 +4856,8 @@ Polymer {
     # console.log @visit.serial
     @historyAndPhysicalRecord = {
       lastModifiedDatetimeStamp: lib.datetime.now()
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
@@ -5039,7 +5045,8 @@ Polymer {
     @diagnosis =
       serial: null
       lastModifiedDatetimeStamp: lib.datetime.now()
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
@@ -5210,7 +5217,8 @@ Polymer {
     @referral =
       serial: null
       lastModifiedDatetimeStamp: lib.datetime.now()
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
@@ -5359,7 +5367,8 @@ Polymer {
       serial: null
       visitSerial: visitSerial
       organizationId: @organization.idOnServer
-      createdDatetimeStamp: lib.datetime.now()
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: @visit.createdDatetimeStamp
       lastModifiedDatetimeStamp: lib.datetime.now()
       createdByUserSerial: @user.serial
     }
@@ -5388,7 +5397,8 @@ Polymer {
         serial: null
         visitSerial: visitSerial
         organizationId: @organization.idOnServer
-        createdDatetimeStamp: lib.datetime.now()
+        recordCreatedDateTimeStamp: lib.datetime.now()
+        createdDatetimeStamp: @visit.createdDatetimeStamp
         lastModifiedDatetimeStamp: lib.datetime.now()
         createdByUserSerial: @user.serial
       }
