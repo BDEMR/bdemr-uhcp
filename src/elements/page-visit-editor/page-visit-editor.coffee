@@ -5461,6 +5461,7 @@ Polymer {
     @.$.visitDateModal.toggle()
 
   saveNewVisitDateButtonClicked: ->
+    return unless @customVisitDate and @customVisitTime
     visitDateTime = +new Date("#{@customVisitDate} #{@customVisitTime}")
     @set 'visit.createdDatetimeStamp', visitDateTime
     @_saveVisit()

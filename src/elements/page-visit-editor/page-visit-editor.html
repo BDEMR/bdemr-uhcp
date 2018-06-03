@@ -2228,10 +2228,10 @@
       <paper-dialog id="visitDateModal">
         <h2>Change Visit Date</h2>
         <div class="p-16">
-          <vaadin-date-picker label="Chose Date" value="{{customVisitDate}}"></vaadin-date-picker>
+          <vaadin-date-picker label="Chose Date" required value="{{customVisitDate}}"></vaadin-date-picker>
           <div class="m-top-8">
             <label for="">Chose Time</label>
-            <input class="m-left-8" type="time" is="iron-input" bind-value="{{customVisitTime}}">
+            <input class="m-left-8" type="time" is="iron-input" required bind-value="{{customVisitTime}}">
           </div>
         </div>
         <div class="buttons">
