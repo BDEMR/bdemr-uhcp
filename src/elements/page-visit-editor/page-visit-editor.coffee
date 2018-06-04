@@ -907,10 +907,10 @@ Polymer {
     }
     @callApi '/bdemr-uhcp--get-patient-service-value', data, (err, response)=>
       if response.hasError
-        @domHost.showToast response.error.message
+        @domHost.showWarningToast response.error.message
       else
-        if Object.keys(response.data).length
-          cbfn response.data
+        if response.data.length
+          cbfn response.data[0]
         else
           cbfn {outdoorBalance:0, indoorBalance:0}
 
