@@ -336,50 +336,23 @@
 
           <!-- Dialog for - Add Role - start -->
           <paper-dialog id="dialogAddRole">
-            <div class="type body-lead" style="color: #5c4575;">
+            <h2 class="type body-lead" style="color: #5c4575;">
               <iron-icon icon="icons:check-circle" class="m-right-8 "></iron-icon>Add Role
-            </div>
+            </h2>
 
             <div>
-              <paper-input label="Role Title" value={{role.title}}></paper-input>
+              <paper-input label="Role Title" required value={{role.title}}></paper-input>
             </div>
 
             <paper-dialog-scrollable>
 
-
               <div class="type body" style="color: #5c4575;">Select Privilege:</div>
               <div class="horizontal layout wrap">
                 <template is="dom-repeat" items="[[privilegeList]]">
-                  <paper-checkbox class="m-4" checked="{{item.isSelected}}">{{item.name}}</paper-checkbox>
+                  <paper-checkbox class="m-8" checked="{{item.isSelected}}">{{item.name}}</paper-checkbox>
                 </template>
               </div>
 
-              <!-- <template is="dom-if" if="[[departmentList]]">
-
-                <div class="type body-lead" style="color: #5c4575;">Select Location</div>
-
-                <div style="background: #90A4AE; padding: 4px;">
-
-                  <template is="dom-repeat" items="[[departmentList]]" as="dept">
-                    <paper-checkbox class="m-4 type body-lead" checked="{{dept.checked}}" on-change="onDeptSelect">{{dept.name}}</paper-checkbox>
-                    <div style="background: #B0BEC5; padding: 4px;">
-                      <template is="dom-repeat" items="[[dept.unitList]]" as="unit">
-                        <paper-checkbox class="m-4 type body" checked="{{unit.checked}}" on-change="onUnitSelect">{{unit.name}}</paper-checkbox>
-                        <div style="background: #CFD8DC; padding: 4px;">
-                          <template is="dom-repeat" items="[[unit.wardList]]" as="ward">
-                            <paper-checkbox class="m-4" checked="{{ward.checked}}" on-change="onWardSelect">{{ward.name}}</paper-checkbox>
-                            <div class="horizontal layout wrap" style="background: #ECEFF1; padding: 4px;">
-                              <template is="dom-repeat" items="[[ward.seatList]]" as="seat">
-                                <paper-checkbox class="m-4 checked="{{seat.checked}}" on-change="">{{seat.name}}</paper-checkbox>
-                              </template>
-                            </div>
-                          </template>
-                        </div>
-                      </template>
-                    </div>
-                  </template>
-                </div>
-              </template> -->
             </paper-dialog-scrollable>
 
             <div class="buttons m-top-16">
