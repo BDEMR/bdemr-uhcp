@@ -96,6 +96,10 @@ Polymer {
         # console.log patientObject
         
         url = "#/visit-editor/visit:#{record.serial}/patient:#{patientSerial}"
-        @domHost._sync url
+        @domHost._newSync (errMessage)=>
+          if errMessage
+            @async => @showModalDialog(errMessage);
+          else
+            @domHost.navigateToPage url
 
 }
