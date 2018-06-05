@@ -100,6 +100,11 @@
         padding: 5px;
       }
 
+      .table th,
+      td {
+        font-size: 14px;
+      }
+
 
       .print {
         min-width: calc(210mm - 20.32mm);
@@ -137,6 +142,23 @@
         }
       }*/
 
+      .logo-area {
+        margin: 10px 0 40px 0;
+      }
+
+      .print-header-logo-title {
+        padding: 0;
+        margin: 0;
+        font-size: 21px;
+      }
+
+      .print-header-logo-subtitle {
+        padding: 0;
+        margin: 0;
+        font-size: 12px;
+        font-weight: normal;
+      }
+
       @media print {
         app-header-layout #contentContainer {
           overflow-y: unset !important;
@@ -148,14 +170,22 @@
     <div class="print">
 
       <!-- print - header - start -->
-      <div class="header horizontal layout center">
+      <div class="header vertical layout center">
 
-        <div class="m-right-16">
-          <img style="max-width: 42px; height: auto;" class="logo" src="./../../assets/img/partners/uhcp.jpg" alt="UHCP Logo">
-        </div>
-        <h2 class="flex text-center type">Universal Health Coverage Plan (UHCP)</h2>
-        <div class="m-left-16">
-          <img style="max-width: 42px; height: auto;" class="logo" src="./../../assets/img/partners/badas.jpg" alt="BADAS Logo">
+        <div class="layout horizontal logo-area">
+
+          <div class="m-right-16">
+            <img style="max-width: 42px; height: auto;" class="logo" src="./../../assets/img/partners/uhcp.jpg" alt="UHCP Logo">
+          </div>
+          <div>
+            <h2 class="print-header-logo-title">Universal Health Coverage Plan (UHCP)</h2>
+            <h6 class="print-header-logo-subtitle type text-center">A Project of the Diabetic Association Bangladesh (BADAS)</h6>
+          </div>
+
+          <div class="m-left-16">
+            <img style="max-width: 42px; height: auto;" class="logo" src="./../../assets/img/partners/badas.jpg" alt="BADAS Logo">
+          </div>
+
         </div>
 
       </div>
@@ -167,18 +197,8 @@
         <div class="">
           <table class="table">
             <tr>
-              <th width="200">Consultation Site:</th>
+              <th>Consultation Site:</th>
               <td>[[visit.hospitalName]]</td>
-            </tr>
-            <tr>
-              <th>Consultant Name:</th>
-              <td>[[visit.doctorName]]</td>
-            </tr>
-            <tr>
-              <th>Consultant Grade</th>
-              <td>[[visit.doctorSpeciality]]</td>
-            </tr>
-            <tr>
               <th>Patient Id / Policy Id:</th>
               <td>
                 <template is="dom-if" if="[[patient.policyList.length]]">
@@ -189,20 +209,16 @@
               </td>
             </tr>
             <tr>
+              <th>Consultant Name:</th>
+              <td>[[visit.doctorName]]</td>
               <th>Patient Name:</th>
               <td>{{$getFullName(patient.name)}}</td>
             </tr>
             <tr>
-              <th>Age/Sex:</th>
-              <td>[[_computeAge(patient.dateOfBirth)]] years / {{patient.gender}}</td>
-            </tr>
-            <tr>
-              <th>Blood Group</th>
-              <td>[[patient.bloodGroup]]</td>
-            </tr>
-            <tr>
-              <th>Allergies</th>
-              <td>[[patient.allergy]]</td>
+              <th>Consultant Grade</th>
+              <td>[[visit.doctorSpeciality]]</td>
+              <th></th>
+              <td></td>
             </tr>
             <tr>
               <th>Factory name:</th>
@@ -213,17 +229,25 @@
                   </template>
                 </template>
               </td>
+              <th>Age/Sex:</th>
+              <td>[[_computeAge(patient.dateOfBirth)]] years / {{patient.gender}}</td>
             </tr>
             <tr>
               <th>Prescription Id:</th>
               <td>[[visit.serial]]</td>
+              <th>Blood Group</th>
+              <td>[[patient.bloodGroup]]</td>
             </tr>
             <tr>
               <th>Date &amp; Time:</th>
               <td>[[$mkDateTime(visit.createdDatetimeStamp)]]</td>
+              <th>Allergies</th>
+              <td>[[patient.allergy]]</td>
             </tr>
           </table>
         </div>
+
+
 
 
         <div class="p-16 horizontal layout center center-justified" hidden$="{{!printPrescriptionOnly}}">
@@ -233,7 +257,7 @@
         <!-- Print - Prescription - start -->
         <template is="dom-if" if="[[!_isEmpty(matchingPrescribedMedicineList.length)]]">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body">Prescription</div>
+            <div class="type body bold">Prescription</div>
           </div>
 
           <template is="dom-repeat" items="[[matchingPrescribedMedicineList]]">
@@ -266,7 +290,7 @@
         <!-- Print - Symptoms - start -->
         <template is="dom-if" if="[[!_isEmpty(addedIdentifiedSymptomsList.length)]]">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body">Symptoms</div>
+            <div class="type body bold">Symptoms</div>
           </div>
           <template is="dom-repeat" items="[[addedIdentifiedSymptomsList]]">
             <div class="type caption-2">
@@ -287,7 +311,7 @@
         <!-- Print - Examination - start -->
         <template is="dom-if" if="[[!_isEmpty(addedExaminationList.length)]]">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body">Examination</div>
+            <div class="type body bold">Examination</div>
           </div>
           <template is="dom-repeat" items="[[addedExaminationList]]" as="examination">
             <div class="type caption-2">
@@ -306,7 +330,7 @@
         <!-- Print - Vitals - start -->
         <template is="dom-if" if="[[!_isEmpty(addedVitalList.length)]]">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body">Vitals</div>
+            <div class="type body bold">Vitals</div>
           </div>
           <template is="dom-repeat" items="[[addedVitalList]]">
             <div class="type caption-2">
@@ -321,7 +345,7 @@
         <!-- Print - Test Advised - start -->
         <template is="dom-if" if="[[!_isEmpty(addedInvestigationList.length)]]">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body">Advised Test</div>
+            <div class="type body bold">Advised Test</div>
           </div>
           <template is="dom-repeat" items="[[addedInvestigationList]]">
             <div class="type caption-2 layout horizontal">
@@ -356,7 +380,7 @@
         <!-- Print - Diagnosis - start -->
         <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body">Diagnosis</div>
+            <div class="type body bold">Diagnosis</div>
           </div>
 
           <template is="dom-repeat" items="[[diagnosis.data.diagnosisList]]">
@@ -378,7 +402,7 @@
         <!-- Print - Notes - start -->
         <template is="dom-if" if="{{!_isEmpty(doctorNotes.data.messageList.length)}}">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body">Doctor Advised/Notes</div>
+            <div class="type body bold">Doctor Advised/Notes</div>
           </div>
           <ul class="unorderd-list-custom">
             <template is="dom-repeat" items="[[doctorNotes.data.messageList]]">
@@ -392,7 +416,7 @@
         <!-- Print - Next Visit - start -->
         <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
           <div class="horizontal layout center print-sub-header">
-            <div class="type body">Next Visit</div>
+            <div class="type body bold">Next Visit</div>
           </div>
           <div class="type caption-2">
             <div>
@@ -419,14 +443,14 @@
 
         <!-- Patient Discharge Note -->
         <div class="horizontal layout center print-sub-header">
-          <div class="type body">Patient Discharge Note</div>
+          <div class="type body bold">Patient Discharge Note</div>
         </div>
         <div class="">
           <div>
-            <span class="type bold">Type: </span> [[visit.dischargeNote.dischargeType]]
+            <span class="type">Type: </span> [[visit.dischargeNote.dischargeType]]
           </div>
           <div>
-            <span class="type bold">Advice: </span> [[visit.dischargeNote.advise]]
+            <span class="type">Advice: </span> [[visit.dischargeNote.advise]]
           </div>
           <template is="dom-if" if="[[$equals(visit.dischargeNote.dischargeType, 'IPD')]]">
             <div class="layout horizontal">
@@ -434,14 +458,14 @@
               <span>&nbsp;[[$mkDate(visit.dischargeNote.admissionDateTimeStamp)]]</span>
             </div>
             <div>
-              <span class="type bold">Admitted To</span>
+              <span class="type">Admitted To</span>
               <span>[[visit.dischargeNote.admittedToOrganization.name]]</span>
             </div>
             <div>
-              <span class="type bold">Referred By: </span> [[visit.dischargeNote.referredByDoctorName]]
+              <span class="type">Referred By: </span> [[visit.dischargeNote.referredByDoctorName]]
             </div>
             <div>
-              <span class="type bold">Admitted By: </span> [[visit.dischargeNote.admittedByDoctorName]]
+              <span class="type">Admitted By: </span> [[visit.dischargeNote.admittedByDoctorName]]
             </div>
           </template>
 
@@ -471,14 +495,12 @@
           </div>
         </template>
 
-        <template is="dom-if" if="[[settings.flags.showFooterLine]]">
-          <div class="b-top">
-            <div class="type caption secondary">Address: Dhaka: Ibrahim General Hospital, 27-28 Commercial Plot, main road-01, Section-06, Mirpur, Dhaka. Contact
-              No. : 01712222222, from 9.00 AM to 5.00 PM (Sat- Thu)
-              <br> Narayangonj: Narayangonj Diabetic Hospital, Dewbogh, Nagbari, Narayangonj. Contact No : 01712222222, from
-              9.00 AM to 5.00 PM (Sat- Thu)</div>
-          </div>
-        </template>
+        <!-- <div class="b-top">
+          <div class="type caption secondary">Address: Dhaka: Ibrahim General Hospital, 27-28 Commercial Plot, main road-01, Section-06, Mirpur, Dhaka. Contact
+            No. : 01712222222, from 9.00 AM to 5.00 PM (Sat- Thu)
+            <br> Narayangonj: Narayangonj Diabetic Hospital, Dewbogh, Nagbari, Narayangonj. Contact No : 01712222222, from 9.00
+            AM to 5.00 PM (Sat- Thu)</div>
+        </div> -->
       </div>
       <!-- print - footer - end -->
 
