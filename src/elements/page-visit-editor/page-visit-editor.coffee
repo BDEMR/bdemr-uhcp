@@ -22,7 +22,6 @@ Polymer {
     app.behaviors.pageLike
     app.behaviors.translating
     app.behaviors.apiCalling
-    app.behaviors.local.patientStayMixin
     app.behaviors.local.loadPriceListMixin
     app.behaviors.local.invoiceMixin
   ]
