@@ -203,6 +203,16 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
+                  <template class="header">Advise/Note</template>
+                  <template>
+                    <ul>
+                      <template is="dom-repeat" items="[[item.doctorNotes.messageList]]" as="doctorNotes">
+                        <ol>[[doctorNotes]]</ol>
+                      </template>
+                    </ul>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable>
                   <template class="header">Symptoms</template>
                   <template>
                     <ul>
@@ -223,7 +233,7 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
-                  <template class="header">Test Advices</template>
+                  <template class="header">Investigation</template>
                   <template>
                     <ul>
                       <template is="dom-repeat" items="[[item.advisedTests.testAdvisedList]]" as="advice">
@@ -263,7 +273,7 @@
                   <template class="footer">[[totalDrugCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
-                  <template class="header">Inv. Cost</template>
+                  <template class="header">Investigation Cost</template>
                   <template>
                     <span>[[$getCategoryCost('Investigation', item.invoice)]]</span>
                   </template>
