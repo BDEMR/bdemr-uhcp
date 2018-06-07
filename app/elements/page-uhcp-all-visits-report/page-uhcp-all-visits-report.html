@@ -174,6 +174,16 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
+                  <template class="header">Advise/Note</template>
+                  <template>
+                    <ul>
+                      <template is="dom-repeat" items="[[item.doctorNotes.messageList]]" as="doctorNotes">
+                        <ol>[[doctorNotes]]</ol>
+                      </template>
+                    </ul>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
                   <template class="header">Symptoms</template>
                   <template>
                     <ul>
@@ -194,7 +204,7 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
-                  <template class="header">Test Advices</template>
+                  <template class="header">Investigation</template>
                   <template>
                     <ul>
                       <template is="dom-repeat" items="[[item.advisedTests.testAdvisedList]]" as="advice">
@@ -234,7 +244,7 @@
                   <template class="footer">[[totalDrugCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
-                  <template class="header">Inv. Cost</template>
+                  <template class="header">Investigation Cost</template>
                   <template>
                     <span>[[$getCategoryCost('Investigation', item.invoice)]]</span>
                   </template>
@@ -448,11 +458,11 @@
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? invoiceItem.price : 0), 0) : 0
+    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? parseInt(invoiceItem.price) : 0), 0) : 0
   },
 
   $getTotalCost(invoice) {
-    return invoice && invoice.totalBilled ? invoice.totalBilled : 0
+    return invoice && invoice.totalBilled ? parseInt(invoice.totalBilled) : 0
   },
 
   $computeAge(dateString) {
@@ -563,15 +573,12 @@
       query.organizationIdList = []
     }
 
-    console.log(query);
-
     this.loading = true;
     this.callApi('/uhcp--get-visit-reports', query, (err, response) => {
       if (response.hasError) {
         this.domHost.showModalDialog(response.error.message);
         return this.loading = false;
       } else {
-        console.log(response)
         this.set('reportResults', response.data);
         return this.loading = false;
       }
