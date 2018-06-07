@@ -284,6 +284,31 @@ Polymer {
     return age
 
 
+  _makeNewAddress: ->
+    return [
+      {
+        addressTitle: 'Personal'
+        addressType: 'personal'
+        flat: null
+        floor: null
+        plot: null
+        block: null
+        road: null
+        village: null
+        addressUnion: null
+        subdistrictName: null
+        addressDistrict: null
+        addressPostalOrZipCode: null
+        addressCityOrTown: null
+        addressDivision: null
+        addressAreaName: null
+        addressLine1: null
+        addressLine2: null
+        stateOrProvince: null
+        addressCountry: "Bangladesh"
+      }
+    ]
+  
   _makePatientSignUp: ->
 
     @patient =
@@ -297,29 +322,7 @@ Polymer {
       doctorAccessPin: '0000'
       nationalIdCardNumber: null
 
-      addressList: [
-        {
-          addressTitle: 'Personal'
-          addressType: 'personal'
-          flat: null
-          floor: null
-          plot: null
-          block: null
-          road: null
-          village: null
-          addressUnion: null
-          subdistrictName: null
-          addressDistrict: null
-          addressPostalOrZipCode: null
-          addressCityOrTown: null
-          addressDivision: null
-          addressAreaName: null
-          addressLine1: null
-          addressLine2: null
-          stateOrProvince: null
-          addressCountry: "Bangladesh"
-        }
-      ]
+      addressList: @_makeNewAddress()
       
       gender: ''
       bloodGroup: ''
@@ -360,6 +363,10 @@ Polymer {
       patient = list[0]
       patient.name = @$getFullName patient.name
       patient.employmentInfo = patient.employmentDetailsList[0] or {}
+      if patient.addressList.length and patient.addressList[0] 
+        patient.addressList[0] 
+      else
+        patient.addressList = @_makeNewAddress()
       @set 'patient', patient
       console.log patient
     else
@@ -409,7 +416,7 @@ Polymer {
 
     @organization = @getCurrentOrganization()
     unless @organization
-      @domHost.navigateToPage "#/select-organization"
+      return @domHost.navigateToPage "#/select-organization"
       
     @_loadUser()
     @settings = @_getSettings()
@@ -441,8 +448,9 @@ Polymer {
     data =
       patient: patient
       apiKey: @user.apiKey
-
+    @domHost.toggleModalLoader 'Patient Details updating...'
     @callApi '/bdemr-birdem-patient-registration', data, (err, response)=>
+      @domHost.toggleModalLoader()
       console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message
@@ -505,7 +513,9 @@ Polymer {
     data =
       patient: patient
       apiKey: @user.apiKey
+    @domHost.toggleModalLoader 'Patient Details updating...'
     @callApi '/bdemr-patient-details-update', data, (err, response)=>
+      @domHost.toggleModalLoader()
       console.log response
       if response.hasError
         @domHost.showModalDialog response.error.message

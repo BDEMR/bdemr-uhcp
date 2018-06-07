@@ -348,7 +348,7 @@
 
 
             <div class="layout horizontal wrap">
-              <vaadin-date-picker class="custom-input" value="{{patient.dateOfBirth}}" label="Date of Birth"></vaadin-date-picker>
+              <vaadin-date-picker class="custom-input" value="{{patient.dateOfBirth}}" label="Date of Birth (MM/DD/YYYY)" placeholder="MM/DD/YYYY"></vaadin-date-picker>
               <paper-input class="custom-input" value="[[_computeAge(patient.dateOfBirth)]]" label="Years" disabled></paper-input>
             </div>
 
@@ -482,7 +482,7 @@
               <paper-input type="number" class="custom-input" value="{{patient.addressList.0.addressPostalOrZipCode}}" label="Postal/Zip Code"></paper-input>
               <paper-input class="custom-input" value="{{patient.addressList.0.addressCityOrTown}}" label="City/Town"></paper-input>
 
-              <paper-input class="custom-input" value="{{patient.addressList.0.stateOrProvince}}" label="State/Province"></paper-input>
+              <!-- <paper-input class="custom-input" value="{{patient.addressList.0.stateOrProvince}}" label="State/Province"></paper-input> -->
             </div>
 
 
@@ -495,8 +495,8 @@
             <paper-input label="Current Position/Designation" value="{{patient.employmentInfo.currentPosition}}"></paper-input>
             <paper-input label="Department" value="{{patient.employmentInfo.department}}"></paper-input>
             <paper-input label="Salary" value="{{patient.employmentInfo.salary}}" type="number"></paper-input>
-            <vaadin-date-picker label="Joining Date" value="{{patient.employmentInfo.joiningDate}}"></vaadin-date-picker>
-            <vaadin-date-picker label="Termination Date" value="{{patient.employmentInfo.terminationDate}}"></vaadin-date-picker>
+            <vaadin-date-picker label="Joining Date" placeholder="MM/DD/YYYY" value="{{patient.employmentInfo.joiningDate}}"></vaadin-date-picker>
+            <vaadin-date-picker label="Termination Date" placeholder="MM/DD/YYYY" value="{{patient.employmentInfo.terminationDate}}"></vaadin-date-picker>
             <paper-input label="Institution Name" value="{{patient.employmentInfo.institutionName}}"></paper-input>
             <paper-input label="Institution Address" value="{{patient.employmentInfo.institutionAddres}}"></paper-input>
           </div>

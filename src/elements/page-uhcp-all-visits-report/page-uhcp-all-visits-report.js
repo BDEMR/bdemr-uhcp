@@ -291,15 +291,12 @@ Polymer({
       query.organizationIdList = []
     }
 
-    console.log(query);
-
     this.loading = true;
     this.callApi('/uhcp--get-visit-reports', query, (err, response) => {
       if (response.hasError) {
         this.domHost.showModalDialog(response.error.message);
         return this.loading = false;
       } else {
-        console.log(response)
         this.set('reportResults', response.data);
         return this.loading = false;
       }
