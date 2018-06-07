@@ -4584,7 +4584,7 @@ Polymer {
               @_makeNewNextVisit()
               @set 'invoice', {}
               @_loadOrganizationsIBelongTo()
-              @_makeNewPatientStay()
+              # @_makeNewPatientStay()
 
           else
             @_loadVisit params['visit'], =>
