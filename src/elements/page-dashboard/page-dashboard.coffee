@@ -17,6 +17,11 @@ Polymer {
       notify: true
       observer: 'languageSelectedIndexChanged'
 
+    settings:
+      type: Object
+      notify: true
+      value: -> null
+    
     daysLeft:
       type: Number
       value: 0
@@ -38,6 +43,7 @@ Polymer {
           title: 'Create'
           subTitle: 'New Patient'
           info: ''
+          icon: 'account-circle'
           imagePath: 'assets/img/partners/uhcp.jpg'
           urlPath: '#/patient-signup'
           accessId: ''
@@ -46,6 +52,7 @@ Polymer {
           title: 'FOLLOW UP'
           subTitle: 'Patient'
           info: ''
+          icon: 'find-in-page'
           imagePath: 'assets/img/partners/uhcp.jpg'
           urlPath: '#/patient-manager/selected:0'
           accessId: ''
@@ -62,9 +69,10 @@ Polymer {
         
         {
           title: 'Patients Log'
-          subTitle: 'patient history from'
+          subTitle: 'Patient History'
           info: ''
-          imagePath: 'images/icons/ico_history_and_physical.png'
+          icon: 'folder-shared'
+          imagePath: 'images/icons/ico_report.png'
           urlPath: '#/patient-manager/selected:1'
           accessId: ''
         }
@@ -244,7 +252,7 @@ Polymer {
             isChecked: false
             name: item.name
 
-          @settings.authorizedOrganiztionList.push object
+          @push 'settings.authorizedOrganiztionList', object
 
     else
       for item in @organizationsIBelongToList
@@ -253,7 +261,7 @@ Polymer {
           isChecked: false
           name: item.name
 
-        @settings.authorizedOrganiztionList.push object
+        @push 'settings.authorizedOrganiztionList', object
 
     cbfn()
 
@@ -287,7 +295,7 @@ Polymer {
     list = app.db.find 'settings', ({serial})=> @user.serial is serial
 
     if list.length > 0
-      @settings = list[0]
+      @set 'settings', list[0]
 
     else
      @_makeSettings()

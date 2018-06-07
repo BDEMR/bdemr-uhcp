@@ -1,9 +1,8 @@
 <link rel="import" href="../../bower-assets/paper-button/paper-button.html">
 <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
-<link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu-light.html">
-<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
 <link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-progress/paper-progress.html">
+
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -187,6 +186,29 @@
         --iron-icon-width: 40px;
       }
 
+      .icon>iron-icon {
+        --iron-icon-height: 96px;
+        --iron-icon-width: 96px;
+      }
+
+      .custom-icon-color .dashboard-item-2:nth-child(1) iron-icon {
+        --iron-icon-fill-color: var(--paper-deep-purple-700);
+      }
+
+      .custom-icon-color .dashboard-item-2:nth-child(2) iron-icon {
+        --iron-icon-fill-color: var(--paper-indigo-700);
+      }
+
+      .custom-icon-color .dashboard-item-2:nth-child(3) iron-icon {
+        --iron-icon-fill-color: var(--paper-blue-700);
+      }
+
+      paper-progress {
+        display: block;
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+
       .hide-on-mobile {
         display: block;
       }
@@ -218,13 +240,13 @@
 
       <div class="limiting-container">
 
-        <paper-card heading="Manage Patients">
-          <div class="p-8" style="background-color: #fff;">
-            <div class="layout horizontal wrap">
+        <paper-card>
+          <div class="p-8 layout vertical center">
+            <div class="layout horizontal wrap custom-icon-color">
               <template is="dom-repeat" items="[[managePatientLinkList]]">
                 <div class="dashboard-item-2" on-tap="goToUrlForManagePatientList">
                   <div class="icon">
-                    <img width="96" height="96" src$="{{item.imagePath}}" />
+                    <iron-icon icon="[[item.icon]]"></iron-icon>
                   </div>
                   <div class="type body secondary hide-on-mobile">{{item.subTitle}}</div>
                   <div class="type body-lead uppercase">{{item.title}}</div>
@@ -236,16 +258,15 @@
         </paper-card>
 
         <paper-card heading="Authorize records to" class="m-top-8">
+          <template is="dom-if" if="[[loadingCounter]]">
+            <paper-progress indeterminate class="blue"></paper-progress>
+          </template>
           <div class="card-content">
 
-            <template is="dom-if" if="[[loadingCounter]]">
-              <paper-spinner active></paper-spinner>
-              <span class="m-left-8">Loading Authorized Organization List</span>
-            </template>
-            <br>
-
             <template is="dom-repeat" items="{{settings.authorizedOrganiztionList}}">
-              <paper-checkbox class="custom-checkbox" checked="{{item.isChecked}}" on-change="onCheckAuthorizedOrganization">{{item.name}}</paper-checkbox>
+              <div class="layout horizontal justified">
+                <paper-checkbox class="p-8" checked="{{item.isChecked}}" on-change="onCheckAuthorizedOrganization">{{item.name}}</paper-checkbox>
+              </div>
             </template>
 
           </div>
