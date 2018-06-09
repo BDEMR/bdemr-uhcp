@@ -353,12 +353,7 @@ Polymer {
         name: 'Report Manger'
         isSelected: false
       }
-      # {
-      #   serial: 'D003'
-      #   type: 'manage-chamber'
-      #   name: 'Chamber Manager'
-      #   isSelected: false
-      # }
+      
       {
         serial: 'D004'
         type: 'medicine-dispension'
@@ -377,18 +372,7 @@ Polymer {
         name: 'Records Manager'
         isSelected: false
       }
-      # {
-      #   serial: 'D007'
-      #   type: 'manage-invoice'
-      #   name: 'Invoice Manager'
-      #   isSelected: false
-      # }
-      # {
-      #   serial: 'D009'
-      #   type: 'booking-and-services'
-      #   name: 'Booking And Services'
-      #   isSelected: false
-      # }
+      
       {
         serial: 'D010'
         type: 'manage-organization'
@@ -420,12 +404,12 @@ Polymer {
         type: 'patient-details'
         isSelected: false
       }
-      # {
-      #   serial: 'D016'
-      #   name: 'Invoice Manager'
-      #   type: 'invoice'
-      #   isSelected: false
-      # }
+      {
+        serial: 'D016'
+        name: 'Invoice Report'
+        type: 'report'
+        isSelected: false
+      }
       
       
       # {
@@ -450,7 +434,7 @@ Polymer {
       {
         serial: 'D022'
         name: 'Patient Leave Info'
-        type: 'pharmacy-manager'
+        type: 'Patient Leave'
         isSelected: false
       }
       {
