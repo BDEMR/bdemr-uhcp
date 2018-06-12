@@ -410,7 +410,12 @@ Polymer {
         type: 'report'
         isSelected: false
       }
-      
+      {
+        serial: 'D017'
+        name: 'Manage Pending Invoice'
+        type: 'invoice'
+        isSelected: false
+      }
       
       # {
       #   serial: 'D019'

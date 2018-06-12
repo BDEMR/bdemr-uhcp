@@ -1115,6 +1115,23 @@ app.pages.pageList = [
   }
 
   {
+    name: 'pending-invoice'
+    element: 'page-pending-invoice'
+    windowTitlePostfix: 'Pending Invoices'
+    headerTitle: 'Pending Invoices'
+    preload: true
+    hrefList: [ 'pending-invoice' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showSaveButton: false
+    showPatientsDetails: false
+    hideHeaderTitle: false
+    accessId: 'D017'
+    showToolbar: true
+  }
+
+  {
     name: 'print-invoice'
     element: 'page-print-invoice'
     windowTitlePostfix: 'print Invoice'

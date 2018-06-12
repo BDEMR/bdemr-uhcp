@@ -259,6 +259,22 @@ Polymer {
       type: Array
       value: []
 
+    selectedInvoiceView:
+      type: Number
+      value: -> 0
+
+    loadingCounter:
+      type: Number
+      value: -> 0
+
+    pendingInvoiceList:
+      type: Array
+      value: -> []
+
+    selectedTestListForInvoice:
+      type: Array
+      value: -> []
+
   # Helper
   # ================================
 
@@ -626,44 +642,49 @@ Polymer {
 
   _subViewChanged: (selectedSubViewIndex, params)->
     
-    switch selectedSubViewIndex
-      when 1
-        @_listConfirmedDiagnosis params['patient']
-        @_loadDiagnosisNameList()
-      when 2
-        @set 'selectedMedicinePage', 0
-        @_listCurrentMedications params['patient']
-        @_listOldMedications params['patient']
-      when 3
-        @set 'selectedVitalPage', 0
-        @_listVitalBloodPressure params['patient']
-        @_listVitalPulseRate params['patient']
-        @_listVitalBMI params['patient']
-        @_listVitalRespiratoryRate params['patient']
-        @_listVitalSpO2 params['patient']
-        @_listVitalTemperature params['patient']
-      when 4
-        @_loadPatientNextVisit params['patient']
-      when 5
-        @_loadInvoice @patient.serial, @organization.idOnServer
-      when 6
-        @set 'selectedTestPage', 0
-        @_listTestBloodSugar params['patient']
-        @_listOtherTest params['patient']
-      when 7
-        @set 'selectedCommentPage', 0
-        @_listDoctorComment params['patient']
-        @_listPatientComment params['patient']
-        @_makeDoctorComment()
-      when 8
-        @_openLocalDataUriDb()
-        @_makeBlankAttachment()
-        # @_loadAttachmentList(params['patient'])
-        @_updateSpaceCalculation()
-      when 9
-        @_getActivityLogs()
-      when 10
-        @_loadLeaveData @patient.serial
+    @debounce 'selectedSubView', ()=>
+
+      switch selectedSubViewIndex
+        when 1
+          @_listConfirmedDiagnosis params['patient']
+          @_loadDiagnosisNameList()
+        when 2
+          @set 'selectedMedicinePage', 0
+          @_listCurrentMedications params['patient']
+          @_listOldMedications params['patient']
+        when 3
+          @set 'selectedVitalPage', 0
+          @_listVitalBloodPressure params['patient']
+          @_listVitalPulseRate params['patient']
+          @_listVitalBMI params['patient']
+          @_listVitalRespiratoryRate params['patient']
+          @_listVitalSpO2 params['patient']
+          @_listVitalTemperature params['patient']
+        when 4
+          @_loadPatientNextVisit params['patient']
+        when 5
+          @_loadInvoice @patient.serial, @organization.idOnServer
+          @_getNonResultedTestAdvised @patient.serial
+        when 6
+          @set 'selectedTestPage', 0
+          @_listTestBloodSugar params['patient']
+          @_listOtherTest params['patient']
+        when 7
+          @set 'selectedCommentPage', 0
+          @_listDoctorComment params['patient']
+          @_listPatientComment params['patient']
+          @_makeDoctorComment()
+        when 8
+          @_openLocalDataUriDb()
+          @_makeBlankAttachment()
+          # @_loadAttachmentList(params['patient'])
+          @_updateSpaceCalculation()
+        when 9
+          @_getActivityLogs()
+        when 10
+          @_loadLeaveData @patient.serial
+    
+    , 100
 
     
   
@@ -688,6 +709,9 @@ Polymer {
     @matchingTestBloodSugarList = []
     @matchingOtherTestList = []
     @patient = null
+
+    @selectedTestListForInvoice = []
+    @pendingInvoiceList = []
 
   
   # Visits [START]
@@ -2761,5 +2785,56 @@ Polymer {
     app.db.upsert 'visit-invoice', item, ({serial})=> item.serial is serial
     @_loadInvoice @patient.serial, @organization.idOnServer
     @$$('#invoiceMenuButton').close()
+
+  ###
+    @author Taufiq Ahmed
+    @Description Add Current Investigation Name and Price to addTestToInvoice
+    @created 12 June 2018
+  ###
+  
+  _getNonResultedTestAdvised: (patientIdentifier, cbfn)->
+
+    @loadingCounter++
+
+    data = {
+      apiKey: @user.apiKey
+      patientIdentifier: patientIdentifier
+      userId: @user.idOnServer
+    }
+
+    @callApi '/bdemr-non-resulted-advised-test-list', data, (err, response)=>
+      @loadingCounter--
+      if response.hasError
+        @domHost.showModalDialog response.error.message
+      else
+        testList = response.data
+        if testList.length
+          pendingInvestigationList = testList.filter((item)=> !item.data.status.invoiceSerial).sort((a,b)=> b.createdDatetimeStamp - a.createdDatetimeStamp)
+        else
+          pendingInvestigationList = []
+        
+      @set 'pendingInvoiceList', pendingInvestigationList
+      console.log @pendingInvoiceList
+        
+      cbfn() if cbfn
+
+
+  addSelectedTestsToNewInvoiceButtonClicked: (e)->
+    unless @selectedTestListForInvoice.length
+      @domHost.showToast 'Select Some Test'
+      return
+    testAdviseURLPart = encodeURIComponent(JSON.stringify(@selectedTestListForInvoice))
+    @domHost.navigateToPage '#/create-invoice/invoice:new' + '/patient:' + @patient.serial + '/testAdviseAdded:' + testAdviseURLPart
+
+
+  advisedTestItemClicked: (e)->
+    checked = e.target.checked
+    item = e.model.item
+    if checked
+      @push 'selectedTestListForInvoice', item
+    else
+      index = (index for test, index in @selectedTestListForInvoice when item.data.serial is test.data.serial)[0]
+      @splice 'selectedTestListForInvoice', index, 1
+    console.log @selectedTestListForInvoice
 
 }
