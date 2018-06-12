@@ -66,7 +66,7 @@
 
       paper-progress {
         width: 100%;
-        --paper-progress-active-color: var(--paper-teal-500);
+        --paper-progress-active-color: var(--paper-orange-500);
       }
 
       .fixed {
@@ -125,19 +125,19 @@
 
             </div>
             <div class="layout horizontal">
-              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-button class="btn btn-primary btn-large" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
               <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
             </div>
           </div>
           <br>
 
-          <vaadin-grid items="[[matchingInvoiceList]]" id="inoviceListGrid">
+          <vaadin-grid items="[[matchingInvoiceReportList]]" id="inoviceListGrid">
             <vaadin-grid-column width="100px" flex-grow="0">
               <template class="header">
-                <vaadin-grid-sorter path="serial">Serial</vaadin-grid-sorter>
+                <vaadin-grid-sorter path="serial">Visit Serial</vaadin-grid-sorter>
               </template>
               <template>
-                <strong class="label">[[item.serial]]</strong>
+                <strong class="label">[[item.visitSerial]]</strong>
               </template>
             </vaadin-grid-column>
             <vaadin-grid-column>
@@ -156,14 +156,7 @@
                 <div>[[item.totalBilled]]</div>
               </template>
             </vaadin-grid-column>
-            <!-- <vaadin-grid-column>
-                <template class="header">
-                  <span>Discount</span>
-                </template>
-                <template>
-                  <div>[[item.discount]]</div>
-                </template>
-              </vaadin-grid-column> -->
+
             <vaadin-grid-column>
               <template class="header">
                 <span>Total Received</span>
@@ -180,20 +173,9 @@
                 <span>Due</span>
               </template>
               <template>
-                <div>[[calculateDue(item.totalBilled, item.totalAmountReceieved)]]</div>
+                <div>[[$calculateDue(item.totalBilled, item.totalAmountReceieved)]]</div>
               </template>
             </vaadin-grid-column>
-            <!-- <vaadin-grid-column>
-                <template class="header">
-                  <span>Profit</span>
-                </template>
-                <template>
-                  <div>[[calculateProfit(item)]]</div>
-                </template>
-                <template class="footer">
-                  <strong>[[totalProfit]]</strong>
-                </template>
-              </vaadin-grid-column> -->
             <vaadin-grid-column>
               <template class="header">Action
                 <span></span>

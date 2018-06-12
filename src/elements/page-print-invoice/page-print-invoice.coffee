@@ -8,6 +8,7 @@ Polymer {
     app.behaviors.dbUsing
     app.behaviors.pageLike
     app.behaviors.translating
+    app.behaviors.apiCalling
   ]
 
   properties:
@@ -41,6 +42,10 @@ Polymer {
       type: Object
       notify: true
 
+    loadingCounter:
+      type: Number
+      notify: true
+      value: -> 0
 
   ## SETTINGS ======================================================================================
 
@@ -54,17 +59,12 @@ Polymer {
       @_notifyInvalidVisit()
       return
 
-    unless params['patient']
-      @_notifyInvalidPatient()
-      return
-    else
+    # @_loadVisit(params['visit'])
+
+    @_loadInvoice params['invoice'], ()=>
+      console.log @invoice
       @_loadPatient(params['patient'])
 
-    
-    
-    @_loadVisit(params['visit'])
-
-    @_loadInvoice(params['invoice'])
 
     @set 'settings', @_getSettings()
 
@@ -100,9 +100,10 @@ Polymer {
 
   _loadPatient: (patientIdentifier)->
     list = app.db.find 'patient-list', ({serial})-> serial is patientIdentifier
-    if list.length is 1
-      @isPatientValid = true
-      @patient = list[0]
+    if list.length
+      @set 'patient', list[0]
+    else if patientIdentifier is @invoice.patientSerial
+      @set 'patient', @invoice.patientInfo
     else
       @_notifyInvalidPatient()
 
@@ -120,14 +121,28 @@ Polymer {
       @_notifyInvalidVisit()
       return false
 
-  _loadInvoice: (invoiceIdentifier)->
+  _loadInvoice: (invoiceIdentifier, cbfn)->
+    @loadingCounter++
     list = app.db.find 'visit-invoice', ({serial})-> serial is invoiceIdentifier
     if list.length is 1
       @set 'invoice', list[0]
-      return true
+      @loadingCounter--
+      return cbfn()
     else
-      @_notifyInvalidInvoice()
-      return false
+      data = {
+        apiKey: @user.apiKey
+        invoiceSerial: invoiceIdentifier
+      }
+      @callApi 'uhcp--get-single-invoice', data, (err, response)=>
+        @loadingCounter--
+        if response.hasError
+          @domHost.showModalDialog response.error.message
+        else
+          @set 'invoice', response.data[0]
+          return cbfn()
+    
+
+    
 
   _notifyInvalidInvoice: ->
     @domHost.showModalDialog 'Invalid Invoice Provided'

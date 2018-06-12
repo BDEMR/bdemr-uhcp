@@ -32,12 +32,12 @@ Polymer {
     selectedGender: String
     selectedOrganizationId: String
 
-    invoiceList:
+    invoiceReportList:
       type: Array
       notify: true
       value: []
 
-    matchingInvoiceList:
+    matchingInvoiceReportList:
       type: Array
       notify: true
       value: []
@@ -67,8 +67,8 @@ Polymer {
       value: -> 0
       
   observers: [
-    # '_calculateTotalProfit(matchingInvoiceList.splices)'
-    '_calculateTotalInvoiceIncome(matchingInvoiceList.splices)'
+    # '_calculateTotalProfit(matchingInvoiceReportList.splices)'
+    '_calculateTotalInvoiceIncome(matchingInvoiceReportList.splices)'
   ]
 
   _sortByDate: (a, b)->
@@ -91,19 +91,19 @@ Polymer {
 
   _calculateTotalInvoiceIncome: ()->
     totalInvoiceIncome = 0
-    for item in @matchingInvoiceList
+    for item in @matchingInvoiceReportList
       totalInvoiceIncome += parseInt (item.totalAmountReceieved?=0)
     @set 'totalInvoiceIncome', totalInvoiceIncome
 
 
   _calculateTotalProfit: ()->
     totalProfit = 0
-    for item in @matchingInvoiceList
+    for item in @matchingInvoiceReportList
       totalProfit += @calculateProfit item
     @set 'totalProfit', totalProfit
 
 
-  calculateDue: (billed = 0, amtReceived = 0)-> billed - amtReceived
+  $calculateDue: (billed = 0, amtReceived = 0)-> billed - amtReceived
 
   calculateProfit: (invoice)->
     return unless invoice
@@ -156,7 +156,6 @@ Polymer {
     query = {
       apiKey: @user.apiKey
       organizationIdList: []
-      reportType: @selectedReportType
       size
       page
       searchParameters: {
@@ -168,32 +167,36 @@ Polymer {
 
     # search parent+child when selecting all
     if !this.selectedOrganizationId
-      organizationIdList = this.childOrganizationList.map(item => item.value)
+      organizationIdList = this.childOrganizationList.map (item) => item.value
       organizationIdList.splice(0, 1, this.organization.idOnServer)
       query.organizationIdList = organizationIdList
     else 
       query.organizationIdList = [this.selectedOrganizationId]
     
     
-    @loadingCounter += 1
-    @callApi 'bdemr-get-organization-invoice', query, (err, response)=>
+    @loadingCounter++
+    @callApi 'uhcp--get-organization-invoice-report', query, (err, response)=>
       if response.hasError
         @domHost.showModalDialog response.error.message
         @loadingCounter -= 1
       else
         @loadingCounter -= 1
         invoiceItems = response.data
-        @set 'invoiceList', invoiceItems
-        @set 'matchingInvoiceList', invoiceItems
-        cbfn()
+        console.log invoiceItems
+        @set 'invoiceReportList', invoiceItems
+        @set 'matchingInvoiceReportList', invoiceItems
+        cbfn() if cbfn
 
   _notifyInvalidOrganization: ->
     @domHost.showModalDialog 'No Organization is Present. Please Select an Organization first.'
 
   
+  searchButtonClicked: ->
+    @_loadInvoice()
+  
   viewInvoiceButtonPressed: (e)->
     item = e.model.item
-    @domHost.navigateToPage '#/print-invoice/invoice:' + item.serial + '/patient:' + item.patientSerial
+    @domHost.navigateToPage '#/print-invoice/invoice:' + item.serial + '/visit:' + item.visitSerial + '/patient:' + item.patientSerial
 
 
 

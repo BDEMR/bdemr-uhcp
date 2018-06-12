@@ -471,6 +471,7 @@ Polymer {
         if patientList.length isnt 1
           return @domHost.showModalDialog 'Unknown error occurred.'
         patient = patientList[0]
+        console.log patient
 
         # patientPinObject = {patientSerial: serial, pin: pin}
         # @_savePinForLocalPatient pin, patient.serial
