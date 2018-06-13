@@ -617,6 +617,7 @@ Polymer {
     @invoice.lastModifiedDatetimeStamp = lib.datetime.now()
   
   _updateVisit: (invoiceSerial)->
+    return unless invoiceSerial
     unless invoiceSerial in @visit.invoiceSerialList
       @visit.invoiceSerialList.push invoiceSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
