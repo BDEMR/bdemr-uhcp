@@ -251,7 +251,7 @@ Polymer {
         attachmentSerialList: []
       }
       dischargeNote: {
-        dischargeType: ''
+        dischargeType: 'OPD'
         admissionDateTimeStamp: null
         advise: null
         referredByDoctorName: null
@@ -631,7 +631,7 @@ Polymer {
     
     @_addModificationHistory()
     app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
-    @_updateVisit()
+    @_updateVisit(@invoice.serial)
     
     if @selectedTestAdviseList.length
       invoicedTestAdvisedList = @invoice.data.filter (item)=> item.advisedTestSerial

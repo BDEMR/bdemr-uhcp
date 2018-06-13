@@ -3812,7 +3812,6 @@ Polymer {
       @isInvoiceValid = true
       @set 'invoice', list[0]
       console.log 'Invoice:', @invoice
-      @isInvoiceValid = true
     else
       @isInvoiceValid = false
       return false
@@ -4772,8 +4771,11 @@ Polymer {
               ## Visit - Patient Stay - end
 
               ## Visit - Invoice - start
-              if @visit.hasOwnProperty('invoiceSerialList') and @visit.invoiceSerialList.length
+              if @visit.invoiceSerialList?.length
                 @_loadInvoice @visit.invoiceSerialList[0]
+                @isInvoiceValid = true;
+              else if visit.invoiceSerial
+                @_loadInvoice @visit.invoiceSerial
                 @isInvoiceValid = true;
               else
                 @set 'invoice', {}
@@ -5322,13 +5324,7 @@ Polymer {
   # INVOICE
   # By @taufiq
   # ===============================
-  _getServiceRendered: (index)->
-    optionList = [ 'Doctor Visit', '2nd Visit', 'Online Phone Consultation', 'In Patient (Hospital/Clinic Visits)', 'Report Assessment', 'Custom' ]
-    if index is 5
-      return @invoice.customServiceRendered
-    else
-      return optionList[index]
-
+  
   
   createInvoicePressed: ->
     params = @domHost.getPageParams()

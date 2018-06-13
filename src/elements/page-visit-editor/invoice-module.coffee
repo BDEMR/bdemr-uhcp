@@ -63,8 +63,8 @@ app.behaviors.local.invoiceMixin =
     params = @domHost.getPageParams()
     if params['visit'] is 'new'
       @visit.serial = @generateSerialForVisit()
-    if @visit.invoiceSerial is null
-      @set 'visit.invoiceSerial', invoiceSerial
+    unless invoiceSerial in @visit.invoiceSerialList
+      @visit.invoiceSerialList.push invoiceSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
