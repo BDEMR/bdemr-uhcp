@@ -83,6 +83,10 @@ Polymer {
 
     exclusionCriteria: Boolean
 
+    selectedTestAdviseList:
+      type: Array
+      value: -> []
+
   observers: [
     'calculateTotalPrice(invoice.data.splices, invoice.discount)'
     # '_calculateCommission(invoice.commission.billed, invoice.commission.percentage)'
@@ -147,8 +151,10 @@ Polymer {
       return
 
     unless params['visit']
-      @_notifyInvalidVisit()
-      return
+      return @_notifyInvalidVisit()
+    
+    if params['visit'] is 'new'
+      @_makeNewVisitForInvoice()
     else
       @_loadVisit(params['visit'])
     
@@ -158,6 +164,9 @@ Polymer {
     
     if params['invoice'] is 'new'
       @_makeNewInvoice @organization.idOnServer
+      if params['testAdviseAdded']
+        @selectedTestAdviseList = JSON.parse(decodeURIComponent(params['testAdviseAdded']))
+        @_addSelectedTestAdviseToInvoice @invoice, @selectedTestAdviseList
     else
       @_loadInvoice params['invoice']
 
@@ -199,6 +208,58 @@ Polymer {
     else
       @domHost.showModalDialog 'No Invoice Found'
 
+  _makeNewVisitForInvoice: ()->
+    @set 'visit', {
+      serial: @generateSerialForVisit()
+      idOnServer: null
+      source: 'local'
+      recordCreatedDateTimeStamp: lib.datetime.now()
+      createdDatetimeStamp: lib.datetime.now()
+      lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
+      createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
+      doctorsPrivateNote: ''
+      patientSerial: @patient.serial
+      recordType: 'doctor-visit'
+      doctorName: @user.name
+      hospitalName: @organization.name
+      doctorSpeciality: @getDoctorSpeciality()
+      prescriptionSerial: null
+      doctorNotesSerial: null
+      nextVisitSerial: null
+      advisedTestSerial: null
+      patientStaySerial: null
+      invoiceSerialList: []
+      historyAndPhysicalRecordSerial: null
+      diagnosisSerial: null
+      identifiedSymptomsSerial: null
+      examinationSerial: null
+      referralSerial: null
+      recordTitle: 'Complete Visit'
+      vitalSerial: {
+        bp: null
+        hr: null
+        bmi: null
+        rr: null
+        spo2: null
+        temp: null
+      }
+      testResults: {
+        serial: null
+        name: null
+        attachmentSerialList: []
+      }
+      dischargeNote: {
+        dischargeType: ''
+        admissionDateTimeStamp: null
+        advise: null
+        referredByDoctorName: null
+        admittedByDoctorName: null
+        admittedToOrganization: null
+      }
+    }
+  
   _loadVisit: (visitIdentifier)->
     list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
     if list.length is 1
@@ -438,6 +499,67 @@ Polymer {
     @set 'invoice.category', value
 
   # ===========================================================
+  # ADD INVESTIGATION TO INVOICE
+  # ===========================================================
+  
+  _mergeDuplicateTestWithHighestPrice: (list)->
+    testNameMap = {}
+    for item in list
+      if item.name in testNames
+        if item.name of testNameMap
+          price = testNameMap[item.name]
+          if item.price < price
+            testNameMap[item.name] = item.price
+        else
+          testNameMap[item.name] = item.price
+    return testNameMap
+  
+  _addSelectedTestAdviseToInvoice: (invoice, selectedTestList)->
+    # Merging Duplicates with Highest Price
+    # testNameMap = @_mergeDuplicateTestWithHighestPrice(@investigationPriceList.data)
+
+    for itemPrice in @priceList
+      for test in selectedTestList
+        if itemPrice.name is test.data.investigationName
+          @push 'invoice.data', {
+            name: itemPrice.name
+            visitSerial: test.visitSerial
+            advisedTestSerial: test.advisedTestSerial
+            investigationSerial: test.data.serial
+            price: itemPrice.price?= 0
+            actualCost: itemPrice.actualCost?= 0
+            totalPrice: itemPrice.price?= 0
+            qty: 1
+            category: 'Investigation'
+          }
+    
+    # Adding Custom Investigation
+    unless selectedTestList.length is invoice.data.length
+      invoiceMade = (item.name for item in invoice.data)
+      for item in selectedTestList
+        unless item.name in invoiceMade
+          test = {
+            qty: 1
+            name: item.data.investigationName
+            visitSerial: item.visitSerial?=""
+            advisedTestSerial: item.advisedTestSerial
+            investigationSerial: item.data.serial
+            price: 0
+            actualCost: 0
+            totalPrice: 0
+            category: 'investigation'
+          }
+          @push 'invoice.data', test
+    
+    # Adding Modification history for this invoice
+    modificationHistoryItem =
+      userSerial: @user.serial
+      lastModifiedDatetimeStamp: lib.datetime.now()
+    
+    @push 'invoice.modificationHistory', modificationHistoryItem
+    @set 'invoice.lastModifiedDatetimeStamp', lib.datetime.now()
+
+  # ===========================================================
   # SAVING INVOICE
   # ===========================================================
 
@@ -447,6 +569,30 @@ Polymer {
       return false
     
     return true
+  
+  _updateAdvisedTestForInvoice: (invoiceSerial, invoicedTestAdvisedList, cbfn)->
+    updatedAdviseListWithInvoice = {
+      apiKey: @user.apiKey
+      apiKey: @user.apiKey
+      data: []
+    }
+    
+    for item in invoicedTestAdvisedList
+      if 'advisedTestSerial' of item
+        updatedAdviseListWithInvoice.data.push {
+          invoiceSerial: invoiceSerial
+          investigationSerial: item.investigationSerial
+          advisedTestSerial: item.advisedTestSerial
+        }
+    
+    if updatedAdviseListWithInvoice.data.length
+      @callApi '/bdemr-update-test-advise-list-for-invoice', updatedAdviseListWithInvoice, (err, response)=>
+        if response.hasError
+          @domHost.showModalDialog response.error.message
+        else
+          cbfn()
+    else
+      cbfn()
   
   _reduceInventoryItems: (invoice)->
     for item in invoice.data
@@ -471,8 +617,8 @@ Polymer {
     @invoice.lastModifiedDatetimeStamp = lib.datetime.now()
   
   _updateVisit: (invoiceSerial)->
-    if @visit.invoiceSerial is null
-      @visit.invoiceSerial = @invoice.serial
+    unless invoiceSerial in @visit.invoiceSerialList
+      @visit.invoiceSerialList.push invoiceSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
@@ -485,9 +631,16 @@ Polymer {
     
     @_addModificationHistory()
     app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
-    @domHost.showSuccessToast 'Invoice Saved Successfully'
     @_updateVisit()
-    @domHost.navigateToPreviousPage()
+    
+    if @selectedTestAdviseList.length
+      invoicedTestAdvisedList = @invoice.data.filter (item)=> item.advisedTestSerial
+      @_updateAdvisedTestForInvoice @invoice.serial, invoicedTestAdvisedList, ()=>
+        @domHost.showToast 'Invoice Saved Successfully'
+        @domHost.navigateToPreviousPage()
+    else
+      @domHost.showToast 'Invoice Saved Successfully'
+      @domHost.navigateToPreviousPage()
      
 
   # =====================================================================
@@ -525,6 +678,7 @@ Polymer {
     @set 'invoice', {}
     @set "invoiceGrossPrice", 0
     @set "invoiceDiscountAmt",  0
+    @selectedTestAdviseList - []
 
 
 }

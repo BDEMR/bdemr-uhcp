@@ -2680,62 +2680,10 @@ Polymer {
   # ===========================
   # INVOICE
   # ===========================
-  
-  _makeNewVisitForInvoice: ()->
-    return {
-      serial: @generateSerialForVisit()
-      idOnServer: null
-      source: 'local'
-      recordCreatedDateTimeStamp: lib.datetime.now()
-      createdDatetimeStamp: lib.datetime.now()
-      lastModifiedDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: 0
-      createdByUserSerial: @user.serial
-      organizationId: @organization.idOnServer
-      doctorsPrivateNote: ''
-      patientSerial: @patient.serial
-      recordType: 'doctor-visit'
-      doctorName: @user.name
-      hospitalName: @organization.name
-      doctorSpeciality: @getDoctorSpeciality()
-      prescriptionSerial: null
-      doctorNotesSerial: null
-      nextVisitSerial: null
-      advisedTestSerial: null
-      patientStaySerial: null
-      invoiceSerial: null
-      historyAndPhysicalRecordSerial: null
-      diagnosisSerial: null
-      identifiedSymptomsSerial: null
-      examinationSerial: null
-      referralSerial: null
-      recordTitle: 'Complete Visit'
-      vitalSerial: {
-        bp: null
-        hr: null
-        bmi: null
-        rr: null
-        spo2: null
-        temp: null
-      }
-      testResults: {
-        serial: null
-        name: null
-        attachmentSerialList: []
-      }
-      dischargeNote: {
-        dischargeType: ''
-        admissionDateTimeStamp: null
-        advise: null
-        referredByDoctorName: null
-        admittedByDoctorName: null
-        admittedToOrganization: null
-      }
-    }
       
   _loadInvoice: (patientSerialIdentifier, organizationIdentifier)->
-    invoiceSerialList = @matchingVisitList.filter((visit)-> visit.invoiceSerial).map((visit)-> visit.invoiceSerial)
-    invoiceList = app.db.find 'visit-invoice', ({patientSerial, organizationId, serial})=> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier and serial in invoiceSerialList
+    visitSerialList = @matchingVisitList.map (item)-> item.serial
+    invoiceList = app.db.find 'visit-invoice', ({patientSerial, organizationId, visitSerial})=> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier and visitSerial in visitSerialList
     @set 'invoiceList', invoiceList
   
   calculateDue: (billed = 0, amtReceived = 0)-> (parseInt billed) - (parseInt amtReceived)
@@ -2749,10 +2697,7 @@ Polymer {
   
   createNewInvoiceButtonClicked: (e)->
 
-    visit = @_makeNewVisitForInvoice()
-    app.db.upsert 'doctor-visit', visit, ({serial})=> visit.serial is serial
-
-    @domHost.navigateToPage '#/create-invoice/invoice:new/patient:' + @patient.serial + '/visit:' + visit.serial
+    @domHost.navigateToPage '#/create-invoice/invoice:new/patient:' + @patient.serial + '/visit:new'
 
   editInvoiceItemClicked: (e)->
     invoice = e.model.item
@@ -2813,28 +2758,40 @@ Polymer {
         else
           pendingInvestigationList = []
         
-      @set 'pendingInvoiceList', pendingInvestigationList
-      console.log @pendingInvoiceList
+      visitSerialList = pendingInvestigationList.reduce (obj, item)=>
+        obj[item.visitSerial] = null
+        return obj
+      , {}
+
+      groupedInvestigationList = []
+      for item in pendingInvestigationList
+        for own key, val of visitSerialList
+          if key is item.visitSerial
+            index = groupedInvestigationList.findIndex (test)=> 'visitSerial' of test and test.visitSerial is key
+            if index is -1
+              groupedInvestigationList.push {
+                visitSerial: key
+                createdDatetimeStamp: item.createdDatetimeStamp
+                doctorName: item.doctorName
+                investigations: [item]
+              }
+            else
+              groupedInvestigationList[index].investigations.push item
+
+            
+      console.log groupedInvestigationList
+
+      @set 'pendingInvoiceList', groupedInvestigationList
+      # console.log groupedInvestigationList
         
       cbfn() if cbfn
 
 
-  addSelectedTestsToNewInvoiceButtonClicked: (e)->
-    unless @selectedTestListForInvoice.length
-      @domHost.showToast 'Select Some Test'
-      return
-    testAdviseURLPart = encodeURIComponent(JSON.stringify(@selectedTestListForInvoice))
-    @domHost.navigateToPage '#/create-invoice/invoice:new' + '/patient:' + @patient.serial + '/testAdviseAdded:' + testAdviseURLPart
-
-
-  advisedTestItemClicked: (e)->
-    checked = e.target.checked
+  makeNewInvoiceButtonClicked: (e)->
     item = e.model.item
-    if checked
-      @push 'selectedTestListForInvoice', item
-    else
-      index = (index for test, index in @selectedTestListForInvoice when item.data.serial is test.data.serial)[0]
-      @splice 'selectedTestListForInvoice', index, 1
-    console.log @selectedTestListForInvoice
+    testAdviseURLPart = encodeURIComponent(JSON.stringify(item.investigations))
+    @domHost.navigateToPage '#/create-invoice/visit:' + item.visitSerial + '/invoice:new' + '/patient:' + @patient.serial + '/testAdviseAdded:' + testAdviseURLPart
+
+  
 
 }

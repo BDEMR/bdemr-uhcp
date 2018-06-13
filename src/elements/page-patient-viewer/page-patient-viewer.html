@@ -1579,7 +1579,7 @@
 
             <!-- <Invoice Start> -->
             <section>
-              <paper-tabs selected="{{selectedInvoiceView}}">
+              <paper-tabs id="invoice-tabs" selected="{{selectedInvoiceView}}">
                 <paper-tab>Invoice</paper-tab>
                 <paper-tab>Pending Invoice</paper-tab>
               </paper-tabs>
@@ -1672,15 +1672,7 @@
 
                 <paper-card>
                   <paper-progress inderminate hidden="[[!loadingCounter]]"></paper-progress>
-                  <div class="card-custom-header">
-                    <div class="layout horizontal center">
-                      <div class="title flex">Pending Invoice</div>
-                      <paper-button raised class="btn-add colored" on-tap="addSelectedTestsToNewInvoiceButtonClicked">
-                        <iron-icon class="m-right-8" icon="add"></iron-icon>
-                        Make Invoice
-                      </paper-button>
-                    </div>
-                  </div>
+
                   <div class="card-content">
 
                     <template is="dom-if" if="[[_isEmptyArray(pendingInvoiceList.length)]]">
@@ -1690,27 +1682,37 @@
                     </template>
 
                     <template is="dom-if" if="[[!_isEmptyArray(pendingInvoiceList.length)]]">
-                      <div class="p-0 b-top">
-                        <paper-listbox>
-                          <template is="dom-repeat" items="[[pendingInvoiceList]]">
-                            <paper-item class="custom layout horizontal">
-                              <div class="type caption-2 m-right-8">[[_returnSerial(index)]].</div>
-                              <div class="flex">
-                                <div class="type body">{{item.data.investigationName}}</div>
-                                <div class="type caption secondary" style="font-weight: 500;">Advised by: {{item.doctorName}} on [[_formatDateTime(item.createdDatetimeStamp)]]</div>
+                      <paper-listbox>
+                        <template is="dom-repeat" items="[[pendingInvoiceList]]">
+                          <div class="p-16 b-top layout horizontal start">
+                            <div class="flex-1">
+                              <div class="m-right-8">Visit Serial:
+                                <span class="type bold">[[item.visitSerial]]</span>
                               </div>
-                              <template is="dom-if" if="[[!item.data.status.invoiceSerial]]">
-                                <paper-checkbox checked="{{item.checked}}" class="item-checkbox" on-change="advisedTestItemClicked"></paper-checkbox>
+                              <div class="type caption">Advised by: {{item.doctorName}}</div>
+                              <div class="type caption">Date: [[_formatDateTime(item.createdDatetimeStamp)]]</div>
+
+
+                              <!-- <template is="dom-if" if="[[!item.data.status.invoiceSerial]]">
+                                      <paper-checkbox checked="{{item.checked}}" class="item-checkbox" on-change="advisedTestItemClicked"></paper-checkbox>
+                                    </template> -->
+                            </div>
+                            <ul class="flex-2">
+                              <template is="dom-repeat" items="[[item.investigations]]" as="investigation">
+                                <li class="">{{investigation.data.investigationName}}</li>
                               </template>
-                              <!-- <template is="dom-if" if="[[item.data.status.invoiceSerial]]">
-                                <paper-button class="btn-add" on-tap="goToInvoice">
-                                  <iron-icon icon="icons:open-in-new" class="m-right-8"></iron-icon>invoice</paper-button>
-                                <div hidden>[[item]]</div>
-                              </template> -->
-                            </paper-item>
-                          </template>
-                        </paper-listbox>
-                      </div>
+                            </ul>
+                            <div class="flex-1">
+                              <paper-button raised class="btn btn-success" on-tap="makeNewInvoiceButtonClicked">
+                                <iron-icon class="m-right-8" icon="add"></iron-icon>
+                                Make Invoice
+                              </paper-button>
+                            </div>
+                          </div>
+
+
+                        </template>
+                      </paper-listbox>
                     </template>
 
                   </div>

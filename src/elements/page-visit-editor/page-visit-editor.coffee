@@ -3633,7 +3633,7 @@ Polymer {
       nextVisitSerial: null
       advisedTestSerial: null
       patientStaySerial: null
-      invoiceSerial: null
+      invoiceSerialList: []
       historyAndPhysicalRecordSerial: null
       diagnosisSerial: null
       identifiedSymptomsSerial: null
@@ -4772,17 +4772,13 @@ Polymer {
               ## Visit - Patient Stay - end
 
               ## Visit - Invoice - start
-              if @visit.hasOwnProperty('invoiceSerial')
-                if @visit.invoiceSerial
-                  @_loadInvoice @visit.invoiceSerial
-                  @isInvoiceValid = true;
-                else
-                  @set 'invoice', {}
-                  @isInvoiceValid = false;
+              if @visit.hasOwnProperty('invoiceSerialList') and @visit.invoiceSerialList.length
+                @_loadInvoice @visit.invoiceSerialList[0]
+                @isInvoiceValid = true;
               else
-                @visit.invoiceSerial = null
                 @set 'invoice', {}
                 @isInvoiceValid = false;
+              
               ## Visit - Invoice - end
 
           
