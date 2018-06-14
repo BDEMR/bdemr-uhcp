@@ -1081,23 +1081,6 @@ app.pages.pageList = [
   }
 
   {
-    name: 'visit-invoice'
-    element: 'page-visit-invoice'
-    windowTitlePostfix: 'Visit Invoice'
-    headerTitle: 'Invoice'
-    preload: true
-    hrefList: [ 'visit-invoice' ]
-    requireAuthentication : true
-    headerType: 'modal'
-    leftMenuEnabled: false
-    showSaveButton: false
-    showPatientsDetails: false
-    showToolbar: true
-    hideHeaderTitle: false
-    accessId: 'none'
-  }
-
-  {
     name: 'create-invoice'
     element: 'page-create-invoice'
     windowTitlePostfix: 'Visit Invoice'
@@ -1115,19 +1098,36 @@ app.pages.pageList = [
   }
 
   {
-    name: 'invoice-manager'
-    element: 'page-invoice-manager'
-    windowTitlePostfix: 'Invoice Manager'
-    headerTitle: 'Invoice Manager'
+    name: 'invoice-report'
+    element: 'page-invoice-report'
+    windowTitlePostfix: 'Invoice Report'
+    headerTitle: 'Invoice Report'
     preload: true
-    hrefList: [ 'invoice-manager' ]
+    hrefList: [ 'invoice-report' ]
     requireAuthentication : true
     headerType: 'normal'
     leftMenuEnabled: true
     showSaveButton: false
     showPatientsDetails: false
     hideHeaderTitle: false
-    accessId: 'D007'
+    accessId: 'D016'
+    showToolbar: true
+  }
+
+  {
+    name: 'pending-invoice'
+    element: 'page-pending-invoice'
+    windowTitlePostfix: 'Pending Invoices'
+    headerTitle: 'Pending Invoices'
+    preload: true
+    hrefList: [ 'pending-invoice' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showSaveButton: false
+    showPatientsDetails: false
+    hideHeaderTitle: false
+    accessId: 'D017'
     showToolbar: true
   }
 

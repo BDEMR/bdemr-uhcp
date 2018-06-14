@@ -458,7 +458,7 @@
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category == invoiceItem.category).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? parseInt(invoiceItem.price) : 0), 0) : 0
+    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseInt(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0
   },
 
   $getTotalCost(invoice) {

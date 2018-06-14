@@ -1,0 +1,81 @@
+<!-- paper-* --><!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><dom-module id="page-pending-invoice">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+        width: 90%;
+      }
+
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .header {
+        background-color: var(--paper-grey-100);
+        padding: 15px;
+      }
+
+      .label {
+        background-color: var(--paper-grey-100);
+        padding: 5px;
+      }
+
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+
+      .fixed {
+        min-width: 100px;
+        text-align: right;
+      }
+
+      .paper-custom {
+        background-color: #fafafa;
+        border: 1px solid #dadada;
+        padding: 0px 8px 12px 8px;
+        margin: 4px;
+        margin-left: 0;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <!-- Card - Search - start -->
+        <paper-card heading="Pending Invoices">
+
+          <paper-progress indeterminate="" hidden$="[[!loadingCounter]]"></paper-progress>
+
+          <div class="card-content">
+
+
+
+          </div>
+
+      </paper-card></div>
+
+    </div>
+
+
+
+  </template>
+  <script>(function(){Polymer({is:"page-pending-invoice",behaviors:[app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling,app.behaviors.commonComputes,app.behaviors.dbUsing],properties:{user:{type:Object,value:{}},organization:{type:Object,value:{}},dateCreatedFrom:String,dateCreatedTo:String,selectedGender:String,selectedOrganizationId:String,invoiceReportList:{type:Array,notify:!0,value:[]},loadingCounter:{type:Number,value:function(){return 0}}},_sortByDate:function(e,t){return e.createdDatetimeStamp<t.createdDatetimeStamp?1:e.createdDatetimeStamp>t.createdDatetimeStamp?-1:void 0},_formatDateTime:function(e){return lib.datetime.format(e,"mmm d, yyyy")},$isAdmin:function(e,t){var i,a,n;for(i=0,a=t.length;i<a;i++)if(n=t[i],e===n.id)return n.isAdmin;return!1},getBoolean:function(e){return!!e},navigatedIn:function(){return this._loadUser(),this._loadOrganization()},_loadUser:function(){var e;if(e=app.db.find("user"),1===e.length)return this.user=e[0]},_loadOrganization:function(){var e;if(e=app.db.find("organization"),1===e.length)return this.set("organization",e[0])}})}).call(this);
+//# sourceMappingURL=page-pending-invoice.coffee-compiled.js.map</script>
+</dom-module>

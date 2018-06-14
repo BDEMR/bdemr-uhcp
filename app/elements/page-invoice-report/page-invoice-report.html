@@ -1,0 +1,180 @@
+<!-- paper-* --><!-- style --><!-- behavior --><!-- custom-elements --><!-- element --><div hidden="" by-polymer-bundler=""><link rel="import" href="../custom-vital-search/custom-vital-search.html"></div><dom-module id="page-invoice-report">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        margin-top: 10px;
+        width: 90%;
+      }
+
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        background-color: var(--paper-grey-50);
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+
+      .header {
+        background-color: var(--paper-grey-100);
+        padding: 15px;
+      }
+
+      .label {
+        background-color: var(--paper-grey-100);
+        padding: 5px;
+      }
+
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+
+      .fixed {
+        min-width: 100px;
+        text-align: right;
+      }
+
+      .paper-custom {
+        background-color: #fafafa;
+        border: 1px solid #dadada;
+        padding: 0px 8px 12px 8px;
+        margin: 4px;
+        margin-left: 0;
+      }
+    </style>
+
+    <!-- local DOM -->
+
+    <div class="master-container">
+
+      <div class="limiting-container">
+
+        <!-- Card - Search - start -->
+        <paper-card heading="Invoice Report">
+
+          <paper-progress indeterminate="" hidden$="[[!getBoolean(loadingCounter)]]"></paper-progress>
+
+          <div class="card-content">
+            <div class="layout horizontal paper-custom end wrap">
+
+              <!-- <paper-autocomplete id="invoiceSearchInput" label="Search By Investigation" source="[[investigationNameSourceDataList]]"
+                  text="{{investigationQuery}}" on-autocomplete-reset-blur="resetInvestigationSearchPressed">
+                </paper-autocomplete> -->
+              <vaadin-combo-box class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected" loading="[[loading]]" disabled="[[!childOrganizationList.length]]">
+              </vaadin-combo-box>
+
+              <!-- <paper-dropdown-menu label="Filter by Category" class="m-right-8">
+                <paper-listbox class="dropdown-content" on-iron-activate="categorySelected">
+                  <template is="dom-repeat" items="[[categoryList]]">
+                    <paper-item>[[item]]</paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-dropdown-menu> -->
+
+              <paper-input label="EmployeeId/Phone" value="{{employeeIdOrPhone}}" class="m-right-8"></paper-input>
+              <paper-input label="Search by Doctor Phone Number" type="number" value="{{doctorPhone}}" class="m-right-8"></paper-input>
+
+              <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
+
+            </div>
+            <div class="layout horizontal">
+              <paper-button class="btn btn-primary btn-large" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-button raised="" on-tap="resetButtonClicked">Reset</paper-button>
+            </div>
+          </div>
+          <br>
+
+          <h3>Total Invoice: [[matchingInvoiceReportList.length]]</h3>
+          <vaadin-grid items="[[matchingInvoiceReportList]]" id="inoviceListGrid">
+            <vaadin-grid-column width="150px" flex-grow="0">
+              <template class="header">
+                <vaadin-grid-sorter path="serial">Visit Serial</vaadin-grid-sorter>
+              </template>
+              <template>
+                <strong class="label">[[item.visitSerial]]</strong>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">
+                <vaadin-grid-sorter path="createdDatetimeStamp" direction="desc">Date</vaadin-grid-sorter>
+              </template>
+              <template>
+                <div>[[_formatDateTime(item.createdDatetimeStamp)]]</div>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">
+                <span>Patient Name</span>
+              </template>
+              <template>
+                <div>[[item.patientInfo.name]]</div>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">
+                <span>Employee Id</span>
+              </template>
+              <template>
+                <div>[[item.patientInfo.employeeId]]</div>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">
+                <span>Total Billed</span>
+              </template>
+              <template>
+                <div>[[item.totalBilled]]</div>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">
+                <span>Total Received</span>
+              </template>
+              <template>
+                <div>[[item.totalAmountReceieved]]</div>
+              </template>
+              <template class="footer">
+                <strong>[[totalInvoiceIncome]]</strong>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">
+                <span>Due</span>
+              </template>
+              <template>
+                <div>[[$calculateDue(item.totalBilled, item.totalAmountReceieved)]]</div>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">Action
+                <span></span>
+              </template>
+              <template>
+                <div>
+                  <paper-icon-button icon="launch" on-tap="viewInvoiceButtonPressed"></paper-icon-button>
+                </div>
+              </template>
+            </vaadin-grid-column>
+          </vaadin-grid>
+
+      </paper-card></div>
+
+    </div>
+
+    
+
+
+
+  </template>
+  <script>(function(){Polymer({is:"page-invoice-report",behaviors:[app.behaviors.translating,app.behaviors.pageLike,app.behaviors.apiCalling,app.behaviors.commonComputes,app.behaviors.dbUsing],properties:{user:{type:Object,value:{}},organization:{type:Object,value:{}},childOrganizationList:{type:Array,notify:!0,value:[]},dateCreatedFrom:String,dateCreatedTo:String,selectedGender:String,selectedOrganizationId:String,invoiceReportList:{type:Array,notify:!0,value:[]},matchingInvoiceReportList:{type:Array,notify:!0,value:[]},totalInvoiceIncome:{type:Number,value:0},totalProfit:{type:Number,value:0},investigationNameSourceDataList:{type:Array,value:function(){return[]}},categoryList:{type:Array,value:function(){return["All","Investigation","Medicine"]}},loadingCounter:{type:Number,value:function(){return 0}}},observers:["_calculateTotalInvoiceIncome(matchingInvoiceReportList.splices)"],_sortByDate:function(t,e){return t.createdDatetimeStamp<e.createdDatetimeStamp?1:t.createdDatetimeStamp>e.createdDatetimeStamp?-1:void 0},_formatDateTime:function(t){return lib.datetime.format(t,"mmm d, yyyy")},$isAdmin:function(t,e){var i,a,n;for(i=0,a=e.length;i<a;i++)if(n=e[i],t===n.id)return n.isAdmin;return!1},getBoolean:function(t){return!!t},_calculateTotalInvoiceIncome:function(){var t,e,i,a,n;for(n=0,a=this.matchingInvoiceReportList,t=0,i=a.length;t<i;t++)e=a[t],n+=parseInt(null!=e.totalAmountReceieved?e.totalAmountReceieved:e.totalAmountReceieved=0);return this.set("totalInvoiceIncome",n)},_calculateTotalProfit:function(){var t,e,i,a,n;for(n=0,a=this.matchingInvoiceReportList,t=0,i=a.length;t<i;t++)e=a[t],n+=this.calculateProfit(e);return this.set("totalProfit",n)},$calculateDue:function(t,e){return null==t&&(t=0),null==e&&(e=0),t-e},calculateProfit:function(t){var e,i,a,n,o,r;if(t){for(r=0,n=t.data,e=0,a=n.length;e<a;e++)i=n[e],o=(null!=i.actualCost?i.actualCost:i.actualCost=0)*i.qty,r+=o;return t.totalAmountReceieved-r}},navigatedIn:function(){return this._loadUser(),this._loadOrganization()},_loadUser:function(){var t;if(t=app.db.find("user"),1===t.length)return this.user=t[0]},_loadOrganization:function(){var t;if(t=app.db.find("organization"),1===t.length)return this.set("organization",t[0]),this._loadChildOrganizationList(this.organization.idOnServer)},organizationSelected:function(t){var e;return e=t.detail.value,this.set("selectedOrganizationId",e)},_loadChildOrganizationList:function(t){var e;return this.loading=!0,e={apiKey:this.user.apiKey,organizationId:t},this.callApi("/bdemr--get-child-organization-list",e,function(t){return function(e,i){var a,n;return t.loading=!1,n=i.data,n.length?(a=n.map(function(t){return{label:t.name,value:t._id}}),a.unshift({label:"All",value:""}),t.set("childOrganizationList",a)):t.domHost.showToast("No Child Organization Found")}}(this))},_loadInvoice:function(t,e,i,a){var n,o;return null==e&&(e=100),null==i&&(i=1),this.set("invoiceReportList",[]),this.set("matchingInvoiceReportList",[]),o={apiKey:this.user.apiKey,organizationIdList:[],size:e,page:i,searchParameters:{employeeIdOrPhone:this.employeeIdOrPhone,doctorPhone:this.doctorPhone,dateCreatedFrom:null!=this.dateCreatedFrom?this.dateCreatedFrom:this.dateCreatedFrom="",dateCreatedTo:null!=this.dateCreatedTo?this.dateCreatedTo:this.dateCreatedTo=""}},this.selectedOrganizationId?o.organizationIdList=[this.selectedOrganizationId]:(n=this.childOrganizationList.map(function(t){return function(t){return t.value}}(this)),n.splice(0,1,this.organization.idOnServer),o.organizationIdList=n),this.loadingCounter++,this.callApi("uhcp--get-organization-invoice-report",o,function(t){return function(e,i){var n;return i.hasError?(t.domHost.showModalDialog(i.error.message),t.loadingCounter-=1):(t.loadingCounter-=1,n=i.data,t.set("invoiceReportList",n),t.set("matchingInvoiceReportList",n),a?a():void 0)}}(this))},_notifyInvalidOrganization:function(){return this.domHost.showModalDialog("No Organization is Present. Please Select an Organization first.")},searchButtonClicked:function(){return this._loadInvoice()},viewInvoiceButtonPressed:function(t){var e;return e=t.model.item,this.domHost.navigateToPage("#/print-invoice/invoice:"+e.serial+"/visit:"+e.visitSerial+"/patient:"+e.patientSerial)},filterByDateClicked:function(t){var e,i;return i=new Date(t.detail.startDate),i.setHours(0,0,0,0),e=new Date(t.detail.endDate),e.setHours(23,59,59,999),this.set("dateCreatedFrom",i.getTime()),this.set("dateCreatedTo",e.getTime())},filterByDateClearButtonClicked:function(){return this.dateCreatedFrom=0,this.dateCreatedTo=0},navigatedOut:function(){return this.employeeIdOrPhone="",this.doctorPhone="",this.dateCreatedFrom="",this.dateCreatedTo=""}})}).call(this);
+//# sourceMappingURL=page-invoice-report.coffee-compiled.js.map</script>
+</dom-module>
