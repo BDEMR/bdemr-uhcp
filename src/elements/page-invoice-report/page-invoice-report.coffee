@@ -152,14 +152,17 @@ Polymer {
         this.domHost.showToast('No Child Organization Found')
 
   _loadInvoice: (organizationIdentifier, size=100, page=1, cbfn)->
-    # TODO - merge invoice from localStorage (avoiding duplicate copy)
+    @set 'invoiceReportList', []
+    @set 'matchingInvoiceReportList', []
+    
     query = {
       apiKey: @user.apiKey
       organizationIdList: []
       size
       page
       searchParameters: {
-        searchString: @searchString
+        employeeIdOrPhone: @employeeIdOrPhone
+        doctorPhone: @doctorPhone
         dateCreatedFrom: @dateCreatedFrom?=""
         dateCreatedTo: @dateCreatedTo?=""
       }
@@ -199,6 +202,23 @@ Polymer {
     @domHost.navigateToPage '#/print-invoice/invoice:' + item.serial + '/visit:' + item.visitSerial + '/patient:' + item.patientSerial
 
 
+  filterByDateClicked: (e)->
+    startDate = new Date e.detail.startDate
+    startDate.setHours(0,0,0,0)
+    endDate = new Date e.detail.endDate
+    endDate.setHours(23,59,59,999)
+    @set 'dateCreatedFrom', (startDate.getTime())
+    @set 'dateCreatedTo', (endDate.getTime())
 
+  filterByDateClearButtonClicked: ->
+    @dateCreatedFrom = 0
+    @dateCreatedTo = 0
+
+
+  navigatedOut: ->
+    @employeeIdOrPhone = ''
+    @doctorPhone = ''
+    @dateCreatedFrom = ''
+    @dateCreatedTo  = ''
     
 }

@@ -90,14 +90,7 @@
       <div class="limiting-container">
 
         <!-- Card - Search - start -->
-        <paper-card>
-
-          <div class="card-custom-header">
-            <div class="layout horizontal center">
-              <div class="title flex">Invoice Report</div>
-              <custom-vital-search on-date-select="invoiceCustomSearchClicked" on-clear="invoiceSearchClearButtonClicked"></custom-vital-search>
-            </div>
-          </div>
+        <paper-card heading="Invoice Report">
 
           <paper-progress indeterminate hidden$="[[!getBoolean(loadingCounter)]]"></paper-progress>
 
@@ -111,15 +104,16 @@
                 loading="[[loading]]" disabled="[[!childOrganizationList.length]]">
               </vaadin-combo-box>
 
-              <paper-dropdown-menu label="Filter by Category" class="m-right-8">
+              <!-- <paper-dropdown-menu label="Filter by Category" class="m-right-8">
                 <paper-listbox class="dropdown-content" on-iron-activate="categorySelected">
                   <template is="dom-repeat" items="[[categoryList]]">
                     <paper-item>[[item]]</paper-item>
                   </template>
                 </paper-listbox>
-              </paper-dropdown-menu>
+              </paper-dropdown-menu> -->
 
-              <paper-input label="Search by Name" value="{{searchString}}" class="m-right-8"></paper-input>
+              <paper-input label="EmployeeId/Phone" value="{{employeeIdOrPhone}}" class="m-right-8"></paper-input>
+              <paper-input label="Search by Doctor Phone Number" type="number" value="{{doctorPhone}}" class="m-right-8"></paper-input>
 
               <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
 
@@ -131,8 +125,9 @@
           </div>
           <br>
 
+          <h3>Total Invoice: [[matchingInvoiceReportList.length]]</h3>
           <vaadin-grid items="[[matchingInvoiceReportList]]" id="inoviceListGrid">
-            <vaadin-grid-column width="100px" flex-grow="0">
+            <vaadin-grid-column width="150px" flex-grow="0">
               <template class="header">
                 <vaadin-grid-sorter path="serial">Visit Serial</vaadin-grid-sorter>
               </template>
@@ -150,13 +145,28 @@
             </vaadin-grid-column>
             <vaadin-grid-column>
               <template class="header">
+                <span>Patient Name</span>
+              </template>
+              <template>
+                <div>[[item.patientInfo.name]]</div>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">
+                <span>Employee Id</span>
+              </template>
+              <template>
+                <div>[[item.patientInfo.employeeId]]</div>
+              </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+              <template class="header">
                 <span>Total Billed</span>
               </template>
               <template>
                 <div>[[item.totalBilled]]</div>
               </template>
             </vaadin-grid-column>
-
             <vaadin-grid-column>
               <template class="header">
                 <span>Total Received</span>
