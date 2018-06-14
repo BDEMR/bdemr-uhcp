@@ -69,6 +69,8 @@ Polymer {
     @set 'settings', @_getSettings()
 
   
+  getBoolean: (data)-> if data then true else false
+  
   _getSettings: ->
     list = app.db.find 'settings', ({serial})-> serial is 'only'
     settings = list[0]

@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-progress/paper-progress.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -202,6 +203,11 @@
         padding: 5px 0;
       }
 
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+
       :host([has-scrolling-region]) #wrapper #contentContainer {
         overflow-y: visible;
         overflow-x: hidden;
@@ -222,7 +228,7 @@
 
       <template is="dom-if" if="[[loadingCounter]]">
         <div class="layout horizontal center type bold text-center">
-          Invoice is Loading From Server...
+          <paper-progress indeterminate hidden$="[[!getBoolean(loadingCounter)]]"></paper-progress>
         </div>
       </template>
 
