@@ -4558,7 +4558,7 @@ Polymer {
             return
 
           @_loadPriceList @organization.idOnServer, (priceList)=>
-            if priceList.length
+            if priceList?.length
               @set 'priceList', priceList
             else
               @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
