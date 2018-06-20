@@ -66,6 +66,7 @@
       }
 
       .limiting-container {
+        width: 90%;
         margin-top: 10px;
       }
 
@@ -329,8 +330,8 @@
       .table td,
       .table th {
         vertical-align: middle;
-        padding: 20px 0;
-        border-bottom: 1px solid var(--paper-grey-500);
+        padding: 10px 0;
+        border-bottom: 1px solid var(--paper-grey-200);
       }
 
       .table tr:last-child td {
@@ -1419,7 +1420,7 @@
                 <div class="card-custom-header">
                   <div class="layout horizontal justified center wrap">
                     <div class="flex">
-                      <div class="title">[[$TRANSLATE('Old Visits &amp; Report',LANG)]]</div>
+                      <div class="title">[[$TRANSLATE('Visits History',LANG)]]</div>
                     </div>
                     <div class="layout horizontal center search wrap">
                       <custom-vital-search on-date-select="visitCustomSearchClicked" on-clear="visitSearchClearButtonClicked"></custom-vital-search>
@@ -1579,7 +1580,7 @@
 
             <!-- <Invoice Start> -->
             <section>
-              <paper-tabs id="invoice-tabs" selected="{{selectedInvoiceView}}">
+              <paper-tabs class="basic-tabs" selected="{{selectedInvoiceView}}">
                 <paper-tab>Invoice</paper-tab>
                 <paper-tab>Pending Invoice</paper-tab>
               </paper-tabs>
@@ -1691,11 +1692,6 @@
                               </div>
                               <div class="type caption">Advised by: {{item.doctorName}}</div>
                               <div class="type caption">Date: [[_formatDateTime(item.createdDatetimeStamp)]]</div>
-
-
-                              <!-- <template is="dom-if" if="[[!item.data.status.invoiceSerial]]">
-                                      <paper-checkbox checked="{{item.checked}}" class="item-checkbox" on-change="advisedTestItemClicked"></paper-checkbox>
-                                    </template> -->
                             </div>
                             <ul class="flex-2">
                               <template is="dom-repeat" items="[[item.investigations]]" as="investigation">
