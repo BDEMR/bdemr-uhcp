@@ -914,7 +914,7 @@ Polymer {
           cbfn {outdoorBalance:0, indoorBalance:0}
 
   generateTransactionIdForWallet: ->
-    return "#{visit.serial}#{invoice.serial}#{invoice.totalBilled}#{invoice.lastModifiedDatetimeStamp}"
+    return "#{@visit.serial}#{@invoice.serial}#{@invoice.totalBilled}#{@invoice.lastModifiedDatetimeStamp}"
   
   _deductServiceValueToPatient: ({patientId, outdoorBalanceToDeduct, indoorBalanceToDeduct}, cbfn)->
     @domHost.toggleModalLoader 'Updating Member Wallet'
@@ -5405,19 +5405,14 @@ Polymer {
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (transactionId)=>
         if transactionId
-          @domHost.showModalDialog "#{@invoice.totalBilled} Deducted from Member Wallet"
           @invoice.transactionId = transactionId
           @_saveInvoice()
           @_saveVisit()
-          @domHost.showModalDialog 'Visit Saved Successfully'
-          @makeNewVisitButtonPressed()
           @arrowBackButtonPressed()
         else
           return @domHost.showModalDialog 'Something went wrong with balance deduction.'
     else
       @_saveVisit()
-      @domHost.showModalDialog 'Visit Saved Successfully'
-      @makeNewVisitButtonPressed()
       @arrowBackButtonPressed()
 
 
