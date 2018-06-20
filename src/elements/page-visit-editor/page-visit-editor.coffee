@@ -5405,6 +5405,7 @@ Polymer {
   calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
 
   finishButtonPressed: ->
+    @_updateNewDateTimeForVisitElements @visit.createdDatetimeStamp
     @_saveVisit()
     @domHost.showModalDialog 'Visit Saved Successfully'
     if @invoice?.totalBilled
@@ -5535,8 +5536,6 @@ Polymer {
     return unless @customVisitDate and @customVisitTime
     visitDateTime = +new Date("#{@customVisitDate} #{@customVisitTime}")
     @set 'visit.createdDatetimeStamp', visitDateTime
-    @_updateNewDateTimeForVisitElements visitDateTime
-    @async => @_saveVisit()
     @.$.visitDateModal.toggle()
 
    
