@@ -338,6 +338,10 @@
         border-bottom: 0;
       }
 
+      .table tr:hover {
+        background-color: var(--paper-grey-200);
+      }
+
       .table.two-col th {
         text-align: right;
         background-color: white;
@@ -1429,7 +1433,7 @@
                 </div>
 
                 <paper-tabs class="basic-tabs" selected="{{selectedOldVisitRecordPage}}">
-                  <paper-tab>[[$TRANSLATE('Visits &amp; Report',LANG)]]</paper-tab>
+                  <paper-tab>[[$TRANSLATE('Visits',LANG)]]</paper-tab>
                   <paper-tab>[[$TRANSLATE('Next Visit',LANG)]]</paper-tab>
                 </paper-tabs>
                 <br>
@@ -1437,7 +1441,7 @@
                 <iron-pages selected="{{selectedOldVisitRecordPage}}">
 
                   <!-- visit and reports - start -->
-                  <section class="p-8">
+                  <section class="p-16">
 
                     <table class="table">
                       <thead>
@@ -1461,7 +1465,7 @@
                         <template id="visit-list-repeater" is="dom-repeat" items="[[matchingVisitList]]">
                           <tr class="type body">
                             <td>[[item.serial]]</td>
-                            <td style="width:50px;">{{_checkRecordTitle(item)}}</td>
+                            <td>{{_checkRecordTitle(item)}}</td>
                             <td>[[$formatDateTime(item.createdDatetimeStamp)]]</td>
 
                             <td>[[item.doctorName]]
@@ -1628,8 +1632,8 @@
                               <span class="text-muted">BDT</span>
                             </td>
                             <td class="type text-right">
-                              <div class="type warning" hidden$="[[!item.flags.flagAsError]]">Flagged as Error</div>
-                              <div class="type success" hidden$="[[!item.flags.markAsCompleted]]">Flagged as Completed</div>
+                              <span class="type danger" hidden$="[[!item.flags.flagAsError]]">Flagged as Error</span>
+                              <span class="type success" hidden$="[[!item.flags.markAsCompleted]]">Flagged as Completed</span>
                               <paper-menu-button id="invoiceMenuButton" class="p-0" vertical-align="bottom" horizontal-align="right" hidden$="[[item.flags.flagAsError]]"
                                 close-on-activate>
                                 <paper-icon-button icon="icons:more-vert" class="dropdown-trigger" alt="options"></paper-icon-button>
