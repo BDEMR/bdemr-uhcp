@@ -551,13 +551,6 @@ Polymer {
           }
           @push 'invoice.data', test
     
-    # Adding Modification history for this invoice
-    modificationHistoryItem =
-      userSerial: @user.serial
-      lastModifiedDatetimeStamp: lib.datetime.now()
-    
-    @push 'invoice.modificationHistory', modificationHistoryItem
-    @set 'invoice.lastModifiedDatetimeStamp', lib.datetime.now()
 
   # ===========================================================
   # SAVING INVOICE
@@ -618,8 +611,10 @@ Polymer {
   
   _updateVisit: (invoiceSerial)->
     return unless invoiceSerial
-    unless invoiceSerial in @visit.invoiceSerialList
+    if @visit.invoiceSerialList and (invoiceSerial not in @visit.invoiceSerialList)
       @visit.invoiceSerialList.push invoiceSerial
+    else
+      @visit.invoiceSerial = invoiceSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   

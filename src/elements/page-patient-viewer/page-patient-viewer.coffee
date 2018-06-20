@@ -2758,6 +2758,7 @@ Polymer {
         else
           pendingInvestigationList = []
         
+      console.log pendingInvestigationList
       visitSerialList = pendingInvestigationList.reduce (obj, item)=>
         obj[item.visitSerial] = null
         return obj
@@ -2778,11 +2779,8 @@ Polymer {
             else
               groupedInvestigationList[index].investigations.push item
 
-            
-      console.log groupedInvestigationList
-
+      @set 'pendingInvoiceList', []
       @set 'pendingInvoiceList', groupedInvestigationList
-      # console.log groupedInvestigationList
         
       cbfn() if cbfn
 
