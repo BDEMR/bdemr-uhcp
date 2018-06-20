@@ -913,31 +913,30 @@ Polymer {
         else
           cbfn {outdoorBalance:0, indoorBalance:0}
 
+  generateTransactionIdForWallet: ->
+    return "#{visit.serial}#{invoice.serial}#{invoice.totalBilled}#{invoice.lastModifiedDatetimeStamp}"
+  
   _deductServiceValueToPatient: ({patientId, outdoorBalanceToDeduct, indoorBalanceToDeduct}, cbfn)->
-    @_getPatientServiceBalance patientId, ({outdoorBalance, indoorBalance})=>
-      newOutdoorBalance = outdoorBalance - outdoorBalanceToDeduct
-      newIndoorBalance = indoorBalance - indoorBalanceToDeduct
-      if newOutdoorBalance < 0
-        @domHost.showModalDialog 'Do not have sufficient OPD Balance'
-        return cbfn(err=true)
-      if newIndoorBalance < 0
-        @domHost.showModalDialog 'Do not have sufficient IPD Balance'
-        return cbfn(err=true)
-
-      data = { 
-        apiKey: @user.apiKey
-        targetUserId: patientId
-        outdoorBalance: parseInt(newOutdoorBalance)
-        indoorBalance: parseInt(newIndoorBalance)
-      }
-      @callApi '/bdemr-uhcp--add-service-value-to-patient', data, (err, response)=>
-        if response.hasError
-          @domHost.showModalDialog response.error.message
-          return cbfn(err=true)
-        else
-          @domHost.showToast 'Value Deducted Successfully'
-          return cbfn()
-  # Util Functions - end
+    @domHost.toggleModalLoader 'Updating Member Wallet'
+    data = { 
+      apiKey: @user.apiKey
+      targetUserId: patientId
+      outdoorBalanceToDeduct: parseInt(outdoorBalanceToDeduct)
+      indoorBalanceToDeduct: parseInt(indoorBalanceToDeduct)
+      serial: @visit.serial
+      type: 'visit'
+      transactionId: @generateTransactionIdForWallet()
+      organizationId: @organization.idOnServer
+      createdByUserSerial: @user.serial
+    }
+    @callApi '/bdemr-uhcp--deduct-patient-service-value', data, (err, response)=>
+      @domHost.toggleModalLoader()
+      if response.hasError
+        @domHost.showModalDialog response.error.message
+        return cbfn(null)
+      else
+        @domHost.showToast 'Value Deducted Successfully'
+        return cbfn(data.transactionId)
     
 
 
@@ -5403,19 +5402,23 @@ Polymer {
 
   finishButtonPressed: ->
     @_updateNewDateTimeForVisitElements @visit.createdDatetimeStamp
-    @_saveVisit()
-    @domHost.showModalDialog 'Visit Saved Successfully'
     if @invoice?.totalBilled
-      @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (err)=>
-        if err
-          console.log 'Something went wrong with balance deduction.'
-        else
+      @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (transactionId)=>
+        if transactionId
           @domHost.showModalDialog "#{@invoice.totalBilled} Deducted from Member Wallet"
-          @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
-            @set 'patientServiceBalance', patientServiceBalance
-            @makeNewVisitButtonPressed()
-
-    @arrowBackButtonPressed()
+          @invoice.transactionId = transactionId
+          @_saveInvoice()
+          @_saveVisit()
+          @domHost.showModalDialog 'Visit Saved Successfully'
+          @makeNewVisitButtonPressed()
+          @arrowBackButtonPressed()
+        else
+          return @domHost.showModalDialog 'Something went wrong with balance deduction.'
+    else
+      @_saveVisit()
+      @domHost.showModalDialog 'Visit Saved Successfully'
+      @makeNewVisitButtonPressed()
+      @arrowBackButtonPressed()
 
 
   # Create Visit on Backdate
