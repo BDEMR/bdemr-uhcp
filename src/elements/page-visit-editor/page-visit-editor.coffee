@@ -5228,19 +5228,16 @@ Polymer {
 
   _saveReferral: ()->
 
-    unless @visit.serial isnt null
+    unless @visit.serial
       @_saveVisit()
       @referral.visitSerial = @visit.serial
       
-    
-    unless @referral.serial isnt null
+    unless @referral.serial
       @referral.serial = @generateSerialForReferral()
       @visit.referralSerial = @referral.serial
       @referral.visitSerial = @visit.serial
       @_saveVisit()
         
-    console.log 'referral', @referral
-
     @referral.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'referral-record', @referral, ({serial})=> @referral.serial is serial
 

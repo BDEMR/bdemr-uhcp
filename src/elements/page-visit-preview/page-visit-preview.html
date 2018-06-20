@@ -378,7 +378,7 @@
         <!-- Print - Test Advised - end -->
 
         <!-- Print - Diagnosis - start -->
-        <template is="dom-if" if="{{!_isEmpty(diagnosis.data.diagnosisList.length)}}">
+        <template is="dom-if" if="[[!_isEmpty(diagnosis.data.diagnosisList.length)]]">
           <div class="horizontal layout center print-sub-header">
             <div class="type body bold">Diagnosis</div>
           </div>
@@ -414,7 +414,7 @@
         <!-- Print - Notes - end -->
 
         <!-- Print - Next Visit - start -->
-        <template is="dom-if" if="[[!_isEmptyString(nextVisit.data.nextVisitDateTimestamp)]]">
+        <template is="dom-if" if="[[isNextVisitValid]]">
           <div class="horizontal layout center print-sub-header">
             <div class="type body bold">Next Visit</div>
           </div>
@@ -428,6 +428,26 @@
           <div class="b-top m-top-8"></div>
         </template>
         <!-- Print - Next Visit - end -->
+
+        <!-- Print - Referral - start -->
+        <template is="dom-if" if="[[!_isEmptyString(referral.data.doctorName)]]">
+          <div class="horizontal layout center print-sub-header">
+            <div class="type body bold">Referral</div>
+          </div>
+          <div class="type caption-2">
+            <div>
+              <strong>Referred To: </strong>
+              <span>[[referral.data.doctorName]]</span>
+            </div>
+            <div>
+              <strong>Speciality: </strong>
+              <span>[[referral.data.speciality]]</span>
+            </div>
+          </div>
+          <div class="b-top m-top-8"></div>
+        </template>
+
+        <!-- Print - Referral - end -->
 
         <!-- Print - History And Physical - start -->
         <template is="dom-if" if="[[shouldRender]]">
@@ -449,7 +469,7 @@
           <div>
             <span class="type">Type: </span> [[visit.dischargeNote.dischargeType]]
           </div>
-          <div>
+          <div hidden="[[_isEmptyString(visit.dischargeNote.advise)]]">
             <span class="type">Advice: </span> [[visit.dischargeNote.advise]]
           </div>
           <template is="dom-if" if="[[$equals(visit.dischargeNote.dischargeType, 'IPD')]]">
