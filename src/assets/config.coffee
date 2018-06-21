@@ -15,6 +15,8 @@ window.app =
 
     masterApiVersion: '1'
 
+    masterOrganizationId: '5aa352f648d08e132de38932'
+
     variableConfigs:
 
       'development':

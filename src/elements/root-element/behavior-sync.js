@@ -123,7 +123,7 @@ app.behaviors.local['root-element'].newSync = {
     const { apiKey } = this.getCurrentUser();
 
     // Sync Price List for Master Organization Only
-    if (organizationId == '5aa352f648d08e132de38932') {
+    if (organizationId == app.config.masterOrganizationId) {
       collectionNameMap['bdemr--organization-price-list'] = 'organization-price-list';
       deleteCollectionNameMap['bdemr--organization-price-list--deleted'] = 'organization-price-list--deleted';
     }

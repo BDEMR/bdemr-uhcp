@@ -4,7 +4,7 @@ app.behaviors.local.loadPriceListMixin =
 
   masterOrganizationId:
     type: String
-    value: -> '5aa352f648d08e132de38932'
+    value: -> app.config.masterOrganizationId
   
   _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
   

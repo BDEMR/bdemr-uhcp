@@ -160,7 +160,7 @@ Polymer {
             @_updateOrganizationsIBelongToList()
 
   _checkOrganizationAccess: (organizationIdentifier)->
-    if organizationIdentifier is '5aa352f648d08e132de38932' and @getCurrentOrganization().idOnServer is '5aa352f648d08e132de38932'
+    if organizationIdentifier is app.config.masterOrganizationId and @getCurrentOrganization().idOnServer is app.config.masterOrganizationId
       return true
     else
       return false
