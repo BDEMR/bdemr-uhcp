@@ -4473,8 +4473,8 @@ Polymer {
   editPatientBtnPressed: ()->
     @domHost.navigateToPage "#/patient-editor/patient:" + @patient.serial
     
-  ready: ()->
-    @_loadPriceList @organization.idOnServer, (priceList)=>
+  attached: ()->
+    @_loadPriceList (priceList)=>
       if priceList?.length
         @set 'priceList', priceList
         console.log priceList
@@ -4565,7 +4565,8 @@ Polymer {
             @_notifyInvalidVisit()
             return
 
-
+          console.log @priceList
+          
           if params['visit'] is 'new'
             @_makeNewVisit =>
               @_makeNewPrescription()
@@ -5418,8 +5419,8 @@ Polymer {
           @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
             @set 'patientServiceBalance', patientServiceBalance
             @makeNewVisitButtonPressed()
-
-    @arrowBackButtonPressed()
+    else
+      @arrowBackButtonPressed()
 
 
   # Create Visit on Backdate

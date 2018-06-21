@@ -86,7 +86,7 @@ Polymer {
 
       # error tracking js meta
       if app.mode is 'production'
-        unless bugsnagClient[metaData]
+        unless bugsnagClient['metaData']
           bugsnagClient.metaData = {}
         unless bugsnagClient.metaData['organization']
           bugsnagClient.metaData['organization'] = {}

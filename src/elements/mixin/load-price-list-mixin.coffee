@@ -17,39 +17,44 @@ app.behaviors.local.loadPriceListMixin =
     app.db.__allowCommit = true
   
   
-  _loadMasterOrganizationPriceList: (organizationIdentifier, cbfn)->
+  _loadPriceList: (cbfn)->
+    
+    if @priceList.length
+      return cbfn priceList
     
     query = {
-      apiKey: @user.apiKey
-      organizationId: organizationIdentifier
+      apiKey: @getCurrentUser().apiKey
+      organizationId: app.config.masterOrganizationId
     }
 
-    @callApi 'uhcp--get-master-organization-price-list', query, (err, response)=>
+    @callApi 'uhcp--get-organization-price-list', query, (err, response)=>
       if response.hasError
         @domHost.showModalDialog response.error.message
         cbfn()
       else
         priceList = response.data
-        @_insertItemIntoDatabase priceList
+        # @_insertItemIntoDatabase priceList
         cbfn(priceList)
 
   
-  _loadPriceList: (cbfn)->
+  # _loadPriceList: (cbfn)->
     
-    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
+    # lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
 
-    unless lastSyncedDatetimeStamp
-      return @domHost._newSync (errMessage)=> 
-        if errMessage 
-          return @domHost.showModalDialog(errMessage) 
-        else 
-          return @domHost.reloadPage()
+    # unless lastSyncedDatetimeStamp
+    #   return @domHost._newSync (errMessage)=> 
+    #     if errMessage 
+    #       return @domHost.showModalDialog(errMessage) 
+    #     else 
+    #       return @domHost.reloadPage()
     
-    priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is @masterOrganizationId
+    # priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is app.config.masterOrganizationId
     
-    if priceListFromLocalStorage.length
-      return cbfn priceListFromLocalStorage
-    else
-      @_loadMasterOrganizationPriceList @masterOrganizationId, cbfn
+    # if priceListFromLocalStorage.length
+    #   return cbfn priceListFromLocalStorage
+    # else
+    #   @_loadMasterOrganizationPriceList app.config.masterOrganizationId, cbfn
+
+
       
    

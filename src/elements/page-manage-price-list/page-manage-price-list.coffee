@@ -329,7 +329,6 @@ Polymer {
       @domHost.showSuccessToast 'Item Added and Saved'
       
 
-    
   _checkOrganizationAccess: (organizationIdentifier)->
     if organizationIdentifier is app.config.masterOrganizationId and @getCurrentOrganization().idOnServer is app.config.masterOrganizationId
       return true
