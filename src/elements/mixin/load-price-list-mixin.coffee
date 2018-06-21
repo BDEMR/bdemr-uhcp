@@ -18,16 +18,15 @@ app.behaviors.local.loadPriceListMixin =
   
   
   _loadPriceList: (cbfn)->
-    
-    if @priceList.length
-      return cbfn priceList
-    
+    @domHost.toggleModalLoader 'Downloading Price List'
     query = {
       apiKey: @getCurrentUser().apiKey
       organizationId: app.config.masterOrganizationId
     }
 
     @callApi 'uhcp--get-organization-price-list', query, (err, response)=>
+      @domHost.toggleModalLoader()
+      
       if response.hasError
         @domHost.showModalDialog response.error.message
         cbfn()

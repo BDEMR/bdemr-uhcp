@@ -158,13 +158,15 @@ Polymer {
       @_loadInvoice params['invoice']
 
     # _loadPriceList from ../mixin/load-price-list-mixin.coffee
-    @_loadPriceList @organization.idOnServer, (priceList)=>
-      if priceList.length
-        @set 'priceList', priceList
-        @_loadItemSearchAutoComplete priceList
-        @_loadCategories priceList
-      else
-        @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
+    console.log @priceList
+    unless @priceList.length
+      @_loadPriceList (priceList)=>
+        if priceList.length
+          @set 'priceList', priceList
+          @_loadItemSearchAutoComplete priceList
+          @_loadCategories priceList
+        else
+          @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
 
 
   _loadUser:()->
