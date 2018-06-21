@@ -7,6 +7,19 @@ app.behaviors.local['root-element'].newSync = {
 
   _updateLastSyncedDatetimeStamp() { return window.localStorage.setItem('lastSyncedDatetimeStamp', lib.datetime.now()); },
 
+  _getModifiedDataFromDB(collectionNameList, lastSyncedDatetimeStamp) {
+    return collectionNameList.reduce((list, clientCollectionName) => {
+      const docList = app.db.find(clientCollectionName, ({ lastModifiedDatetimeStamp }) => lastModifiedDatetimeStamp > lastSyncedDatetimeStamp);
+      const docListWithClientCollectionName = docList.map(doc => {
+        doc.clientCollectionName = clientCollectionName;
+        return doc;
+      });
+      list.concat(docListWithClientCollectionName);
+      return list;
+    }, [])
+  },
+
+
   _newSync(cbfn) {
 
     apiActionId = this.notifyApiAction('start', null);
@@ -53,7 +66,6 @@ app.behaviors.local['root-element'].newSync = {
       'bdemr--visit-diagnosis': 'visit-diagnosis',
       'bdemr--pcc-records': 'pcc-records',
       'bdemr--ndr-records': 'ndr-records',
-      'bdemr--organization-price-list': 'organization-price-list',
       'bdemr--clinic-organization-inventory': 'organization-inventory',
       'bdemr--clinic-third-party-user-list': 'third-party-user-list',
       'bdemr--clinic-invoice-category-list': 'invoice-category-list',
@@ -99,18 +111,10 @@ app.behaviors.local['root-element'].newSync = {
       'bdemr--visit-diagnosis--deleted': 'visit-diagnosis--deleted',
       'bdemr--pcc-records--deleted': 'pcc-records--deleted',
       'bdemr--ndr-records--deleted': 'ndr-records--deleted',
-      'bdemr--organization-price-list--deleted': 'organization-price-list--deleted',
       'bdemr--clinic-organization-inventory--deleted': 'organization-inventory--deleted',
       'bdemr--clinic-third-party-user-list--deleted': 'third-party-user-list--deleted',
       'bdemr--clinic-invoice-category-list--deleted': 'invoice-category-list--deleted'
     }
-
-
-
-    const collectionNameList = Object.keys(collectionNameMap).map(serverCollectionName => collectionNameMap[serverCollectionName]);
-
-    let clientToServerDocList = [];
-    const removedDocList = [];
 
     const lastSyncedDatetimeStamp = this._getLastSyncedDatetimeStamp();
     const organizationId = this.getCurrentOrganization().idOnServer;
@@ -118,17 +122,17 @@ app.behaviors.local['root-element'].newSync = {
     const knownPatientSerialList = patientList.map((patient) => patient.serial);
     const { apiKey } = this.getCurrentUser();
 
-    for (let clientCollectionName of collectionNameList) {
-
-      const docList = app.db.find(clientCollectionName, ({ lastModifiedDatetimeStamp }) => lastModifiedDatetimeStamp > lastSyncedDatetimeStamp);
-
-      const docListWithClientCollectionName = docList.map(doc => {
-        doc.clientCollectionName = clientCollectionName;
-        return doc;
-      });
-
-      clientToServerDocList = clientToServerDocList.concat(docListWithClientCollectionName);
+    // Sync Price List for Master Organization Only
+    if (organizationId == '5aa352f648d08e132de38932') {
+      collectionNameMap['bdemr--organization-price-list'] = 'organization-price-list';
+      deleteCollectionNameMap['bdemr--organization-price-list--deleted'] = 'organization-price-list--deleted';
     }
+
+    const collectionNameList = Object.keys(collectionNameMap).map(serverCollectionName => collectionNameMap[serverCollectionName]);
+    const deletedCollectionNameList = Object.keys(deleteCollectionNameMap).map(serverCollectionName => deleteCollectionNameMap[serverCollectionName]);
+
+    const clientToServerDocList = this._getModifiedDataFromDB(collectionNameList, lastSyncedDatetimeStamp);
+    const removedDocList = this._getModifiedDataFromDB(deletedCollectionNameList, lastSyncedDatetimeStamp);
 
     const data = {
       apiKey,

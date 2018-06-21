@@ -141,7 +141,7 @@
                           <paper-item on-tap="manageUsersPressed">Manage Members</paper-item>
                           <paper-item on-tap="removeOrganizationPressed">Remove Organization</paper-item>
                           <paper-item on-tap="managePatientStayPressed">Manage Patient Stay</paper-item>
-                          <paper-item on-tap="manageUnitPricePressed">Manage Price List</paper-item>
+                          <paper-item on-tap="manageUnitPricePressed" hidden$="[[!_checkOrganizationAccess(organization.idOnServer)]]">Manage Price List</paper-item>
                           <paper-item on-tap="managePharmacyPressed">Manage Pharmacy</paper-item>
                         </template>
                         <paper-item on-tap="manageWaitlistPressed">Manage Waitlist</paper-item>

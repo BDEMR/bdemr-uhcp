@@ -58,6 +58,9 @@ Polymer {
     
     params = @domHost.getPageParams()
 
+    unless @_checkOrganizationAccess params['organization']
+      return @_notifyInvalidOrganization()
+
     unless params['organization']
       @_notifyInvalidOrganization()
       return
@@ -327,7 +330,11 @@ Polymer {
       
 
     
-  
+  _checkOrganizationAccess: (organizationIdentifier)->
+    if organizationIdentifier is '5aa352f648d08e132de38932' and @getCurrentOrganization().idOnServer is '5aa352f648d08e132de38932'
+      return true
+    else
+      return false
       
 
 

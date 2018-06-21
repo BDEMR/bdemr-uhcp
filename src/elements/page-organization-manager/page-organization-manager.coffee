@@ -159,4 +159,10 @@ Polymer {
           else
             @_updateOrganizationsIBelongToList()
 
+  _checkOrganizationAccess: (organizationIdentifier)->
+    if organizationIdentifier is '5aa352f648d08e132de38932' and @getCurrentOrganization().idOnServer is '5aa352f648d08e132de38932'
+      return true
+    else
+      return false
+
 }
