@@ -887,19 +887,21 @@ Polymer {
       a[b] = null
     return a[b]
 
-  _isEmpty: (data)-> 
-    if data is 0
+  _isEmpty: (data)->
+    if !data
       return true
     else
       return false
 
   _isEmptyArray: (data)->
+    console.log data
     if data.length is 0
       return true
     else
       return false
 
   _isEmptyString: (data)->
+    console.log data
     if data is null or data is '' or data is 'undefined'
       return true
     else
@@ -1217,6 +1219,12 @@ Polymer {
     else
       @isNextVisitValid = false
       return false
+
+  _loadReferral: (referralSerial)->
+    list = app.db.find 'referral-record', ({serial})-> serial is referralSerial
+    if list.length
+      @referral = {}
+      @referral = list[0]
 
 
   ## VIEW :: HistoryAndPhysical - start
@@ -1745,7 +1753,6 @@ Polymer {
       content = @$$('.print .content')
       output = @$$('.print .output')
 
-      console.log @$$('.print .ideal')
       idealHeight = @$$('.print .ideal').offsetHeight
 
       nodeList = content.childNodes
@@ -1895,6 +1902,10 @@ Polymer {
               ## Visit - Next Visit - start
               if @visit.nextVisitSerial
                 @_loadNextVisit @visit.nextVisitSerial
+
+              ## Visit - Next Visit - start
+              if @visit.referralSerial
+                @_loadReferral @visit.referralSerial
 
        
               @generatePrintPagination()

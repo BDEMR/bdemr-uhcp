@@ -97,41 +97,28 @@ Polymer {
     return false if array is undefined or array is null 
     if array.length then return true else return false
 
-  _getPatientServiceBalance: (patientId, cbfn)->
-    data = {
-      patientId: patientId
-      apiKey: @user.apiKey
-    }
-    @callApi '/bdemr-uhcp--get-patient-service-value', data, (err, response)=>
-      if response.hasError
-        @domHost.showToast response.error.message
-      else
-        cbfn response.data
+  generateTransactionIdForWallet: ->
+    return "#{@visit.serial}#{@invoice.serial}#{@invoice.totalAmountReceieved}#{@invoice.lastModifiedDatetimeStamp}"
 
   _deductServiceValueToPatient: ({patientId, outdoorBalanceToDeduct, indoorBalanceToDeduct}, cbfn)->
-    @_getPatientServiceBalance patientId, ({outdoorBalance, indoorBalance})=>
-      newOutdoorBalance = outdoorBalance - outdoorBalanceToDeduct
-      newIndoorBalance = indoorBalance - indoorBalanceToDeduct
-      if newOutdoorBalance < 0
-        @domHost.showModalDialog 'Do not have sufficient OPD Balance'
-        return cbfn(err=true)
-      if newIndoorBalance < 0
-        @domHost.showModalDialog 'Do not have sufficient IPD Balance'
-        return cbfn(err=true)
-
-      data = { 
-        apiKey: @user.apiKey
-        targetUserId: patientId
-        outdoorBalance: parseInt(newOutdoorBalance)
-        indoorBalance: parseInt(newIndoorBalance)
-      }
-      @callApi '/bdemr-uhcp--add-service-value-to-patient', data, (err, response)=>
-        if response.hasError
-          @domHost.showModalDialog response.error.message
-          return cbfn(err=true)
-        else
-          @domHost.showToast 'Value Deducted Successfully'
-          return cbfn()
+    data = { 
+      apiKey: @user.apiKey
+      targetUserId: patientId
+      outdoorBalanceToDeduct: parseInt(outdoorBalanceToDeduct)
+      indoorBalanceToDeduct: parseInt(indoorBalanceToDeduct)
+      serial: @visit.serial or @invoice.serial
+      type: 'visit'
+      transactionId: @generateTransactionIdForWallet()
+      organizationId: @organization.idOnServer
+      createdByUserSerial: @user.serial
+    }
+    @callApi '/bdemr-uhcp--deduct-patient-service-value', data, (err, response)=>
+      if response.hasError
+        @domHost.showModalDialog response.error.message
+        return cbfn(null)
+      else
+        @domHost.showToast 'Value Deducted Successfully'
+        return cbfn(data.transactionId)
 
   navigatedIn: ->
 
@@ -444,6 +431,8 @@ Polymer {
     @set "invoiceGrossPrice", price
     @set 'invoice.totalBilled', price
 
+    @set 'invoice.lastModifiedDatetimeStamp', lib.datetime.now()
+
   _calculateDue: (total=0, paid=0, lastPaid=0)->
     paid = parseInt paid
     paid = 0 if Number.isNaN(paid)
@@ -551,13 +540,6 @@ Polymer {
           }
           @push 'invoice.data', test
     
-    # Adding Modification history for this invoice
-    modificationHistoryItem =
-      userSerial: @user.serial
-      lastModifiedDatetimeStamp: lib.datetime.now()
-    
-    @push 'invoice.modificationHistory', modificationHistoryItem
-    @set 'invoice.lastModifiedDatetimeStamp', lib.datetime.now()
 
   # ===========================================================
   # SAVING INVOICE
@@ -618,8 +600,10 @@ Polymer {
   
   _updateVisit: (invoiceSerial)->
     return unless invoiceSerial
-    unless invoiceSerial in @visit.invoiceSerialList
+    if @visit.invoiceSerialList and (invoiceSerial not in @visit.invoiceSerialList)
       @visit.invoiceSerialList.push invoiceSerial
+    else
+      @visit.invoiceSerial = invoiceSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
@@ -664,7 +648,9 @@ Polymer {
 
 
   chargeOutdoorWalletButtonPressed: ->
-    @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalAmountReceieved, indoorBalanceToDeduct: 0}, ()=> console.log 'deduction successful'
+    @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalAmountReceieved, indoorBalanceToDeduct: 0}, (transactionId)=> 
+      if transactionId
+        @invoice.transactionId = transactionId
 
   getDoctorSpeciality: () ->
     unless @user.specializationList.length is 0

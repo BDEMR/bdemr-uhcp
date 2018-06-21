@@ -2683,7 +2683,7 @@ Polymer {
       
   _loadInvoice: (patientSerialIdentifier, organizationIdentifier)->
     visitSerialList = @matchingVisitList.map (item)-> item.serial
-    invoiceList = app.db.find 'visit-invoice', ({patientSerial, organizationId, visitSerial})=> patientSerial is patientSerialIdentifier and organizationId is organizationIdentifier and visitSerial in visitSerialList
+    invoiceList = app.db.find 'visit-invoice', ({patientSerial})=> patientSerial is patientSerialIdentifier
     @set 'invoiceList', invoiceList
   
   calculateDue: (billed = 0, amtReceived = 0)-> (parseInt billed) - (parseInt amtReceived)
@@ -2758,6 +2758,7 @@ Polymer {
         else
           pendingInvestigationList = []
         
+      console.log pendingInvestigationList
       visitSerialList = pendingInvestigationList.reduce (obj, item)=>
         obj[item.visitSerial] = null
         return obj
@@ -2778,11 +2779,8 @@ Polymer {
             else
               groupedInvestigationList[index].investigations.push item
 
-            
-      console.log groupedInvestigationList
-
+      @set 'pendingInvoiceList', []
       @set 'pendingInvoiceList', groupedInvestigationList
-      # console.log groupedInvestigationList
         
       cbfn() if cbfn
 
