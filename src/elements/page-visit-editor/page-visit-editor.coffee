@@ -5346,7 +5346,7 @@ Polymer {
 
   
   _addMedicinePriceToInvoice: (itemName, qty, visitSerial)->
-    matchedItem = (item for item in @medicineCompositionList when item.brandName is itemName)[0]
+    matchedItem = (item for item in @priceList when item.name is itemName)[0]
     invoiceItem = {
       name: matchedItem?.brandName or itemName
       qty: qty
