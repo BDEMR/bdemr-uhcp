@@ -13,13 +13,14 @@ Polymer {
     app.behaviors.debug
     app.behaviors.local['root-element'].dataLoader
     app.behaviors.local['root-element'].newSync
-    app.behaviors.local['root-element'].patientsDataSyncConfig
-    app.behaviors.local['root-element'].patientsDataSync
-    app.behaviors.local['root-element'].userDataSyncConfig
-    app.behaviors.local['root-element'].userDataSync
-    app.behaviors.local['root-element'].organizationDataSyncConfig
-    app.behaviors.local['root-element'].organizationDataSync
-    app.behaviors.local['root-element'].syncCall
+    app.behaviors.local['root-element']._syncPriceListOnly
+    # app.behaviors.local['root-element'].patientsDataSyncConfig
+    # app.behaviors.local['root-element'].patientsDataSync
+    # app.behaviors.local['root-element'].userDataSyncConfig
+    # app.behaviors.local['root-element'].userDataSync
+    # app.behaviors.local['root-element'].organizationDataSyncConfig
+    # app.behaviors.local['root-element'].organizationDataSync
+    # app.behaviors.local['root-element'].syncCall
   ]
   properties:
 
@@ -960,12 +961,13 @@ Polymer {
   syncButtonPressed: (e)->
     @_newSync (errMessage)=>
       if errMessage
-        # @$$('#sync-dialog').toggle()
         @async => @showModalDialog(errMessage);
       else
-        # @$$('#sync-dialog').toggle()
-        @reloadPage()
+        @_syncPriceListOnly (err)=>
+          if err
+            @async => @showModalDialog(err);
+          else
+            @reloadPage()
     
-  # old sync code moved to 'mixin-call-sync.coffee' file
 
 }

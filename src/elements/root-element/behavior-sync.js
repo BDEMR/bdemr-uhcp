@@ -122,12 +122,6 @@ app.behaviors.local['root-element'].newSync = {
     const knownPatientSerialList = patientList.map((patient) => patient.serial);
     const { apiKey } = this.getCurrentUser();
 
-    // Sync Price List for Master Organization Only
-    if (organizationId == app.config.masterOrganizationId) {
-      collectionNameMap['bdemr--organization-price-list'] = 'organization-price-list';
-      deleteCollectionNameMap['bdemr--organization-price-list--deleted'] = 'organization-price-list--deleted';
-    }
-
     const collectionNameList = Object.keys(collectionNameMap).map(serverCollectionName => collectionNameMap[serverCollectionName]);
     const deletedCollectionNameList = Object.keys(deleteCollectionNameMap).map(serverCollectionName => deleteCollectionNameMap[serverCollectionName]);
 

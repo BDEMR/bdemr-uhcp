@@ -116,14 +116,14 @@ Polymer {
     @domHost.showModalPrompt 'You Do Not Have Access To This Page!', ()=>
 
 
-  _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'lastSyncedDatetimeStamp'
+  _getLastSyncedDatetime: -> parseInt window.localStorage.getItem 'priceListLastSyncedDatetimeStamp'
 
   # Prepare Price List Data
   # ======================================
   
-  _prepareNewItemForDB: (data)->
+  _prepareNewItemForDB: (data, index)->
     return Object.assign data, {
-      serial: @generateSerialForPriceListItem(@organization.idOnServer)
+      serial: @generateSerialForPriceListItem(@organization.idOnServer, index)
       organizationId: @organization.idOnServer
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
@@ -131,11 +131,14 @@ Polymer {
     }
   
   _preparePriceListData: (priceList)->
-    priceList.map (item)=> 
-      newItem = @_prepareNewItemForDB item
+    newPricelist = []
+    for item, index in priceList
+      newItem = @_prepareNewItemForDB item, index
       newItem.actualCost = newItem.actualCost or item.price
       newItem.qty = newItem.qty or null
-      return newItem
+      newPricelist.push newItem
+    return newPricelist
+    
   
 
   _createNewPriceList: (organizationIdentifier, cbfn)->
@@ -144,13 +147,8 @@ Polymer {
       priceListData = @_preparePriceListData priceList
       cbfn priceListData
 
-  _insertItemIntoDatabase: (priceList)->
-    app.db.__allowCommit = false;
-    for item, index in priceList
-      if index is priceList.length-1
-        app.db.__allowCommit = true;
-      app.db.insert 'organization-price-list', item
-    app.db.__allowCommit = true;
+  _insertItemIntoDatabase: (priceList, cbfn)->
+    localforage.setItem 'organization-price-list', priceList, cbfn
 
   # Prepare Price List Data End
   # ======================================
@@ -167,17 +165,22 @@ Polymer {
     lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
     
     if lastSyncedDatetimeStamp
-      priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-      if priceListFromLocalStorage.length
-        @set 'priceList', priceListFromLocalStorage
-        return cbfn priceListFromLocalStorage
-      else 
-        @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-          @_insertItemIntoDatabase priceListFromFile
-          @set 'priceList', priceListFromFile
-          return cbfn priceListFromFile
+      # priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
+      localforage.getItem 'organization-price-list', (err, priceListFromLocalStorage)=>
+        return console.log err if err
+        if priceListFromLocalStorage?.length
+          @set 'priceList', priceListFromLocalStorage
+          return cbfn priceListFromLocalStorage
+        else 
+          @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
+            @_insertItemIntoDatabase priceListFromFile, (err)=>
+            if err
+              console.log err
+            else
+              @set 'priceList', priceListFromFile
+              return cbfn priceListFromFile
     else
-      @domHost._newSync (errMessage)=> 
+      @domHost._syncPriceListOnly (errMessage)=> 
         if errMessage 
           @async => @domHost.showModalDialog(errMessage) 
         else 
@@ -310,7 +313,7 @@ Polymer {
     data = @get 'customItem'
     valid = @_validateCustomItem data
     if valid
-      newItem = @_prepareNewItemForDB data
+      newItem = @_prepareNewItemForDB data, @priceList.length+1
       @unshift 'priceListForSelectedCategory', newItem
       @$$("#customItemModal").toggle()
       @set 'customItem', {}
@@ -320,7 +323,7 @@ Polymer {
     data = @get 'customItem'
     valid = @_validateCustomItem data
     if valid
-      newItem = @_prepareNewItemForDB data
+      newItem = @_prepareNewItemForDB data, @priceList.length+1
       @addNewItemToPriceList newItem
       @set 'customItem', @_makeCustomItem {
         category: data.category
