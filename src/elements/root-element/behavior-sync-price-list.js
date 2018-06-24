@@ -1,13 +1,13 @@
 if (!app.behaviors.local['root-element']) {
   app.behaviors.local['root-element'] = {};
 }
-app.behaviors.local['root-element']._syncPriceListOnly = {
+app.behaviors.local['root-element'].syncPriceListOnly = {
 
-  _getLastSyncedDatetimeStamp() { return parseInt(window.localStorage.getItem('priceListLastSyncedDatetimeStamp')) || 0; },
+  _getLastSyncedDatetimeStampForPrice() { return parseInt(window.localStorage.getItem('priceListLastSyncedDatetimeStamp')) || 0; },
 
-  _updateLastSyncedDatetimeStamp() { return window.localStorage.setItem('priceListLastSyncedDatetimeStamp', lib.datetime.now()); },
+  _updateLastSyncedDatetimeStampForPrice() { return window.localStorage.setItem('priceListLastSyncedDatetimeStamp', lib.datetime.now()); },
 
-  _getModifiedDataFromDB(collectionNameList, lastSyncedDatetimeStamp) {
+  _getModifiedPriceDataFromDB(collectionNameList, lastSyncedDatetimeStamp) {
     return new Promise((accept, reject) => {
       let promiseList = []
       collectionNameList.forEach((clientCollectionName) => {
@@ -38,7 +38,7 @@ app.behaviors.local['root-element']._syncPriceListOnly = {
     })
   },
 
-  _updateLocalDBWithResponse(serverPriceList, cbfn) {
+  _updateLocalDBWithPriceData(serverPriceList, cbfn) {
 
     localforage.getItem('organization-price-list')
 
@@ -71,8 +71,7 @@ app.behaviors.local['root-element']._syncPriceListOnly = {
 
 
       }).then((value) => {
-        console.log(value)
-        this._updateLastSyncedDatetimeStamp();
+        this._updateLastSyncedDatetimeStampForPrice();
         return cbfn();
 
       }).catch((err) => {
@@ -96,7 +95,7 @@ app.behaviors.local['root-element']._syncPriceListOnly = {
       'bdemr--organization-price-list--deleted': 'organization-price-list--deleted'
     }
 
-    const lastSyncedDatetimeStamp = this._getLastSyncedDatetimeStamp();
+    const lastSyncedDatetimeStamp = this._getLastSyncedDatetimeStampForPrice();
     const currentOrganizationId = this.getCurrentOrganization().idOnServer;
     const { apiKey } = this.getCurrentUser();
     let clientToServerDocListDataPromise, removedDocListDataPromise;
@@ -105,8 +104,8 @@ app.behaviors.local['root-element']._syncPriceListOnly = {
     const deletedCollectionNameList = Object.keys(deleteCollectionNameMap).map(serverCollectionName => deleteCollectionNameMap[serverCollectionName]);
 
     if (currentOrganizationId == app.config.masterOrganizationId) {
-      clientToServerDocListDataPromise = this._getModifiedDataFromDB(collectionNameList, lastSyncedDatetimeStamp);
-      removedDocListDataPromise = this._getModifiedDataFromDB(deletedCollectionNameList, lastSyncedDatetimeStamp);
+      clientToServerDocListDataPromise = this._getModifiedPriceDataFromDB(collectionNameList, lastSyncedDatetimeStamp);
+      removedDocListDataPromise = this._getModifiedPriceDataFromDB(deletedCollectionNameList, lastSyncedDatetimeStamp);
     }
 
     Promise.all([clientToServerDocListDataPromise, removedDocListDataPromise])
@@ -137,7 +136,7 @@ app.behaviors.local['root-element']._syncPriceListOnly = {
 
           } else {
 
-            this._updateLocalDBWithResponse(response.data, cbfn)
+            this._updateLocalDBWithPriceData(response.data, cbfn)
 
           }
 

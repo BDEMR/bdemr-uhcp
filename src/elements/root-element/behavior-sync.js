@@ -14,8 +14,7 @@ app.behaviors.local['root-element'].newSync = {
         doc.clientCollectionName = clientCollectionName;
         return doc;
       });
-      list.concat(docListWithClientCollectionName);
-      return list;
+      return list.concat(docListWithClientCollectionName);
     }, [])
   },
 
@@ -68,7 +67,7 @@ app.behaviors.local['root-element'].newSync = {
       'bdemr--ndr-records': 'ndr-records',
       'bdemr--clinic-organization-inventory': 'organization-inventory',
       'bdemr--clinic-third-party-user-list': 'third-party-user-list',
-      'bdemr--clinic-invoice-category-list': 'invoice-category-list',
+      'bdemr--clinic-invoice-category-list': 'invoice-category-list'
     };
 
     const deleteCollectionNameMap = {
@@ -160,7 +159,9 @@ app.behaviors.local['root-element'].newSync = {
           if (index === (response.data.length - 1)) {
             app.db.__allowCommit = true;
           }
-          app.db.upsert(collectionName, item, ({ serial }) => item.serial === serial);
+          if (collectionName) {
+            app.db.upsert(collectionName, item, ({ serial }) => item.serial === serial);
+          }
         }
         app.db.__allowCommit = true;
 

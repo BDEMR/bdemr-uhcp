@@ -48,9 +48,37 @@ Polymer {
   ]
 
   
-  # attached: ()->
-  #   # HACK - vaadin-grid element stops the navigatedIn call somehow
-  #   @navigatedIn()
+  #  Utils ------->
+  _updateToDb: (item, cbfn)->
+    localforage.getItem 'organization-price-list'
+    .then (value)=>
+      index = value.findIndex (priceListItem)=> item.serial is priceListItem.serial
+      if index is -1 then value.push item else value.splice index, 1 ,item
+      return localforage.setItem 'organization-price-list', value
+    .then ()=> cbfn()
+    .catch (err)=> @domHost.showModalDialog 'Something Went Wrong'
+
+  _deleteFromDb: (removedItem, cbfn)->
+    localforage.getItem 'organization-price-list'
+    .then (value)=>
+      indexOnPriceList = value.findIndex (item)=> item.serial is removedItem.serial
+      if indexOnPriceList > -1
+        value.splice indexOnPriceList, 1
+      return localforage.setItem 'organization-price-list', value
+    .then ()=>
+      return localforage.getItem 'organization-price-list--deleted'
+    .then (deletedPriceList)=>
+      unless deletedPriceList
+        deletedPriceList = [] 
+      deletedPriceList.push {serial: removedItem.serial}
+      return localforage.setItem 'organization-price-list--deleted', deletedPriceList
+    .then ()=> cbfn()
+    .catch (err)=>
+      console.error err
+      @domHost.showModalDialog 'Something Went Wrong'
+
+  # Utils End --->
+
   
   navigatedIn: ->
     
@@ -147,9 +175,7 @@ Polymer {
       priceListData = @_preparePriceListData priceList
       cbfn priceListData
 
-  _insertItemIntoDatabase: (priceList, cbfn)->
-    localforage.setItem 'organization-price-list', priceList, cbfn
-
+  
   # Prepare Price List Data End
   # ======================================
 
@@ -171,17 +197,16 @@ Polymer {
         if priceListFromLocalStorage?.length
           @set 'priceList', priceListFromLocalStorage
           return cbfn priceListFromLocalStorage
-        else 
-          @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-            @_insertItemIntoDatabase priceListFromFile, (err)=>
-            if err
-              console.log err
-            else
-              @set 'priceList', priceListFromFile
-              return cbfn priceListFromFile
+        # else 
+        #   @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
+        #     localforage.setItem 'organization-price-list', priceListFromFile
+        #     .then (value)=>
+        #       @set 'priceList', value
+        #       return cbfn value
+        #     .catch (err)=> @domHost.showModalDialog 'Something Went Wrong'
 
       .catch (err)=>
-        @domHost.showModalDialog JSON.stringify err
+        @domHost.showModalDialog 'Something Went Wrong'
     else
       @domHost._syncPriceListOnly (errMessage)=> 
         if errMessage 
@@ -235,17 +260,17 @@ Polymer {
     @async => @showPriceListForSelectedCategory(currentlySelectedCategoryTabIndex)
     if newItem.category is 'Investigation'
       @_addToCustomInvestigation newItem
-    app.db.insert 'organization-price-list', newItem
+    @_updateToDb newItem, ()=>
+      @domHost.showSuccessToast 'Saved'
 
   removeItemFromPriceList: (removedItem)->
     indexOnPriceList = @priceList.findIndex (item)=> item.serial is removedItem.serial
     @splice "priceList", indexOnPriceList, 1
-    x = app.db.remove 'organization-price-list', removedItem._id
-    app.db.insert 'organization-price-list--deleted', {serial: removedItem.serial}
     unless @priceListForSelectedCategory.length
       @_loadCategories @priceList
       @async => @$$("#categoryTabs").selectIndex(0)
       @async => @showPriceListForSelectedCategory 0
+    @_deleteFromDb removedItem, ()=> null
     
 
   _validateCustomItem: (data)->
@@ -290,12 +315,14 @@ Polymer {
   actualCostChanged: (e)->
     item = e.model.item
     item.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
+    @_updateToDb item, ()=> @domHost.showSuccessToast 'Saved'
+    # app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
 
   priceChanged: (e)->
     item = e.model.item
     item.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
+    @_updateToDb item, ()=> @domHost.showSuccessToast 'Saved'
+    # app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
   
   categorySelected: (e)->
     selectedIndex = e.detail.selected

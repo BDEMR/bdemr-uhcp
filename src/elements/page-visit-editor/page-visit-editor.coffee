@@ -4558,13 +4558,12 @@ Polymer {
             @_notifyInvalidVisit()
             return
 
-          console.log @priceList
-          unless @priceList.length
-            @_loadPriceList (priceList)=>
-              if priceList?.length
-                @set 'priceList', priceList
-              else
-                @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
+          @_loadPriceList (priceList)=>
+            if priceList?.length
+              @set 'priceList', priceList
+              console.log @priceList
+            else
+              @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
           
           if params['visit'] is 'new'
             @_makeNewVisit =>

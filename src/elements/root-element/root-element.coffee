@@ -12,8 +12,9 @@ Polymer {
     app.behaviors.dbUsing
     app.behaviors.debug
     app.behaviors.local['root-element'].dataLoader
+    app.behaviors.local['root-element'].syncPriceListOnly
     app.behaviors.local['root-element'].newSync
-    app.behaviors.local['root-element']._syncPriceListOnly
+
     # app.behaviors.local['root-element'].patientsDataSyncConfig
     # app.behaviors.local['root-element'].patientsDataSync
     # app.behaviors.local['root-element'].userDataSyncConfig
@@ -958,14 +959,8 @@ Polymer {
   
   # = REGION ======================================
 
-  syncButtonPressed: (e)-> 
-    @_syncPriceListOnly (err)=>
-      if err
-        @async => @showModalDialog(err);
-      else
-        @reloadPage()
   
-  _syncButtonPressed: (e)->
+  syncButtonPressed: (e)->
     @_newSync (errMessage)=>
       if errMessage
         @async => @showModalDialog(errMessage);
@@ -974,7 +969,7 @@ Polymer {
           if err
             @async => @showModalDialog(err);
           else
-            @reloadPage()
+            # @reloadPage()
     
 
 }
