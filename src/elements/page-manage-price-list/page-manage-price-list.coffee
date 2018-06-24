@@ -166,8 +166,8 @@ Polymer {
     
     if lastSyncedDatetimeStamp
       # priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
-      localforage.getItem 'organization-price-list', (err, priceListFromLocalStorage)=>
-        return console.log err if err
+      localforage.getItem('organization-price-list') 
+      .then (priceListFromLocalStorage)=>
         if priceListFromLocalStorage?.length
           @set 'priceList', priceListFromLocalStorage
           return cbfn priceListFromLocalStorage
@@ -179,6 +179,9 @@ Polymer {
             else
               @set 'priceList', priceListFromFile
               return cbfn priceListFromFile
+
+      .catch (err)=>
+        @domHost.showModalDialog JSON.stringify err
     else
       @domHost._syncPriceListOnly (errMessage)=> 
         if errMessage 

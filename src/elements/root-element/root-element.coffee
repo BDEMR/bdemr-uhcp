@@ -958,7 +958,14 @@ Polymer {
   
   # = REGION ======================================
 
-  syncButtonPressed: (e)->
+  syncButtonPressed: (e)-> 
+    @_syncPriceListOnly (err)=>
+      if err
+        @async => @showModalDialog(err);
+      else
+        @reloadPage()
+  
+  _syncButtonPressed: (e)->
     @_newSync (errMessage)=>
       if errMessage
         @async => @showModalDialog(errMessage);

@@ -41,37 +41,41 @@ app.behaviors.local['root-element']._syncPriceListOnly = {
   _updateLocalDBWithResponse(serverPriceList, cbfn) {
 
     localforage.getItem('organization-price-list')
-      .then((err, value) => {
-        if (err) reject(err);
-        Promise.resolve(value || []);
 
-      }).then((localPriceList) => {
+      .then((value) => {
+
+        let localPriceList = value || [];
 
         for (let item of serverPriceList) {
-          const collectionName = collectionNameMap[item.collection];
-          if (collectionName !== 'organization-price-list') {
+
+          if (item.clientCollectionName !== 'organization-price-list') {
             continue;
           }
+
           delete item.collection;
-          let index = localPriceList.findIndex((priceItem) => item._id == priceItem._id)
-          if (index = -1) {
-            localPriceList.push(item)
+
+          if (localPriceList.length) {
+
+            let index = localPriceList.findIndex((priceItem) => item._id == priceItem._id)
+            if (index == -1) {
+              localPriceList.push(item)
+            } else {
+              localPriceList.splice(index, 1, item);
+            }
           } else {
-            localPriceList.splice(index, 1, item);
+            localPriceList.push(item)
           }
         }
 
-        localforage.setItem(collectionName, localPriceList)
-          .then((err) => {
-            if (err) Promise.reject(err);
-            Promise.resolve()
-          })
+        return localforage.setItem('organization-price-list', localPriceList)
 
-      }).then(() => {
+
+      }).then((value) => {
+        console.log(value)
         this._updateLastSyncedDatetimeStamp();
         return cbfn();
+
       }).catch((err) => {
-        console.log(err);
         return cbfn(err)
       })
 
@@ -113,8 +117,8 @@ app.behaviors.local['root-element']._syncPriceListOnly = {
           lastSyncedDatetimeStamp,
           organizationId: app.config.masterOrganizationId,
           knownPatientSerialList: [],
-          clientToServerDocList,
-          removedDocList,
+          clientToServerDocList: clientToServerDocList || [],
+          removedDocList: removedDocList || [],
           client: 'uhcp'
         };
 
@@ -125,7 +129,7 @@ app.behaviors.local['root-element']._syncPriceListOnly = {
           this.toggleModalLoader()
 
           if (err) {
-            return cbfn(err)
+            return cbfn(err.message)
           }
           else if (response.hasError) {
 
