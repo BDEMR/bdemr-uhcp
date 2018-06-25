@@ -9,7 +9,7 @@ window.app =
 
     clientName: 'uhcp'
 
-    clientVersion: '0.0.33'
+    clientVersion: '0.0.34'
 
     clientPlatform: 'web' # can be - 'web', 'android', 'ios', 'windows', 'osx', 'ubuntu'
 
