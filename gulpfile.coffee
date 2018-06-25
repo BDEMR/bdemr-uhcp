@@ -169,9 +169,6 @@ gulp.task 'build', ->
   runSequence 'clean-debug', 'increment-version', 'copy-debug', 'build-debug-coffee-prod', 'concat', 'html-replace', 'polymer-build'
   return
 
-gulp.task 'build-onsite', ->
-  runSequence 'clean-debug', 'increment-version', 'copy-debug', 'build-debug-coffee-onsite', 'concat', 'html-replace', 'polymer-build-onsite'
-  return
 
 
 # POLYMER BUILD TASK
@@ -199,8 +196,8 @@ gulp.task 'polymer-build', ->
       "styles/*"
     ]
     extraDependencies: [
-      "favicon.png"
       "all.js"
+      "manifes.json"
       "bower-assets/webcomponentsjs/webcomponents-lite.min.js"
       "vendor-assets/he.min.js"
     ]
@@ -256,113 +253,6 @@ gulp.task 'build-debug-coffee-prod', ->
     compress:
       drop_console: true
   }))
-  .pipe(sourcemaps.write('.'))
-  .pipe rename (path)->
-    if path.extname is '.map'
-      path.basename = path.basename.replace '.js', '.coffee-compiled.js'
-    else if path.extname is '.js'
-      path.basename = path.basename += '.coffee-compiled'
-    else
-      throw new Error 'Unknown Error 1'
-    return path
-  .pipe modify {
-    fileModifier: (vfd, contents)->
-      if (''+vfd.path).indexOf('.js.map') > -1
-        json = JSON.parse contents
-        json.file = json.file.replace '.js', '.coffee-compiled.js'
-        contents = JSON.stringify json
-      else if (''+vfd.path).indexOf('.js') > -1
-        index = contents.indexOf 'sourceMappingURL='
-        contents = contents.substr 0, (index + ('sourceMappingURL='.length))
-        contents += pathlib.basename(vfd.path)+'.map'
-      return contents
-  }
-  .pipe gulp.dest (vfd)->
-    dirname = (pathlib.dirname vfd.path)
-    sep = (if os.platform() is 'win32' then '\\' else '/')
-    if dirname.indexOf('elements'+ sep) > -1
-      dirname = dirname.split sep
-      dirname.pop()
-      dirname = dirname.join sep
-    return dirname
-
-
-gulp.task 'polymer-build-onsite', ->
-  paths = glob.sync('build-debug/elements/**/*.html')
-  fragments = []
-  for item in paths
-    path = item.split("/").slice(1).join("/")
-    fragments.push path
-  
-  project = new PolymerProject({
-    root: 'build-debug'
-    entrypoint: "index.html"
-    shell: "elements/root-element/root-element.html"
-    fragments: fragments
-    sources: [
-      "elements/**/*.js"
-      "elements/**/*.html"
-      "assets/**/*"
-      "images/**/*"
-      "behaviors/*"
-      "styles/*"
-    ]
-    extraDependencies: [
-      "all.js"
-      "bower-assets/webcomponentsjs/webcomponents-lite.min.js"
-      "vendor-assets/he.min.js"
-    ]
-    lint: {
-      rules: ["polymer-1"]
-    }
-    builds: [{
-      bundle: true,
-      js: {minify: true},
-      css: {minify: true},
-      html: {minify: true},
-    }]
-  })
-  
-  waitFor = (stream) ->
-    return new Promise( (resolve, reject) =>
-      stream.on('end', resolve)
-      stream.on('error', reject)
-    )
-
-  return new Promise (resolve, reject) =>
-    del 'polymer-build'
-      .then =>
-        buildStream = mergeStream(project.sources(), project.dependencies())
-          .pipe(project.bundler())
-          .pipe(gulp.dest('polymer-build-onsite/'))
-        return waitFor(buildStream)
-      .then =>
-       addServiceWorker({
-          buildRoot: 'polymer-build/build-debug/'
-          project: project
-          bundled: true
-          swPrecacheConfig: {
-            navigateFallback: '/index.html'
-            stripPrefix: 'build-debug/'
-            staticFileGlobs: [
-              '/all.js'
-              '/assets/**/*'
-              '/bower-assets/webcomponentsjs/webcomponents-lite.min.js'
-              '/images/**/*'
-            ]
-          }
-        })
-
-gulp.task 'build-debug-coffee-onsite', ->
-  return gulp.src paths.debug.coffee
-  .pipe cache 'coffee'
-  .pipe(sourcemaps.init())
-  .pipe(coffee({bare: false}).on('error', gutil.log))
-  .pipe(uglify({
-    compress:
-      drop_console: true
-  }))
-  .pipe(javascriptObfuscator())
   .pipe(sourcemaps.write('.'))
   .pipe rename (path)->
     if path.extname is '.map'
