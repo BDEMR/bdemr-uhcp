@@ -197,7 +197,7 @@ gulp.task 'polymer-build', ->
     ]
     extraDependencies: [
       "all.js"
-      "manifes.json"
+      "manifest.json"
       "bower-assets/webcomponentsjs/webcomponents-lite.min.js"
       "vendor-assets/he.min.js"
     ]
