@@ -31,10 +31,7 @@ app.behaviors.local['root-element'].dataLoader =
   requestForLoadingStaticData: ->
 
     staticDataListLocal = [
-      # {
-      #   name: 'hospitalList'
-      #   url: 'static-data/hospital-list.json'
-      # }
+      
       {
         name: 'investigationList'
         url: 'static-data/uhcp-investigation-list.json'
@@ -53,14 +50,7 @@ app.behaviors.local['root-element'].dataLoader =
         name: 'pccMedicineList'
         url: 'static-data/uhcp-drug-list-with-price.json'
       }
-      # {
-      #   name: 'doseGuidelineList'
-      #   url: 'static-data/dose-guideline-list.json'
-      # }
-      # {
-      #   name: 'medicineCompositionList'
-      #   url: 'static-data/medicine-composition-list.json'
-      # }
+      
       {
         name: 'operationList'
         url: 'static-data/operation-list.json'
@@ -88,11 +78,6 @@ app.behaviors.local['root-element'].dataLoader =
       {
         name: 'dynamicElementDefinitionPreoperativeAssessment'
         url: 'static-data/de-def-doctor-app-history-and-physical-examination.json'
-      }
-
-      {
-        name: 'uhcpInvoicePriceList'
-        url: 'static-data/uhcp-invoice-price-list.json'
       }
     ]
 
@@ -141,11 +126,7 @@ app.behaviors.local['root-element'].dataLoader =
         name: 'pccMedicineList'
         url: 'https://bdemr.b-cdn.net/uhcp-drug-list-with-price-6-5-2018.json'
       }
-      {
-        name: 'uhcpInvoicePriceList'
-        url: 'https://bdemr.b-cdn.net/uhcp-invoice-price-list-2-4-2018.json'
-      }
-    ]
+          ]
 
     if (app.mode is 'production') and (app.config.clientPlatform is 'web')
       staticDataList = staticDataListProduction

@@ -191,7 +191,6 @@ Polymer {
     lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
     
     if lastSyncedDatetimeStamp
-      # priceListFromLocalStorage = app.db.find 'organization-price-list', ({organizationId})-> organizationId is organizationIdentifier
       localforage.getItem('organization-price-list') 
       .then (priceListFromLocalStorage)=>
         if priceListFromLocalStorage?.length
