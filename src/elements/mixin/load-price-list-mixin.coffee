@@ -6,19 +6,20 @@ app.behaviors.local.loadPriceListMixin =
   
   _loadPriceList: (cbfn)->
     
-    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
-
-    unless lastSyncedDatetimeStamp
-      return @domHost._syncPriceListOnly (errMessage)=> 
-        if errMessage 
-          return @domHost.showModalDialog(JSON.stringify errMessage) 
-        else 
-          return @domHost.reloadPage()
-    
     localforage.getItem 'organization-price-list'
     .then (priceListFromLocalStorage)=>
       if priceListFromLocalStorage?.length
-        return cbfn priceListFromLocalStorage
+        cbfn priceListFromLocalStorage
+        Promise.resolve()
+      else
+        window.localStorage.setItem('priceListLastSyncedDatetimeStamp',0)
+        @domHost._syncPriceListOnly (errMessage)=>
+          if errMessage 
+            @domHost.showModalDialog(JSON.stringify errMessage) 
+          else 
+            @domHost.reloadPage()
+          Promise.resolve()
+        
     .catch (err)=>
       console.error err
       return cbfn()

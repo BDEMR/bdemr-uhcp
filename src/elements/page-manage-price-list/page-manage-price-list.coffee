@@ -188,30 +188,33 @@ Polymer {
     return Object.keys categoryMap
   
   _loadPriceList: (organizationIdentifier, cbfn)->
-    lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
     
-    if lastSyncedDatetimeStamp
-      localforage.getItem 'organization-price-list'
-      .then (priceListFromLocalStorage)=>
-        if priceListFromLocalStorage?.length
-          @set 'priceList', priceListFromLocalStorage
-          return cbfn priceListFromLocalStorage
-        # else 
-        #   @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
-        #     localforage.setItem 'organization-price-list', priceListFromFile
-        #     .then (value)=>
-        #       @set 'priceList', value
-        #       return cbfn value
-        #     .catch (err)=> @domHost.showModalDialog 'Something Went Wrong'
+    localforage.getItem 'organization-price-list'
+    .then (priceListFromLocalStorage)=>
+      console.log priceListFromLocalStorage
+      if priceListFromLocalStorage?.length
+        @set 'priceList', priceListFromLocalStorage
+        cbfn priceListFromLocalStorage
+        Promise.resolve()
+      else
+        window.localStorage.setItem('priceListLastSyncedDatetimeStamp',0)
+        @domHost._syncPriceListOnly (errMessage)=>
+          if errMessage 
+            @async => @domHost.showModalDialog(errMessage) 
+          else 
+            @domHost.reloadPage()
+          Promise.resolve()
+      # else 
+      #   @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
+      #     localforage.setItem 'organization-price-list', priceListFromFile
+      #     .then (value)=>
+      #       @set 'priceList', value
+      #       return cbfn value
+      #     .catch (err)=> @domHost.showModalDialog 'Something Went Wrong'
 
-      .catch (err)=>
-        @domHost.showModalDialog 'Something Went Wrong'
-    else
-      @domHost._syncPriceListOnly (errMessage)=> 
-        if errMessage 
-          @async => @domHost.showModalDialog(errMessage) 
-        else 
-          @domHost.reloadPage()
+    .catch (err)=>
+      @domHost.showModalDialog 'Something Went Wrong'
+      
 
   _loadCategories: (priceListData)->
     priceListCategories = @_getCategoriesFromPriceListData priceListData
