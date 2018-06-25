@@ -80,6 +80,15 @@
       dom: 'Shadow',
       passiveTouchGestures: true
     };
+
+    // localforage config
+    localforage.config({
+      name: 'UHCP App',
+      version: '1.0',
+      storeName: 'uhcp-price-list-db',
+      description: 'storing price list only in indexdb'
+    });
+
     // Load webcomponentsjs polyfill if browser does not support native Web Components
     (function () {
       'use strict';
