@@ -191,7 +191,7 @@ Polymer {
     lastSyncedDatetimeStamp = @_getLastSyncedDatetime()
     
     if lastSyncedDatetimeStamp
-      localforage.getItem('organization-price-list') 
+      localforage.getItem 'organization-price-list'
       .then (priceListFromLocalStorage)=>
         if priceListFromLocalStorage?.length
           @set 'priceList', priceListFromLocalStorage

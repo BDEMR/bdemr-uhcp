@@ -15,7 +15,7 @@ app.behaviors.local.loadPriceListMixin =
         else 
           return @domHost.reloadPage()
     
-    localforage.getItem('organization-price-list')
+    localforage.getItem 'organization-price-list'
     .then (priceListFromLocalStorage)=>
       if priceListFromLocalStorage?.length
         return cbfn priceListFromLocalStorage

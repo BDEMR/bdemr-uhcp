@@ -126,7 +126,7 @@ app.behaviors.local['root-element'].dataLoader =
         name: 'pccMedicineList'
         url: 'https://bdemr.b-cdn.net/uhcp-drug-list-with-price-6-5-2018.json'
       }
-          ]
+    ]
 
     if (app.mode is 'production') and (app.config.clientPlatform is 'web')
       staticDataList = staticDataListProduction
