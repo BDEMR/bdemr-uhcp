@@ -5349,7 +5349,7 @@ Polymer {
     invoiceItem = {
       name: matchedItem?.brandName or itemName
       qty: qty
-      price: matchedItem?.retailPrice or 0
+      price: matchedItem?.price or 0
       actualCost: matchedItem?.actualCost or 0
       category: "medicine"
       subCategory: ""
@@ -5361,6 +5361,7 @@ Polymer {
       lastModifiedDatetimeStamp: lib.datetime.now()
       createdByUserSerial: @user.serial
     }
+    console.log invoiceItem
     if Object.keys(@invoice).length
       @push 'invoice.data', invoiceItem
     else
@@ -5368,6 +5369,7 @@ Polymer {
       @push 'invoice.data', invoiceItem
     @_saveInvoice()
     @isInvoiceValid = true
+    console.log @invoice
 
   
   _addToInvoice: (itemName, category, visitSerial)->
