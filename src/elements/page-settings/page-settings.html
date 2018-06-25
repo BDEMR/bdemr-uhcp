@@ -193,13 +193,15 @@
               <paper-input required type="password" label="Current Password" value="{{changePassword.oldPassword}}" error-message="{{validationError.oldPassword.0}}"></paper-input>
 
 
-              <paper-input type="password" label="New Password" value="{{changePassword.newPassword}}" error-message="{{validationError.newPassword.0}}" required></paper-input>
-              <paper-input type="password" label="Retype Password" value="{{changePassword.newRetypePassword}}" error-message="{{validationError.newRetypePassword.0}}" required></paper-input>
+              <paper-input type="password" label="New Password" value="{{changePassword.newPassword}}" error-message="{{validationError.newPassword.0}}"
+                required></paper-input>
+              <paper-input type="password" label="Retype Password" value="{{changePassword.newRetypePassword}}" error-message="{{validationError.newRetypePassword.0}}"
+                required></paper-input>
             </div>
             <div class="card-actions">
               <paper-button class="btn colored" raised on-tap="changePasswordBtnPressed">Change password</paper-button>
             </div>
-            
+
           </paper-card>
 
           <paper-card class="info-card" heading="Printing (Headline)">
@@ -279,6 +281,11 @@
 
             </div>
           </paper-card>
+
+          <div class="p-16">
+            <paper-button class="btn btn-danger btn-sm" on-tap="deleteLocalDataPressed">Delete Local Data</paper-button>
+            <paper-button class="btn btn-sm btn-default" on-tap="sendLocalDateToDevPressed">Send Local Data to Dev</paper-button>
+          </div>
 
         </template>
 

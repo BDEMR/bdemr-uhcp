@@ -224,4 +224,27 @@ Polymer {
     file = e.target.files[0]
     @getUploadedFileDataUri file, (dataUri)=>
       @set 'settings.printDecoration.partner3LogoDataUri', dataUri
+
+  deleteLocalDataPressed: ->
+    @domHost.showModalPrompt 'Are You Sure! This will delete all unsynced data from your browser. Sync First Before you Delete', (answer)=>
+      if answer
+        window.localStorage.clear()
+        window.localforage.removeItem 'organization-price-list'
+        .then ()=> @domHost.reloadPage()
+
+  sendLocalDateToDevPressed: ->
+
+    body = Object.keys(localStorage).map (k)=> localStorage.getItem(k)
+    now = lib.datetime.now()
+
+    data = {
+      from: @user.name
+      to: 'taufiq@bdemr.com'
+      subject: "Local Data on #{now}"
+      body: JSON.stringify body
+    }
+    @callApi 'extern-scheduler-send-email', data, (err, response)=>
+      unless response.hasError
+        @domHost.showSuccessToast 'Email sent.'
+
 }
