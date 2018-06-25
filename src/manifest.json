@@ -1,12 +1,10 @@
 {
   "name": "BDEMR UHCP App",
   "short_name": "UHCP",
-  "theme_color": "#5c4575",
-  "background_color": "#fff",
+  "start_url": "/#!/",
   "display": "standalone",
-  "orientation": "landscape",
-  "start_url": "/app/index.html",
-  "scope": "/app/",
+  "background_color": "#eee",
+  "theme_color": "#5c4575",
   "description": "A Digital Medical Record Management App for UHCP",
   "icons": [
     {
@@ -40,5 +38,12 @@
       "type": "image/png"
     }
   ],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.bdemr.patient",
+      "id": "com.bdemr.patient"
+    }
+  ]
 }
