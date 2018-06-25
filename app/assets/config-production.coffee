@@ -9,11 +9,13 @@ window.app =
 
     clientName: 'uhcp'
 
-    clientVersion: '0.0.32'
+    clientVersion: '0.0.33'
 
     clientPlatform: 'web' # can be - 'web', 'android', 'ios', 'windows', 'osx', 'ubuntu'
 
     masterApiVersion: '1'
+
+    masterOrganizationId: '5aa352f648d08e132de38932' #UHCP
 
     variableConfigs:
 

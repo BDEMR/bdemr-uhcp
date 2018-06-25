@@ -562,13 +562,9 @@ app.behaviors.dbUsing =
     app.db.update '--serial-generator', serialGenerator._id, serialGenerator
     return (appIdentifier + userSerial + sessionSerial + itemType + seed)
 
-  generateSerialForPriceListItem: (orgnizationId)->
+  generateSerialForPriceListItem: (orgnizationId, seed)->
     appIdentifier = 'U'
     itemType = 'PL'
-    serialGenerator = (app.db.find '--serial-generator')[0]
-    seed = serialGenerator['price-list-seed']
-    serialGenerator['price-list-seed'] += 1
-    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
     return (appIdentifier + orgnizationId + itemType + seed)
   
   generateSerialForInvestigationPriceList: (orgnizationId)->
