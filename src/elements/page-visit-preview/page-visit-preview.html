@@ -465,29 +465,27 @@
         <div class="horizontal layout center print-sub-header">
           <div class="type body bold">Patient Discharge Note</div>
         </div>
-        <div class="">
+        <div class="type caption-2">
           <div>
-            <span class="type">Type: </span> [[visit.dischargeNote.dischargeType]]
+            <span class="">Type: </span> [[visit.dischargeNote.dischargeType]]
           </div>
           <div hidden="[[_isEmptyString(visit.dischargeNote.advise)]]">
-            <span class="type">Advice: </span> [[visit.dischargeNote.advise]]
+            <span class="">Advice: </span> [[visit.dischargeNote.advise]]
           </div>
-          <template is="dom-if" if="[[$equals(visit.dischargeNote.dischargeType, 'IPD')]]">
-            <div class="layout horizontal">
-              <span class="type bold"> Admission Date: </span>
-              <span>&nbsp;[[$mkDate(visit.dischargeNote.admissionDateTimeStamp)]]</span>
-            </div>
-            <div>
-              <span class="type">Admitted To</span>
-              <span>[[visit.dischargeNote.admittedToOrganization.name]]</span>
-            </div>
-            <div>
-              <span class="type">Referred By: </span> [[visit.dischargeNote.referredByDoctorName]]
-            </div>
-            <div>
-              <span class="type">Admitted By: </span> [[visit.dischargeNote.admittedByDoctorName]]
-            </div>
-          </template>
+          <div class="layout horizontal">
+            <span class=""> Admission Date: </span>
+            <span>&nbsp;[[$mkDate(visit.dischargeNote.admissionDateTimeStamp)]]</span>
+          </div>
+          <div>
+            <span class="">Admitted To</span>
+            <span>[[visit.dischargeNote.admittedToOrganization.name]]</span>
+          </div>
+          <div>
+            <span class="">Referred By: </span> [[visit.dischargeNote.referredByDoctorName]]
+          </div>
+          <div>
+            <span class="">Admitted By: </span> [[visit.dischargeNote.admittedByDoctorName]]
+          </div>
 
         </div>
         <!-- Patient Stay Preview End -->
