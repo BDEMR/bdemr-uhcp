@@ -116,7 +116,7 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
           lastSyncedDatetimeStamp,
           organizationId: app.config.masterOrganizationId,
           knownPatientSerialList: [],
-          clientToServerDocList: clientToServerDocList || [],
+          clientToServerDocList: [],
           removedDocList: removedDocList || [],
           client: 'uhcp'
         };
