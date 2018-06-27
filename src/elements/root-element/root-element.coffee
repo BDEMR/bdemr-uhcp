@@ -969,7 +969,7 @@ Polymer {
           if err
             @async => @showModalDialog(err);
           else
-            @reloadPage()
+            # @reloadPage()
     
 
 }
