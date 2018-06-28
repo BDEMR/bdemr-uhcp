@@ -894,14 +894,12 @@ Polymer {
       return false
 
   _isEmptyArray: (data)->
-    console.log data
     if data.length is 0
       return true
     else
       return false
 
   _isEmptyString: (data)->
-    console.log data
     if data is null or data is '' or data is 'undefined'
       return true
     else

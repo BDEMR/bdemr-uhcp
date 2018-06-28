@@ -28,7 +28,6 @@ app.behaviors.local.invoiceMixin =
       organizationName: @organization.name
       modificationHistory: []
       lastModifiedDatetimeStamp: null
-      category: ''
       totalBilled: 0
       paid: null
       lastPaid: null
