@@ -40,6 +40,10 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
 
   _updateLocalDBWithPriceData(serverPriceList, cbfn) {
 
+    if (!serverPriceList.length) {
+      return cbfn()
+    }
+
     localforage.getItem('organization-price-list')
 
       .then((value) => {
