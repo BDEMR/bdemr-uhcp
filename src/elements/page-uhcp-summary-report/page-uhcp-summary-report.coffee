@@ -60,7 +60,12 @@ Polymer {
       type: Array
       value: -> []
 
+    totalServiceAmount:
+      type: Number
+      computed: 'getTotalServiceAmount(reportResults)'
+
     selectedReportType: String
+    selectedVisitType: String
     dateCreatedFrom: String
     dateCreatedTo: String
     selectedGender: String
@@ -107,46 +112,18 @@ Polymer {
         this.set('childOrganizationList', mappedValue)
       else
         this.domHost.showToast('No Child Organization Found')
-      
-   
-  
-  searchButtonClicked: ->
-    @reportResults = []
-    
-    unless @selectedReportType
-      @domHost.showWarningToast 'Select a Type of Report'
-      return
-    
-    query = {
-      apiKey: @user.apiKey
-      organizationIdList: []
-      reportType: @selectedReportType
-      searchParameters: {
-        searchString: @searchString
-        dateCreatedFrom: @dateCreatedFrom?=""
-        dateCreatedTo: @dateCreatedTo?=""
-        gender: @selectedGender?=""
-        ageGroup: @selectedAgeGroup?=[]
-        salaryRange: @selectedSalaryRange?=[]
-      }
-    }
-
-    if this.selectedOrganizationId 
-      query.organizationIdList = [this.selectedOrganizationId]
-
-    @loading = true
-    @callApi '/uhcp--get-summary-reports', query, (err, response)=>
-      if response.hasError
-        @domHost.showModalDialog response.error.message
-        @loading = false
-      else
-        @set 'reportResults', response.data
-        console.log @reportResults
-        @loading = false
 
   categorySelected: (e)->
     index = e.detail.selected
     @set 'selectedReportType', @categoryList[index].toLowerCase()
+
+  visitTypeSelected: (e)->
+    index = e.detail.selected
+    type = switch index
+      when 0 then 'OPD'
+      when 1 then 'IPD'
+      else 'Exclusion Criteria'
+    @set 'selectedVisitType', type
   
   genderSelected: (e)->
     index = e.detail.selected
@@ -192,5 +169,49 @@ Polymer {
   filterByDateClearButtonClicked: ->
     @dateCreatedFrom = 0
     @dateCreatedTo = 0
+
+  getTotalServiceAmount: (reports)->
+    totalCost = reports.reduce (total, item)=> 
+      return total += (parseFloat item.serviceAmount)
+    , 0
+    return totalCost.toFixed(2)
+
+  # ====================================================
+
+  searchButtonClicked: ->
+    @reportResults = []
+    
+    unless @selectedReportType
+      @domHost.showWarningToast 'Select a Report Type'
+      return
+    
+    query = {
+      apiKey: @user.apiKey
+      organizationIdList: []
+      reportType: @selectedReportType
+      searchParameters: {
+        employeeId: @employeeIdSearchString
+        dateCreatedFrom: @dateCreatedFrom?=""
+        dateCreatedTo: @dateCreatedTo?=""
+        gender: @selectedGender?=""
+        ageGroup: @selectedAgeGroup?=[]
+        salaryRange: @selectedSalaryRange?=[]
+        visitType: @selectedVisitType
+      }
+    }
+
+    if this.selectedOrganizationId 
+      query.organizationIdList = [this.selectedOrganizationId]
+
+    @loading = true
+    @callApi '/uhcp--get-summary-reports', query, (err, response)=>
+      if response.hasError
+        @domHost.showModalDialog response.error.message
+        @loading = false
+      else
+        @set 'reportResults', response.data
+        console.log @reportResults
+        @loading = false
+  
 
 }
