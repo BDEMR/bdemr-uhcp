@@ -185,6 +185,16 @@ Polymer({
     return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0
   },
 
+  $getCategoryCostByDecimal(category, invoice) {
+    let cost = invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0;
+    return cost.toFixed(2);
+  },
+
+  $getTotalCostByDecimal(invoice) {
+    let cost = invoice && invoice.totalBilled ? parseFloat(invoice.totalBilled) : 0
+    return cost.toFixed(2);
+  },
+
   $getTotalCost(invoice) {
     return invoice && invoice.totalBilled ? parseFloat(invoice.totalBilled) : 0
   },
@@ -202,21 +212,24 @@ Polymer({
   },
 
   _getTotalCostByReport(reports) {
-    return reports.reduce((total, item) => {
+    let total = reports.reduce((total, item) => {
       return total + this.$getTotalCost(item.invoice)
     }, 0)
+    return total.toFixed(2)
   },
 
   _getTotalCategoryCostByReport(category, reports) {
-    return reports.reduce((total, item) => {
+    let total = reports.reduce((total, item) => {
       return total + this.$getCategoryCost(category, item.invoice)
     }, 0)
+    return total.toFixed(2)
   },
 
-  totalContributionByReport(reports) {
-    return reports.reduce((total, item) => {
+  _getTotalContributionByReport(reports) {
+    let total = reports.reduce((total, item) => {
       return total + item.chargedToWallet
     }, 0)
+    return total.toFixed(2)
   },
 
   resetButtonClicked() { return this.domHost.reloadPage(); },

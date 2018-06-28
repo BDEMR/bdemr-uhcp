@@ -280,28 +280,28 @@
                 <vaadin-grid-column resizable>
                   <template class="header">Drug Cost</template>
                   <template>
-                    <span>[[$getCategoryCost('Medicine', item.invoice)]]</span>
+                    <span>[[$getCategoryCostByDecimal('Medicine', item.invoice)]]</span>
                   </template>
                   <template class="footer">[[totalDrugCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Investigation Cost</template>
                   <template>
-                    <span>[[$getCategoryCost('Investigation', item.invoice)]]</span>
+                    <span>[[$getCategoryCostByDecimal('Investigation', item.invoice)]]</span>
                   </template>
                   <template class="footer">[[totalInvestigationCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Consultancy Fee</template>
                   <template>
-                    <span>[[$getCategoryCost('Consultancy', item.invoice)]]</span>
+                    <span>[[$getCategoryCostByDecimal('Consultancy', item.invoice)]]</span>
                   </template>
                   <template class="footer">[[totalConsultancyCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">Total Cost</template>
                   <template>
-                    <span>[[$getTotalCost(item.invoice)]]</span>
+                    <span>[[$getTotalCostByDecimal(item.invoice)]]</span>
                   </template>
                   <template class="footer">[[totalCostByReport]]</template>
                 </vaadin-grid-column>
