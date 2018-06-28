@@ -44,8 +44,12 @@ Polymer {
 
     totalInvoiceIncome:
       type: Number
-      value: 0
+      computed: '_calculateTotalInvoiceIncome(matchingInvoiceReportList)'
 
+    totalInvoiceBilled:
+      type: Number
+      computed: '_computedTotalInvoiceBilled(matchingInvoiceReportList)'
+    
     totalProfit:
       type: Number
       value: 0
@@ -66,10 +70,7 @@ Polymer {
       type: Number
       value: -> 0
       
-  observers: [
-    # '_calculateTotalProfit(matchingInvoiceReportList.splices)'
-    '_calculateTotalInvoiceIncome(matchingInvoiceReportList.splices)'
-  ]
+  
 
   _sortByDate: (a, b)->
     if a.createdDatetimeStamp < b.createdDatetimeStamp
@@ -89,13 +90,19 @@ Polymer {
 
   getBoolean: (data)-> if data then true else false
 
-  _calculateTotalInvoiceIncome: ()->
+  _calculateTotalInvoiceIncome: (matchingInvoiceReportList)->
     totalInvoiceIncome = 0
-    for item in @matchingInvoiceReportList
+    for item in matchingInvoiceReportList
       totalInvoiceIncome += parseInt (item.totalAmountReceieved?=0)
-    @set 'totalInvoiceIncome', totalInvoiceIncome
+    return totalInvoiceIncome
 
 
+  _computedTotalInvoiceBilled: (matchingInvoiceReportList)->
+    totalInvoiceBilled = 0
+    for item in matchingInvoiceReportList
+      totalInvoiceBilled += parseInt (item.totalBilled?=0)
+    return totalInvoiceBilled
+    
   _calculateTotalProfit: ()->
     totalProfit = 0
     for item in @matchingInvoiceReportList

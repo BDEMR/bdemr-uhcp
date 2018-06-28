@@ -166,6 +166,9 @@
               <template>
                 <div>[[item.totalBilled]]</div>
               </template>
+              <template class="footer">
+                <strong>[[totalInvoiceBilled]]</strong>
+              </template>
             </vaadin-grid-column>
             <vaadin-grid-column>
               <template class="header">
@@ -184,6 +187,9 @@
               </template>
               <template>
                 <div>[[$calculateDue(item.totalBilled, item.totalAmountReceieved)]]</div>
+              </template>
+              <template class="footer">
+                <div>[[$calculateDue(totalInvoiceBilled, totalInvoiceIncome)]]</div>
               </template>
             </vaadin-grid-column>
             <vaadin-grid-column>
