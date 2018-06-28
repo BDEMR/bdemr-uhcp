@@ -238,8 +238,8 @@ Polymer {
     now = lib.datetime.now()
 
     data = {
-      from: @user.name
-      to: 'taufiq@bdemr.com'
+      from: 'from@local.com'
+      to: 'tareqf1@gmail.com'
       subject: "Local Data on #{now}"
       body: JSON.stringify body
     }
