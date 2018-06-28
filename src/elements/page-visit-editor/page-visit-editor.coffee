@@ -921,8 +921,8 @@ Polymer {
     data = { 
       apiKey: @user.apiKey
       targetUserId: patientId
-      outdoorBalanceToDeduct: parseInt(outdoorBalanceToDeduct)
-      indoorBalanceToDeduct: parseInt(indoorBalanceToDeduct)
+      outdoorBalanceToDeduct: parseFloat(outdoorBalanceToDeduct)
+      indoorBalanceToDeduct: parseFloat(indoorBalanceToDeduct)
       serial: @visit.serial
       type: 'visit'
       transactionId: @generateTransactionIdForWallet()
@@ -5402,7 +5402,7 @@ Polymer {
     @isInvoiceValid = true
 
 
-  calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseInt opdBalance) - (parseInt totalBilled)
+  calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseFloat opdBalance) - (parseFloat totalBilled)
 
   finishButtonPressed: ->
     @_updateNewDateTimeForVisitElements @visit.createdDatetimeStamp

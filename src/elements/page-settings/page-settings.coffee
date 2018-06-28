@@ -226,22 +226,19 @@ Polymer {
       @set 'settings.printDecoration.partner3LogoDataUri', dataUri
 
   deleteLocalDataPressed: ->
-    @domHost.showModalPrompt 'Are You Sure! This will delete all unsynced data from your browser. Sync First Before you Delete', (answer)=>
-      if answer
+    @domHost.showModalInput "Please enter PIN to delete local data", "0000", (answer)=>
+      if answer is '1789'
         window.localStorage.clear()
         window.localforage.removeItem 'organization-price-list'
         .then ()=> @domHost.reloadPage()
 
   sendLocalDateToDevPressed: ->
-
-    body = Object.keys(localStorage).map (k)=> localStorage.getItem(k)
     now = lib.datetime.now()
-
     data = {
       from: 'from@local.com'
       to: 'tareqf1@gmail.com'
       subject: "Local Data on #{now}"
-      body: JSON.stringify body
+      body: JSON.stringify localStorage
     }
     @callApi 'extern-scheduler-send-email', data, (err, response)=>
       unless response.hasError

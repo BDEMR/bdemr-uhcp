@@ -104,8 +104,8 @@ Polymer {
     data = { 
       apiKey: @user.apiKey
       targetUserId: patientId
-      outdoorBalanceToDeduct: parseInt(outdoorBalanceToDeduct)
-      indoorBalanceToDeduct: parseInt(indoorBalanceToDeduct)
+      outdoorBalanceToDeduct: parseFloat(outdoorBalanceToDeduct)
+      indoorBalanceToDeduct: parseFloat(indoorBalanceToDeduct)
       serial: @visit.serial or @invoice.serial
       type: 'visit'
       transactionId: @generateTransactionIdForWallet()
@@ -398,7 +398,7 @@ Polymer {
   $calculateItemTotalPrice: (price=0, qty=1)-> return qty * price
 
   itemUnitPriceChanged: (e)->
-    value = parseInt e.target.value
+    value = parseFloat e.target.value
     el = @locateParentNode e.target, 'TR'
     repeater = @$$ '#invoice-item-repeater'
     index = repeater.indexForElement el
@@ -426,7 +426,7 @@ Polymer {
     price = 0
 
     for item in @invoice.data
-      price += parseInt (item.price * item.qty)
+      price += parseFloat (item.price * item.qty)
 
     @set "invoiceGrossPrice", price
     @set 'invoice.totalBilled', price
@@ -434,17 +434,17 @@ Polymer {
     @set 'invoice.lastModifiedDatetimeStamp', lib.datetime.now()
 
   _calculateDue: (total=0, paid=0, lastPaid=0)->
-    paid = parseInt paid
+    paid = parseFloat paid
     paid = 0 if Number.isNaN(paid)
     if total > 0
-      return total- ((paid) + (parseInt lastPaid) )
+      return total- ((paid) + (parseFloat lastPaid) )
    
       
 
   _calculateTotalAmtReceived: (paid=0, lastPaid=0)->
-    paid = parseInt paid
+    paid = parseFloat paid
     paid = 0 if Number.isNaN(paid)
-    totalAmountReceieved = (paid) + (parseInt lastPaid)
+    totalAmountReceieved = (paid) + (parseFloat lastPaid)
     @set 'invoice.totalAmountReceieved', totalAmountReceieved
     return totalAmountReceieved
 

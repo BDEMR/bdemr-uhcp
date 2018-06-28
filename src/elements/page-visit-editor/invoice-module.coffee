@@ -85,7 +85,7 @@ app.behaviors.local.invoiceMixin =
 
   
   itemUnitPriceChanged: (e)->
-    value = parseInt e.target.value
+    value = parseFloat e.target.value
     el = @locateParentNode e.target, 'PAPER-ITEM'
     repeater = @$$ '#invoice-item-repeater'
     index = repeater.indexForElement el
@@ -118,6 +118,6 @@ app.behaviors.local.invoiceMixin =
       @set 'invoice.totalBilled', 0
       return
     price = @invoice.data.reduce (total, item)->
-      return total + (parseInt (item.price * (item.qty or 1)))
+      return total + (parseFloat (item.price * (item.qty or 1)))
     , 0
     @set 'invoice.totalBilled', price
