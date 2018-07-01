@@ -937,16 +937,6 @@ Polymer {
   _returnSerial: (index)->
     index+1
 
-  _computeAge: (dateString)->
-    today = new Date()
-    birthDate = new Date dateString
-    age = today.getFullYear() - birthDate.getFullYear()
-    m = today.getMonth() - birthDate.getMonth()
-
-    if m < 0 || (m == 0 && today.getDate() < birthDate.getDate())
-      age--
-
-    return age
   # Util Functions - end
     
 

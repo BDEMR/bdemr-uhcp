@@ -319,17 +319,6 @@ Polymer {
     x =  Math.round(diffMs / oneDay)
     return @$TRANSLATE_NUMBER(x, @LANG)
 
-  _computeAge: (dateString)->
-    today = new Date()
-    birthDate = new Date dateString
-    age = today.getFullYear() - birthDate.getFullYear()
-    m = today.getMonth() - birthDate.getMonth()
-
-    if m < 0 || (m == 0 && today.getDate() < birthDate.getDate())
-      age--
-    
-    return age
-
   _sortByCreatedDate: (a, b)-> b.createdDatetimeStamp - a.createdDatetimeStamp  
 
   _sortByDate: (a, b)->

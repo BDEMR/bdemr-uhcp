@@ -123,19 +123,6 @@ Polymer {
     else
       return false
 
-  _computeAge: (dateString)->
-    return 'N/A' unless dateString
-    today = new Date()
-    birthDate = new Date dateString
-    age = today.getFullYear() - birthDate.getFullYear()
-    m = today.getMonth() - birthDate.getMonth()
-
-    if m < 0 || (m == 0 && today.getDate() < birthDate.getDate())
-      age--
-    
-    return age
-
-  
 
   _computeTotalDaysCount: (endDate, startDate)->
     return (@$TRANSLATE("As Needed", @LANG)) unless endDate

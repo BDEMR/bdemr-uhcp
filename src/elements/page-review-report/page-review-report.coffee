@@ -43,17 +43,6 @@ Polymer {
   # ================================
   $findCreator: (creatorSerial)-> 'me'
 
-  _computeAge: (dateString)->
-    today = new Date()
-    birthDate = new Date dateString
-    age = today.getFullYear() - birthDate.getFullYear()
-    m = today.getMonth() - birthDate.getMonth()
-
-    if m < 0 || (m == 0 && today.getDate() < birthDate.getDate())
-      age--
-    
-    return age
-
   arrowBackButtonPressed: (e)->
     @domHost.navigateToPage '#/reports-manager/selected:1'
 
