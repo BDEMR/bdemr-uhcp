@@ -353,16 +353,19 @@ Polymer({
         'Age': item.patientInfo ? this.$computeAge(item.patientInfo.dateOfBirth) : '',
         'Gender': item.patientInfo ? item.patientInfo.gender : '',
         'Consultation Site': item.organizationInfo ? item.organizationInfo.name : '',
+        'Factory Name': item.patientInfo.factoryName ? item.patientInfo.factoryName : '',
+        'Department': item.patientInfo.department ? item.patientInfo.department : '',
         'Visit Date': this.$formatDateTime(item.visit.createdDatetimeStamp),
         'Symptoms': item.symptoms ? item.symptoms.symptomsList.map(item => item.name) : '',
         'Diagnosis': item.diagnosis ? item.diagnosis.diagnosisList.map(item => item.name) : '',
         'Test Advise': item.advisedTests ? item.advisedTests.testAdvisedList.map(item => item.investigationName) : '',
-        referral: `${item.referral ? item.referral.doctorName : ''} - ${item.referral ? item.referral.doctorName : ''}`,
-        treatment: item.medication ? item.medication.map(item => item.data.brandName) : '',
+        'Referral': `${item.referral ? item.referral.doctorName : ''} - ${item.referral ? item.referral.doctorName : ''}`,
+        'Treatment': item.medication ? item.medication.map(item => item.data.brandName) : '',
         'Cost of Drug': this.$getCategoryCost('Medicine', item.invoice),
         'Cost of Investigation': this.$getCategoryCost('Investigation', item.invoice),
         'Cost of Consultancy': this.$getCategoryCost('Consultancy', item.invoice),
-        'Total Cost': this.$getTotalCost(item.invoice)
+        'Total Cost': this.$getTotalCost(item.invoice),
+        'Worker Contribution (5%)': item.chargedToWallet
       }
     })
   },
