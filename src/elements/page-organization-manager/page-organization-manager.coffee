@@ -81,6 +81,10 @@ Polymer {
   managePatientPressed: (e)->
     { organization } = e.model
     @domHost.navigateToPage '#/organization-manage-patient/organization:' + organization.idOnServer
+
+  registeredPatientsStatisticsPressed: (e)->
+    { organization } = e.model
+    @domHost.navigateToPage '#/organization-registered-patients-statistics/organization:' + organization.idOnServer
   
   manageUsersPressed: (e)->
     { organization } = e.model

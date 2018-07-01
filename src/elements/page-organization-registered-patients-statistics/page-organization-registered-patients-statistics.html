@@ -1,0 +1,239 @@
+<link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-card/paper-card.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
+<link rel="import" href="../../bower-assets/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower-assets/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower-assets/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower-assets/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
+<link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
+
+<!-- style -->
+<link rel="import" href="../../styles/common-style.html">
+
+<!-- behavior -->
+<link rel="import" href="../../behaviors/common-computes.html">
+<link rel="import" href="../../behaviors/db-using.html">
+<link rel="import" href="../../behaviors/translating.html">
+<link rel="import" href="../../behaviors/page-like.html">
+<link rel="import" href="../../behaviors/api-calling.html">
+<!-- custom-elements -->
+
+<dom-module id="page-organization-registered-patients-statistics">
+  <template>
+
+    <!-- style -->
+
+    <style is="custom-style" include="common-style">
+      
+      .limiting-container {
+        margin-top: 10px;
+      }
+
+      .organization-info-card-counter {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #777777;
+      }
+
+      .organization-info-cards {
+        @apply(--layout-vertical);
+        /*@apply(--layout-center);*/
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-bottom: 20px;
+      }
+
+      .organization-info-cards .row {
+        margin-left: 10px;
+        /*margin-right: 10px;*/
+        margin-top: 10px;
+      }
+
+      .organization-info-cards .hr {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: 1px;
+        /*width: 100px;*/
+        background: #dddddd;
+      }
+
+      .organization-info-cards .row .modifier {
+        font-size: 14px;
+        background: #000000;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .organization-info-cards .row .modifier.online {
+        background: #757575;
+      }
+
+      .organization-info-cards .row .modifier.local-only {
+        background: #039BE5;
+      }
+
+      .organization-info-cards .row .modifier.locally-updated {
+        background: #009688;
+      }
+
+      .organization-info-cards .row .modifier.imported {
+        background: #4CAF50;
+      }
+
+      .info-row {
+        margin-top: 10px;
+      }
+
+      .top-info-row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .serial-number {
+        background: #37474F;
+        color: #ffffff;
+        margin-left: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-left: 10px;
+      }
+
+      .table th {
+        text-align: left;
+        /* background-color: var(--paper-grey-50); */
+      }
+
+      .table td,
+      .table th {
+        vertical-align: left;
+        padding: 15px;
+        border: 0px solid var(--paper-grey-500);
+      }
+
+      .address1 {
+        margin-right: 10px;
+      }
+
+      .break-on-tablet {
+        @apply(--layout-horizontal);
+      }
+
+      @media screen and (max-width: 740px) {
+        .break-on-tablet {
+          display: block;
+        }
+      }
+
+      .val {
+        text-decoration: underline;
+      }
+
+      .card-custom-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--paper-grey-200);
+        /* background-color: var(--paper-grey-50); */
+      }
+
+      .card-custom-header .title {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        color: var(--brand-primary-color);
+      }
+    </style>
+
+    <div class="master-container">
+      <div class="limiting-container">
+
+        <template is="dom-if" if="{{!isOrganizationValid}}">
+          Organization invalid
+        </template>
+
+        <!-- editing organization - start -->
+        <template is="dom-if" if="{{isOrganizationValid}}">
+
+          <div class="organization-info-card-counter">
+            <div>Basic Information</div>
+          </div>
+
+          <paper-card class="organization-info-cards">
+            <div class="card-content">
+              <div class="info-row">
+                <span class="type bold headline">[[organization.name]]</span>
+              </div>
+              <div class="horizontal layout center top-info-row">
+                <span class="type caption bg-gray">[[organization.idOnServer]]</span>
+              </div>
+
+              <div class="info-row">
+                <div>Region: [[organization.effectiveRegion]]</div>
+              </div>
+              <div class="info-row">
+                <div>Address: [[organization.address]]</div>
+              </div>
+            </div>
+          </paper-card>
+
+          <div class="organization-info-card-counter">
+            <div class="m-right-16">Patients Under This Organization</div>
+          </div>
+
+        </template>
+
+        <paper-card class="organization-info-cards">
+          <div class="card-content">
+            <div class="card-custom-header">
+              <div class="title">Patients Statistics</div>
+            </div>
+          </div>
+
+      <div class="m-left-8">
+        <table class="table">
+          <tr>
+            <th>Patient's Name</th>
+            <th>Sign-Up Date</th>
+            <th>Created By</th>
+            <th>Organization</th>
+            <!-- <th>Time Slot</th> -->
+          </tr>
+          <template is="dom-repeat" items="">
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </template>
+        </table>
+      </div>
+
+        </paper-card>
+
+      </div>
+    </div>
+  </template>
+  <script src="page-organization-registered-patients-statistics.coffee-compiled.js"></script>
+</dom-module>

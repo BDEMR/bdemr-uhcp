@@ -326,6 +326,23 @@ app.pages.pageList = [
   }
 
   {
+    name: 'organization-registered-patients-statistics'
+    element: 'page-organization-registered-patients-statistics'
+    windowTitlePostfix: 'Registered Patients Statistics'
+    headerTitle: 'Registered Patients Statistics'
+    preload: true
+    hrefList: [ 'organization-registered-patients-statistics' ]
+    requireAuthentication : true
+    headerType: 'modal'
+    leftMenuEnabled: true
+    showSaveButton: false
+    showOrganizationsName: true
+    showToolbar: true
+    hideHeaderTitle: false
+    accessId: 'D010'
+  }
+
+  {
     name: 'organization-manage-users'
     element: 'page-organization-manage-users'
     windowTitlePostfix: 'Organization Manage Users'
