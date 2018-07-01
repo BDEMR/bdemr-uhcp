@@ -159,4 +159,14 @@ app.behaviors.commonComputes =
       else
         # @navigateToPage "#/select-organization"
         return true
+
+  $computeAge: (dateString)->
+    return 'N/A' unless dateString
+    today = new Date()
+    birthDate = new Date dateString
+    age = today.getFullYear() - birthDate.getFullYear()
+    m = today.getMonth() - birthDate.getMonth()
+    if m < 0 || (m == 0 && today.getDate() < birthDate.getDate())
+      age--
+    return age
       

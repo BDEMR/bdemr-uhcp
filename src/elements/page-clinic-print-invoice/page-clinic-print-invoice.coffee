@@ -191,21 +191,6 @@ Polymer {
   _returnSerial: (index)->
     index+1
 
-  _computeAge: (dateString)->
-    return "" unless dateString
-    today = new Date()
-    birthDate = new Date dateString
-    age = today.getFullYear() - birthDate.getFullYear()
-    m = today.getMonth() - birthDate.getMonth()
-
-    if m < 0 || (m == 0 && today.getDate() < birthDate.getDate())
-      age--
-    
-    return age
-
-  _formatDateTime: (dateTime)->
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy')
-
   navigatedOut: ->
     @patient = {}
     @invoice = {}

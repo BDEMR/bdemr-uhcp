@@ -889,6 +889,7 @@ Polymer {
     index+1
 
   _computeAge: (dateString)->
+    return 'N/A' unless dateString
     today = new Date()
     birthDate = new Date dateString
     age = today.getFullYear() - birthDate.getFullYear()

@@ -67,7 +67,7 @@
     <div class="horizontal layout center type body patient-details">
       <template is="dom-if" if="[[!patient.isForOrganizationOnly]]">
         <div class="m-right-16"><strong>Patient Name: </strong>{{patient.name}}</div>
-        <div class="m-right-16"><strong>Age: </strong>[[_computeAge(patient.dob)]] years</div>
+        <div class="m-right-16"><strong>Age: </strong>[[$computeAge(patient.dob)]] years</div>
         <div class="m-right-16"><strong>Allergy: </strong></div>
         <div><strong>Blood Group: </strong></div>
       </template>

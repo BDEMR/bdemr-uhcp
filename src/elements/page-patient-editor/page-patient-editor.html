@@ -315,7 +315,7 @@
                     </div>
                     <div class="m-horizontal-4">
                       <span class="text-bold">Age: </span>
-                      <span>[[_computeAge(patient.dateOfBirth)]] years </span>
+                      <span>[[$computeAge(patient.dateOfBirth)]] years </span>
                     </div>
                     <div class="m-horizontal-4">
                       <span class="text-bold">Blood Group: </span>
@@ -349,7 +349,7 @@
 
             <div class="layout horizontal wrap">
               <vaadin-date-picker class="custom-input" value="{{patient.dateOfBirth}}" label="Date of Birth (MM/DD/YYYY)" placeholder="MM/DD/YYYY"></vaadin-date-picker>
-              <paper-input class="custom-input" value="[[_computeAge(patient.dateOfBirth)]]" label="Years" disabled></paper-input>
+              <paper-input class="custom-input" value="[[$computeAge(patient.dateOfBirth)]]" label="Years" disabled></paper-input>
             </div>
 
 
