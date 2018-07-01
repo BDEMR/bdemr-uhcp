@@ -221,9 +221,6 @@ Polymer {
   _returnSerial: (index)->
     index+1
 
-  _formatDateTime: (dateTime)->
-    lib.datetime.format dateTime, 'mmm d, yyyy h:MMTT'
-
   _isEmptyTable: (list)->
     return true if list.length <= 0
 

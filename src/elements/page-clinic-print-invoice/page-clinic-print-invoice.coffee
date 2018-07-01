@@ -197,13 +197,6 @@ Polymer {
     @isVisitValid = false
     @isPatientValid = false
 
-  _formatDateTime: (dateTime)->
-    lib.datetime.format(dateTime, 'mmm d, yyyy h:MMTT')
-
-  _formatDate: (dateTime)->
-    lib.datetime.format(dateTime, 'mmm d, yyyy')
-
-  
   $fromListOrCustom: (list, index, custom)->
     if index is list.length - 1
       return custom

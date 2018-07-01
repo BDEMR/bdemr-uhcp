@@ -3729,10 +3729,6 @@ Polymer {
     else
       return false
 
-  _formatDateTime: (dateTime)->
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
-
-
 
   _loadVisitPrescription: (prescriptionSerial)->
     list = app.db.find 'visit-prescription', ({serial})-> serial is prescriptionSerial

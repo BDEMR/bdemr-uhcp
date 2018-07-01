@@ -1620,7 +1620,7 @@
                         </template>
                         <template id="invoice-list-repeater" is="dom-repeat" items="[[invoiceList]]" sort="_sortByCreatedDate">
                           <tr>
-                            <td>[[_formatDateTime(item.lastModifiedDatetimeStamp)]]</td>
+                            <td>[[$formatDateTime(item.lastModifiedDatetimeStamp)]]</td>
                             <td>[[getVisitSerial(item)]]</td>
                             <td>[[item.totalBilled]]
                               <span class="text-muted">BDT</span>
@@ -1695,7 +1695,7 @@
                                 <span class="type bold">[[item.visitSerial]]</span>
                               </div>
                               <div class="type caption">Advised by: {{item.doctorName}}</div>
-                              <div class="type caption">Date: [[_formatDateTime(item.createdDatetimeStamp)]]</div>
+                              <div class="type caption">Date: [[$formatDateTime(item.createdDatetimeStamp)]]</div>
                             </div>
                             <ul class="flex-2">
                               <template is="dom-repeat" items="[[item.investigations]]" as="investigation">
@@ -2171,8 +2171,8 @@
                           <paper-listbox>
                             <template is="dom-repeat" items="[[leaveData.data]]">
                               <paper-item>
-                                <div class="flex">From: [[_formatDateTime(item.startDate)]]</div>
-                                <div class="flex">To: [[_formatDateTime(item.endDate)]]</div>
+                                <div class="flex">From: [[$formatDateTime(item.startDate)]]</div>
+                                <div class="flex">To: [[$formatDateTime(item.endDate)]]</div>
                                 <div class="flex">Reason [[item.reason]]</div>
                                 <paper-icon-button icon="delete" on-tap="deleteLeaveInfoClicked"></paper-icon-button>
                               </paper-item>

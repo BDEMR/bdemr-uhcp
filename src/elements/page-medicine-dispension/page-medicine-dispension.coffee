@@ -212,26 +212,22 @@ Polymer {
         cbfn response.data
 
 
-  #COPY FROM PATINT APP MY-MEDICINE
-  _formatDateTime: (dateTimeInMs)->
-    lib.datetime.format((new Date dateTimeInMs), 'mmm d, yyyy h:MMTT')
-
   _getFirstDoseDateTime: (intakeDateTimeStampList)->
     if intakeDateTimeStampList.length isnt 0
       firstDoseValue = intakeDateTimeStampList[0]
-      return @_formatDateTime(firstDoseValue)
+      return @$formatDateTime(firstDoseValue)
     return 'Never Taken'
 
   _getLastDoseDateTime: (intakeDateTimeStampList)->
     if intakeDateTimeStampList.length isnt 0
       lastDoseValue = intakeDateTimeStampList[intakeDateTimeStampList.length-1]
-      return @_formatDateTime(lastDoseValue)
+      return @$formatDateTime(lastDoseValue)
     return 'Never Taken'
 
   _getNextDoseDateTime: (intakeDateTimeStampList, nextDoseDateTimeStamp)->
     if intakeDateTimeStampList.length isnt 0
       nextDoseValue = nextDoseDateTimeStamp
-      return @_formatDateTime(nextDoseValue)
+      return @$formatDateTime(nextDoseValue)
     return 'Taken Immediately'
 
   _getItemDose: (dose)->

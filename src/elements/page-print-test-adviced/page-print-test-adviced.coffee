@@ -334,9 +334,5 @@ Polymer {
     @doctorInstitutionList = []
     @doctorSpecialityList = []
 
-  _formatDateTime: (dateTime)->
-    # console.log dateTime
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
-
 
 }

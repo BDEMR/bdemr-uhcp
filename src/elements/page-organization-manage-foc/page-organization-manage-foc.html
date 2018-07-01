@@ -246,7 +246,7 @@
               <template is="dom-repeat" items="[[packageActivationList]]" as="packageActivation">
                 <div class="horizontal layout center">
                   <div class="type body">
-                    [[$getFullName(packageActivation.patient.name)]] - [[packageActivation.packageName]] - [[_formatDateTime(packageActivation.fromDatetimeStamp)]] to [[_formatDateTime(packageActivation.toDatetimeStamp)]]
+                    [[$getFullName(packageActivation.patient.name)]] - [[packageActivation.packageName]] - [[$formatDateTime(packageActivation.fromDatetimeStamp)]] to [[$formatDateTime(packageActivation.toDatetimeStamp)]]
                   </div>
                 </div>
               </template>

@@ -510,7 +510,7 @@
                   <template is="dom-repeat" items="[[reportNotification]]">
                     <paper-material class="layout horizontal">
                       <div class="layout vertical start flex">
-                        <span class="text-sm text-muted block">[[_formatDateTime(item.createdDateTimeStamp)]]</span>
+                        <span class="text-sm text-muted block">[[$formatDateTime(item.createdDateTimeStamp)]]</span>
                         <span class="text-sm sender">[[item.sender]]</span>
                         <p class="text-left">[[item.message]]</p>
                       </div>
@@ -532,7 +532,7 @@
                   <template is="dom-repeat" items="[[patientNoteNotification]]">
                     <paper-material class="layout horizontal">
                       <div class="layout vertical start flex">
-                        <span class="text-sm text-muted block">[[_formatDateTime(item.createdDateTimeStamp)]]</span>
+                        <span class="text-sm text-muted block">[[$formatDateTime(item.createdDateTimeStamp)]]</span>
                         <span class="text-sm sender">[[item.sender]]</span>
                         <p class="text-left">[[item.message]]</p>
                       </div>
@@ -554,7 +554,7 @@
                   <template is="dom-repeat" items="[[onlineConsultationNotification]]">
                     <paper-material class="layout horizontal">
                       <div class="layout vertical start flex">
-                        <span class="text-sm text-muted block">[[_formatDateTime(item.createdDateTimeStamp)]]</span>
+                        <span class="text-sm text-muted block">[[$formatDateTime(item.createdDateTimeStamp)]]</span>
                         <span class="text-sm sender">[[item.sender]]</span>
                         <p class="text-left">[[item.message]]</p>
                       </div>
@@ -576,7 +576,7 @@
                   <template is="dom-repeat" items="[[generalNotification]]">
                     <paper-material class="layout horizontal">
                       <div class="layout vertical start flex">
-                        <span class="text-sm text-muted block">[[_formatDateTime(item.createdDateTimeStamp)]]</span>
+                        <span class="text-sm text-muted block">[[$formatDateTime(item.createdDateTimeStamp)]]</span>
                         <span class="text-sm sender">[[item.sender]]</span>
                         <p class="text-left">[[item.message]]</p>
                       </div>

@@ -34,9 +34,6 @@ Polymer {
 
   $add: (a, b)-> parseInt(a) + parseInt(b)
 
-  _formatDateTime: (dateTime)->
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
-
   _sortByDate: (a, b)-> return (b.createdDatetimeStamp - a.createdDatetimeStamp)
   
   _loadUser:()->

@@ -620,10 +620,6 @@ Polymer {
 
   # Notification Area ======================================
   
-  _formatDateTime: (dateTime)->
-    return unless dateTime
-    lib.datetime.format dateTime, 'mmm d, yyyy h:MMTT'
-
   inAppNotificationSystemInitiate: ->
     webSocketHost = app.config.variableConfigs[app.mode].serverWsHost
     @ws = new WebSocket webSocketHost, [

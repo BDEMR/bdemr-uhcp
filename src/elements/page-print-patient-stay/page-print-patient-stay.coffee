@@ -304,10 +304,4 @@ Polymer {
     @isPatientValid = false
     @isPatientStayValid = false
 
-  _formatDateTime: (dateTime)->
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
-
-  _formatDate: (dateTime)->
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy')
-
 }

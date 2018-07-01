@@ -140,9 +140,6 @@ Polymer {
     if a.date > b.date
       return -1
 
-  _formatDateTime: (dateTime)->
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
-
   _returnSerial: (index)->
     index+1
 

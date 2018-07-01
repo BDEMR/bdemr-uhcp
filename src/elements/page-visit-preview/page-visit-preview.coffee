@@ -1155,9 +1155,6 @@ Polymer {
         vitalObject: object
       }
 
-  _formatDateTime: (dateTime)->
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
-  
   getPrintedOnTime: ()->
     lib.datetime.format((new Date()), 'mmm d, yyyy h:MMTT')
 

@@ -1255,7 +1255,7 @@
                             <div class="type caption secondary">[[_returnSerial(index)]]</div>
                             <div class="m-left-16 flex">
                               <div class="type body">{{item.vitalType}}: [[_pritifyVitalData(item)]]</div>
-                              <div class="type caption secondary">{{_formatDateTime(item.vitalObject.createdDatetimeStamp)}}</div>
+                              <div class="type caption secondary">{{$formatDateTime(item.vitalObject.createdDatetimeStamp)}}</div>
                             </div>
                             <paper-icon-button icon="delete" on-tap="_deleteAddedVitalItemClicked"></paper-icon-button>
                           </div>

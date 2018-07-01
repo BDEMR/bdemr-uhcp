@@ -83,9 +83,6 @@ Polymer {
     if a.createdDatetimeStamp > b.createdDatetimeStamp
       return -1
   
-  _formatDateTime: (dateTime)->
-    lib.datetime.format( dateTime, 'mmm d, yyyy')
-  
   $isAdmin: (userId, userList)->
     for user in userList
       if userId is user.id

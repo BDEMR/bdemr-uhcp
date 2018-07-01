@@ -164,10 +164,4 @@ Polymer {
     @isDiagnosisValid = false
 
 
-  _formatDateTime: (dateTime)->
-    lib.datetime.format(dateTime, 'mmm d, yyyy h:MMTT')
-
-  _formatDate: (dateTime)->
-    lib.datetime.format(dateTime, 'mmm d, yyyy')
-
 }
