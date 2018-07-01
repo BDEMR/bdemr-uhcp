@@ -371,7 +371,7 @@ Polymer({
   },
 
   downloadCsv(csv) {
-    var exportedFilenmae = 'uhcp-visit-report-export.csv';
+    var exportedFilenmae = `uhcp-visit-report-export-${Date.now()}.csv`
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     var link = document.createElement("a");
     var url = URL.createObjectURL(blob);
