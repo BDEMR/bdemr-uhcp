@@ -38,8 +38,15 @@ app.behaviors.commonComputes =
 
   $formatDate: (date)->
     return '' unless date
-    lib.datetime.format((new Date date), 'mmm d, yyyy')
-  
+    formatObj = { 
+      timeZone: 'Asia/Dhaka' 
+      day: 'numeric'
+      month: 'short'
+      year: 'numeric'
+    }
+    return new Date(dateTime).toLocaleString('en-GB', formatObj)
+
+
   $formatDateTime: (dateTime)->
     return '' unless dateTime
     formatObj = { 
@@ -166,7 +173,7 @@ app.behaviors.commonComputes =
         return true
 
   $computeAge: (dateString)->
-    return 'N/A' unless dateString
+    return '' unless dateString
     today = new Date()
     birthDate = new Date dateString
     age = today.getFullYear() - birthDate.getFullYear()
