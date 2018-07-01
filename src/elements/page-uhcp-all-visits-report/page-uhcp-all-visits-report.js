@@ -365,7 +365,7 @@ Polymer({
         'Cost of Investigation': this.$getCategoryCost('Investigation', item.invoice),
         'Cost of Consultancy': this.$getCategoryCost('Consultancy', item.invoice),
         'Total Cost': this.$getTotalCost(item.invoice),
-        'Worker Contribution (5%)': item.chargedToWallet
+        'Worker Contribution (5%)': item.chargedToWallet ? item.chargedToWallet : 0
       }
     })
   },
