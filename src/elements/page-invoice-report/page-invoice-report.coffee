@@ -66,6 +66,11 @@ Polymer {
         'Medicine'
       ]
 
+    showOnlyDues:
+      type: Boolean
+      value: false
+      observer: '_showOnlyDuesChcked'
+
     loadingCounter:
       type: Number
       value: -> 0
@@ -221,6 +226,13 @@ Polymer {
     @dateCreatedFrom = 0
     @dateCreatedTo = 0
 
+  _showOnlyDuesChcked: (value)->
+    if value
+      duesOnlyInvoices = @matchingInvoiceReportList.filter (item)=> @$calculateDue(item.totalBilled, item.totalAmountReceieved) > 0
+      @set 'matchingInvoiceReportList', duesOnlyInvoices
+    else
+      @set 'matchingInvoiceReportList', @invoiceReportList
+        
 
   navigatedOut: ->
     @employeeIdOrPhone = ''

@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower-assets/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
 
@@ -125,7 +126,12 @@
           </div>
           <br>
 
-          <h3>Total Invoice: [[matchingInvoiceReportList.length]]</h3>
+          <div class="layout horizontal justified p-horizontal-16">
+            <h4 class="">Total Invoice: [[matchingInvoiceReportList.length]]</h4>
+            <h4 class="">
+              <paper-checkbox checked="{{showOnlyDues}}">Show Only Dues</paper-checkbox>
+            </h4>
+          </div>
           <vaadin-grid items="[[matchingInvoiceReportList]]" id="inoviceListGrid">
             <vaadin-grid-column width="150px" flex-grow="0">
               <template class="header">
