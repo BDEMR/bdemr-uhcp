@@ -33,7 +33,7 @@ Polymer {
 
     categoryList:
       type: Array
-      value: -> ['Symptoms','Diagnosis','Investigation', 'Medicine']
+      value: -> ['Investigation', 'Medicine']
     
     ageGroupList:
       type: Array
