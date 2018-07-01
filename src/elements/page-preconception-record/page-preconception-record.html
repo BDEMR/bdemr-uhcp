@@ -499,11 +499,11 @@
                     </div>
                     <div class="m-horizontal-4">
                       <strong>Created on:</strong>
-                      <span>{{$mkDateTime(pcc.createdDatetimeStamp)}}</span>
+                      <span>{{$formatDateTime(pcc.createdDatetimeStamp)}}</span>
                     </div>
                     <div class="m-horizontal-4">
                       <strong>Last Modified on:</strong>
-                      <span>{{$mkDateTime(pcc.lastModifiedDatetimeStamp)}}</span>
+                      <span>{{$formatDateTime(pcc.lastModifiedDatetimeStamp)}}</span>
                     </div>
                     <div class="m-horizontal-4">
                       <strong>Created by:</strong>
@@ -1608,7 +1608,7 @@
                       </template>
                     </div>
                   </template>
-                  
+
 
                   <!-- <div class="horizontal layout wrap" hidden$="[[!$equals(pcc.visitReason.type, '1st ANC (6 - 14 weeks)')]]">
                     <template is="dom-repeat" items="[[pcc.clinical.labReportsOtherList]]">
@@ -2038,16 +2038,20 @@
                         <paper-button class="colored" raised on-tap="updatePatientDetails"><iron-icon class="m-right-8" icon="icons:check"></iron-icon>Update</paper-button>
                       </template> -->
 
-                      
-                      <paper-button class="colored" raised on-tap="upsertPccRecord"><iron-icon class="m-right-8" icon="icons:save"></iron-icon>Save PCC Record</paper-button>
+
+                      <paper-button class="colored" raised on-tap="upsertPccRecord">
+                        <iron-icon class="m-right-8" icon="icons:save"></iron-icon>Save PCC Record</paper-button>
                     </div>
                   </div>
 
                   <template is="dom-if" if="[[_compareFn(orgSmsBalance, '==', 0)]]">
-                    <div class="m-top-8 type caption-2 warning" hidden$=""><strong>Your SMS Balance is [[orgSmsBalance]] (zero). Patient will not get any SMS!</strong></div>
-                    <div class="m-top-8 type caption-2" hidden$=""><strong>Instruction:</strong> go to 'My Wallet > Buy Bulk SMS' in order to purchase SMS.</div>
+                    <div class="m-top-8 type caption-2 warning" hidden$="">
+                      <strong>Your SMS Balance is [[orgSmsBalance]] (zero). Patient will not get any SMS!</strong>
+                    </div>
+                    <div class="m-top-8 type caption-2" hidden$="">
+                      <strong>Instruction:</strong> go to 'My Wallet > Buy Bulk SMS' in order to purchase SMS.</div>
                   </template>
-                  
+
                 </div>
               </paper-card>
 

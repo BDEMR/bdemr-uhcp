@@ -425,7 +425,7 @@ Polymer {
       "phone": seat.patientPhoneCopy,
       "email": seat.patientEmailCopy,
       "category": "waitlist",
-      "message": "#{procedure} is booked  at #{@organization.name} on #{lib.datetime.mkDatetime dateTime, 'mmm d, yyyy h:MMTT'}"
+      "message": "#{procedure} is booked  at #{@organization.name} on #{$formatDateTime}"
       apiKey: @user.apiKey
     }
     @_sendNotification notification

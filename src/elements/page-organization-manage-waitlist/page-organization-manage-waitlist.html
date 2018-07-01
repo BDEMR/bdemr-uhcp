@@ -159,7 +159,8 @@
       .waitlist-item {
         padding: 20px 40px;
       }
-      .waitlist-item:nth-child(odd){
+
+      .waitlist-item:nth-child(odd) {
         background-color: var(--paper-grey-100);
       }
     </style>
@@ -325,7 +326,7 @@
                                   <paper-button class="btn btn-primary btn-sm" on-tap="bookProecedureConfirmedClick">Confirm Booking</paper-button>
                                 </template>
                                 <template is="dom-if" if="[[seat.isConfirmedForProcedure]]">
-                                  <div class="type caption2 primary">Precdure Confirmed [[$mkDateTime(seat.confirmedForProcedureDatetimeStamp)]]</div>
+                                  <div class="type caption2 primary">Precdure Confirmed [[$formatDateTime(seat.confirmedForProcedureDatetimeStamp)]]</div>
                                 </template>
                               </div>
 

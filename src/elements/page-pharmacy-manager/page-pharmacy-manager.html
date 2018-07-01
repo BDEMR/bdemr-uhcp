@@ -45,7 +45,6 @@
       .m-right-5 {
         margin-right: 5px;
       }
-      
     </style>
 
     <!-- local DOM -->
@@ -53,7 +52,7 @@
     <div class="master-container">
 
       <div class="limiting-container">
-        
+
         <paper-card heading="Add Pharmacy Item : [[organization.name]]">
           <div class="card-content">
             <template is="dom-if" if="[[isLoading]]">
@@ -61,8 +60,7 @@
             </template>
             <template is="dom-if" if="[[!isLoading]]">
               <div class="layout horizontal">
-                <paper-autocomplete text="{{inventory.data.name}}"
-                source="[[brandNameSourceDataList]]" class="flex-2 m-right-5" label="Item Name" ></paper-autocomplete>
+                <paper-autocomplete text="{{inventory.data.name}}" source="[[brandNameSourceDataList]]" class="flex-2 m-right-5" label="Item Name"></paper-autocomplete>
                 <paper-input class="flex m-right-5" label="Buying Price/Unit" value="{{inventory.data.buyingPrice}}" type="number"></paper-input>
                 <paper-input class="flex m-right-5" label="Selling Price/Unit" value="{{inventory.data.sellingPrice}}" type="number"></paper-input>
                 <paper-input class="flex m-right-5" label="Qty" value="{{inventory.data.qty}}" type="number"></paper-input>
@@ -78,11 +76,21 @@
         <paper-card heading="Inventory">
           <div class="card-content">
             <paper-item class="layout horizontal">
-              <div class="flex-2"><strong>Item</strong></div>
-              <div class="flex"><strong>Qty</strong></div>
-              <div class="flex"><strong>Buying Price</strong></div>
-              <div class="flex"><strong>Selling Price</strong></div>
-              <div class="flex"><strong>Expiry</strong></div>
+              <div class="flex-2">
+                <strong>Item</strong>
+              </div>
+              <div class="flex">
+                <strong>Qty</strong>
+              </div>
+              <div class="flex">
+                <strong>Buying Price</strong>
+              </div>
+              <div class="flex">
+                <strong>Selling Price</strong>
+              </div>
+              <div class="flex">
+                <strong>Expiry</strong>
+              </div>
               <div class="flex">Actions</div>
             </paper-item>
             <template is="dom-repeat" items="[[inventoryList]]">
@@ -91,7 +99,7 @@
                 <div class="flex">[[item.data.qty]]</div>
                 <div class="flex">[[item.data.buyingPrice]]</div>
                 <div class="flex">[[item.data.sellingPrice]]</div>
-                <div class="flex">[[_formatDate(item.data.expiryDate)]]</div>
+                <div class="flex">[[$formatDate(item.data.expiryDate)]]</div>
                 <div class="flex">
                   <paper-icon-button icon="create" on-tap="editInventoryItemButtonClicked"></paper-icon-button>
                 </div>
