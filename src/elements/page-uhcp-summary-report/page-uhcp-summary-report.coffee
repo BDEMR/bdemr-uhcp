@@ -64,6 +64,12 @@ Polymer {
       type: Number
       computed: 'getTotalServiceAmount(reportResults)'
 
+    # patientCount:
+    #   type: Number
+    #   notify: true
+    #   computed: '_getTotalPatientCountByReport(reportResults)'
+    
+
     selectedReportType: String
     selectedVisitType: String
     dateCreatedFrom: String
@@ -175,6 +181,14 @@ Polymer {
       return total += (parseFloat item.serviceAmount)
     , 0
     return totalCost.toFixed(2)
+
+  _getTotalPatientCountByReport: (reports)->
+    return reports.reduce((list, item) => 
+      if (list.indexOf(item.visit.patientSerial) == -1) 
+        list.push(item.visit.patientSerial);
+      return list
+    , []).length
+  
 
   # ====================================================
 

@@ -103,10 +103,17 @@ Polymer({
       computed: '_getTotalCategoryCostByReport("Consultancy" ,reportResults)'
     },
 
+    patientCount: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalPatientCountByReport(reportResults)'
+    },
+
     dateCreatedFrom: String,
     dateCreatedTo: String,
     selectedGender: String,
     selectedOrganizationId: String
+
 
   },
 
@@ -232,6 +239,15 @@ Polymer({
     return total.toFixed(2)
   },
 
+  _getTotalPatientCountByReport(reports) {
+    return reports.reduce((list, item) => {
+      if (list.indexOf(item.visit.patientSerial) == -1) {
+        list.push(item.visit.patientSerial);
+      }
+      return list;
+    }, []).length;
+  },
+
   resetButtonClicked() { return this.domHost.reloadPage(); },
 
   genderSelected(e) {
@@ -289,6 +305,7 @@ Polymer({
     }
     return this.set('selectedSalaryRange', selectedSalaryRange);
   },
+
 
   searchButtonClicked() {
     let query = {
