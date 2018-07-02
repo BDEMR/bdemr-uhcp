@@ -4761,7 +4761,7 @@ Polymer {
               if @visit.invoiceSerialList?.length
                 @_loadInvoice @visit.invoiceSerialList[0]
                 @isInvoiceValid = true;
-              else if visit.invoiceSerial
+              else if @visit.invoiceSerial
                 @_loadInvoice @visit.invoiceSerial
                 @isInvoiceValid = true;
               else
