@@ -774,7 +774,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         systolic: ''
         diastolic: ''
@@ -982,7 +982,7 @@ Polymer {
       createdByUserSerial: @user.serial
       lastModifiedDatetimeStamp: 0
       createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       serial: @user.serial
       printDecoration: 
         leftSideLine1: 'My Institution'
@@ -1038,6 +1038,7 @@ Polymer {
       lastModifiedDatetimeStamp: lib.datetime.mkDate lib.datetime.now()
       createdDatetimeStamp: lib.datetime.mkDate lib.datetime.now()
       createdByUserSerial: @user.serial
+      lastSyncedDatetimeStamp: 0
       email: @_checkIfEmailAddress data.emailOrPhone
       phone: @_checkIfPhoneNumber data.emailOrPhone
       address:

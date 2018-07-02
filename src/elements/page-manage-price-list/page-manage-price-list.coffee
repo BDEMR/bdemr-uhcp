@@ -155,6 +155,7 @@ Polymer {
       organizationId: @organization.idOnServer
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
     }
   

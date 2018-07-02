@@ -98,10 +98,10 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
     Promise.all([clientToServerDocListDataPromise, removedDocListDataPromise])
       .then(([clientToServerDocList, removedDocList]) => {
 
-        if (clientToServerDocList && clientToServerDocList.length > 1000) {
-          console.error('price list is too big', clientToServerDocList.length)
-          clientToServerDocList = [];
-        }
+        // if (clientToServerDocList && clientToServerDocList.length > 1000) {
+        //   console.error('price list is too big', clientToServerDocList.length)
+        //   clientToServerDocList = [];
+        // }
 
         const data = {
           apiKey,
@@ -111,6 +111,8 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
           removedDocList: removedDocList || [],
           client: 'uhcp'
         };
+
+        // return console.log(clientToServerDocList.length);
 
         this.callApi('/bdemr--price-list-sync', data, (err, response) => {
 

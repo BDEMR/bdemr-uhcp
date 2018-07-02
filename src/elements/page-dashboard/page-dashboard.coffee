@@ -308,7 +308,7 @@ Polymer {
       createdByUserSerial: @user.serial
       lastModifiedDatetimeStamp: 0
       createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       serial: @user.serial
       printDecoration:
         headerLine: ''

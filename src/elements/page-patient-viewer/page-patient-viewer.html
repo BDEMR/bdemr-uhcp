@@ -15,6 +15,7 @@
 <link rel="import" href="../../bower-assets/paper-menu/paper-menu.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
+<link rel="import" href="../../bower-assets/paper-badge/paper-badge.html">
 <link rel="import" href="../../bower-assets/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower-assets/paper-tabs/paper-tabs.html">
@@ -1586,7 +1587,10 @@
             <section>
               <paper-tabs class="basic-tabs" selected="{{selectedInvoiceView}}">
                 <paper-tab>Invoice</paper-tab>
-                <paper-tab>Pending Invoice</paper-tab>
+                <paper-tab>
+                  <span id="pendingInvoieCount">Pending Invoice</span>
+                  <paper-badge class="m-left-16" for="pendingInvoieCount" label="[[pendingInvoiceList.length]]" hidden="[[!pendingInvoiceList.length]]"></paper-badge>
+                </paper-tab>
               </paper-tabs>
               <iron-pages selected="{{selectedInvoiceView}}">
 

@@ -1078,6 +1078,7 @@ Polymer {
           serial: @generateSerialForDiagnosis()
           createdDatetimeStamp: lib.datetime.now()
           lastModifiedDatetimeStamp: lib.datetime.now()
+          lastSyncedDatetimeStamp: 0
           createdByUserSerial: @user.serial
           patientSerial: @patient.serial
           doctorName: @$getFullName @user.name
@@ -2294,6 +2295,7 @@ Polymer {
       serial: @generateSerialForAttachmentBlob()
       attSyncSerial: @generateSerialForAttachmentSync()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
       mainStorage: null # could be 'server' or 'local' or 'session'
       title
       description
@@ -2599,6 +2601,7 @@ Polymer {
       serial: @generateSerialForEmployeeLeaveData()
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       patientSerial: @patient.serial
       data: []

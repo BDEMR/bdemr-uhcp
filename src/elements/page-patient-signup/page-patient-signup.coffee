@@ -156,6 +156,7 @@ Polymer {
       patientName: patient.name
       visitedDateTimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
     }
 
     app.db.insert 'visited-patient-log', visitedPatientLogObject
@@ -530,6 +531,7 @@ Polymer {
       doctorAccessPin: '0000'
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
       createdByUserId: @user.idOnServer
 
 
