@@ -59,14 +59,7 @@ Polymer {
     .catch (err)=> @domHost.showModalDialog 'Something Went Wrong'
 
   _deleteFromDb: (removedItem, cbfn)->
-    localforage.getItem 'organization-price-list'
-    .then (value)=>
-      indexOnPriceList = value.findIndex (item)=> item.serial is removedItem.serial
-      if indexOnPriceList > -1
-        value.splice indexOnPriceList, 1
-      return localforage.setItem 'organization-price-list', value
-    .then ()=>
-      return localforage.getItem 'organization-price-list--deleted'
+    localforage.getItem 'organization-price-list--deleted'
     .then (deletedPriceList)=>
       unless deletedPriceList
         deletedPriceList = [] 
@@ -117,6 +110,13 @@ Polymer {
     if userList.length is 1
       @user = userList[0]
   
+   _checkOrganizationAccess: (organizationIdentifier)->
+    if organizationIdentifier is app.config.masterOrganizationId and @getCurrentOrganization().idOnServer is app.config.masterOrganizationId
+      return true
+    else
+      return false
+      
+  
   _checkUserAccess: (userIdOnServer, userList, cbfn)->
     user = item for item in userList when item.id is userIdOnServer
     cbfn user.isAdmin
@@ -155,6 +155,7 @@ Polymer {
       organizationId: @organization.idOnServer
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
     }
   
@@ -251,30 +252,6 @@ Polymer {
       }
     app.db.insert 'custom-investigation-list', customInvestigationObject
 
-  
-  addNewItemToPriceList: (newItem)->
-    @push 'priceList', newItem
-    if (@priceListCategories.indexOf newItem.category) is -1
-      @_loadCategories @priceList
-      selectedCategoryIndex = @priceListCategories.length-1
-      @async => @$$("#categoryTabs").selectIndex selectedCategoryIndex
-    currentlySelectedCategoryTabIndex = @$$("#categoryTabs").selected
-    @async => @showPriceListForSelectedCategory(currentlySelectedCategoryTabIndex)
-    if newItem.category is 'Investigation'
-      @_addToCustomInvestigation newItem
-    @_updateToDb newItem, ()=>
-      @domHost.showSuccessToast 'Saved'
-
-  removeItemFromPriceList: (removedItem)->
-    indexOnPriceList = @priceList.findIndex (item)=> item.serial is removedItem.serial
-    @splice "priceList", indexOnPriceList, 1
-    unless @priceListForSelectedCategory.length
-      @_loadCategories @priceList
-      @async => @$$("#categoryTabs").selectIndex(0)
-      @async => @showPriceListForSelectedCategory 0
-    @_deleteFromDb removedItem, ()=> null
-    
-
   _validateCustomItem: (data)->
     return unless typeof data is 'object'
     unless data.name
@@ -297,8 +274,13 @@ Polymer {
       category: ''
       subCategory: ''
     }, obj 
+
+  categorySelected: (e)->
+    selectedIndex = e.detail.selected
+    @async ()=>
+      @showPriceListForSelectedCategory selectedIndex
   
-  # Events
+  # Observer Events
   # =================================
   updatePriceList: (changeRecord)->
     if changeRecord
@@ -313,32 +295,28 @@ Polymer {
           newItem = change.object[index]
           @addNewItemToPriceList newItem
 
-
   actualCostChanged: (e)->
     item = e.model.item
     item.lastModifiedDatetimeStamp = lib.datetime.now()
-    @_updateToDb item, ()=> @domHost.showSuccessToast 'Saved'
-    # app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
+    index = @priceListForSelectedCategory.findIndex (item)=> item.serial is e.model.item.serial
+    @splice 'priceListForSelectedCategory', index, 1, item
+    # @_updateToDb item, ()=> @domHost.showSuccessToast 'Saved'
 
   priceChanged: (e)->
     item = e.model.item
     item.lastModifiedDatetimeStamp = lib.datetime.now()
-    @_updateToDb item, ()=> @domHost.showSuccessToast 'Saved'
-    # app.db.upsert 'organization-price-list', item, ({serial})=> serial is item.serial
+    index = @priceListForSelectedCategory.findIndex (item)=> item.serial is e.model.item.serial
+    @splice 'priceListForSelectedCategory', index, 1, item
+    # @_updateToDb item, ()=> @domHost.showSuccessToast 'Saved'
   
-  categorySelected: (e)->
-    selectedIndex = e.detail.selected
-    @async ()=>
-      @showPriceListForSelectedCategory selectedIndex
-
   deleteItemPressed: (e)->
     @domHost.showModalPrompt 'Are you sure to delete this item', (answer)=>
       if answer
         index = @priceListForSelectedCategory.findIndex (item)=> item.serial is e.model.item.serial
         @splice 'priceListForSelectedCategory', index, 1
-
-  saveButtonPressed: -> @domHost.showSuccessToast 'Data Saved'
-
+        # @_deleteFromDb item, ()=> null
+  
+  
   addNewItemModalOpen: -> @.$.customItemModal.toggle()
   
   addNewItemAndClosePressed: ->
@@ -349,7 +327,7 @@ Polymer {
       @unshift 'priceListForSelectedCategory', newItem
       @$$("#customItemModal").toggle()
       @set 'customItem', {}
-      @domHost.showSuccessToast 'Item Added and Saved'
+      # @_updateToDb data, ()=> @domHost.showSuccessToast 'Item Added and Saved'
         
   addNextItemPressed: ()->
     data = @get 'customItem'
@@ -361,15 +339,35 @@ Polymer {
         category: data.category
         subCategory: data.subCategory
       }
-      @domHost.showSuccessToast 'Item Added and Saved'
+      # @_updateToDb data, ()=> @domHost.showSuccessToast 'Item Added and Saved'
       
+  addNewItemToPriceList: (newItem)->
+    @push 'priceList', newItem
+    if (@priceListCategories.indexOf newItem.category) is -1
+      @_loadCategories @priceList
+      selectedCategoryIndex = @priceListCategories.length-1
+      @async => @$$("#categoryTabs").selectIndex selectedCategoryIndex
+    currentlySelectedCategoryTabIndex = @$$("#categoryTabs").selected
+    @async => @showPriceListForSelectedCategory(currentlySelectedCategoryTabIndex)
+    if newItem.category is 'Investigation'
+      @_addToCustomInvestigation newItem
+    # @_updateToDb newItem, ()=>
+    #   @domHost.showSuccessToast 'Saved'
 
-  _checkOrganizationAccess: (organizationIdentifier)->
-    if organizationIdentifier is app.config.masterOrganizationId and @getCurrentOrganization().idOnServer is app.config.masterOrganizationId
-      return true
-    else
-      return false
-      
+  removeItemFromPriceList: (removedItem)->
+    indexOnPriceList = @priceList.findIndex (item)=> item.serial is removedItem.serial
+    @splice "priceList", indexOnPriceList, 1
+    unless @priceListForSelectedCategory.length
+      @_loadCategories @priceList
+      @async => @$$("#categoryTabs").selectIndex(0)
+      @async => @showPriceListForSelectedCategory 0
+    @_deleteFromDb removedItem, ()=> null
+  
+  saveButtonPressed: ->
+    # return console.log @priceList.length
+    localforage.setItem 'organization-price-list', @priceList
+    .then ()=> @domHost.showSuccessToast 'Price List Saved. Sync Now.'
+    .catch (err)=> @domHost.showWarningToast 'Something Went Wrong with saving'
 
 
 }

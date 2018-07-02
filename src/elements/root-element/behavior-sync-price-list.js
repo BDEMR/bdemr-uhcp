@@ -7,35 +7,21 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
 
   _updateLastSyncedDatetimeStampForPrice() { return window.localStorage.setItem('priceListLastSyncedDatetimeStamp', lib.datetime.now()); },
 
-  _getModifiedPriceDataFromDB(collectionNameList, lastSyncedDatetimeStamp) {
+  _getModifiedPriceDataFromDB(clientCollectionName, lastSyncedDatetimeStamp) {
     return new Promise((accept, reject) => {
-      let promiseList = []
-      collectionNameList.forEach((clientCollectionName) => {
-        promiseList.push(new Promise((accept, reject) => {
-          localforage.getItem(clientCollectionName)
-            .then((collection) => {
-              if (!collection) {
-                return accept([]);
-              }
-              const docListWithClientCollectionName = collection.filter((item) => {
-                return (item && item.lastModifiedDatetimeStamp > lastSyncedDatetimeStamp) ? true : false;
-              }).map(doc => {
-                doc.clientCollectionName = clientCollectionName;
-                return doc;
-              });
-              accept(docListWithClientCollectionName)
-            }).catch((err) => reject(err))
-        }))
-      })
-      Promise.all(promiseList)
-        .then((values) => {
-          let flattenedArr = values.reduce((list, currentList) => {
-            return list.concat(currentList);
-          }, []);
-          accept(flattenedArr);
-        })
-
+      localforage.getItem(clientCollectionName)
+        .then((collection) => {
+          if (!collection || !lastSyncedDatetimeStamp) {
+            return accept([]);
+          }
+          const docListWithClientCollectionName = collection.filter((item) => item && item.lastModifiedDatetimeStamp > lastSyncedDatetimeStamp).map(doc => {
+            doc.clientCollectionName = clientCollectionName;
+            return doc;
+          });
+          accept(docListWithClientCollectionName)
+        }).catch((err) => reject(err))
     })
+
   },
 
   _updateLocalDBWithPriceData(serverPriceList, cbfn) {
@@ -45,21 +31,15 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
     }
 
     localforage.getItem('organization-price-list')
-
       .then((value) => {
 
         let localPriceList = value || [];
 
         for (let item of serverPriceList) {
 
-          if (item.clientCollectionName !== 'organization-price-list') {
-            continue;
-          }
-
           delete item.collection;
 
           if (localPriceList.length) {
-
             let index = localPriceList.findIndex((priceItem) => item._id == priceItem._id)
             if (index == -1) {
               localPriceList.push(item)
@@ -72,7 +52,6 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
         }
 
         return localforage.setItem('organization-price-list', localPriceList)
-
 
       }).then((value) => {
         this._updateLastSyncedDatetimeStampForPrice();
@@ -104,28 +83,31 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
     const { apiKey } = this.getCurrentUser();
     let clientToServerDocListDataPromise, removedDocListDataPromise;
 
-    const collectionNameList = Object.keys(collectionNameMap).map(serverCollectionName => collectionNameMap[serverCollectionName]);
-    const deletedCollectionNameList = Object.keys(deleteCollectionNameMap).map(serverCollectionName => deleteCollectionNameMap[serverCollectionName]);
-
     if (currentOrganizationId == app.config.masterOrganizationId) {
-      clientToServerDocListDataPromise = this._getModifiedPriceDataFromDB(collectionNameList, lastSyncedDatetimeStamp);
-      removedDocListDataPromise = this._getModifiedPriceDataFromDB(deletedCollectionNameList, lastSyncedDatetimeStamp);
+      clientToServerDocListDataPromise = this._getModifiedPriceDataFromDB('organization-price-list', lastSyncedDatetimeStamp);
+      removedDocListDataPromise = this._getModifiedPriceDataFromDB('organization-price-list--deleted', lastSyncedDatetimeStamp);
     }
 
     Promise.all([clientToServerDocListDataPromise, removedDocListDataPromise])
       .then(([clientToServerDocList, removedDocList]) => {
 
+        // if (clientToServerDocList && clientToServerDocList.length > 1000) {
+        //   console.error('price list is too big', clientToServerDocList.length)
+        //   clientToServerDocList = [];
+        // }
+
         const data = {
           apiKey,
           lastSyncedDatetimeStamp,
           organizationId: app.config.masterOrganizationId,
-          knownPatientSerialList: [],
-          clientToServerDocList: [],
+          clientToServerDocList: clientToServerDocList || [],
           removedDocList: removedDocList || [],
           client: 'uhcp'
         };
 
-        this.callApi('/bdemr--sync', data, (err, response) => {
+        // return console.log(clientToServerDocList.length);
+
+        this.callApi('/bdemr--price-list-sync', data, (err, response) => {
 
           this.notifyApiAction('done', null, apiActionId)
 

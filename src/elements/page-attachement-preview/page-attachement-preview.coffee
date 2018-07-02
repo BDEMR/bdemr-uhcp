@@ -410,6 +410,7 @@ Polymer {
     attachment = {
       serial: @generateSerialForAttachment()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
       mainStorage: null # could be 'server' or 'local' or 'session'
       title
       description

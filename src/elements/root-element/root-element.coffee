@@ -136,7 +136,7 @@ Polymer {
       createdByUserSerial: @user.serial
       lastModifiedDatetimeStamp: 0
       createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       serial: @user.serial
       printDecoration: 
         leftSideLine1: 'My Institution'
@@ -776,6 +776,7 @@ Polymer {
       action
       data
       lastModifiedDatetimeStamp: (new Date).getTime()
+      lastSyncedDatetimeStamp: 0
     }
 
     app.db.insert 'activity', object
@@ -943,7 +944,12 @@ Polymer {
   
   # = REGION ======================================
 
-  
+  # syncButtonPressed: ->
+  #   @_syncPriceListOnly (err)=>
+  #     if err
+  #       @async => @showModalDialog(err);
+
+
   syncButtonPressed: (e)->
     @_newSync (errMessage)=>
       if errMessage

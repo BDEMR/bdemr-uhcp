@@ -359,6 +359,7 @@ Polymer {
       organizationName: @organization.name
       modificationHistory: []
       lastModifiedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       category: ''
       totalBilled: 0
       paid: null
@@ -458,6 +459,7 @@ Polymer {
       serial: @generateSerialForThirdPartyUser()
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
       name: name
@@ -475,6 +477,7 @@ Polymer {
       serial: @generateSerialForInvoiceCategory()
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: organizationIdentifier
       data: []

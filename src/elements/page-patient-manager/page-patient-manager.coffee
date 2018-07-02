@@ -286,7 +286,7 @@ Polymer {
     @matchingPatientList = []
     @arbitaryCounter++
 
-    @callApi '/bdemr-patient-search', { apiKey: @user.apiKey, searchQuery: @searchFieldMainInput}, (err, response)=>
+    @callApi '/bdemr-patient-search-v2', { apiKey: @user.apiKey, searchQuery: @searchFieldMainInput}, (err, response)=>
       @arbitaryCounter--
       if err or not response
         return @domHost.showModalDialog 'Problem connecting wtih the server. Check your internet connection and try again.'
@@ -753,6 +753,7 @@ Polymer {
       patientName: patient.name
       visitedDateTimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
     }
 
     app.db.insert 'visited-patient-log', visitedPatientLogObject
@@ -790,6 +791,7 @@ Polymer {
         patientName: patient.patientName
         visitedDateTimeStamp: lib.datetime.now()
         lastModifiedDatetimeStamp: lib.datetime.now()
+        lastSyncedDatetimeStamp: 0
       }
 
       app.db.insert 'visited-patient-log', visitedPatientLogObject

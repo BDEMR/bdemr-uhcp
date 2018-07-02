@@ -99,6 +99,7 @@ Polymer {
     inventory = {
       serial: @generateSerialForInventoryItem()
       lastModifiedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       organizationId: @organization.idOnServer
       data:
@@ -128,6 +129,7 @@ Polymer {
     inventory = {
       serial: item.serial
       lastModifiedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       createdByUserSerial: item.createdByUserSerial
       organizationId: item.organizationId
       data:

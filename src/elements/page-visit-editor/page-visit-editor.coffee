@@ -2577,6 +2577,7 @@ Polymer {
       serial: @generateSerialForUserAddedInstituion
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
+      lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
       data:
         institutionName: @suggestedInstitutionValue
@@ -2895,7 +2896,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         systolic: ''
         diastolic: ''
@@ -2913,7 +2914,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         bpm: ''
         unit: 'bpm'
@@ -2928,7 +2929,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         height: ''
         heightInFt: ''
@@ -2948,7 +2949,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         respiratoryRate: ''
         unit: 'rpm'
@@ -2963,7 +2964,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         spO2Percentage: ''
         unit: '%'
@@ -2979,7 +2980,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         temperature: ''
         unit: ''
@@ -3829,7 +3830,7 @@ Polymer {
       createdByUserSerial: @user.serial
       lastModifiedDatetimeStamp: 0
       createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       serial: @user.serial
       printDecoration: 
         leftSideLine1: 'My Institution'

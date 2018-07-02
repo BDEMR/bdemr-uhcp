@@ -90,7 +90,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         systolic: ''
         diastolic: ''
@@ -105,7 +105,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         bpm: ''
         unit: 'bpm'
@@ -118,7 +118,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         height: ''
         heightInFt: ''
@@ -136,7 +136,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         respiratoryRate: ''
         unit: 'rpm'
@@ -149,7 +149,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         spO2Percentage: ''
         unit: '%'
@@ -163,7 +163,7 @@ Polymer {
       patientSerial: null
       createdDatetimeStamp: null
       lastModifiedDatetimeStamp: null
-      lastSyncedDatetimeStamp: null
+      lastSyncedDatetimeStamp: 0
       data:
         temperature: ''
         unit: ''
