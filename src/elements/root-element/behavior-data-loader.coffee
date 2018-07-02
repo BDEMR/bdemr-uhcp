@@ -48,7 +48,7 @@ app.behaviors.local['root-element'].dataLoader =
 
       {
         name: 'pccMedicineList'
-        url: 'static-data/uhcp-drug-list-with-price.json'
+        url: 'static-data/uhcp-drug-list.json'
       }
       
       {
@@ -95,10 +95,6 @@ app.behaviors.local['root-element'].dataLoader =
         url: 'https://bdemr.b-cdn.net/examination-list-25-10-2017.json'
       }
       {
-        name: 'medicineList'
-        url: 'https://bdemr.b-cdn.net/medicine-list-19-10-2017.json'
-      }
-      {
         name: 'operationList'
         url: 'https://bdemr.b-cdn.net/operation-list-19-10-2017.json'
       }
@@ -124,7 +120,7 @@ app.behaviors.local['root-element'].dataLoader =
       }
       {
         name: 'pccMedicineList'
-        url: 'https://bdemr.b-cdn.net/uhcp-drug-list-with-price-6-5-2018.json'
+        url: 'https://bdemr.b-cdn.net/uhcp-drug-list-2-7-2018.json'
       }
     ]
 
