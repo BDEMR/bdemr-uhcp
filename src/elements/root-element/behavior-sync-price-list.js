@@ -70,14 +70,6 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
 
     this.toggleModalLoader('Pricelist is syncing, please wait...');
 
-    const collectionNameMap = {
-      'bdemr--organization-price-list': 'organization-price-list'
-    };
-
-    const deleteCollectionNameMap = {
-      'bdemr--organization-price-list--deleted': 'organization-price-list--deleted'
-    }
-
     const lastSyncedDatetimeStamp = this._getLastSyncedDatetimeStampForPrice();
     const currentOrganizationId = this.getCurrentOrganization().idOnServer;
     const { apiKey } = this.getCurrentUser();
@@ -91,10 +83,10 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
     Promise.all([clientToServerDocListDataPromise, removedDocListDataPromise])
       .then(([clientToServerDocList, removedDocList]) => {
 
-        // if (clientToServerDocList && clientToServerDocList.length > 1000) {
-        //   console.error('price list is too big', clientToServerDocList.length)
-        //   clientToServerDocList = [];
-        // }
+        if (clientToServerDocList && clientToServerDocList.length > 1000) {
+          console.error('price list is too big', clientToServerDocList.length)
+          clientToServerDocList = [];
+        }
 
         const data = {
           apiKey,
@@ -104,8 +96,6 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
           removedDocList: removedDocList || [],
           client: 'uhcp'
         };
-
-        // return console.log(clientToServerDocList.length);
 
         this.callApi('/bdemr--price-list-sync', data, (err, response) => {
 
