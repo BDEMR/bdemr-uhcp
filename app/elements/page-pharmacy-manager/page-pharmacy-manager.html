@@ -19,7 +19,6 @@
       .m-right-5 {
         margin-right: 5px;
       }
-      
     </style>
 
     <!-- local DOM -->
@@ -27,7 +26,7 @@
     <div class="master-container">
 
       <div class="limiting-container">
-        
+
         <paper-card heading="Add Pharmacy Item : [[organization.name]]">
           <div class="card-content">
             <template is="dom-if" if="[[isLoading]]">
@@ -51,11 +50,21 @@
         <paper-card heading="Inventory">
           <div class="card-content">
             <paper-item class="layout horizontal">
-              <div class="flex-2"><strong>Item</strong></div>
-              <div class="flex"><strong>Qty</strong></div>
-              <div class="flex"><strong>Buying Price</strong></div>
-              <div class="flex"><strong>Selling Price</strong></div>
-              <div class="flex"><strong>Expiry</strong></div>
+              <div class="flex-2">
+                <strong>Item</strong>
+              </div>
+              <div class="flex">
+                <strong>Qty</strong>
+              </div>
+              <div class="flex">
+                <strong>Buying Price</strong>
+              </div>
+              <div class="flex">
+                <strong>Selling Price</strong>
+              </div>
+              <div class="flex">
+                <strong>Expiry</strong>
+              </div>
               <div class="flex">Actions</div>
             </paper-item>
             <template is="dom-repeat" items="[[inventoryList]]">
@@ -64,7 +73,7 @@
                 <div class="flex">[[item.data.qty]]</div>
                 <div class="flex">[[item.data.buyingPrice]]</div>
                 <div class="flex">[[item.data.sellingPrice]]</div>
-                <div class="flex">[[_formatDate(item.data.expiryDate)]]</div>
+                <div class="flex">[[$formatDate(item.data.expiryDate)]]</div>
                 <div class="flex">
                   <paper-icon-button icon="create" on-tap="editInventoryItemButtonClicked"></paper-icon-button>
                 </div>

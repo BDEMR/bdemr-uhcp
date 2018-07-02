@@ -103,7 +103,10 @@
               <paper-button raised="" on-tap="resetButtonClicked">Reset</paper-button>
             </div>
 
-            <h4>Total Visit: [[reportResults.length]]</h4>
+            <div class="layout horizontal">
+              <h4 class="m-right-16">Total Visit: [[reportResults.length]]</h4>
+              <h4 class="m-right-16">Total Patient: [[patientCount]]</h4>
+            </div>
 
             <div class="results">
 
@@ -251,28 +254,28 @@
                 <vaadin-grid-column resizable="">
                   <template class="header">Drug Cost</template>
                   <template>
-                    <span>[[$getCategoryCost('Medicine', item.invoice)]]</span>
+                    <span>[[$getCategoryCostByDecimal('Medicine', item.invoice)]]</span>
                   </template>
                   <template class="footer">[[totalDrugCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
                   <template class="header">Investigation Cost</template>
                   <template>
-                    <span>[[$getCategoryCost('Investigation', item.invoice)]]</span>
+                    <span>[[$getCategoryCostByDecimal('Investigation', item.invoice)]]</span>
                   </template>
                   <template class="footer">[[totalInvestigationCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
                   <template class="header">Consultancy Fee</template>
                   <template>
-                    <span>[[$getCategoryCost('Consultancy', item.invoice)]]</span>
+                    <span>[[$getCategoryCostByDecimal('Consultancy', item.invoice)]]</span>
                   </template>
                   <template class="footer">[[totalConsultancyCostByReport]]</template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
                   <template class="header">Total Cost</template>
                   <template>
-                    <span>[[$getTotalCost(item.invoice)]]</span>
+                    <span>[[$getTotalCostByDecimal(item.invoice)]]</span>
                   </template>
                   <template class="footer">[[totalCostByReport]]</template>
                 </vaadin-grid-column>
@@ -281,7 +284,7 @@
                   <template>
                     <span>[[item.chargedToWallet]]</span>
                   </template>
-                  <template class="footer"></template>
+                  <template class="footer">[[totalContributionByReport]]</template>
                 </vaadin-grid-column>
               </vaadin-grid>
             </div>
@@ -380,6 +383,12 @@
       computed: '_getTotalCostByReport(reportResults)'
     },
 
+    totalContributionByReport: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalContributionByReport(reportResults)'
+    },
+
     totalDrugCostByReport: {
       type: Number,
       notify: true,
@@ -398,10 +407,17 @@
       computed: '_getTotalCategoryCostByReport("Consultancy" ,reportResults)'
     },
 
+    patientCount: {
+      type: Number,
+      notify: true,
+      computed: '_getTotalPatientCountByReport(reportResults)'
+    },
+
     dateCreatedFrom: String,
     dateCreatedTo: String,
     selectedGender: String,
     selectedOrganizationId: String
+
 
   },
 
@@ -477,11 +493,21 @@
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseInt(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0
+    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0
+  },
+
+  $getCategoryCostByDecimal(category, invoice) {
+    let cost = invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0;
+    return cost.toFixed(2);
+  },
+
+  $getTotalCostByDecimal(invoice) {
+    let cost = invoice && invoice.totalBilled ? parseFloat(invoice.totalBilled) : 0
+    return cost.toFixed(2);
   },
 
   $getTotalCost(invoice) {
-    return invoice && invoice.totalBilled ? parseInt(invoice.totalBilled) : 0
+    return invoice && invoice.totalBilled ? parseFloat(invoice.totalBilled) : 0
   },
 
   $computeAge(dateString) {
@@ -497,15 +523,33 @@
   },
 
   _getTotalCostByReport(reports) {
-    return reports.reduce((total, item) => {
+    let total = reports.reduce((total, item) => {
       return total + this.$getTotalCost(item.invoice)
     }, 0)
+    return total.toFixed(2)
   },
 
   _getTotalCategoryCostByReport(category, reports) {
-    return reports.reduce((total, item) => {
+    let total = reports.reduce((total, item) => {
       return total + this.$getCategoryCost(category, item.invoice)
     }, 0)
+    return total.toFixed(2)
+  },
+
+  _getTotalContributionByReport(reports) {
+    let total = reports.reduce((total, item) => {
+      return total + item.chargedToWallet
+    }, 0)
+    return total.toFixed(2)
+  },
+
+  _getTotalPatientCountByReport(reports) {
+    return reports.reduce((list, item) => {
+      if (list.indexOf(item.visit.patientSerial) == -1) {
+        list.push(item.visit.patientSerial);
+      }
+      return list;
+    }, []).length;
   },
 
   resetButtonClicked() { return this.domHost.reloadPage(); },
@@ -566,6 +610,7 @@
     return this.set('selectedSalaryRange', selectedSalaryRange);
   },
 
+
   searchButtonClicked() {
     let query = {
       apiKey: this.user.apiKey,
@@ -612,22 +657,25 @@
         'Age': item.patientInfo ? this.$computeAge(item.patientInfo.dateOfBirth) : '',
         'Gender': item.patientInfo ? item.patientInfo.gender : '',
         'Consultation Site': item.organizationInfo ? item.organizationInfo.name : '',
+        'Factory Name': item.patientInfo.factoryName ? item.patientInfo.factoryName : '',
+        'Department': item.patientInfo.department ? item.patientInfo.department : '',
         'Visit Date': this.$formatDateTime(item.visit.createdDatetimeStamp),
         'Symptoms': item.symptoms ? item.symptoms.symptomsList.map(item => item.name) : '',
         'Diagnosis': item.diagnosis ? item.diagnosis.diagnosisList.map(item => item.name) : '',
         'Test Advise': item.advisedTests ? item.advisedTests.testAdvisedList.map(item => item.investigationName) : '',
-        referral: `${item.referral ? item.referral.doctorName : ''} - ${item.referral ? item.referral.doctorName : ''}`,
-        treatment: item.medication ? item.medication.map(item => item.data.brandName) : '',
+        'Referral': `${item.referral ? item.referral.doctorName : ''} - ${item.referral ? item.referral.doctorName : ''}`,
+        'Treatment': item.medication ? item.medication.map(item => item.data.brandName) : '',
         'Cost of Drug': this.$getCategoryCost('Medicine', item.invoice),
         'Cost of Investigation': this.$getCategoryCost('Investigation', item.invoice),
         'Cost of Consultancy': this.$getCategoryCost('Consultancy', item.invoice),
-        'Total Cost': this.$getTotalCost(item.invoice)
+        'Total Cost': this.$getTotalCost(item.invoice),
+        'Worker Contribution (5%)': item.chargedToWallet ? item.chargedToWallet : 0
       }
     })
   },
 
   downloadCsv(csv) {
-    var exportedFilenmae = 'uhcp-visit-report-export.csv';
+    var exportedFilenmae = `uhcp-visit-report-export-${Date.now()}.csv`
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     var link = document.createElement("a");
     var url = URL.createObjectURL(blob);

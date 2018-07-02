@@ -32,21 +32,33 @@ app.behaviors.commonComputes =
     if (op=='<=')
       return left <= right
 
-  $mkDateTime: (ms)->
-    if typeof ms is 'undefined'
-      return lib.datetime.now()
-    else
-      return lib.datetime.format((new Date ms), 'mmm d, yyyy h:MMTT')
+  $mkDateTime: ()-> Date.now()
 
   $mkTime: (ms)-> lib.datetime.format((new Date ms), 'HH-MM-ss')
 
   $formatDate: (date)->
     return '' unless date
-    lib.datetime.format((new Date date), 'mmm d, yyyy')
-  
+    formatObj = { 
+      timeZone: 'Asia/Dhaka' 
+      day: 'numeric'
+      month: 'short'
+      year: 'numeric'
+    }
+    return new Date(dateTime).toLocaleString('en-GB', formatObj)
+
+
   $formatDateTime: (dateTime)->
     return '' unless dateTime
-    lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
+    formatObj = { 
+      timeZone: 'Asia/Dhaka' 
+      day: 'numeric'
+      month: 'short'
+      year: 'numeric'
+      hour: '2-digit'
+      minute: '2-digit'
+    }
+    # lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
+    return new Date(dateTime).toLocaleString('en-GB', formatObj)
 
   $in: (item, list...)->
     item in list
@@ -159,4 +171,14 @@ app.behaviors.commonComputes =
       else
         # @navigateToPage "#/select-organization"
         return true
+
+  $computeAge: (dateString)->
+    return '' unless dateString
+    today = new Date()
+    birthDate = new Date dateString
+    age = today.getFullYear() - birthDate.getFullYear()
+    m = today.getMonth() - birthDate.getMonth()
+    if m < 0 || (m == 0 && today.getDate() < birthDate.getDate())
+      age--
+    return age
       
