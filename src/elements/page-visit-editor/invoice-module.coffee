@@ -67,7 +67,6 @@ app.behaviors.local.invoiceMixin =
     unless invoiceSerial in @visit.invoiceSerialList
       @visit.invoiceSerialList.push invoiceSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
   
   _saveInvoice: (markAsCompleted)->
 
@@ -79,10 +78,8 @@ app.behaviors.local.invoiceMixin =
     
     @_addModificationHistory()
 
-    app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is @invoice.serial
     @domHost.showToast 'Invoice Saved Successfully'
     @_updateVisit @invoice.serial
-    @domHost.navigateToPage "#/visit-editor/visit:#{@visit.serial}/patient:#{@patient.serial}"
 
   
   itemUnitPriceChanged: (e)->

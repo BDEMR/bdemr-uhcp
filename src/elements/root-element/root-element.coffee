@@ -795,14 +795,11 @@ Polymer {
     return unless @currentPatientsDetails
     @debounce 'selectPage', ()=>
       if selectedPageIndex is 0
-        @async ()=>
-          @selectedVisitSerial = localStorage.getItem("selectedVisitSerial")
-          @navigateToPage '#/visit-editor/visit:' + @selectedVisitSerial + '/patient:' + @currentPatientsDetails.serial
+        @selectedVisitSerial = localStorage.getItem("selectedVisitSerial")
+        @navigateToPage '#/visit-editor/patient:' + @currentPatientsDetails.serial
       else
-        @async => 
-          @navigateToPage '#/patient-viewer/patient:' + @currentPatientsDetails.serial + '/selected:' + selectedPageIndex
-          @pageElement.navigatedIn()
-
+        @navigateToPage '#/patient-viewer/patient:' + @currentPatientsDetails.serial + '/selected:' + selectedPageIndex
+        @pageElement.navigatedIn()
     ,10
 
     

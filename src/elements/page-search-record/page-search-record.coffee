@@ -95,7 +95,7 @@ Polymer {
         app.db.upsert clientPatientDb, patientObject, ({serial})=> patientObject.serial is serial
         # console.log patientObject
         
-        url = "#/visit-editor/visit:#{record.serial}/patient:#{patientSerial}"
+        url = "#/visit-preview/visit:#{record.serial}/patient:#{patientSerial}"
         @domHost._newSync (errMessage)=>
           if errMessage
             @async => @showModalDialog(errMessage);
