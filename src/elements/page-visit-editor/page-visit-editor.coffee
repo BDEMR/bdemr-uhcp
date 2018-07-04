@@ -5388,7 +5388,7 @@ Polymer {
     @isInvoiceValid = true
 
 
-  calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return (parseFloat opdBalance) - (parseFloat totalBilled)
+  calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return ((parseFloat opdBalance) - (parseFloat totalBilled)).toFixed(2)
 
   finishButtonPressed: ->
     @_updateNewDateTimeForVisitElements @visit.createdDatetimeStamp
