@@ -210,7 +210,17 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
-                  <template class="header">Type</template>
+                  <template class="header">
+                    <vaadin-grid-filter aria-label="Type" path="visit.dischargeNote.dischargeType" value="[[typeFilter]]">
+                      <paper-dropdown-menu label="Filter by Type" selected-item-label="{{typeFilter}}">
+                        <paper-listbox class="dropdown-content">
+                          <paper-item>OPD</paper-item>
+                          <paper-item>IPD</paper-item>
+                          <paper-item>Exclusion Criteria</paper-item>
+                        </paper-listbox>
+                      </paper-dropdown-menu>
+                    </vaadin-grid-filter>
+                  </template>
                   <template>
                     <div>
                       <span class="type caption-2 bg-gray">[[item.visit.dischargeNote.dischargeType]]</span>
