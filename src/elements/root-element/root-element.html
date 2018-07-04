@@ -622,13 +622,10 @@
 
 
             <paper-button id="orgSwitch" on-tap="changeOrganizationClicked">
-              <div>
-                <strong>[[currentOrganization.name]]</strong>
+              <div class="layout horizontal center">
+                <iron-icon icon="account-balance"></iron-icon>
+                <strong class="m-left-8">[[currentOrganization.name]]</strong>
               </div>
-              <template is="dom-if" if="[[currentOrganization]]">
-                <div class="type caption-2" style="text-transform: capitalize;">SMS Left: [[orgSmsBalance]]</div>
-              </template>
-
             </paper-button>
 
             <paper-menu-button no-overlap id="langSwitch">

@@ -185,6 +185,10 @@ Polymer {
       type: Number
       value: -> 0
 
+    orgSmsBalance:
+      type: Number
+      value: 0
+
 
   goToUrlForManagePatientList: (e)->
     index = e.model.index
@@ -362,7 +366,8 @@ Polymer {
       @domHost.navigateToPage '#/activate'
 
     @loadSettings =>
-      @_organizationNavigatedIn()
+    @_organizationNavigatedIn()
+    @loadOrganizationSmsBalance()
 
 
   languageSelectedIndexChanged: ->
@@ -398,5 +403,24 @@ Polymer {
 
   renewAnaesMonTapped: (e)->
     @domHost.navigateToPage '#/activate'
+
+
+  # Load Organization SMS Balance ======================================
+
+  loadOrganizationSmsBalance: (organizationId)->
+    data = {
+      apiKey: @user.apiKey
+      organizationId: organizationId
+    }
+    @callApi '/bdemr-get-organization-sms-balance', data, (err, response)=>
+      # console.log 'ORG SMS BALNCE:', response
+      if err or not response
+        return @domHost.showModalDialog 'Problem connecting wtih the server. Check your internet connection and try again.'
+      if response.hasError
+        if response.error.message is "No data found"
+          @set 'orgSmsBalance', 0
+      else
+        @set 'orgSmsBalance', response.data.smsBalance
+
 
 }

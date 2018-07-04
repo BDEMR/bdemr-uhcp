@@ -203,7 +203,7 @@ Polymer {
     for patient in patientList
       app.db.remove 'patient-list', patient._id
 
-    @_organizationNavigatedIn()
+    # @_organizationNavigatedIn()
 
     @loadConflictedPatientList()
 
