@@ -348,6 +348,7 @@ Polymer({
   _prepareJsonData(rawReport) {
     return rawReport.map((item) => {
       return {
+        'Visit Id': item.visit.serial,
         'EmployeeId': item.patientInfo ? item.patientInfo.employeeId : '',
         'Name': item.patientInfo ? item.patientInfo.name : '',
         'Age': item.patientInfo ? this.$computeAge(item.patientInfo.dateOfBirth) : '',
@@ -356,14 +357,16 @@ Polymer({
         'Factory Name': item.patientInfo.factoryName ? item.patientInfo.factoryName : '',
         'Department': item.patientInfo.department ? item.patientInfo.department : '',
         'Visit Date': this.$formatDateTime(item.visit.createdDatetimeStamp),
+        'Type': (item.visit.dischargeNote && item.visit.dischargeNote.dischargeType) ? item.visit.dischargeNote.dischargeType : '',
+        'Advise/Note': (item.doctorNotes && item.doctorNotes.messageList) ? item.doctorNotes.messageList : '',
         'Symptoms': item.symptoms ? item.symptoms.symptomsList.map(item => item.name) : '',
         'Diagnosis': item.diagnosis ? item.diagnosis.diagnosisList.map(item => item.name) : '',
-        'Test Advise': item.advisedTests ? item.advisedTests.testAdvisedList.map(item => item.investigationName) : '',
+        'Investigation': item.advisedTests ? item.advisedTests.testAdvisedList.map(item => item.investigationName) : '',
         'Referral': `${item.referral ? item.referral.doctorName : ''} - ${item.referral ? item.referral.doctorName : ''}`,
         'Treatment': item.medication ? item.medication.map(item => item.data.brandName) : '',
-        'Cost of Drug': this.$getCategoryCost('Medicine', item.invoice),
-        'Cost of Investigation': this.$getCategoryCost('Investigation', item.invoice),
-        'Cost of Consultancy': this.$getCategoryCost('Consultancy', item.invoice),
+        'Drug Cost': this.$getCategoryCost('Medicine', item.invoice),
+        'Investigation Cost': this.$getCategoryCost('Investigation', item.invoice),
+        'Consultancy Fee': this.$getCategoryCost('Consultancy', item.invoice),
         'Total Cost': this.$getTotalCost(item.invoice),
         'Worker Contribution (5%)': item.chargedToWallet ? item.chargedToWallet : 0
       }

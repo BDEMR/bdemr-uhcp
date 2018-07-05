@@ -72,6 +72,8 @@ app.behaviors.commonComputes =
     else
       return false
 
+  $toTwoDecimalPlace: (number)-> return Number.parseFloat(number).toFixed(2)
+
   $getFullName:(data)->
 
     if typeof data is "object"

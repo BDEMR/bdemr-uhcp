@@ -17,6 +17,7 @@ Polymer {
       type: Number
       notify: true
       value: 0
+      observer: 'selectedSearchViewIndexChanged'
 
     selectedTabPageIndex:
       type: Number
@@ -203,9 +204,9 @@ Polymer {
     for patient in patientList
       app.db.remove 'patient-list', patient._id
 
-    @_organizationNavigatedIn()
+    # @_organizationNavigatedIn()
 
-    @loadConflictedPatientList()
+    # @loadConflictedPatientList()
 
     # @domHost.setCurrentPatientsDetails null
 
@@ -245,9 +246,6 @@ Polymer {
 
     else
       # @listAllImportedAndOfflinePatientsPressed null
-
-
-    @_listVisitedPatientLog()
 
 
   searchButtonPressed: (e)->
@@ -758,16 +756,17 @@ Polymer {
     app.db.insert 'visited-patient-log', visitedPatientLogObject
 
   _listVisitedPatientLog: () ->
-    list = app.db.find 'visited-patient-log'
-    logList = [].concat list
+    console.time()
+    logList = app.db.find 'visited-patient-log'
+    console.timeEnd()
     logList.sort (left, right)->
       return -1 if left.visitedDateTimeStamp > right.visitedDateTimeStamp
       return 1 if left.visitedDateTimeStamp < right.visitedDateTimeStamp
       return 0
 
-    @matchingVisitedPatientLogList = logList
+    @set 'matchingVisitedPatientLogList', logList
 
-    # console.log @matchingVisitedPatientLogList
+    console.log @matchingVisitedPatientLogList
 
 
   viewPatientPressedFromLog: (e)->
@@ -863,5 +862,9 @@ Polymer {
       return true
     else
       return false
+
+  selectedSearchViewIndexChanged: (value)->
+    if value is 2
+      @_listVisitedPatientLog()
 
 }

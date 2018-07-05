@@ -81,11 +81,11 @@
         }
       }
 
-      .card-content.single-block .number {
+      .single-block .number {
         font-size: 72px;
       }
 
-      .card-content.single-block .subtitle {
+      .single-block .subtitle {
         text-transform: uppercase;
       }
 
@@ -292,14 +292,25 @@
         </paper-card> -->
 
         <paper-card heading="My App license" class="m-top-8">
-          <div class="card-content single-block horizontal layout center">
-            <div class="vertical layout center">
-              <div class="number">[[$TRANSLATE_NUMBER(daysLeft,LANG)]]</div>
-              <div class="subtitle">[[$TRANSLATE('days left',LANG)]]</div>
+          <div class="card-content layout horizontal justified">
+            <div class="single-block horizontal layout center">
+              <div class="vertical layout center">
+                <div class="number">[[$TRANSLATE_NUMBER(daysLeft,LANG)]]</div>
+                <div class="subtitle">[[$TRANSLATE('days left',LANG)]]</div>
+              </div>
+              <div class="right-hand-text">
+                <html-block html="[[$getString1(daysLeft, LANG)]]"></html-block>
+                <br>
+              </div>
             </div>
-            <div class="right-hand-text">
-              <html-block html="[[$getString1(daysLeft, LANG)]]"></html-block>
-              <br>
+            <div class="single-block">
+              <template is="dom-if" if="[[currentOrganization]]">
+                <div class="vertical layout center">
+                  <div class="number">[[$TRANSLATE_NUMBER(orgSmsBalance,LANG)]]</div>
+                  <div class="subtitle">[[$TRANSLATE('SMS Left',LANG)]]</div>
+                  <div class="type caption">for [[currentOrganization.name]]</div>
+                </div>
+              </template>
             </div>
           </div>
           <div class="card-actions">
