@@ -150,20 +150,26 @@ app.behaviors.local['root-element'].newSync = {
       else if (response.hasError) {
         return cbfn(response.error.message);
       } else {
-
+        let { serverToClientItems, syncedItemList } = response.data
         app.db.__allowCommit = false;
-        for (let index = 0; index < response.data.length; index++) {
-          var item = response.data[index];
+        // for (let index = 0; index < serverToClientItems.length; index++) {
+        serverToClientItems.forEach((item, index) => {
           const collectionName = collectionNameMap[item.collection];
           delete item.collection;
-          if (index === (response.data.length - 1)) {
+          if (index === (serverToClientItems.length - 1)) {
             app.db.__allowCommit = true;
           }
           if (collectionName) {
             app.db.upsert(collectionName, item, ({ serial }) => item.serial === serial);
           }
-        }
+        })
         app.db.__allowCommit = true;
+        syncedItemList.forEach((item) => {
+          let clientCollectionName = collectionNameMap[item.collection]
+          let doc = app.db.find(clientCollectionName, ({ serial }) => serial == item.serial)[0];
+          doc.lastSyncedDatetimeStamp = item.lastSyncedDatetimeStamp;
+          app.db.update(clientCollectionName, doc._id, doc);
+        })
 
         this._updateLastSyncedDatetimeStamp();
 

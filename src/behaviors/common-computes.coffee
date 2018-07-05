@@ -144,6 +144,12 @@ app.behaviors.commonComputes =
     else
       return 'images/avatar.png'
 
+  _getSyncStatus: (lastMod, lastSynced)-> lastMod > lastSynced
+
+  syncThisItem: (e)->
+    item = e.model.item
+    console.log item
+
   $checkUserAccess: (accessId)->
     currentOrganization = @getCurrentOrganization()
 

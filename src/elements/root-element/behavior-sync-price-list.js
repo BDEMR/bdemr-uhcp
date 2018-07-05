@@ -101,7 +101,6 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
 
           this.notifyApiAction('done', null, apiActionId)
 
-          this.toggleModalLoader()
 
           if (err) {
             return cbfn(err.message)
@@ -112,7 +111,13 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
 
           } else {
 
-            this._updateLocalDBWithPriceData(response.data, cbfn)
+            this._updateLocalDBWithPriceData(response.data, (err) => {
+
+              this.toggleModalLoader()
+
+              cbfn(err)
+
+            });
 
           }
 

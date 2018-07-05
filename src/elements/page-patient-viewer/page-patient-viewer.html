@@ -1465,7 +1465,19 @@
                         </template>
                         <template id="visit-list-repeater" is="dom-repeat" items="[[matchingVisitList]]">
                           <tr class="type body">
-                            <td>[[item.serial]]</td>
+                            <td>
+                              <!-- Not Synced -->
+                              <span class="type success m-left-8" hidden="[[_getSyncStatus(item.lastModifiedDatetimeStamp, item.lastSyncedDatetimeStamp)]]">
+                                <iron-icon icon="cloud-done"></iron-icon>
+                              </span>
+
+                              <!-- Synced -->
+                              <span class="type secondary" hidden="[[!_getSyncStatus(item.lastModifiedDatetimeStamp, item.lastSyncedDatetimeStamp)]]">
+                                <paper-icon-button icon="cloud-off" on-tap="syncThisItem"></paper-icon-button>
+                              </span>
+
+                              <span class="m-left-8">[[item.serial]]</span>
+                            </td>
                             <td>{{_checkRecordTitle(item)}}</td>
                             <td>[[$formatDateTime(item.createdDatetimeStamp)]]</td>
 
