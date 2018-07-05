@@ -2779,6 +2779,8 @@ Polymer {
     testAdviseURLPart = encodeURIComponent(JSON.stringify(item.investigations))
     @domHost.navigateToPage '#/create-invoice/visit:' + item.visitSerial + '/invoice:new' + '/patient:' + @patient.serial + '/testAdviseAdded:' + testAdviseURLPart
 
-  
+  syncThisItem: (e)->
+    item = e.model.item
+    @domHost._syncThisItem item
 
 }

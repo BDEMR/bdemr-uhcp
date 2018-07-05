@@ -619,6 +619,9 @@ Polymer {
       app.db.insert 'in-app-notification', json
       @updateNotificationView()
       @showNotification json
+    else if json.operation is 'sync'
+      console.log 'sync', json
+      @showNotification json
 
 
   inAppNotificationRegister: ->
@@ -635,6 +638,7 @@ Polymer {
       when 'report' then title = 'Report'
       when 'onlineConsultation' then title = 'New Consulation Request'
       when 'general' then title = 'General'
+      when 'sync' then title = 'Sync'
       else title = 'New Notification'
 
     notificationConfig = {
@@ -923,6 +927,18 @@ Polymer {
   #   @_syncPriceListOnly (err)=>
   #     if err
   #       @async => @showModalDialog(err);
+
+  _syncThisItem: (item)->
+    item.clientCollectionName = 'doctor-visit'
+    user = @getCurrentUser()
+    request = {
+      operation: 'sync'
+      apiKey: user.apiKey
+      client: 'uhcp'
+      clientToServerItem: [item]
+    }
+    console.log item
+    @ws.send JSON.stringify request
 
 
   syncButtonPressed: (e)->
