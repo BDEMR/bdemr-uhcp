@@ -1519,7 +1519,7 @@
                         </tr>
                         <tr>
                           <td colspan="2">Available Outdoor Balance</td>
-                          <td>[[patientServiceBalance.outdoorBalance]]</td>
+                          <td>[[$toTwoDecimalPlace(patientServiceBalance.outdoorBalance)]]</td>
                         </tr>
                         <tr>
                           <th colspan="2">Balance After Deduction</th>
@@ -1710,9 +1710,11 @@
                       </div>
                       <div class="form-group">
                         <div>
-                          <paper-autocomplete id="brandName" label="[[$TRANSLATE('Brand Name',LANG)]]" text="{{medicine.brandName}}" source="[[brandNameSourceDataList]]"
+                          <!-- <paper-autocomplete id="brandName" label="[[$TRANSLATE('Brand Name',LANG)]]" text="{{medicine.brandName}}" source="[[brandNameSourceDataList]]"
                             on-autocomplete-selected="brandNameAutocompleteSelected" on-autocomplete-reset-blur="brandNameCleared"
-                            min-length="2" on-input="validate" error-message="Input Required" required></paper-autocomplete>
+                            min-length="2" on-input="validate" error-message="Input Required" required></paper-autocomplete> -->
+
+                          <vaadin-combo-box items="[[brandNameSourceDataList]]" on-change="brandNameAutocompleteSelected" allow-custom-value value="{{medicine.brandName}}"></vaadin-combo-box>
                         </div>
                       </div>
 

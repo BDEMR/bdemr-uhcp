@@ -299,9 +299,10 @@ Polymer {
   # ===========================================
   
   _loadItemSearchAutoComplete: (priceListData)->
-    @invoiceAutoCompleteSourceDataList = priceListData.map (item)=> return { text: item.name, value: item }
+    @invoiceAutoCompleteSourceDataList = priceListData.map (item)=> return { label: item.name, value: item }
 
   invoiceItemAutocompleteSelected: (e)->
+    return unless e.detail.value
     item = e.detail.value
     item.qty = 1
     item.totalPrice = item.price

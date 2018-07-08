@@ -181,6 +181,10 @@
         border: 1px solid red;
       }
 
+      paper-card {
+        border-radius: 0;
+      }
+
       @media only screen and (max-width: 1024px) {
         .page-invoice {
           @apply(--layout-vertical);
@@ -218,8 +222,7 @@
               </div>
             </div>
             <div class="card-content">
-              <paper-autocomplete id="invoiceSearchInput" label="Search Item" source="[[invoiceAutoCompleteSourceDataList]]" on-autocomplete-selected="invoiceItemAutocompleteSelected">
-              </paper-autocomplete>
+              <vaadin-combo-box class="p-horizontal-16" label="Search Item" items="[[invoiceAutoCompleteSourceDataList]]" on-value-changed="invoiceItemAutocompleteSelected"></vaadin-combo-box>
             </div>
           </paper-card>
 

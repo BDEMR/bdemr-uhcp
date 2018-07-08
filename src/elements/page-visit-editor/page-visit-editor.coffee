@@ -1441,13 +1441,15 @@ Polymer {
       brandNameMap[item.brandName] = null
       manufacturerMap[item.manufacturer] = null
       genericNameMap[item.genericName] = null
-    @brandNameSourceDataList = ({text: item, value: item} for item in Object.keys brandNameMap)
+    @brandNameSourceDataList = ({label: item, value: item} for item in Object.keys brandNameMap)
     @manufacturerSourceDataList = ({text: item, value: item} for item in Object.keys manufacturerMap)
     @genericNameSourceDataList = ({text: item, value: item} for item in Object.keys genericNameMap)
 
 
   brandNameAutocompleteSelected: (e)->
-    brandName = e.detail.value
+    brandName = e.target.value
+    return @_resetMedicineForm() unless brandName
+
     @matchingMedicineList = (item for item in @medicineCompositionList when item.brandName is brandName)
     
     if @matchingMedicineList.length isnt 0
