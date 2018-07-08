@@ -5233,7 +5233,8 @@ Polymer {
 
     @addedMedicationList = []
 
-  navigatedOut: -> @_clearVisit()
+  navigatedOut: -> 
+    @_clearVisit()
 
 
 
