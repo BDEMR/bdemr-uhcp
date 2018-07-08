@@ -13,11 +13,6 @@ Polymer {
 
   properties:
 
-    showRepeatEmailField:
-      type: Boolean
-      notify: true
-      value: false
-
     user:
       type: Object
       notify: true
@@ -431,18 +426,6 @@ Polymer {
         @set 'errorMsg', null
         @set 'successMsg', null
         @checkNextBtnStatus true
-
-  _checkForValidEmailAddress: (e)->
-    email = @patient.email
-    if email
-      emailRegex =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      emailTest = emailRegex.test email
-      if emailTest
-        @set 'showRepeatEmailField', true
-      else
-        @set 'showRepeatEmailField', false
-
-    @set 'emailErrorMsg'
 
 
   _callBdemrAppCheckUserProvidedPhoneNumber: ()->
