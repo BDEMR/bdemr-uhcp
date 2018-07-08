@@ -12,6 +12,12 @@ Polymer {
   ]
 
   properties:
+
+    showRepeatEmailField:
+      type: Boolean
+      notify: true
+      value: false
+
     user:
       type: Object
       notify: true
@@ -156,7 +162,6 @@ Polymer {
       patientName: patient.name
       visitedDateTimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: 0
     }
 
     app.db.insert 'visited-patient-log', visitedPatientLogObject
@@ -349,7 +354,16 @@ Polymer {
         return
 
     if @patient.email
-      if @patient.repeatEmail isnt @patient.email
+      email = @patient.email
+
+      emailRegex =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      emailTest = emailRegex.test email
+      
+      if emailTest is false
+        @domHost.showToast 'Please provide valid Email Address!'
+        return
+
+      else if @patient.repeatEmail isnt @patient.email
         @domHost.showToast 'Repeated Email Not Matched!'
         return
     
@@ -417,6 +431,18 @@ Polymer {
         @set 'errorMsg', null
         @set 'successMsg', null
         @checkNextBtnStatus true
+
+  _checkForValidEmailAddress: (e)->
+    email = @patient.email
+    if email
+      emailRegex =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      emailTest = emailRegex.test email
+      if emailTest
+        @set 'showRepeatEmailField', true
+      else
+        @set 'showRepeatEmailField', false
+
+    @set 'emailErrorMsg'
 
 
   _callBdemrAppCheckUserProvidedPhoneNumber: ()->
@@ -531,13 +557,15 @@ Polymer {
       doctorAccessPin: '0000'
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: 0
       createdByUserId: @user.idOnServer
 
 
     @verifyPhoneNumber =
       patientId: null
       typedSmsVerificationCode: null
+
+
+
     
 
   navigatedIn: ->
@@ -557,7 +585,5 @@ Polymer {
     @isPatientValid = false
     @set "EDIT_MODE_ON", false
 
-  arrowBackButtonPressed: (e)->
-    @domHost.navigateToPreviousPage()
 
 }
