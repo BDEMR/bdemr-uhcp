@@ -181,7 +181,17 @@
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
-                  <template class="header">Type</template>
+                  <template class="header">
+                    <vaadin-grid-filter aria-label="Type" path="visit.dischargeNote.dischargeType" value="[[typeFilter]]">
+                      <paper-dropdown-menu label="Filter by Type" selected-item-label="{{typeFilter}}">
+                        <paper-listbox class="dropdown-content">
+                          <paper-item>OPD</paper-item>
+                          <paper-item>IPD</paper-item>
+                          <paper-item>Exclusion Criteria</paper-item>
+                        </paper-listbox>
+                      </paper-dropdown-menu>
+                    </vaadin-grid-filter>
+                  </template>
                   <template>
                     <div>
                       <span class="type caption-2 bg-gray">[[item.visit.dischargeNote.dischargeType]]</span>
@@ -233,12 +243,6 @@
                   <template>
                     <div>[[item.referral.doctorName]]</div>
                     <div class="type caption">[[item.referral.speciality]]</div>
-                  </template>
-                </vaadin-grid-column>
-                <vaadin-grid-column resizable="">
-                  <template class="header">Referred Location</template>
-                  <template>
-                    <span>N/A</span>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable="">
@@ -652,6 +656,7 @@
   _prepareJsonData(rawReport) {
     return rawReport.map((item) => {
       return {
+        'Visit Id': item.visit.serial,
         'EmployeeId': item.patientInfo ? item.patientInfo.employeeId : '',
         'Name': item.patientInfo ? item.patientInfo.name : '',
         'Age': item.patientInfo ? this.$computeAge(item.patientInfo.dateOfBirth) : '',
@@ -660,14 +665,16 @@
         'Factory Name': item.patientInfo.factoryName ? item.patientInfo.factoryName : '',
         'Department': item.patientInfo.department ? item.patientInfo.department : '',
         'Visit Date': this.$formatDateTime(item.visit.createdDatetimeStamp),
+        'Type': (item.visit.dischargeNote && item.visit.dischargeNote.dischargeType) ? item.visit.dischargeNote.dischargeType : '',
+        'Advise/Note': (item.doctorNotes && item.doctorNotes.messageList) ? item.doctorNotes.messageList : '',
         'Symptoms': item.symptoms ? item.symptoms.symptomsList.map(item => item.name) : '',
         'Diagnosis': item.diagnosis ? item.diagnosis.diagnosisList.map(item => item.name) : '',
-        'Test Advise': item.advisedTests ? item.advisedTests.testAdvisedList.map(item => item.investigationName) : '',
+        'Investigation': item.advisedTests ? item.advisedTests.testAdvisedList.map(item => item.investigationName) : '',
         'Referral': `${item.referral ? item.referral.doctorName : ''} - ${item.referral ? item.referral.doctorName : ''}`,
         'Treatment': item.medication ? item.medication.map(item => item.data.brandName) : '',
-        'Cost of Drug': this.$getCategoryCost('Medicine', item.invoice),
-        'Cost of Investigation': this.$getCategoryCost('Investigation', item.invoice),
-        'Cost of Consultancy': this.$getCategoryCost('Consultancy', item.invoice),
+        'Drug Cost': this.$getCategoryCost('Medicine', item.invoice),
+        'Investigation Cost': this.$getCategoryCost('Investigation', item.invoice),
+        'Consultancy Fee': this.$getCategoryCost('Consultancy', item.invoice),
         'Total Cost': this.$getTotalCost(item.invoice),
         'Worker Contribution (5%)': item.chargedToWallet ? item.chargedToWallet : 0
       }

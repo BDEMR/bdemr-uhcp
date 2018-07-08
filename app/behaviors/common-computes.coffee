@@ -44,7 +44,7 @@ app.behaviors.commonComputes =
       month: 'short'
       year: 'numeric'
     }
-    return new Date(dateTime).toLocaleString('en-GB', formatObj)
+    return new Date(date).toLocaleString('en-GB', formatObj)
 
 
   $formatDateTime: (dateTime)->
@@ -71,6 +71,8 @@ app.behaviors.commonComputes =
       return true
     else
       return false
+
+  $toTwoDecimalPlace: (number)-> return Number.parseFloat(number).toFixed(2)
 
   $getFullName:(data)->
 

@@ -446,7 +446,7 @@
         <!-- Print - History And Physical - end -->
 
         <!-- Patient Discharge Note -->
-        <div class="horizontal layout center print-sub-header">
+        <div class="horizontal layout center print-sub-header m-top-8">
           <div class="type body bold">Patient Discharge Note</div>
         </div>
         <div class="type caption-2">
@@ -456,18 +456,18 @@
           <div hidden="[[_isEmptyString(visit.dischargeNote.advise)]]">
             <span class="">Advice: </span> [[visit.dischargeNote.advise]]
           </div>
-          <div class="layout horizontal">
+          <div class="layout horizontal" hidden="[[_isEmptyString(visit.dischargeNote.admissionDateTimeStamp)]]">
             <span class=""> Admission Date: </span>
-            <span>&nbsp;[[$mkDate(visit.dischargeNote.admissionDateTimeStamp)]]</span>
+            <span> [[$mkDate(visit.dischargeNote.admissionDateTimeStamp)]]</span>
           </div>
-          <div>
+          <div hidden="[[_isEmptyString(visit.dischargeNote.admittedToOrganization)]]">
             <span class="">Admitted To</span>
             <span>[[visit.dischargeNote.admittedToOrganization.name]]</span>
           </div>
-          <div>
+          <div hidden="[[_isEmptyString(visit.dischargeNote.referredByDoctorName)]]">
             <span class="">Referred By: </span> [[visit.dischargeNote.referredByDoctorName]]
           </div>
-          <div>
+          <div hidden="[[_isEmptyString(visit.dischargeNote.admittedByDoctorName)]]">
             <span class="">Admitted By: </span> [[visit.dischargeNote.admittedByDoctorName]]
           </div>
 
