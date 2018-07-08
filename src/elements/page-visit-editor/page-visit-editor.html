@@ -1467,23 +1467,7 @@
               <div class="card-item-2">
 
                 <div class="preview-title layout">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_invoice.png"></iron-icon> -->
                   <div class="type title-2 flex">Invoice</div>
-                  <div class="action-area">
-                    <template is="dom-if" if="[[!isInvoiceValid]]">
-                      <paper-button class="btn-add m-vert" on-tap="createInvoicePressed">
-                        <iron-icon icon="icons:add"></iron-icon>
-                      </paper-button>
-                    </template>
-                    <template is="dom-if" if="[[isInvoiceValid]]">
-                      <paper-button class="btn-add m-vert" on-tap="printInvoicePressed">
-                        <iron-icon icon="icons:print"></iron-icon>
-                      </paper-button>
-                      <paper-button class="btn-add m-vert" on-tap="editInvoicePressed">
-                        <iron-icon icon="icons:create"></iron-icon>
-                      </paper-button>
-                    </template>
-                  </div>
                 </div>
 
                 <template is="dom-if" if="[[isInvoiceValid]]">

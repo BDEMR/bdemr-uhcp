@@ -44,7 +44,7 @@ app.behaviors.commonComputes =
       month: 'short'
       year: 'numeric'
     }
-    return new Date(dateTime).toLocaleString('en-GB', formatObj)
+    return new Date(date).toLocaleString('en-GB', formatObj)
 
 
   $formatDateTime: (dateTime)->

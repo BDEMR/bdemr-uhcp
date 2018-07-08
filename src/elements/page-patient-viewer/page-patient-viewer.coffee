@@ -906,7 +906,7 @@ Polymer {
 
 
   createNewVisitPressed: (e)->
-    @domHost.navigateToPage  '#/visit-editor/visit:new/patient:' + @patient.serial
+    @domHost.navigateToPage  '#/visit-editor/patient:' + @patient.serial
 
   selectedVisitTypeVisitButtonPressed: (e)->
     el = @locateParentNode e.target, 'PAPER-ITEM'

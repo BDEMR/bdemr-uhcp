@@ -829,6 +829,10 @@ Polymer {
         'Exclusion Criteria'
       ]
 
+    addedMedicationList:
+      type: Array
+      value: -> []
+
 
     #####################################################################
     # Full Visit Preview - end
@@ -1134,7 +1138,6 @@ Polymer {
       @_saveVisit()
 
     @prescription.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'visit-prescription', @prescription, ({serial})=> @prescription.serial is serial
     @domHost.showToast 'Prescription Saved.'
 
 
@@ -1177,9 +1180,6 @@ Polymer {
         app.db.insert 'patient-medications--deleted', { serial: medicine.serial }
         @splice 'matchingPrescribedMedicineList', index, 1
         @domHost.showToast 'Medicine Deleted!'
-
-  _saveMedicine: (data)->
-    app.db.upsert 'patient-medications', data, ({serial})=> data.serial is serial
 
 
   _isNthWeekSelectedAsEndDate: (index)->
@@ -1424,7 +1424,7 @@ Polymer {
 
   makeNewVisitButtonPressed: (e)->
     @domHost.setSelectedVisitSerial 'new'
-    @domHost.modifyCurrentPagePath '#/visit-editor/visit:new' + '/patient:' + @patient.serial
+    @domHost.modifyCurrentPagePath '#/visit-editor/patient:' + @patient.serial
     @domHost.reloadPage()
     
 
@@ -1788,7 +1788,8 @@ Polymer {
 
     medicine.lastModifiedDatetimeStamp = lib.datetime.now()
 
-    app.db.insert 'patient-medications', medicine
+    # app.db.insert 'patient-medications', medicine
+    @push 'addedMedicationList', medicine
 
     @domHost.showToast "Medicine Added!"
 
@@ -2071,7 +2072,6 @@ Polymer {
      
       # Updated Identified Symptoms List
       @identifiedSymptomsObject.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'visit-identified-symptoms', @identifiedSymptomsObject, ({serial})=> @identifiedSymptomsObject.serial is serial
       
       @set 'comboBoxSymptomsInputValue', ''
       @domHost.showToast 'Symptoms Added.'
@@ -2381,7 +2381,6 @@ Polymer {
         @examinationObject.visitSerial = @visit.serial
      
       @examinationObject.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'visit-examination', @examinationObject, ({serial})=> @examinationObject.serial is serial
 
       @set 'comboBoxExaminationInputValue', ''
       @domHost.showToast 'Examination Updated!'
@@ -2586,7 +2585,6 @@ Polymer {
     }
 
     @push "machingUserAddedInstitutionList", {label: @suggestedInstitutionValue, value: @suggestedInstitutionValue}
-    app.db.upsert "user-added-institution-list", userAddedInsitution, ({serial})-> serial is userAddedInsitution.serial
 
   comboBoxKeyUpSeggestedInstitutionNameChanged: (e) ->
     unless @suggestedInstitutionValue is ''
@@ -2855,7 +2853,6 @@ Polymer {
      
       # Updated Advised Test List
       @testAdvisedObject.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'visit-advised-test', @testAdvisedObject, ({serial})=> @testAdvisedObject.serial is serial
       
       @set 'comboBoxInvestigationInputValue', ''
       @domHost.showToast 'Test Added.'
@@ -2989,27 +2986,6 @@ Polymer {
         flags:
           flagAsError: false
 
-
-  # SAVE TO DB
-  # ===========================
-
-  _saveBloodPressure: (data)->
-    app.db.upsert 'patient-vitals-blood-pressure', data, ({serial})=> data.serial is serial
-
-  _savePulseRate: (data)->
-    app.db.upsert 'patient-vitals-pulse-rate', data, ({serial})=> data.serial is serial
-
-  _saveBmi: (data)->
-    app.db.upsert 'patient-vitals-bmi', data, ({serial})=> data.serial is serial
-
-  _saveRespiratoryRate: (data)->
-    app.db.upsert 'patient-vitals-respiratory-rate', data, ({serial})=> data.serial is serial
-
-  _saveOxygenSaturation: (data)->
-    app.db.upsert 'patient-vitals-spo2', data, ({serial})=> data.serial is serial
-
-  _saveTemperature: (data)->
-    app.db.upsert 'patient-vitals-temperature', data, ({serial})=> data.serial is serial
 
   _addToVitalList: (object, type)->
     lib.util.delay 5, ()=>
@@ -3164,7 +3140,6 @@ Polymer {
     @_addToVitalList @bloodPressure, 'Blood Pressure'
     @updateVisitForVital @bloodPressure.serial, 'Blood Pressure'
     @bloodPressure.visitSerial = @visit.serial
-    @_saveBloodPressure @bloodPressure
    
    # Activity LOG for BLOOD PRESSURE -START
   # =====================================================   
@@ -3200,7 +3175,6 @@ Polymer {
 
       @updateVisitForVital @pulseRate.serial, 'Heart Rate'
       @pulseRate.visitSerial = @visit.serial
-      @_savePulseRate @pulseRate
       @_addToVitalList @pulseRate, 'Heart Rate'
    
    # Activity LOG for PULSE RATE -START
@@ -3319,7 +3293,6 @@ Polymer {
       @_addToVitalList @bmi, 'BMI'
       @updateVisitForVital @bmi.serial, 'BMI'
       @bmi.visitSerial = @visit.serial
-      @_saveBmi @bmi
       @domHost.showToast 'Added Successfully!'
       # @bmiList = app.db.find 'patient-vitals-bmi'
     else
@@ -3340,7 +3313,6 @@ Polymer {
 
       @updateVisitForVital @respiratoryRate.serial, 'Respirtory Rate'
       @respiratoryRate.visitSerial = @visit.serial
-      @_saveRespiratoryRate @respiratoryRate
       @_addToVitalList @respiratoryRate, 'Respirtory Rate'
       # @respiratoryRateList = app.db.find 'patient-vitals-respiratory-rate'
    
@@ -3375,7 +3347,6 @@ Polymer {
 
       @updateVisitForVital @oxygenSaturation.serial, 'SpO2'
       @oxygenSaturation.visitSerial = @visit.serial
-      @_saveOxygenSaturation @oxygenSaturation
       @_addToVitalList @oxygenSaturation, 'SpO2'
       # @oxygenSaturationList = app.db.find 'patient-vitals-spo2'
 
@@ -3441,7 +3412,6 @@ Polymer {
     @set 'temperature.createdDatetimeStamp', lib.datetime.now()
     @updateVisitForVital @temperature.serial, 'Temperature'
     @temperature.visitSerial = @visit.serial
-    @_saveTemperature @temperature
     @_addToVitalList @temperature, 'Temperature'
    
   # Activity LOG for temperature -START
@@ -3515,12 +3485,6 @@ Polymer {
     # console.log @priorityTypeList[@nextVisitPriorityTypeSelectedIndex]
     @nextVisit.data.priorityType = @priorityTypeList[@nextVisitPriorityTypeSelectedIndex]
 
-  _saveNextVisit: (data)->
-    data.visitSerial = @visit.serial
-    data.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'visit-next-visit', data, ({serial})=> data.serial is serial
-
-
     
   _addNextVisitPressed: ()->
     unless @nextVisit.data.nextVisitDateTimestamp is 0
@@ -3531,7 +3495,8 @@ Polymer {
         @_saveVisit()
 
       @nextVisit.data.priorityType = @priorityValue
-      @_saveNextVisit @nextVisit
+      @nextVisit.visitSerial = @visit.serial
+      @nextVisit.lastModifiedDatetimeStamp = lib.datetime.now()
       @_loadNextVisit @nextVisit.serial
       @domHost.showToast 'Next Visit Saved!'
 
@@ -3543,13 +3508,6 @@ Polymer {
   #####################################################################
   ### Note - start
   #####################################################################
-  _saveNote: (data)->
-    data.visitSerial = @visit.serial
-    data.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'visit-note', data, ({serial})=> data.serial is serial
-
-    # console.log app.db.find 'visit-note'
-    
 
   _addNotePressed: ()->
     unless @doctorNotesMessage is ''
@@ -3562,7 +3520,8 @@ Polymer {
         @visit.doctorNotesSerial = @doctorNotes.serial
         @_saveVisit()
     
-      @_saveNote @doctorNotes
+      @doctorNotes.visitSerial = @visit.serial
+      @doctorNotes.lastModifiedDatetimeStamp = lib.datetime.now()
       @doctorNotesMessage = ''
       @_loadVisitNote @doctorNotes.serial
       @domHost.showToast 'Note Saved.'
@@ -3660,17 +3619,11 @@ Polymer {
 
 
   _saveVisit: ()->
-    params = @domHost.getPageParams()
-
-    if params['visit'] is 'new'
-      @isThatNewVisit = false
+    unless @visit.serial
       visitSerial = @generateSerialForVisit()
       @set 'visit.serial', visitSerial
-      @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + visitSerial + '/patient:' + @patient.serial
       @domHost.setSelectedVisitSerial visitSerial
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
-
     @domHost.showSuccessToast 'Visit Saved!'
     
 
@@ -3680,7 +3633,7 @@ Polymer {
 
   _notifyInvalidVisit: ->
     @isVisitValid = false
-    # @domHost.showModalDialog 'Invalid Visit Provided'
+    @domHost.showModalDialog 'Invalid Visit Provided'
 
   _loadVisit: (visitIdentifier, cbfn)->
     list = app.db.find 'doctor-visit', ({serial})-> serial is visitIdentifier
@@ -3688,11 +3641,11 @@ Polymer {
       @isVisitValid = true
       @visit = list[0]
       console.log "VISIT: ", @visit
+      cbfn()
     else
       @_notifyInvalidVisit()
       return
 
-    cbfn()
      
 
   _loadVitalsForVisit: (vitalIdentifier, vitalType)->
@@ -3810,7 +3763,6 @@ Polymer {
     @domHost.showModalPrompt 'Are you sure?', (answer)=>
       if answer is true
         @splice 'doctorNotes.data.messageList', index, 1
-        app.db.upsert 'visit-note', @doctorNotes, ({serial})=> @doctorNotes.serial is serial
 
 
 
@@ -4464,6 +4416,8 @@ Polymer {
   
   navigatedIn: ->
 
+    console.log 'navigated in'
+
     @organization = @getCurrentOrganization()
     unless @organization
       return @domHost.navigateToPage "#/select-organization"
@@ -4482,12 +4436,6 @@ Polymer {
 
           # load Wallets
           @_loadVariousWallets => null
-
-          # Set SelectedVisitPageIndex
-          if params['selected']
-           @selectedVisitPageIndex = params['selected']
-          else
-            @selectedVisitPageIndex = 0
 
           # Reset Properties - History and Physical
           @historyAndPhysicalRecord = {}
@@ -4540,295 +4488,36 @@ Polymer {
           # Preloaded Data - Diagnosis
           @loadDiagnosisListData()
           
-
-          ## Load Visit Record
-          unless params['visit']
-            @_notifyInvalidVisit()
-            return
-
           @_loadPriceList (priceList)=>
             if priceList?.length
               @set 'priceList', priceList
-              console.log @priceList
+              console.log 'price-list', @priceList.length, 'item loaded'
             else
               @domHost.showModalDialog 'No Pricelist found, please contact your admin to setup a price list'
           
-          if params['visit'] is 'new'
-            @_makeNewVisit =>
-              @_makeNewPrescription()
-              @_makeNewIdentifiedSymptomsObject()
-              @_makeNewExaminationObject()
-
-              @_makeBloodPressure()
-              @_makePulseRate()
-              @_makeBmi()
-              @_makeRespiratoryRate()
-              @_makeOxygenSaturation()
-              @_makeTemperature()
-
-              @_makeNewTestAdvisedObject()
-              @_makeNewDiagnosis()
-              @_makeNewNote()
-              @_makeNewNextVisit()
-              @set 'invoice', {}
-              @_loadOrganizationsIBelongTo()
-              # @_makeNewPatientStay()
-
-          else
-            @_loadVisit params['visit'], =>
-              @domHost.setSelectedVisitSerial params['visit']
-              ## Visit - HistoryAndPhysical - start
-              if @visit.hasOwnProperty('historyAndPhysicalRecordSerial')
-                if @visit.historyAndPhysicalRecordSerial
-                  @historyAndPhysical_navigatedIn()
-
-                  @set 'recordPartName', 'history-and-physical-record'
-
-                  @recordDatabaseCollectionName = 'history-and-physical-record'
-
-                  @record = @_getRecord @visit.historyAndPhysicalRecordSerial, @recordDatabaseCollectionName
-
-                  @recordPartData = @record
-
-                  @recordPartTitle = 'History and Physical Record'
-
-                  @domHost.getStaticData 'dynamicElementDefinitionPreoperativeAssessment', (def)=>
-                    
-                    @recordPartDef = def
-
-                    @recordPartHtmlContent = @generateHtmlContent @recordPartDef, @recordPartData
-
-                    # console.log @recordPartHtmlContent
-
-                    unless @delayRendering
-                      
-                      @shouldRender = true
-                else
-                  @historyAndPhysicalRecord = {}
-              else
-                @visit.historyAndPhysicalRecordSerial = null
-                @historyAndPhysicalRecord = {}
-              ## Visit - HistoryAndPhysical - end
-
-              ## Visit - Prescription - start
-              if @visit.hasOwnProperty('prescriptionSerial')
-                if @visit.prescriptionSerial
-                  @_loadPrescription @visit.prescriptionSerial
-                else
-                  @_makeNewPrescription()
-              else
-                @visit.prescriptionSerial = null
-                @_makeNewPrescription()
-              ## Visit - Prescription - end
-
-              ## Visit - Symptoms - start
-              if @visit.hasOwnProperty('identifiedSymptomsSerial')
-                if @visit.identifiedSymptomsSerial
-                  @_loadIdentifiedSymptoms @visit.identifiedSymptomsSerial
-                else
-                  @_makeNewIdentifiedSymptomsObject()
-              else
-                @visit.identifiedSymptomsSerial = null
-                @_makeNewIdentifiedSymptomsObject()
-              ## Visit - Symptoms - end
-
-              ## Visit - Examination - start
-              if @visit.hasOwnProperty('examinationSerial')
-                if @visit.examinationSerial
-                  @_loadExamination @visit.examinationSerial
-                else
-                  @_makeNewExaminationObject()
-                  
-              else
-                @visit.examinationSerial = null
-                @_makeNewExaminationObject()
-
-              ## Visit - Examination - end
-
-              ## Visit - Vitals - start
-              
-              if @visit.hasOwnProperty 'vitalSerial'
-
-                if @visit.vitalSerial.bp
-                   @_loadVitalsForVisit @visit.vitalSerial.bp, 'Blood Pressure'
-                else
-                  @_makeBloodPressure()
-
-                if @visit.vitalSerial.hr
-                  @_loadVitalsForVisit @visit.vitalSerial.hr, 'Heart Rate'
-                else
-                  @_makePulseRate()
-
-                if @visit.vitalSerial.bmi
-                  @_loadVitalsForVisit @visit.vitalSerial.bmi, 'BMI'
-                else
-                  @_makeBmi()
-
-                if @visit.vitalSerial.rr
-                  @_loadVitalsForVisit @visit.vitalSerial.rr, 'Respirtory Rate'
-                else
-                  @_makeRespiratoryRate()
-
-                if @visit.vitalSerial.spo2
-                  @_loadVitalsForVisit @visit.vitalSerial.spo2, 'Spo2'
-                else
-                  @_makeOxygenSaturation()
-
-                if @visit.vitalSerial.temp
-                  @_loadVitalsForVisit @visit.vitalSerial.temp, 'Temperature'
-                else
-                  @_makeTemperature()
-
-              else
-                @_makeBloodPressure()
-                @_makePulseRate()
-                @_makeBmi()
-                @_makeRespiratoryRate()
-                @_makeOxygenSaturation()
-                @_makeTemperature()
-
-                @visit.vitalSerial =
-                  bp: null
-                  hr: null
-                  bmi: null
-                  rr: null
-                  spo2: null
-                  temp: null
-        
-              ## Visit - Vitals - end
-
-
-              ## Visit - Test Advised - start
-              if @visit.hasOwnProperty('advisedTestSerial')
-                if @visit.advisedTestSerial
-                  @_loadAdvisedTest @visit.advisedTestSerial
-                else
-                  @_makeNewTestAdvisedObject()
-              else
-                @visit.advisedTestSerial = null
-                @_makeNewTestAdvisedObject()
-                  
-              ## Visit - Test Advised - start
-
-              ## Visit - Diagnosis - start
-              if @visit.hasOwnProperty('diagnosisSerial')
-                if @visit.diagnosisSerial
-                  @_loadDiagnosis @visit.diagnosisSerial
-                else
-                  @_makeNewDiagnosis()
-              else
-                @visit.diagnosisSerial = null
-                @_makeNewDiagnosis()
-              ## Visit - Diagnosis - end
-
-              ## Visit - Referral - start
-              if @visit.hasOwnProperty('referralSerial')
-                if @visit.referralSerial
-                  @_loadReferral @visit.referralSerial
-                else
-                  @_makeNewReferral()
-              else
-                @visit.referralSerial = null
-                @_makeNewReferral()
-              ## Visit - Referral - end
-
-              ## Visit - Notes - start
-              if @visit.hasOwnProperty('doctorNotesSerial')
-                if @visit.doctorNotesSerial
-                  @_loadVisitNote @visit.doctorNotesSerial
-                else
-                  @_makeNewNote()
-              else
-                @visit.doctorNotesSerial = null
-                @_makeNewNote()
-
-              ## Visit - Next Visit - start
-              if @visit.hasOwnProperty('nextVisitSerial')
-                if @visit.nextVisitSerial
-                  @_loadNextVisit @visit.nextVisitSerial
-                else
-                  @_makeNewNextVisit()
-              else
-                @visit.nextVisitSerial = null
-                @_makeNewNextVisit() is null
-
-              ## Visit - Next Visit - end
-
-              ## Visit - Patient Stay - start
-              @_loadOrganizationsIBelongTo()
-              
-              ## Visit - Patient Stay - end
-
-              ## Visit - Invoice - start
-              if @visit.invoiceSerialList?.length
-                @_loadInvoice @visit.invoiceSerialList[0]
-                @isInvoiceValid = true;
-              else if @visit.invoiceSerial
-                @_loadInvoice @visit.invoiceSerial
-                @isInvoiceValid = true;
-              else
-                @set 'invoice', {}
-                @isInvoiceValid = false;
-              
-              ## Visit - Invoice - end
-
           
+          @_makeNewVisit =>
+            @_makeNewPrescription()
+            @_makeNewIdentifiedSymptomsObject()
+            @_makeNewExaminationObject()
+
+            @_makeBloodPressure()
+            @_makePulseRate()
+            @_makeBmi()
+            @_makeRespiratoryRate()
+            @_makeOxygenSaturation()
+            @_makeTemperature()
+
+            @_makeNewTestAdvisedObject()
+            @_makeNewDiagnosis()
+            @_makeNewNote()
+            @_makeNewNextVisit()
+            @set 'invoice', {}
+            @_loadOrganizationsIBelongTo()
+            # @_makeNewPatientStay()
 
 
-  navigatedOut: ->
-    @visit = {}
-    @patient = {}
-    @doctorNotes = {}
-    @patientStay = {}
-    @isVisitValid = false
-    @isPatientValid = false
-    @isNoteValid = false
-    @isPatientStayValid = false
-    @isInvoiceValid = false
-    
-    @doctorInstitutionList = []
-    @doctorSpecialityList = []
-
-    ## Prescription
-    @prescription = {}
-    @isPrescriptionValid = false
-
-    @matchingPrescribedMedicineList = []
-    @matchingCurrentMedicineList = []
-    @matchingFavoriteMedicineList = []
-
-    @medicine = {}
-
-    @isMedicineValid = false
-
-    ## Advised Test
-    @isTestAdvisedValid = false
-    @testAdvisedObject = {}
-    @matchingFavoriteInvestigationList = []
-    @investigationDataList = []
-
-    ##Examination
-    @addedExaminationList = []
-    
-    ## patient stay
-    @selectedView = 0
-    @patientStay = null
-    @patientStayObject = null
-    @organizationsIBelongToList = []
-    @selectedOrganizationIndex = null
-    @selectedDepartmentIndex = null
-    @selectedUnitIndex = null
-    @selectedWardIndex = null
-    @seatList = []
-    @patientDischarged = false
-
-    ## Visit Details :: View - HistoryAndPhysical
-    @shouldRender = false
-
-    @historyAndPhysicalRecord = {}
-
-
-
+  
   ## ------------------------------- History and physical - start
 
   historyAndPhysical_navigatedIn: ->
@@ -4857,10 +4546,6 @@ Polymer {
     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
 
     # updated visit object for History and Physical
-    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
-
-
-    @_saveHistoryAndPhysicalRecord()
     @_loadHistoryAndPhysicalRecord()
     @domHost.navigateToPage '#/record-history-and-physical/record:' + @historyAndPhysicalRecord.serial
     window.location.reload()
@@ -4895,9 +4580,6 @@ Polymer {
 
 
     # updated visit object for History and Physical
-    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
-
-    @_saveHistoryAndPhysicalRecord()
     @_loadHistoryAndPhysicalRecord()
 
     @recordInClipboard = null
@@ -4935,19 +4617,6 @@ Polymer {
       @set 'historyAndPhysicalRecord', null
 
     console.log '_loadHistoryAndPhysicalRecord', @historyAndPhysicalRecord
-
-  _saveVisitPrescription:->
-    app.db.upsert 'visit-prescription', @prescription, ({serial})=> @prescription.serial is serial
-    @domHost.showToast 'Record Saved'
-
-  _saveVisitTestAdvised:->
-    app.db.upsert 'visit-advised-test', @testAdvised, ({serial})=> @testAdvised.serial is serial
-    @domHost.showToast 'Record Saved'
-
-
-  _saveHistoryAndPhysicalRecord:->
-    app.db.upsert 'history-and-physical-record', @historyAndPhysicalRecord, ({serial})=> @historyAndPhysicalRecord.serial is serial
-    @domHost.showToast 'Record Saved'
 
 
   ## ------------------------------- History and physical - end
@@ -4987,10 +4656,8 @@ Polymer {
     if @historyAndPhysicalRecord
       if e.target.checked
         @historyAndPhysicalRecord.availableToPatient = true
-        @_saveHistoryAndPhysicalRecord()
       else
         @historyAndPhysicalRecord.availableToPatient = false
-        @_saveHistoryAndPhysicalRecord()
 
 
   prescriptionAvailableToPatientCheckBoxChanged: (e)->
@@ -5058,7 +4725,6 @@ Polymer {
       @_saveVisit()
         
     @diagnosis.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'diagnosis-record', @diagnosis, ({serial})=> @diagnosis.serial is serial
 
     @comboBoxDiagnosisInputValue = ''
 
@@ -5228,7 +4894,6 @@ Polymer {
       @_saveVisit()
         
     @referral.lastModifiedDatetimeStamp = lib.datetime.now()
-    app.db.upsert 'referral-record', @referral, ({serial})=> @referral.serial is serial
 
   
   openReferralDialogPressed: (e)->
@@ -5312,24 +4977,23 @@ Polymer {
   # ===============================
   
   
-  createInvoicePressed: ->
-    params = @domHost.getPageParams()
+  # createInvoicePressed: ->
+  #   params = @domHost.getPageParams()
 
-    if params['visit'] is 'new'
-      @visit.serial = @generateSerialForVisit()
-      @visit.lastModifiedDatetimeStamp = lib.datetime.now()
-      app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
+  #   unless @visit.serial
+  #     @visit.serial = @generateSerialForVisit()
+  #     @visit.lastModifiedDatetimeStamp = lib.datetime.now()
 
-    @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
-    @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
+  #   # @domHost.modifyCurrentPagePath '#/visit-editor/visit:' + @visit.serial + '/patient:' + @patient.serial
+  #   @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:new'
 
   editInvoicePressed: (e)->
     @domHost.navigateToPage  '#/create-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
 
-  printInvoicePressed: ()->
-    params = @domHost.getPageParams()
-    if params['visit-invoice'] != 'new'
-      @domHost.navigateToPage '#/print-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
+  # printInvoicePressed: ()->
+  #   params = @domHost.getPageParams()
+  #   if params['visit-invoice'] != 'new'
+  #     @domHost.navigateToPage '#/print-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
 
   
   _addMedicinePriceToInvoice: (itemName, qty, visitSerial)->
@@ -5392,127 +5056,6 @@ Polymer {
 
   calculatedOutDoorBalanceAfterDeduction: (opdBalance, totalBilled)-> return ((parseFloat opdBalance) - (parseFloat totalBilled)).toFixed(2)
 
-  finishButtonPressed: ->
-    @_updateNewDateTimeForVisitElements @visit.createdDatetimeStamp
-    if @invoice?.totalBilled
-      @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (transactionId)=>
-        if transactionId
-          @invoice.transactionId = transactionId
-          @_saveInvoice()
-          @_saveVisit()
-          @arrowBackButtonPressed()
-        else
-          return @domHost.showModalDialog 'Something went wrong with balance deduction.'
-    else
-      @_saveVisit()
-      @arrowBackButtonPressed()
-
-
-  # Create Visit on Backdate
-  # =======================================
-
-  
-  _loadVitalData: (vitalSerial, collection)-> app.db.find collection, ({serial})=> serial is vitalSerial
-  
-  _updateNewDateTimeForVisitElements: (visitDateTime)->
-
-    return unless visitDateTime
-
-    @domHost.toggleModalLoader 'Updating Date. Please wait...'
-
-    visit = @get 'visit'
-    
-    if visit.prescriptionSerial
-      medicineList = app.db.find 'patient-medications', ({prescriptionSerial})-> prescriptionSerial is visit.prescriptionSerial
-      for medicine in medicineList
-        medicine.recordCreatedDateTimeStamp = medicine.createdDatetimeStamp or lib.datetime.now()
-        medicine.createdDatetimeStamp = visitDateTime
-        @_saveMedicine(medicine)
-    
-      @prescription.recordCreatedDateTimeStamp = @prescription.createdDatetimeStamp or lib.datetime.now()
-      @prescription.createdDatetimeStamp = visitDateTime
-      @_savePrescription()
-
-    if visit.doctorNotesSerial
-      @doctorNotes.recordCreatedDateTimeStamp = @doctorNotes.createdDatetimeStamp or lib.datetime.now()
-      @doctorNotes.createdDatetimeStamp = visitDateTime
-      @_saveNote @doctorNotes
-
-    if visit.nextVisitSerial
-      @nextVisit.recordCreatedDateTimeStamp = @nextVisit.createdDatetimeStamp or lib.datetime.now()
-      @nextVisit.createdDatetimeStamp = visitDateTime
-      @_saveNextVisit @nextVisit
-
-    if visit.advisedTestSerial
-      @testAdvisedObject.recordCreatedDateTimeStamp = @testAdvisedObject.createdDatetimeStamp or lib.datetime.now()
-      @testAdvisedObject.createdDatetimeStamp = visitDateTime
-      app.db.upsert 'visit-advised-test', @testAdvisedObject, ({serial})=> serial is visit.advisedTestSerial
-
-    if visit.invoiceSerial
-      @invoice.recordCreatedDateTimeStamp = @invoice.createdDatetimeStamp or lib.datetime.now()
-      @invoice.createdDatetimeStamp = visitDateTime
-      app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is visit.invoiceSerial
-
-    if visit.historyAndPhysicalRecordSerial
-      @historyAndPhysicalRecord.recordCreatedDateTimeStamp = @historyAndPhysicalRecord.createdDatetimeStamp or lib.datetime.now()
-      @historyAndPhysicalRecord.createdDatetimeStamp = visitDateTime
-      @_saveHistoryAndPhysicalRecord()
-
-    if visit.diagnosisSerial
-      @diagnosis.recordCreatedDateTimeStamp = @diagnosis.createdDatetimeStamp or lib.datetime.now()
-      @diagnosis.createdDatetimeStamp = visitDateTime
-      app.db.upsert 'diagnosis-record', @diagnosis, ({serial})=> serial is visit.diagnosisSerial
-
-    if visit.identifiedSymptomsSerial
-      @identifiedSymptomsObject.recordCreatedDateTimeStamp = @identifiedSymptomsObject.createdDatetimeStamp or lib.datetime.now()
-      @identifiedSymptomsObject.createdDatetimeStamp = visitDateTime
-      app.db.upsert 'visit-identified-symptoms', @identifiedSymptomsObject, ({serial})=> serial is visit.identifiedSymptomsSerial
-
-    if visit.examinationSerial
-      @examinationObject.recordCreatedDateTimeStamp = @examinationObject.createdDatetimeStamp or lib.datetime.now()
-      @examinationObject.createdDatetimeStamp = visitDateTime
-      app.db.upsert 'visit-examination', @examinationObject, ({serial})=> serial is visit.examinationSerial
-
-    if visit.referralSerial
-      @referral.recordCreatedDateTimeStamp = @referral.createdDatetimeStamp or lib.datetime.now()
-      @referral.createdDatetimeStamp = visitDateTime
-      app.db.upsert 'referral-record', @referral, ({serial})=> serial is visit.referralSerial
-      
-    
-    if visit.vitalSerial.bp
-      bloodPressure = @_loadVitalData visit.vitalSerial.bp, 'patient-vitals-blood-pressure'
-      bloodPressure.recordCreatedDateTimeStamp = bloodPressure.createdDatetimeStamp or lib.datetime.now()
-      bloodPressure.createdDatetimeStamp = visitDateTime
-      @_saveBloodPressure bloodPressure
-    if visit.vitalSerial.hr
-      pulseRate = @_loadVitalData visit.vitalSerial.hr, 'patient-vitals-pulse-rate'
-      pulseRate.recordCreatedDateTimeStamp = pulseRate.createdDatetimeStamp or lib.datetime.now()
-      pulseRate.createdDatetimeStamp = visitDateTime
-      @_savePulseRate pulseRate
-    if visit.vitalSerial.bmi
-      bmi = @_loadVitalData visit.vitalSerial.bmi, 'patient-vitals-bmi'
-      bmi.recordCreatedDateTimeStamp = bmi.createdDatetimeStamp or lib.datetime.now()
-      bmi.createdDatetimeStamp = visitDateTime
-      @_saveBmi bmi
-    if visit.vitalSerial.rr
-      respiratoryRate = @_loadVitalData visit.vitalSerial.rr, 'patient-vitals-respiratory-rate'
-      respiratoryRate.recordCreatedDateTimeStamp = respiratoryRate.createdDatetimeStamp or lib.datetime.now()
-      respiratoryRate.createdDatetimeStamp = visitDateTime
-      @_saveRespiratoryRate respiratoryRate
-    if visit.vitalSerial.spo2
-      oxygenSaturation = @_loadVitalData visit.vitalSerial.spo2, 'patient-vitals-spo2'
-      oxygenSaturation.recordCreatedDateTimeStamp = oxygenSaturation.createdDatetimeStamp or lib.datetime.now()
-      oxygenSaturation.createdDatetimeStamp = visitDateTime
-      @_saveOxygenSaturation oxygenSaturation
-    if visit.vitalSerial.temp
-      temperature = @_loadVitalData visit.vitalSerial.temp, 'patient-vitals-temperature'
-      temperature.recordCreatedDateTimeStamp = temperature.createdDatetimeStamp or lib.datetime.now()
-      temperature.createdDatetimeStamp = visitDateTime
-      @_saveTemperature temperature
-
-    @domHost.toggleModalLoader()
-
-
   
   visitDateChangeOpenModalClicked: ->
     @customVisitDate = ""
@@ -5524,6 +5067,178 @@ Polymer {
     visitDateTime = +new Date("#{@customVisitDate} #{@customVisitTime}")
     @set 'visit.createdDatetimeStamp', visitDateTime
     @.$.visitDateModal.toggle()
+  
+  
+  finishButtonPressed: ->
+    if @invoice?.totalBilled
+      @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (transactionId)=>
+        if transactionId
+          @invoice.transactionId = transactionId
+          @_saveInvoice()
+          @_saveVisit()
+          @_SaveVisitToDb()
+          @_clearVisit()
+          @arrowBackButtonPressed()
+        else
+          return @domHost.showModalDialog "Couldn't Deduct Balance, Visit not Saved! Please Try Again."
+    else
+      @_SaveVisitToDb()
+      @_clearVisit()
+      @arrowBackButtonPressed()
+
+
+  _loadVitalData: (vitalSerial, collection)-> app.db.find collection, ({serial})=> serial is vitalSerial
+  
+  _SaveVisitToDb: ()->
+
+    visit = @get 'visit'
+    
+    visitDateTime = visit.createdDatetimeStamp
+    
+    if visit.prescriptionSerial
+      for medicine in @addedMedicationList
+        medicine.recordCreatedDateTimeStamp = medicine.createdDatetimeStamp or lib.datetime.now()
+        medicine.createdDatetimeStamp = visitDateTime
+        app.db.upsert 'patient-medications', medicine, ({serial})=> medicine.serial is serial
+    
+      @prescription.recordCreatedDateTimeStamp = @prescription.createdDatetimeStamp or lib.datetime.now()
+      @prescription.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'visit-prescription', @prescription, ({serial})=> @prescription.serial is serial
+
+    if visit.doctorNotesSerial
+      @doctorNotes.recordCreatedDateTimeStamp = @doctorNotes.createdDatetimeStamp or lib.datetime.now()
+      @doctorNotes.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'visit-note', @doctorNotes, ({serial})=> @doctorNotes.serial is serial 
+
+    if visit.nextVisitSerial
+      @nextVisit.recordCreatedDateTimeStamp = @nextVisit.createdDatetimeStamp or lib.datetime.now()
+      @nextVisit.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'visit-next-visit', @nextVisit, ({serial})=> @nextVisit.serial is serial
+
+    if visit.advisedTestSerial
+      @testAdvisedObject.recordCreatedDateTimeStamp = @testAdvisedObject.createdDatetimeStamp or lib.datetime.now()
+      @testAdvisedObject.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'visit-advised-test', @testAdvisedObject, ({serial})=> @testAdvisedObject.serial is serial
+
+    if visit.invoiceSerial
+      @invoice.recordCreatedDateTimeStamp = @invoice.createdDatetimeStamp or lib.datetime.now()
+      @invoice.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is visit.invoiceSerial
+
+    if visit.historyAndPhysicalRecordSerial
+      @historyAndPhysicalRecord.recordCreatedDateTimeStamp = @historyAndPhysicalRecord.createdDatetimeStamp or lib.datetime.now()
+      @historyAndPhysicalRecord.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'history-and-physical-record', @historyAndPhysicalRecord, ({serial})=> @historyAndPhysicalRecord.serial is serial
+
+    if visit.diagnosisSerial
+      @diagnosis.recordCreatedDateTimeStamp = @diagnosis.createdDatetimeStamp or lib.datetime.now()
+      @diagnosis.createdDatetimeStamp = visitDateTime
+
+    if visit.identifiedSymptomsSerial
+      @identifiedSymptomsObject.recordCreatedDateTimeStamp = @identifiedSymptomsObject.createdDatetimeStamp or lib.datetime.now()
+      @identifiedSymptomsObject.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'visit-identified-symptoms', @identifiedSymptomsObject, ({serial})=> @identifiedSymptomsObject.serial is serial
+
+    if visit.examinationSerial
+      @examinationObject.recordCreatedDateTimeStamp = @examinationObject.createdDatetimeStamp or lib.datetime.now()
+      @examinationObject.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'visit-examination', @examinationObject, ({serial})=> @examinationObject.serial is serial
+
+    if visit.referralSerial
+      @referral.recordCreatedDateTimeStamp = @referral.createdDatetimeStamp or lib.datetime.now()
+      @referral.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'referral-record', @referral, ({serial})=> @referral.serial is serial
+      
+    
+    if visit.vitalSerial.bp
+      @bloodPressure.recordCreatedDateTimeStamp = @bloodPressure.createdDatetimeStamp or lib.datetime.now()
+      @bloodPressure.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'patient-vitals-blood-pressure', @bloodPressure, ({serial})=> @bloodPressure.serial is serial
+    if visit.vitalSerial.hr
+      @pulseRate.recordCreatedDateTimeStamp = @pulseRate.createdDatetimeStamp or lib.datetime.now()
+      @pulseRate.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'patient-vitals-pulse-rate', @pulseRate, ({serial})=> @pulseRate.serial is serial
+    if visit.vitalSerial.bmi
+      @bmi.recordCreatedDateTimeStamp = @bmi.createdDatetimeStamp or lib.datetime.now()
+      @bmi.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'patient-vitals-bmi', @bmi, ({serial})=> @bmi.serial is serial
+    if visit.vitalSerial.rr
+      @respiratoryRate.recordCreatedDateTimeStamp = @respiratoryRate.createdDatetimeStamp or lib.datetime.now()
+      @respiratoryRate.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'patient-vitals-respiratory-rate', @respiratoryRate, ({serial})=> @respiratoryRate.serial is serial
+    if visit.vitalSerial.spo2
+      @oxygenSaturation.recordCreatedDateTimeStamp = @oxygenSaturation.createdDatetimeStamp or lib.datetime.now()
+      @oxygenSaturation.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'patient-vitals-spo2', @oxygenSaturation, ({serial})=> @oxygenSaturation.serial is serial
+    if visit.vitalSerial.temp
+      @temperature.recordCreatedDateTimeStamp = @temperature.createdDatetimeStamp or lib.datetime.now()
+      @temperature.createdDatetimeStamp = visitDateTime
+      app.db.upsert 'patient-vitals-temperature', @temperature, ({serial})=> @temperature.serial is serial
+
+    app.db.upsert 'doctor-visit', @visit, ({serial})=> @visit.serial is serial
+  
+  
+  
+
+
+  _clearVisit: ->
+    @visit = {}
+    @patient = {}
+    @doctorNotes = {}
+    @patientStay = {}
+    @isVisitValid = false
+    @isPatientValid = false
+    @isNoteValid = false
+    @isPatientStayValid = false
+    @isInvoiceValid = false
+    
+    @doctorInstitutionList = []
+    @doctorSpecialityList = []
+
+    ## Prescription
+    @prescription = {}
+    @isPrescriptionValid = false
+
+    @matchingPrescribedMedicineList = []
+    @matchingCurrentMedicineList = []
+    @matchingFavoriteMedicineList = []
+
+    @medicine = {}
+
+    @isMedicineValid = false
+
+    ## Advised Test
+    @isTestAdvisedValid = false
+    @testAdvisedObject = {}
+    @matchingFavoriteInvestigationList = []
+    @investigationDataList = []
+
+    ##Examination
+    @addedExaminationList = []
+    
+    ## patient stay
+    @selectedView = 0
+    @patientStay = null
+    @patientStayObject = null
+    @organizationsIBelongToList = []
+    @selectedOrganizationIndex = null
+    @selectedDepartmentIndex = null
+    @selectedUnitIndex = null
+    @selectedWardIndex = null
+    @seatList = []
+    @patientDischarged = false
+
+    ## Visit Details :: View - HistoryAndPhysical
+    @shouldRender = false
+
+    @historyAndPhysicalRecord = {}
+
+    @addedMedicationList = []
+
+  navigatedOut: -> 
+    @_clearVisit()
+
+
 
    
 }

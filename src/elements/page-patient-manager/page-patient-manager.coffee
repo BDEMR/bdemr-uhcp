@@ -732,7 +732,6 @@ Polymer {
     if patient
       @domHost.setCurrentPatientsDetails patient
       @createdPatientVisitedLog patient
-      # @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.serial
       @domHost.selectedPatientPageIndex = 5
       @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
     else
@@ -795,11 +794,9 @@ Polymer {
 
       app.db.insert 'visited-patient-log', visitedPatientLogObject
 
-
-
       @domHost.setCurrentPatientsDetails localPatient
 
-      @domHost.navigateToPage '#/visit-editor/visit:new/patient:' + patient.patientSerial
+      @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
       
 
     if localPatientList.length is 0
