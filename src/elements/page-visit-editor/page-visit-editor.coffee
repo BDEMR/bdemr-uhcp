@@ -1053,7 +1053,9 @@ Polymer {
 
   _listPrescribedMedications: (prescriptionIdentifier) ->
     # console.log prescriptionIdentifier
-    prescribedMedicineList = app.db.find 'patient-medications', ({prescriptionSerial})=> prescriptionIdentifier is prescriptionSerial
+    # prescribedMedicineList = app.db.find 'patient-medications', ({prescriptionSerial})=> prescriptionIdentifier is prescriptionSerial
+
+    prescribedMedicineList = @addedMedicationList.filter ({prescriptionSerial})=> prescriptionIdentifier is prescriptionSerial
 
     medicineList = [].concat prescribedMedicineList
     medicineList.sort (left, right)->
@@ -1302,7 +1304,7 @@ Polymer {
     medicine.organizationId = @organization.idOnServer
     @_saveVisit() unless @visit.serial
     medicine.visitSerial = @visit.serial
-    app.db.insert 'patient-medications', medicine
+    # app.db.insert 'patient-medications', medicine
     @domHost.showToast 'Medicine Added.'
 
     # Set Status = 'stopped' for Selected Current Medicine
@@ -1751,6 +1753,10 @@ Polymer {
     else
       @.$.endDate.disabled = false
 
+  
+  _saveMedicine: (medicine)->
+    console.log medicine  
+  
   
   saveMedicineButtonClicked: (e)->
     params = @domHost.getPageParams()
@@ -5021,7 +5027,6 @@ Polymer {
       @push 'invoice.data', invoiceItem
     @_saveInvoice()
     @isInvoiceValid = true
-    console.log @invoice
 
   
   _addToInvoice: (itemName, category, visitSerial)->
@@ -5070,6 +5075,7 @@ Polymer {
   
   
   finishButtonPressed: ->
+    return console.log @addedMedicationList
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (transactionId)=>
         if transactionId
