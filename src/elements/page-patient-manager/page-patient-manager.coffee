@@ -756,9 +756,7 @@ Polymer {
     app.db.insert 'visited-patient-log', visitedPatientLogObject
 
   _listVisitedPatientLog: () ->
-    console.time()
     logList = app.db.find 'visited-patient-log'
-    console.timeEnd()
     logList.sort (left, right)->
       return -1 if left.visitedDateTimeStamp > right.visitedDateTimeStamp
       return 1 if left.visitedDateTimeStamp < right.visitedDateTimeStamp
@@ -766,7 +764,7 @@ Polymer {
 
     @set 'matchingVisitedPatientLogList', logList
 
-    console.log @matchingVisitedPatientLogList
+    # console.log @matchingVisitedPatientLogList
 
 
   viewPatientPressedFromLog: (e)->
