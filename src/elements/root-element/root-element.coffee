@@ -444,8 +444,8 @@ Polymer {
 
   logoutPressed: (e)->
     user = (app.db.find 'user')[0]
-    # if navigator.onLine
-    #   @callApi '/bdemr-app-logout', {apiKey: user.apiKey}, (err, response)=> {}
+    if navigator.onLine
+      @callApi '/bdemr-app-logout', {apiKey: user.apiKey}, (err, response)=> {}
     user.apiKey = ""
     app.db.update 'user', user._id, user
     @$$('app-drawer').toggle()
