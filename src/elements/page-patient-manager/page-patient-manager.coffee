@@ -768,14 +768,14 @@ Polymer {
 
 
   viewPatientPressedFromLog: (e)->
-    el = @locateParentNode e.target, 'PAPER-BUTTON'
-    el.opened = false
-    repeater = @$$ '#visited-patient-log-repeater'
+    # el = @locateParentNode e.target, 'PAPER-BUTTON'
+    # el.opened = false
+    # repeater = @$$ '#visited-patient-log-repeater'
 
-    index = repeater.indexForElement el
-    patient = @matchingVisitedPatientLogList[index]
+    # index = repeater.indexForElement el
+    patient = e.model.item
 
-    localPatientList = app.db.find 'patient-list', ({serial})-> serial is patient.patientSerial
+    localPatientList = app.db.find 'patient-list', ({serial})=> serial is patient.patientSerial
 
     if localPatientList.length is 1
       localPatient = localPatientList[0]
@@ -794,7 +794,7 @@ Polymer {
 
       @domHost.setCurrentPatientsDetails localPatient
 
-      @domHost.navigateToPage '#/patient-viewer/patient:' + patient.serial + '/selected:5'
+      @domHost.navigateToPage '#/patient-viewer/patient:' + localPatient.serial + '/selected:5'
       
 
     if localPatientList.length is 0
