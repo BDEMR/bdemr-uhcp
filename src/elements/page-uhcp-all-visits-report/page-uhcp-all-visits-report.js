@@ -164,10 +164,6 @@ Polymer({
     return index + 1
   },
 
-  $formatDateTime(dateTime) {
-    if (!dateTime) return;
-    return lib.datetime.format((new Date(dateTime)), 'mmm d, yyyy h:MMTT')
-  },
 
   organizationSelected(e) {
     const organizationId = e.detail.value;
@@ -204,18 +200,6 @@ Polymer({
 
   $getTotalCost(invoice) {
     return invoice && invoice.totalBilled ? parseFloat(invoice.totalBilled) : 0
-  },
-
-  $computeAge(dateString) {
-    if (!dateString) { return ""; }
-    const today = new Date();
-    const birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if ((m < 0) || ((m === 0) && (today.getDate() < birthDate.getDate()))) {
-      age--;
-    }
-    return age;
   },
 
   _getTotalCostByReport(reports) {
