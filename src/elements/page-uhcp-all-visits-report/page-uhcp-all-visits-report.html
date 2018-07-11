@@ -24,6 +24,7 @@
 <link rel="import" href="../../behaviors/translating.html">
 <link rel="import" href="../../behaviors/page-like.html">
 <link rel="import" href="../../behaviors/api-calling.html">
+<link rel="import" href="../../behaviors/common-computes.html">
 
 
 <dom-module id="page-uhcp-all-visits-report">
@@ -95,8 +96,8 @@
 
             <div class="search layout horizontal justified end">
 
-              <vaadin-combo-box class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected"
-                loading="[[organizationLoading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
+              <vaadin-combo-box id="organizationSelector" class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]"
+                on-value-changed="organizationSelected" loading="[[organizationLoading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
               <paper-dropdown-menu label="Filter by Gender" class="m-right-8">
                 <paper-listbox class="dropdown-content" on-iron-activate="genderSelected" selected="0">

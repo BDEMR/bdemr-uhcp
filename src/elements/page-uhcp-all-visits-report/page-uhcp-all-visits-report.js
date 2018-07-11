@@ -6,7 +6,8 @@ Polymer({
     app.behaviors.dbUsing,
     app.behaviors.translating,
     app.behaviors.pageLike,
-    app.behaviors.apiCalling
+    app.behaviors.apiCalling,
+    app.behaviors.commonComputes
   ],
 
   properties: {
@@ -155,7 +156,10 @@ Polymer({
         mappedValue.unshift({ label: 'All', value: '' })
         this.set('childOrganizationList', mappedValue)
       } else {
-        this.domHost.showToast('No Child Organization Found')
+        // showing only current organization
+        let organizationSelectorComboBox = this.$.organizationSelector;
+        organizationSelectorComboBox.items = [{ label: this.organization.name, value: this.organization.idOnServer }];
+        organizationSelectorComboBox.value = this.organization.idOnServer;
       }
     })
   },
@@ -311,6 +315,7 @@ Polymer({
     // } else {
     //   query.organizationIdList = [this.selectedOrganizationId]
     // }
+
     if (this.selectedOrganizationId) {
       query.organizationIdList = [this.selectedOrganizationId]
     } else {

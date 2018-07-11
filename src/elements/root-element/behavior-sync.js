@@ -145,20 +145,18 @@ app.behaviors.local['root-element'].newSync = {
       this.toggleModalLoader()
 
       if (err) {
-        return cbfn(err)
+        return cbfn(err.message)
       }
       else if (response.hasError) {
-        return cbfn(response.error.message);
+        return cbfn(response.error.name);
       } else {
 
         app.db.__allowCommit = false;
-        for (let index = 0; index < response.data.length; index++) {
+        for (let index = 0, length = response.data.length; index < length; index++) {
           var item = response.data[index];
           const collectionName = collectionNameMap[item.collection];
           delete item.collection;
-          if (index === (response.data.length - 1)) {
-            app.db.__allowCommit = true;
-          }
+          if (index === (length - 1)) app.db.__allowCommit = true;
           if (collectionName) {
             app.db.upsert(collectionName, item, ({ serial }) => item.serial === serial);
           }

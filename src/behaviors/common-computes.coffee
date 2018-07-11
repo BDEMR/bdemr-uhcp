@@ -58,7 +58,7 @@ app.behaviors.commonComputes =
       minute: '2-digit'
     }
     # lib.datetime.format((new Date dateTime), 'mmm d, yyyy h:MMTT')
-    return new Date(dateTime).toLocaleString('en-GB', formatObj)
+    return new Date(dateTime).toLocaleString('en-IN', formatObj)
 
   $in: (item, list...)->
     item in list

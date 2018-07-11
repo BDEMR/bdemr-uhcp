@@ -94,7 +94,7 @@ Polymer {
     @set 'totalProfit', totalProfit
 
 
-  calculateDue: (billed = 0, amtReceived = 0)-> billed - amtReceived
+  calculateDue: (billed = 0, amtReceived = 0)-> @$toTwoDecimalPlace billed - amtReceived
 
   calculateProfit: (invoice)->
     return unless invoice

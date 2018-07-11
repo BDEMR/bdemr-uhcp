@@ -35,25 +35,26 @@ app.behaviors.local['root-element'].syncPriceListOnly = {
 
         let localPriceList = value || [];
 
-        for (let item of serverPriceList) {
+        if (localPriceList.length) {
 
-          delete item.collection;
-
-          if (localPriceList.length) {
+          for (let item of serverPriceList) {
+            delete item.collection;
             let index = localPriceList.findIndex((priceItem) => item._id == priceItem._id)
             if (index == -1) {
               localPriceList.push(item)
             } else {
               localPriceList.splice(index, 1, item);
             }
-          } else {
-            localPriceList.push(item)
           }
+
+        } else {
+          localPriceList = serverPriceList
         }
 
         return localforage.setItem('organization-price-list', localPriceList)
 
       }).then((value) => {
+
         this._updateLastSyncedDatetimeStampForPrice();
         return cbfn();
 

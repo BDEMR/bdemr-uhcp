@@ -101,8 +101,8 @@
               <!-- <paper-autocomplete id="invoiceSearchInput" label="Search By Investigation" source="[[investigationNameSourceDataList]]"
                   text="{{investigationQuery}}" on-autocomplete-reset-blur="resetInvestigationSearchPressed">
                 </paper-autocomplete> -->
-              <vaadin-combo-box class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]" on-value-changed="organizationSelected"
-                loading="[[loading]]" disabled="[[!childOrganizationList.length]]">
+              <vaadin-combo-box id="invoiceOrganizationSelector" class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]"
+                on-value-changed="organizationSelected" loading="[[loading]]" disabled="[[!childOrganizationList.length]]">
               </vaadin-combo-box>
 
               <!-- <paper-dropdown-menu label="Filter by Category" class="m-right-8">

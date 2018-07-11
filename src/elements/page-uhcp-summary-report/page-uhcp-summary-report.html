@@ -121,8 +121,8 @@
 
             <div class="search layout horizontal end wrap">
 
-              <vaadin-combo-box class="organization-dropdown m-right-8" label="Consultation Site" items="[[childOrganizationList]]" on-value-changed="organizationSelected"
-                loading="[[loading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
+              <vaadin-combo-box id="summaryOrganizationSelector" class="organization-dropdown m-right-8" label="Consultation Site" items="[[childOrganizationList]]"
+                on-value-changed="organizationSelected" loading="[[loading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
               <paper-dropdown-menu label="Report Type" class="m-right-8">
                 <paper-listbox class="dropdown-content" on-iron-activate="categorySelected">

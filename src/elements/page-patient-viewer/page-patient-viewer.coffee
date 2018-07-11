@@ -2675,7 +2675,7 @@ Polymer {
     invoiceList = app.db.find 'visit-invoice', ({patientSerial})=> patientSerial is patientSerialIdentifier
     @set 'invoiceList', invoiceList
   
-  calculateDue: (billed = 0, amtReceived = 0)-> (parseInt billed) - (parseInt amtReceived)
+  calculateDue: (billed = 0, amtReceived = 0)-> @$toTwoDecimalPlace((parseInt billed)-(parseInt amtReceived))
   
   getVisitSerial: (invoice)->
     if invoice.visitSerial

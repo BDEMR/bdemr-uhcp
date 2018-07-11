@@ -112,7 +112,7 @@ Polymer {
     @set 'totalProfit', totalProfit
 
 
-  $calculateDue: (billed = 0, amtReceived = 0)-> billed - amtReceived
+  $calculateDue: (billed = 0, amtReceived = 0)-> @$toTwoDecimalPlace (billed - amtReceived)
 
   calculateProfit: (invoice)->
     return unless invoice
@@ -158,7 +158,10 @@ Polymer {
         mappedValue.unshift({ label: 'All', value: '' })
         this.set('childOrganizationList', mappedValue)
       else
-        this.domHost.showToast('No Child Organization Found')
+        organizationSelectorComboBox = this.$.invoiceOrganizationSelector
+        organizationSelectorComboBox.items = [{ label: this.organization.name, value: this.organization.idOnServer }]
+        organizationSelectorComboBox.value = this.organization.idOnServer
+        # this.domHost.showToast('No Child Organization Found')
 
   _loadInvoice: (organizationIdentifier, size=100, page=1, cbfn)->
     @set 'invoiceReportList', []

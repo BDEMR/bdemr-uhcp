@@ -49,26 +49,18 @@ Polymer {
 
   
   #  Utils ------->
-  _updateToDb: (item, cbfn)->
-    localforage.getItem 'organization-price-list'
-    .then (value)=>
-      index = value.findIndex (priceListItem)=> item.serial is priceListItem.serial
-      if index is -1 then value.push item else value.splice index, 1 ,item
-      return localforage.setItem 'organization-price-list', value
-    .then ()=> cbfn()
-    .catch (err)=> @domHost.showModalDialog 'Something Went Wrong'
-
   _deleteFromDb: (removedItem, cbfn)->
     localforage.getItem 'organization-price-list--deleted'
     .then (deletedPriceList)=>
       unless deletedPriceList
         deletedPriceList = [] 
-      deletedPriceList.push {serial: removedItem.serial}
+      deletedPriceList.push {
+        serial: removedItem.serial,
+        lastModifiedDatetimeStamp: Date.now()
+      }
       return localforage.setItem 'organization-price-list--deleted', deletedPriceList
     .then ()=> cbfn()
-    .catch (err)=>
-      console.error err
-      @domHost.showModalDialog 'Something Went Wrong'
+    .catch (err)=> @domHost.showModalDialog 'Something Went Wrong'
 
   # Utils End --->
 
@@ -149,9 +141,9 @@ Polymer {
   # Prepare Price List Data
   # ======================================
   
-  _prepareNewItemForDB: (data, index)->
+  _prepareNewItemForDB: (data)->
     return Object.assign data, {
-      serial: @generateSerialForPriceListItem(@organization.idOnServer, index)
+      serial: @generateSerialForPriceListItem()
       organizationId: @organization.idOnServer
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
@@ -161,8 +153,8 @@ Polymer {
   
   _preparePriceListData: (priceList)->
     newPricelist = []
-    for item, index in priceList
-      newItem = @_prepareNewItemForDB item, index
+    for item in priceList
+      newItem = @_prepareNewItemForDB item
       newItem.actualCost = newItem.actualCost or item.price
       newItem.qty = newItem.qty or null
       newPricelist.push newItem
@@ -171,7 +163,6 @@ Polymer {
   
 
   _createNewPriceList: (organizationIdentifier, cbfn)->
-    
     @domHost.getStaticData 'uhcpInvoicePriceList', (priceList)=>
       priceListData = @_preparePriceListData priceList
       cbfn priceListData
@@ -192,11 +183,10 @@ Polymer {
     
     localforage.getItem 'organization-price-list'
     .then (priceListFromLocalStorage)=>
-      console.log priceListFromLocalStorage
       if priceListFromLocalStorage?.length
+        console.log priceListFromLocalStorage.length
         @set 'priceList', priceListFromLocalStorage
         cbfn priceListFromLocalStorage
-        Promise.resolve()
       else
         window.localStorage.setItem('priceListLastSyncedDatetimeStamp',0)
         @domHost._syncPriceListOnly (errMessage)=>
@@ -204,7 +194,6 @@ Polymer {
             @async => @domHost.showModalDialog(errMessage) 
           else 
             @domHost.reloadPage()
-          Promise.resolve()
       # else 
       #   @_createNewPriceList organizationIdentifier, (priceListFromFile)=>
       #     localforage.setItem 'organization-price-list', priceListFromFile
@@ -214,6 +203,7 @@ Polymer {
       #     .catch (err)=> @domHost.showModalDialog 'Something Went Wrong'
 
     .catch (err)=>
+      console.log err
       @domHost.showModalDialog 'Something Went Wrong'
       
 
@@ -300,21 +290,18 @@ Polymer {
     item.lastModifiedDatetimeStamp = lib.datetime.now()
     index = @priceListForSelectedCategory.findIndex (item)=> item.serial is e.model.item.serial
     @splice 'priceListForSelectedCategory', index, 1, item
-    # @_updateToDb item, ()=> @domHost.showSuccessToast 'Saved'
 
   priceChanged: (e)->
     item = e.model.item
     item.lastModifiedDatetimeStamp = lib.datetime.now()
     index = @priceListForSelectedCategory.findIndex (item)=> item.serial is e.model.item.serial
     @splice 'priceListForSelectedCategory', index, 1, item
-    # @_updateToDb item, ()=> @domHost.showSuccessToast 'Saved'
   
   deleteItemPressed: (e)->
     @domHost.showModalPrompt 'Are you sure to delete this item', (answer)=>
       if answer
         index = @priceListForSelectedCategory.findIndex (item)=> item.serial is e.model.item.serial
         @splice 'priceListForSelectedCategory', index, 1
-        # @_deleteFromDb item, ()=> null
   
   
   addNewItemModalOpen: -> @.$.customItemModal.toggle()
@@ -323,23 +310,21 @@ Polymer {
     data = @get 'customItem'
     valid = @_validateCustomItem data
     if valid
-      newItem = @_prepareNewItemForDB data, @priceList.length+1
+      newItem = @_prepareNewItemForDB data
       @unshift 'priceListForSelectedCategory', newItem
       @$$("#customItemModal").toggle()
       @set 'customItem', {}
-      # @_updateToDb data, ()=> @domHost.showSuccessToast 'Item Added and Saved'
         
   addNextItemPressed: ()->
     data = @get 'customItem'
     valid = @_validateCustomItem data
     if valid
-      newItem = @_prepareNewItemForDB data, @priceList.length+1
+      newItem = @_prepareNewItemForDB data
       @addNewItemToPriceList newItem
       @set 'customItem', @_makeCustomItem {
         category: data.category
         subCategory: data.subCategory
       }
-      # @_updateToDb data, ()=> @domHost.showSuccessToast 'Item Added and Saved'
       
   addNewItemToPriceList: (newItem)->
     @push 'priceList', newItem
@@ -351,8 +336,7 @@ Polymer {
     @async => @showPriceListForSelectedCategory(currentlySelectedCategoryTabIndex)
     if newItem.category is 'Investigation'
       @_addToCustomInvestigation newItem
-    # @_updateToDb newItem, ()=>
-    #   @domHost.showSuccessToast 'Saved'
+    
 
   removeItemFromPriceList: (removedItem)->
     indexOnPriceList = @priceList.findIndex (item)=> item.serial is removedItem.serial
@@ -361,10 +345,10 @@ Polymer {
       @_loadCategories @priceList
       @async => @$$("#categoryTabs").selectIndex(0)
       @async => @showPriceListForSelectedCategory 0
-    @_deleteFromDb removedItem, ()=> null
+    @_deleteFromDb removedItem, ()=> @domHost.showSuccessToast 'Delete Successfully'
   
   saveButtonPressed: ->
-    # return console.log @priceList.length
+    console.log @priceList[@priceList.length-1]
     localforage.setItem 'organization-price-list', @priceList
     .then ()=> @domHost.showSuccessToast 'Price List Saved. Sync Now.'
     .catch (err)=> @domHost.showWarningToast 'Something Went Wrong with saving'

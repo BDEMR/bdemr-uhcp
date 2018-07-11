@@ -117,7 +117,10 @@ Polymer {
         mappedValue.unshift({ label: 'All', value: '' })
         this.set('childOrganizationList', mappedValue)
       else
-        this.domHost.showToast('No Child Organization Found')
+        organizationSelectorComboBox = this.$.summaryOrganizationSelector
+        organizationSelectorComboBox.items = [{ label: this.organization.name, value: this.organization.idOnServer }]
+        organizationSelectorComboBox.value = this.organization.idOnServer
+        # this.domHost.showToast('No Child Organization Found')
 
   categorySelected: (e)->
     index = e.detail.selected
