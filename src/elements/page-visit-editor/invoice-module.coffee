@@ -77,8 +77,7 @@ app.behaviors.local.invoiceMixin =
     @invoice.totalAmountReceieved = @invoice.totalBilled
     
     @_addModificationHistory()
-
-    @domHost.showToast 'Invoice Saved Successfully'
+    # @domHost.showToast 'Invoice Saved Successfully'
     @_updateVisit @invoice.serial
 
   

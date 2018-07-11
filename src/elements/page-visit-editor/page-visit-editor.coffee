@@ -5075,7 +5075,7 @@ Polymer {
   
   
   finishButtonPressed: ->
-    return console.log @addedMedicationList
+    # return console.log @addedMedicationList
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (transactionId)=>
         if transactionId
@@ -5126,7 +5126,7 @@ Polymer {
       @testAdvisedObject.createdDatetimeStamp = visitDateTime
       app.db.upsert 'visit-advised-test', @testAdvisedObject, ({serial})=> @testAdvisedObject.serial is serial
 
-    if visit.invoiceSerial
+    if visit.invoiceSerial or visit.invoiceSerialList.length
       @invoice.recordCreatedDateTimeStamp = @invoice.createdDatetimeStamp or lib.datetime.now()
       @invoice.createdDatetimeStamp = visitDateTime
       app.db.upsert 'visit-invoice', @invoice, ({serial})=> serial is visit.invoiceSerial

@@ -1624,12 +1624,12 @@
                         </template>
                         <template id="invoice-list-repeater" is="dom-repeat" items="[[invoiceList]]" sort="_sortByCreatedDate">
                           <tr>
-                            <td>[[$formatDateTime(item.lastModifiedDatetimeStamp)]]</td>
+                            <td>[[$formatDateTime(item.createdDatetimeStamp)]]</td>
                             <td>[[getVisitSerial(item)]]</td>
-                            <td>[[item.totalBilled]]
+                            <td>[[$toTwoDecimalPlace(item.totalBilled)]]
                               <span class="text-muted">BDT</span>
                             </td>
-                            <td>[[item.totalAmountReceieved]]
+                            <td>[[$toTwoDecimalPlace(item.totalAmountReceieved)]]
                               <span class="text-muted">BDT</span>
                             </td>
                             <td>[[calculateDue(item.totalBilled, item.totalAmountReceieved)]]
@@ -1693,6 +1693,7 @@
                     <template is="dom-if" if="[[!_isEmptyArray(pendingInvoiceList.length)]]">
                       <paper-listbox>
                         <template is="dom-repeat" items="[[pendingInvoiceList]]">
+
                           <div class="p-16 b-top layout horizontal start">
                             <div class="flex-1">
                               <div class="m-right-8">Visit Serial:
@@ -1713,7 +1714,6 @@
                               </paper-button>
                             </div>
                           </div>
-
 
                         </template>
                       </paper-listbox>
