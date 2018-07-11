@@ -137,10 +137,10 @@
                 <span>Total Billed</span>
               </template>
               <template>
-                <div>[[item.totalBilled]]</div>
+                <div>[[$toTwoDecimalPlace(item.totalBilled)]]</div>
               </template>
               <template class="footer">
-                <strong>[[totalInvoiceBilled]]</strong>
+                <strong>[[$toTwoDecimalPlace(totalInvoiceBilled)]]</strong>
               </template>
             </vaadin-grid-column>
             <vaadin-grid-column>
@@ -148,10 +148,10 @@
                 <span>Total Received</span>
               </template>
               <template>
-                <div>[[item.totalAmountReceieved]]</div>
+                <div>[[$toTwoDecimalPlace(item.totalAmountReceieved)]]</div>
               </template>
               <template class="footer">
-                <strong>[[totalInvoiceIncome]]</strong>
+                <strong>[[$toTwoDecimalPlace(totalInvoiceIncome)]]</strong>
               </template>
             </vaadin-grid-column>
             <vaadin-grid-column>
