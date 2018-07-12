@@ -2,9 +2,7 @@
 <!-- paper-* -->
 <link rel="import" href="../../bower-assets/paper-button/paper-button.html">
 <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
-<link rel="import" href="../../bower-assets/paper-input/paper-input.html">
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower-assets/paper-item/paper-item.html">
 <link rel="import" href="../../bower-assets/paper-progress/paper-progress.html">
@@ -96,8 +94,7 @@
 
             <div class="search layout horizontal justified end">
 
-              <vaadin-combo-box id="factorySelector" class="organization-dropdown m-right-8" label="Factory" items="[[factoryList]]"
-                on-value-changed="factorySelected"></vaadin-combo-box>
+              <vaadin-combo-box id="factorySelector" class="organization-dropdown m-right-8" label="Factory" items="[[factoryList]]" on-value-changed="factorySelected"></vaadin-combo-box>
 
             </div>
 
@@ -112,23 +109,34 @@
             </div>
 
             <div class="results">
-
               <paper-progress indeterminate hidden="[[!loading]]"></paper-progress>
               <vaadin-grid items="[[factoryMemberList]]">
                 <vaadin-grid-column frozen width="50px" flex-grow="0">
                   <template class="header">#</template>
                   <template>
-                    <span>[[$getItemCounter(index)]]</span>
+                    <span class="type secondary">[[$getItemCounter(index)]]</span>
                   </template>
                 </vaadin-grid-column>
-                <vaadin-grid-column resizable frozen>
-                  <template class="header">Employee ID</template>
+                <vaadin-grid-column resizable frozen width="120px">
+                  <template class="header">
+                    <vaadin-grid-sorter path="employeeId">
+                      <vaadin-grid-filter aria-label="Employee ID" path="employeeId" value="[[employeeIdFilter]]">
+                        <paper-input label="Employee ID" value="{{employeeIdFilter}}" no-label-float></paper-input>
+                      </vaadin-grid-filter>
+                    </vaadin-grid-sorter>
+                  </template>
                   <template>
                     <span>[[item.employeeId]]</span>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable width="180px">
-                  <template class="header">Name</template>
+                  <template class="header">
+                    <vaadin-grid-sorter path="name" direction="asc">
+                      <vaadin-grid-filter aria-label="Name" path="name" value="[[nameFilter]]">
+                        <paper-input label="Search By Name" value="{{nameFilter}}" no-label-float></paper-input>
+                      </vaadin-grid-filter>
+                    </vaadin-grid-sorter>
+                  </template>
                   <template>
                     <span>[[item.name]]</span>
                   </template>
@@ -141,7 +149,7 @@
                 </vaadin-grid-column>
                 <vaadin-grid-column resizable>
                   <template class="header">
-                    <vaadin-grid-sorter path="patientInfo.gender">Gender</vaadin-grid-sorter>
+                    <vaadin-grid-sorter path="gender">Gender</vaadin-grid-sorter>
                   </template>
                   <template>
                     <span>[[item.gender]]</span>
