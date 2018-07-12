@@ -176,7 +176,13 @@
                 <vaadin-grid-column resizable width="160px" flex-grow="0">
                   <template class="header">Remaining Balance</template>
                   <template>
-                    <span>[[item.remainingBalance]]</span>
+                    <span>[[$toTwoDecimalPlace(item.remainingBalance)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable flex-grow="0">
+                  <template class="header">5% Contribution</template>
+                  <template>
+                    <span>[[calculateContribution(item.walletAmount, item.remainingBalance)]]</span>
                   </template>
                 </vaadin-grid-column>
               </vaadin-grid>

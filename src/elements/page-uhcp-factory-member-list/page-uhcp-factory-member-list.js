@@ -48,7 +48,6 @@ Polymer({
 
   navigatedIn() {
     this._loadUser()
-    this._loadOrganization()
   },
 
 
@@ -57,17 +56,12 @@ Polymer({
     if (userList.length == 1) this.set('user', userList[0]);
   },
 
-
-  _loadOrganization() {
-    const organizationList = app.db.find('organization');
-    if (organizationList.length === 1) {
-      this.set('organization', organizationList[0]);
-    }
-
-  },
-
   $getItemCounter(index) {
     return index + 1
+  },
+
+  calculateContribution(wallet, balance) {
+    return this.$toTwoDecimalPlace(((wallet - balance) * 5) / 100)
   },
 
 
@@ -80,7 +74,7 @@ Polymer({
   resetButtonClicked() { return this.domHost.reloadPage(); },
 
   searchButtonClicked(e) {
-    
+
     if (!this.selectedFactoryId) {
       this.domHost.showWarningToast('SELECT A FACTORY PLEASE!');
       return;
