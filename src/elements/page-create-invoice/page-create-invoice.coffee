@@ -662,6 +662,17 @@ Polymer {
     return 'not provided yet'
   
   
+  visitDateChangeOpenModalClicked: ->
+    @customVisitDate = ""
+    @customVisitTime = ""
+    @.$.visitDateModal.toggle()
+
+  saveNewVisitDateButtonClicked: ->
+    return unless @customVisitDate and @customVisitTime
+    visitDateTime = +new Date("#{@customVisitDate} #{@customVisitTime}")
+    @set 'invoice.createdDatetimeStamp', visitDateTime
+    @.$.visitDateModal.toggle()
+  
   arrowBackButtonPressed: ->
     @domHost.navigateToPreviousPage()
 

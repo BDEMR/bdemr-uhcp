@@ -10,6 +10,7 @@
 <link rel="import" href="../../bower-assets/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower-assets/iron-input/iron-input.html">
 <link rel="import" href="../../bower-assets/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower-assets/paper-toggle-button/paper-toggle-button.html">
 
 <!-- Custom AutoComplete -->
 <link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
@@ -35,7 +36,7 @@
         margin-top: 10px;
       }
 
-      paper-card {
+      paper-card.no-padding {
         --paper-card-content: {
           padding: 0;
         }
@@ -181,8 +182,18 @@
         border: 1px solid red;
       }
 
-      paper-card {
+      .no-rounded-border {
         border-radius: 0;
+      }
+
+      .edit-icon {
+        display: inline-block;
+        margin-left: 4px;
+        --paper-icon-button: {
+          height: 18px;
+          width: 18px;
+          padding: 0;
+        }
       }
 
       @media only screen and (max-width: 1024px) {
@@ -203,68 +214,26 @@
 
     <div class="master-container">
 
-      <div class="page-invoice">
+      <div class="limiting-container">
 
-        <section class="choice-list flex-5">
-
-          <paper-card>
-            <div class="card-custom-header">
-              <div class="layout horizontal center">
-                <div class="flex">Invoice : [[invoice.serial]]</div>
-                <!-- <paper-button class="btn btn-sm btn-default" on-tap="syncPriceListButtonClicked">
-                  <iron-icon icon="autorenew"></iron-icon>
-                  Update Price List
-                </paper-button> -->
-                <paper-button class="btn btn-sm btn-primary" on-tap="addCustomItemToInvoiceButtonPressed">
-                  <iron-icon icon="add"></iron-icon>
-                  Add Custom Item
-                </paper-button>
-              </div>
-            </div>
-            <div class="card-content">
-              <vaadin-combo-box class="p-horizontal-16" label="Search Item" items="[[invoiceAutoCompleteSourceDataList]]" on-value-changed="invoiceItemAutocompleteSelected"></vaadin-combo-box>
-            </div>
-          </paper-card>
-
-
-          <template is="dom-repeat" items="[[priceListCategories]]" as="categoryName">
-
-            <paper-card>
-              <div class="card-custom-header" on-tap="toggleCollapseClicked">
-                <div class="layout horizontal justified center">
-                  <div class="title flex">
-                    <iron-icon icon="expand-more"></iron-icon> [[categoryName]]</div>
-                </div>
-              </div>
-              <div class="card-content">
-                <iron-collapse id="[[convertCategoryNameToId(categoryName)]]">
-                  <div class="collapse-content">
-                    <iron-list items="[[getDataForCategory(categoryName)]]">
-                      <template>
-                        <div class="item layout horizontal center">
-                          <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
-                          <div class="flex">[[item.name]]</div>
-                          <div class="type caption m-right-8 secondary">[[item.subCategory]]</div>
-                          <div>[[item.price]] BDT</div>
-                        </div>
-                      </template>
-                    </iron-list>
-                  </div>
-                </iron-collapse>
-              </div>
-            </paper-card>
-
-          </template>
-
-
-        </section>
-
-        <!--INVOICE SECTION-->
-        <section class="invoice-list flex-7">
+        <section class="">
 
           <paper-card heading="Invoice">
+
             <div class="card-content">
-              <div class="layout horizontal p-horizontal-16 center">
+
+              <div>
+                <strong>Serial: &nbsp;</strong>
+                <span class="type label bg-gray">[[invoice.serial]]</span class="type label bg-gray">
+              </div>
+
+              <div class="layout horizontal start m-top-8">
+                <strong>Created Date: &nbsp;</strong>
+                <span> [[$formatDateTime(invoice.createdDatetimeStamp)]]</span>
+                <paper-icon-button on-tap="visitDateChangeOpenModalClicked" icon="create" class="edit-icon"></paper-icon-button>
+              </div>
+
+              <div class="layout horizontal center">
                 <div class="type bold m-right-16">Type: </div>
                 <paper-radio-group selected="{{visit.dischargeNote.dischargeType}}" class="layout horizontal">
                   <paper-radio-button name="OPD">OPD</paper-radio-button>
@@ -272,6 +241,65 @@
                   <paper-radio-button name="Exclusion Criteria">Exclusion Criteria</paper-radio-button>
                 </paper-radio-group>
               </div>
+
+            </div>
+          </paper-card>
+
+        </section>
+
+        <!--INVOICE SECTION-->
+        <section>
+
+          <paper-card class="m-top-8">
+
+            <div class="card-content">
+              <vaadin-combo-box class="" label="Search Item to Add" items="[[invoiceAutoCompleteSourceDataList]]" on-value-changed="invoiceItemAutocompleteSelected"></vaadin-combo-box>
+            </div>
+
+            <div class="card-actions layout horizontal center justified">
+              <paper-toggle-button class="m-right-16" checked="{{showCategories}}">Show Categories</paper-toggle-button>
+              <paper-button class="btn btn-sm btn-primary" on-tap="addCustomItemToInvoiceButtonPressed">
+                <iron-icon icon="add"></iron-icon>
+                Add Custom Item
+              </paper-button>
+            </div>
+          </paper-card>
+
+          <template is="dom-if" if="[[showCategories]]">
+
+            <template is="dom-repeat" items="[[priceListCategories]]" as="categoryName">
+
+              <paper-card class="no-rounded-border no-padding">
+                <div class="card-custom-header" on-tap="toggleCollapseClicked">
+                  <div class="layout horizontal justified center">
+                    <div class="title flex">
+                      <iron-icon icon="expand-more"></iron-icon> [[categoryName]]</div>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <iron-collapse id="[[convertCategoryNameToId(categoryName)]]">
+                    <div class="collapse-content">
+                      <iron-list items="[[getDataForCategory(categoryName)]]">
+                        <template>
+                          <div class="item layout horizontal center">
+                            <paper-icon-button class="add" icon="add-circle" on-tap="addToListButtonClicked"></paper-icon-button>
+                            <div class="flex">[[item.name]]</div>
+                            <div class="type caption m-right-8 secondary">[[item.subCategory]]</div>
+                            <div>[[item.price]] BDT</div>
+                          </div>
+                        </template>
+                      </iron-list>
+                    </div>
+                  </iron-collapse>
+                </div>
+              </paper-card>
+
+            </template>
+          </template>
+
+          <paper-card class="m-top-8 no-padding">
+
+            <div class="card-content">
 
               <template is="dom-if" if="[[!invoice.data.length]]">
                 <div class="layout horizontal center center-justified p-16">Add Item</div>
@@ -390,6 +418,19 @@
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
         <paper-button raised dialog-confirm>Add</paper-button>
+      </div>
+    </paper-dialog>
+
+    <!-- Dialog for Changing Visit Date start -->
+    <paper-dialog id="visitDateModal">
+      <h2>Change Invoice Date</h2>
+      <div class="p-16">
+        <input class="m-left-8" type="date" is="iron-input" required bind-value="{{customVisitDate}}">
+        <input class="m-left-8" type="time" is="iron-input" required bind-value="{{customVisitTime}}">
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="btn btn-primary" on-tap="saveNewVisitDateButtonClicked">Save</paper-button>
       </div>
     </paper-dialog>
 
