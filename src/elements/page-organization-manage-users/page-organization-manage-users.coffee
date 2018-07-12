@@ -460,6 +460,12 @@ Polymer {
         type: 'report'
         isSelected: false
       }
+      {
+        serial: 'R003'
+        name: 'All Factory Member List'
+        type: 'report'
+        isSelected: false
+      }
 
     ]
 

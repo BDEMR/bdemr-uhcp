@@ -1,0 +1,137 @@
+Polymer({
+
+  is: 'page-uhcp-factory-member-list',
+
+  behaviors: [
+    app.behaviors.dbUsing,
+    app.behaviors.translating,
+    app.behaviors.pageLike,
+    app.behaviors.apiCalling,
+    app.behaviors.commonComputes
+  ],
+
+  properties: {
+
+    user: {
+      type: Object,
+      notify: true,
+      value: null
+    },
+
+    organization: {
+      type: Object,
+      notify: true,
+      value: null
+    },
+
+    factoryList: {
+      type: Array,
+      notify: true,
+      value: ["Abloom Design Ltd."]
+    },
+
+    factoryMemberList: {
+      type: Array,
+      notify: true,
+      value: []
+    },
+
+    loading: {
+      type: Boolean,
+      value: false
+    },
+
+    selectedFactoryId: String
+
+  },
+
+
+  navigatedIn() {
+    this._loadUser()
+    this._loadOrganization()
+  },
+
+
+  _loadUser() {
+    const userList = app.db.find('user');
+    if (userList.length == 1) this.set('user', userList[0]);
+  },
+
+
+  _loadOrganization() {
+    const organizationList = app.db.find('organization');
+    if (organizationList.length === 1) {
+      this.set('organization', organizationList[0]);
+    }
+
+  },
+
+  $getItemCounter(index) {
+    return index + 1
+  },
+
+
+  factorySelected(e) {
+    const factoryId = e.detail.value;
+    this.set('selectedFactoryId', factoryId);
+  },
+
+
+  resetButtonClicked() { return this.domHost.reloadPage(); },
+
+  searchButtonClicked(e) {
+    
+    if (!this.selectedFactoryId) {
+      this.domHost.showWarningToast('SELECT A FACTORY PLEASE!');
+      return;
+    }
+
+    let query = {
+      apiKey: this.user.apiKey,
+      institutionName: this.selectedFactoryId,
+    }
+
+    this.loading = true;
+    this.callApi('/bdemr--get-user-by-institution-name', query, (err, response) => {
+      if (response.hasError) {
+        this.domHost.showModalDialog(response.error.message);
+        return this.loading = false;
+      } else {
+        this.set('factoryMemberList', response.data);
+        console.log("factory member list", this.factoryMemberList);
+        return this.loading = false;
+      }
+    });
+  },
+
+  // _prepareJsonData(rawReport) {
+  //   return rawReport.map((item) => {
+  //     return {
+
+  //     }
+  //   })
+  // },
+
+  // downloadCsv(csv) {
+  //   var exportedFilenmae = `uhcp-visit-report-export-${Date.now()}.csv`
+  //   var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  //   var link = document.createElement("a");
+  //   var url = URL.createObjectURL(blob);
+  //   link.setAttribute("href", url);
+  //   link.setAttribute("download", exportedFilenmae);
+  //   link.style.visibility = 'hidden';
+  //   link.target = '_blank'
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+
+  // },
+
+  // exportButtonClicked() {
+  //   if (!this.reportResults.length) return this.domHost.showModalDialog('Search for a Report First')
+  //   const preppedData = this._prepareJsonData(this.reportResults);
+  //   const csvString = Papa.unparse(preppedData);
+  //   this.downloadCsv(csvString)
+  // }
+
+});
