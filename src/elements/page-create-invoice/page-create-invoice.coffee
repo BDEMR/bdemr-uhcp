@@ -307,8 +307,6 @@ Polymer {
     item.qty = 1
     item.totalPrice = item.price
     @push 'invoice.data', item
-    console.log item
-    @$$("#invoiceSearchInput").clear()
   
   # =============================================
   
