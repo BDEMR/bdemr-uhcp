@@ -73,7 +73,7 @@ Polymer {
           info: ''
           icon: 'folder-shared'
           imagePath: 'images/icons/ico_report.png'
-          urlPath: '#/patient-manager/selected:1'
+          urlPath: '#/patient-manager/selected:2'
           accessId: ''
         }
       ]
@@ -422,5 +422,5 @@ Polymer {
       else
         @set 'orgSmsBalance', response.data.smsBalance
 
-
+  toggleCollapseClicked:-> @$.authorizeRecordTo.toggle()
 }
