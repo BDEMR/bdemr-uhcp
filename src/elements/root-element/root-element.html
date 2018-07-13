@@ -164,23 +164,18 @@
       .ad-area-1 {
         width: 100%;
         height: 100px;
-        margin: 0 auto;
-        background-color: #eee;
-        position: fixed;
-        bottom: 0;
-        z-index: 1;
-        box-shadow: 1px -4px 2px rgba(0, 0, 0, 0.16);
+        background-color: #fff;
+        box-shadow: 1px -2px 1px rgba(0, 0, 0, 0.16);
       }
 
       .ad {
-        width: 960px;
+        width: 92%;
+        padding: 10px 0;
         margin: 0 auto;
-        background-color: #fafafa;
         cursor: pointer;
       }
 
       .ad img {
-        height: 100px;
         width: auto;
         background-size: contain;
       }
@@ -596,7 +591,7 @@
       </app-drawer>
       <!--Notification Drawer Start-->
 
-      <app-header-layout id="mainHeader" class="show-ad" has-scrolling-region>
+      <app-header-layout id="mainHeader">
 
         <!-- App header - Start -->
         <app-header reveals>
@@ -716,11 +711,18 @@
         <!-- Advertisement Area -->
         <div class="ad-area-1">
 
-          <div class="ad layout p-16">
-            <div class="horizontal layout center center-justified">
-              <img src="../../assets/img/partners/uhcp.jpg" alt="" class="p-horizontal-8 custom-img">
-              <img src="../../assets/img/partners/wof.jpg" alt="" class="p-horizontal-8 custom-img">
-              <img src="../../assets/img/partners/badas.jpg" alt="" class="p-horizontal-8 custom-img">
+          <div class="ad layout">
+            <div class="horizontal layout justified center">
+              <div>
+                <h3>Universal Health Coverage Plan (UHCP)</h3>
+                <div class="">A Project of the Diabetic Association of Bangladesh (BADAS)</div>
+              </div>
+              <div>
+                <img src="../../assets/img/partners/uhcp.jpg" alt="" class="p-horizontal-8 custom-img">
+                <img src="../../assets/img/partners/wof.jpg" alt="" class="p-horizontal-8 custom-img">
+                <img src="../../assets/img/partners/badas.jpg" alt="" class="p-horizontal-8 custom-img">
+              </div>
+
             </div>
           </div>
 
