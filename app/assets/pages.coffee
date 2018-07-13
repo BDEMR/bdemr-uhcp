@@ -391,6 +391,22 @@ app.pages.pageList = [
   }
 
   {
+    name: 'uhcp-factory-member-list'
+    element: 'page-uhcp-factory-member-list'
+    windowTitlePostfix: 'UHCP Factory Members List'
+    headerTitle: 'UHCP Factory Members List'
+    preload: true
+    hrefList: [ 'uhcp-factory-member-list' ]
+    requireAuthentication : true
+    headerType: 'normal'
+    leftMenuEnabled: true
+    showPatientsDetails: false
+    showToolbar: true
+    hideHeaderTitle: false
+    accessId: 'R003'
+  }
+
+  {
     name: 'upload-organization-patient-list'
     element: 'page-upload-organization-patient-list'
     windowTitlePostfix: 'UHCP Upload Patient List'

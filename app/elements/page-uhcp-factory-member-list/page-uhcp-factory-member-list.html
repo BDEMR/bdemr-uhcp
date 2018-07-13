@@ -1,0 +1,308 @@
+<!-- paper-* --><!-- style --><!-- behavior --><div hidden="" by-polymer-bundler=""><link rel="import" href="../custom-vital-search/custom-vital-search.html"></div><dom-module id="page-uhcp-factory-member-list">
+  <template>
+    <!-- style -->
+    <style is="custom-style" include="common-style">
+      .limiting-container {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 10px;
+      }
+
+      paper-button {
+        background: white;
+      }
+
+      .invoice-card {
+        background: white;
+      }
+
+      paper-card {
+        margin: 4px;
+      }
+
+      .search {
+        background-color: #fafafa;
+        border: 1px solid #dadada;
+        padding: 8px 12px;
+        margin: 4px;
+        margin-left: 0;
+      }
+
+      .results {
+        margin-top: 20px;
+      }
+
+      .results span {
+        color: #333;
+      }
+
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--paper-orange-500);
+      }
+
+      ul {
+        padding: 0;
+        margin: 0;
+      }
+
+      ul>ol {
+        margin: 0;
+        padding: 5px;
+        list-style-type: decimal;
+      }
+
+      .organization-dropdown {
+        width: 210px;
+      }
+    </style>
+
+    <div class="master-container">
+
+      <div class="limiting-container vertical layout">
+
+        <paper-card heading="Member's List">
+
+          <div class="card-content">
+
+            <div class="search layout horizontal justified end">
+
+              <vaadin-combo-box id="factorySelector" class="organization-dropdown m-right-8" label="Factory" items="[[factoryList]]" on-value-changed="factorySelected"></vaadin-combo-box>
+
+            </div>
+
+            <div class="layout horizontal">
+              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-button raised="" on-tap="resetButtonClicked">Reset</paper-button>
+            </div>
+
+            <div class="layout horizontal">
+              <h4 class="m-right-16">Total Member: [[factoryMemberList.length]]</h4>
+
+            </div>
+
+            <div class="results">
+              <paper-progress indeterminate="" hidden="[[!loading]]"></paper-progress>
+              <vaadin-grid items="[[factoryMemberList]]">
+                <vaadin-grid-column frozen="" width="50px" flex-grow="0">
+                  <template class="header">#</template>
+                  <template>
+                    <span class="type secondary">[[$getItemCounter(index)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="" frozen="" width="120px">
+                  <template class="header">
+                    <vaadin-grid-sorter path="employeeId">
+                      <vaadin-grid-filter aria-label="Employee ID" path="employeeId" value="[[employeeIdFilter]]">
+                        <paper-input label="Employee ID" value="{{employeeIdFilter}}" no-label-float=""></paper-input>
+                      </vaadin-grid-filter>
+                    </vaadin-grid-sorter>
+                  </template>
+                  <template>
+                    <span>[[item.employeeId]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="" width="180px">
+                  <template class="header">
+                    <vaadin-grid-sorter path="name" direction="asc">
+                      <vaadin-grid-filter aria-label="Name" path="name" value="[[nameFilter]]">
+                        <paper-input label="Search By Name" value="{{nameFilter}}" no-label-float=""></paper-input>
+                      </vaadin-grid-filter>
+                    </vaadin-grid-sorter>
+                  </template>
+                  <template>
+                    <span>[[item.name]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Age</template>
+                  <template>
+                    <span>[[item.age]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">
+                    <vaadin-grid-sorter path="gender">Gender</vaadin-grid-sorter>
+                  </template>
+                  <template>
+                    <span>[[item.gender]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Factory Name </template>
+                  <template>
+                    <span>[[item.factoryName]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Department </template>
+                  <template>
+                    <span>[[item.department]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="">
+                  <template class="header">Wallet Balance</template>
+                  <template>
+                    <span>[[item.walletAmount]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="" width="160px" flex-grow="0">
+                  <template class="header">Remaining Balance</template>
+                  <template>
+                    <span>[[$toTwoDecimalPlace(item.remainingBalance)]]</span>
+                  </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column resizable="" flex-grow="0">
+                  <template class="header">5% Contribution</template>
+                  <template>
+                    <span>[[calculateContribution(item.walletAmount, item.remainingBalance)]]</span>
+                  </template>
+                </vaadin-grid-column>
+              </vaadin-grid>
+            </div>
+
+          </div>
+          <div class="card-actions">
+            <!-- <paper-button raised on-tap="exportButtonClicked">Export</paper-button> -->
+          </div>
+        </paper-card>
+
+      </div>
+      <!--Limiting Container Ends-->
+
+    </div>
+    <!--Master Container Ends-->
+
+  </template>
+  <script type="text/javascript">Polymer({
+
+  is: 'page-uhcp-factory-member-list',
+
+  behaviors: [
+    app.behaviors.dbUsing,
+    app.behaviors.translating,
+    app.behaviors.pageLike,
+    app.behaviors.apiCalling,
+    app.behaviors.commonComputes
+  ],
+
+  properties: {
+
+    user: {
+      type: Object,
+      notify: true,
+      value: null
+    },
+
+    organization: {
+      type: Object,
+      notify: true,
+      value: null
+    },
+
+    factoryList: {
+      type: Array,
+      notify: true,
+      value: ["Abloom Design Ltd."]
+    },
+
+    factoryMemberList: {
+      type: Array,
+      notify: true,
+      value: []
+    },
+
+    loading: {
+      type: Boolean,
+      value: false
+    },
+
+    selectedFactoryId: String
+
+  },
+
+
+  navigatedIn() {
+    this._loadUser()
+  },
+
+
+  _loadUser() {
+    const userList = app.db.find('user');
+    if (userList.length == 1) this.set('user', userList[0]);
+  },
+
+  $getItemCounter(index) {
+    return index + 1
+  },
+
+  calculateContribution(wallet, balance) {
+    return this.$toTwoDecimalPlace(((wallet - balance) * 5) / 100)
+  },
+
+
+  factorySelected(e) {
+    const factoryId = e.detail.value;
+    this.set('selectedFactoryId', factoryId);
+  },
+
+
+  resetButtonClicked() { return this.domHost.reloadPage(); },
+
+  searchButtonClicked(e) {
+
+    if (!this.selectedFactoryId) {
+      this.domHost.showWarningToast('SELECT A FACTORY PLEASE!');
+      return;
+    }
+
+    let query = {
+      apiKey: this.user.apiKey,
+      institutionName: this.selectedFactoryId,
+    }
+
+    this.loading = true;
+    this.callApi('/bdemr--get-user-by-institution-name', query, (err, response) => {
+      if (response.hasError) {
+        this.domHost.showModalDialog(response.error.message);
+        return this.loading = false;
+      } else {
+        this.set('factoryMemberList', response.data);
+        console.log("factory member list", this.factoryMemberList);
+        return this.loading = false;
+      }
+    });
+  },
+
+  // _prepareJsonData(rawReport) {
+  //   return rawReport.map((item) => {
+  //     return {
+
+  //     }
+  //   })
+  // },
+
+  // downloadCsv(csv) {
+  //   var exportedFilenmae = `uhcp-visit-report-export-${Date.now()}.csv`
+  //   var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  //   var link = document.createElement("a");
+  //   var url = URL.createObjectURL(blob);
+  //   link.setAttribute("href", url);
+  //   link.setAttribute("download", exportedFilenmae);
+  //   link.style.visibility = 'hidden';
+  //   link.target = '_blank'
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+
+  // },
+
+  // exportButtonClicked() {
+  //   if (!this.reportResults.length) return this.domHost.showModalDialog('Search for a Report First')
+  //   const preppedData = this._prepareJsonData(this.reportResults);
+  //   const csvString = Papa.unparse(preppedData);
+  //   this.downloadCsv(csvString)
+  // }
+
+});</script>
+</dom-module>
