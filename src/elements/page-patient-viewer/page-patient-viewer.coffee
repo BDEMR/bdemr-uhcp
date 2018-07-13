@@ -279,6 +279,22 @@ Polymer {
       type: Number
       value: -> parseFloat(window.sessionStorage.getItem('wallet-balance'))
 
+    totalInvoiceIncome:
+      type: Number
+      computed: '_calculateTotalInvoiceIncome(invoiceList)'
+
+    totalInvoiceBilled:
+      type: Number
+      computed: '_computedTotalInvoiceBilled(invoiceList)'
+
+    transactionList:
+      type: Array
+      value: -> []
+
+    totalTransaction:
+      type: Number
+      computed: '_computedTotalTransactionBalance(transactionList)'
+
   # Helper
   # ================================
 
@@ -671,6 +687,7 @@ Polymer {
           @_updateSpaceCalculation()
         when 9
           @_getActivityLogs()
+          @_getPatientWalletTransaction()
         when 10
           @_loadLeaveData @patient.serial
     
@@ -1090,6 +1107,18 @@ Polymer {
   _getActivityLogs: ->
     activityLogs = app.db.find 'activity', ({data})=> @patient.serial is data.patientSerial
     @set 'activityLogs', activityLogs
+
+  _getPatientWalletTransaction: ->
+    @loadingCounter++
+    @$getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
+      @set 'transactionList', patientServiceBalance.outdoorTransactionHistory
+      @loadingCounter--
+
+  _computedTotalTransactionBalance: (transactionList)->
+    return transactionList.reduce (total, item)-> 
+      total + item.amount
+    , 0
+
 
   # ================================
   # Acivity Log Ends
@@ -2678,6 +2707,18 @@ Polymer {
     visitSerialList = @matchingVisitList.map (item)-> item.serial
     invoiceList = app.db.find 'visit-invoice', ({patientSerial})=> patientSerial is patientSerialIdentifier
     @set 'invoiceList', invoiceList
+  
+  _calculateTotalInvoiceIncome: (matchingInvoiceReportList)->
+    totalInvoiceIncome = 0
+    for item in matchingInvoiceReportList
+      totalInvoiceIncome += parseInt (item.totalAmountReceieved?=0)
+    return totalInvoiceIncome
+
+  _computedTotalInvoiceBilled: (matchingInvoiceReportList)->
+    totalInvoiceBilled = 0
+    for item in matchingInvoiceReportList
+      totalInvoiceBilled += parseInt (item.totalBilled?=0)
+    return totalInvoiceBilled
   
   calculateDue: (billed = 0, amtReceived = 0)-> @$toTwoDecimalPlace((parseInt billed)-(parseInt amtReceived))
   
