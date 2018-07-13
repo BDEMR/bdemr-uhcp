@@ -275,6 +275,10 @@ Polymer {
       type: Array
       value: -> []
 
+    patientWalletBalance:
+      type: Number
+      value: -> parseFloat(window.sessionStorage.getItem('wallet-balance'))
+
   # Helper
   # ================================
 

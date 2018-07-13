@@ -892,20 +892,6 @@ Polymer {
   _returnSerial: (index)->
     index+1
 
-  _getPatientServiceBalance: (patientId, cbfn)->
-    data = {
-      patientId: patientId
-      apiKey: @user.apiKey
-    }
-    @callApi '/bdemr-uhcp--get-patient-service-value', data, (err, response)=>
-      if response.hasError
-        @domHost.showWarningToast response.error.message
-      else
-        if response.data.length
-          cbfn response.data[0]
-        else
-          cbfn {outdoorBalance:0, indoorBalance:0}
-
   generateTransactionIdForWallet: ->
     return "#{@visit.serial}#{@invoice.serial}#{@invoice.totalBilled}#{@invoice.lastModifiedDatetimeStamp}"
   
@@ -4407,7 +4393,7 @@ Polymer {
         return true
 
   _loadVariousWallets: ->
-    @_getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
+    @$getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
       @set 'patientServiceBalance', patientServiceBalance
 
 
