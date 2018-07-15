@@ -1006,6 +1006,10 @@ Polymer {
     else
       @_notifyInvalidPrescription()
       return false
+
+  _notifyInvalidPrescription: ->
+    @isPrescriptionValid = false
+    @domHost.showModalDialog 'Invalid Prescription Provided'
   
   ## Load Symptoms Data
   _loadIdentifiedSymptoms: (symptomsIdentifier)->
@@ -1023,6 +1027,10 @@ Polymer {
       @_notifyInvalidIdentifeidSymptoms()
       return false
       
+  _notifyInvalidIdentifeidSymptoms: ->
+    @isIdentifiedSymptomsValid = false
+    @domHost.showModalDialog 'Invalid Stymptoms Provided'
+
   ## Load Examination Data
   _loadExamination: (examinationIdentifier)->
 
@@ -1039,6 +1047,10 @@ Polymer {
       @_notifyInvalidExamination()
       return false
 
+  _notifyInvalidExamination: ->
+    @isExaminationValid = false
+    @domHost.showModalDialog 'Invalid Examination Provided'
+
   ## Load Test Advised Data
   _loadAdvisedTest: (adviseTestIdentifier)->
 
@@ -1054,6 +1066,9 @@ Polymer {
       @_notifyInvalidTestAdvised()
       return false
 
+  _notifyInvalidTestAdvised: ->
+    @isTestAdvisedValid = false
+    @domHost.showModalDialog 'Invalid Test Advised Provided'
 
   _pritifyVitalData: (masterVitalObject)->
 

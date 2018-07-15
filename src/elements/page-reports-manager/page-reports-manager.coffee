@@ -296,13 +296,15 @@ Polymer {
     if params['selected'] is "1"
       @set 'selectedReportPageIndex', 1
 
-    @domHost._syncOnlyPatientTestResults ()=>
+    @domHost._newSync (errMessage)=>
+      if errMessage
+        @async => @showModalDialog(errMessage);
+      else
+        @_getUnseenPendingReportsList()
+        @_getSeenPendingReportsList()
 
-      @_getUnseenPendingReportsList()
-      @_getSeenPendingReportsList()
-
-      @_getUnseenReviewReportsList()
-      @_getSeenReviewReportsList()
+        @_getUnseenReviewReportsList()
+        @_getSeenReviewReportsList()
 
 
   navigatedOut: ->

@@ -1159,13 +1159,6 @@ Polymer {
     @domHost.showModalPrompt 'Are you sure?', (answer)=>
       if answer is true
         # console.log medicine.serial
-        # app.db.remove 'patient-medications', medicine.serial
-
-
-        id = (app.db.find 'patient-medications', ({serial})-> serial is medicine.serial)[0]._id
-
-        app.db.remove 'patient-medications', id
-        app.db.insert 'patient-medications--deleted', { serial: medicine.serial }
         @splice 'matchingPrescribedMedicineList', index, 1
         @domHost.showToast 'Medicine Deleted!'
 
@@ -1975,15 +1968,9 @@ Polymer {
     # todo :: delete object from db if addedIdentifiedSymptomsList length is 0
     identifiedSymtomsSerial = @identifiedSymptomsObject.serial
     if @addedIdentifiedSymptomsList.length is 0
-      list = app.db.find 'visit-identified-symptoms', ({serial})-> serial is identifiedSymtomsSerial
-      # console.log list
-      id = list[ 0 ]._id
-      app.db.remove 'visit-identified-symptoms', id
-      app.db.insert 'visit-identified-symptoms--deleted', { serial: @identifiedSymptomsObject.serial }
       @visit.identifiedSymptomsSerial = null
       @_saveVisit()
       @domHost.showToast 'Deleted Successfully!'
-
     else
       @saveIdentifiedSymptoms()
       @domHost.showToast 'Deleted Successfully!'
@@ -2225,11 +2212,6 @@ Polymer {
     # todo :: delete object from db if addedExaminationList length is 0
     examinationSerial = @examinationObject.serial
     if @addedExaminationList.length is 0
-      list = app.db.find 'visit-examination', ({serial})-> serial is examinationSerial
-      # console.log list
-      id = list[ 0 ]._id
-      app.db.remove 'visit-examination', id
-      app.db.insert 'visit-examination--deleted', { serial: examinationSerial }
       @visit.examinationSerial = null
       @_saveVisit()
       @domHost.showToast 'Deleted Successfully!'
@@ -2638,11 +2620,6 @@ Polymer {
     # todo :: delete object from db if addedInvestigationList length is 0
     advisedTestSerial = @testAdvisedObject.serial
     if @addedInvestigationList.length is 0
-      list = app.db.find 'visit-advised-test', ({serial})-> serial is advisedTestSerial
-      # console.log list
-      id = list[ 0 ]._id
-      app.db.remove 'visit-advised-test', id
-      app.db.insert 'visit-advised-test--deleted', { serial: @testAdvisedObject.serial }
       @visit.advisedTestSerial = null
       @_saveVisit()
       @domHost.showToast 'Deleted Successfully!'
@@ -3030,42 +3007,35 @@ Polymer {
     console.log data
     id = data.vitalObject._id
     if data.vitalType is 'Blood Pressure'
-      app.db.remove 'patient-vitals-blood-pressure', id
       @_makeBloodPressure()
       @isBPAdded = false
       @visit.vitalSerial.bp = null
 
     else if data.vitalType is 'Heart Rate'
-      app.db.remove 'patient-vitals-pulse-rate', id
       @_makePulseRate()
       @isHRAdded = false
       @visit.vitalSerial.hr = null
 
 
     else if data.vitalType is 'BMI'
-      app.db.remove 'patient-vitals-bmi', id
       @_makeBmi()
       @isBMIAdded = false
       @visit.vitalSerial.bmi = null
 
     else if data.vitalType is 'Respirtory Rate'
-      app.db.remove 'patient-vitals-respiratory-rate', id
       @_makeRespiratoryRate()
       @isRRAdded = false
       @visit.vitalSerial.rr = null
 
     else if data.vitalType is 'Spo2'
-      app.db.remove 'patient-vitals-spo2', id
       @_makeOxygenSaturation()
       @isSpO2Added = false
       @visit.vitalSerial.spo2 = null
 
     else if data.vitalType is 'Temperature'
-      app.db.remove 'patient-vitals-temperature', id
       @_makeTemperature()
       @isTempAdded = false
       @visit.vitalSerial.temp = null
-
 
     @_saveVisit()
 
@@ -3107,16 +3077,16 @@ Polymer {
     diastolic = parseInt @get 'bloodPressure.data.diastolic'
 
     unless systolic and diastolic
-      @domHost.showToast 'Please Enter All The Data'
+      @domHost.showWarningToast 'Please Enter All The Data'
       return
     unless 1<=systolic<=300
-      @domHost.showToast 'Systolic value must be betwen 1-300'
+      @domHost.showWarningToast 'Systolic value must be betwen 1-300'
       return
     unless 1<=diastolic<=200
-      @domHost.showToast 'Diastolic Value must be betwen 1-200'
+      @domHost.showWarningToast 'Diastolic Value must be betwen 1-200'
       return
     unless diastolic<=systolic
-      @domHost.showToast 'Diastolic value must not be greater than Systolic Value'
+      @domHost.showWarningToast 'Diastolic value must not be greater than Systolic Value'
       return
 
     @addBP()
@@ -4597,7 +4567,7 @@ Polymer {
   historyAndPhysicalRecordRemove: (e)->
     @domHost.showModalPrompt 'Are you sure?', (answer)=>
       if answer
-        app.db.remove 'history-and-physical-record', @historyAndPhysicalRecord._id
+        # app.db.remove 'history-and-physical-record', @historyAndPhysicalRecord._id
         @_loadHistoryAndPhysicalRecord()
 
   _loadHistoryAndPhysicalRecord: ->
@@ -5061,7 +5031,7 @@ Polymer {
   
   
   finishButtonPressed: ->
-    # return console.log @addedMedicationList
+    return console.log @visit
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (transactionId)=>
         if transactionId
