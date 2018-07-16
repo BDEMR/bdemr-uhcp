@@ -33,7 +33,8 @@
 
     <style is="custom-style" include="common-style">
       .limiting-container {
-        margin-top: 10px;
+        width: 965px;
+        margin: 10px auto;
       }
 
 
@@ -195,7 +196,7 @@
             <paper-card>
               <div class="p-8 preview-title">
 
-                <paper-input class="flex paper-input-custom" value="{{searchFieldMainInput}}" label="Search Patient" on-keyup="searchOnlineEnterKeyPressed"></paper-input>
+                <paper-input class="flex paper-input-custom" value="{{searchFieldMainInput}}" label="Search Patient Online" on-keyup="searchOnlineEnterKeyPressed"></paper-input>
 
                 <div class="horizontal layout end-justifed center flex">
                   <paper-toggle-button class="flex" checked="{{isAdvancedSearchEnabled}}">Advanced Search</paper-toggle-button>

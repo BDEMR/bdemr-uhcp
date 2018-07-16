@@ -643,6 +643,9 @@ Polymer {
       @domHost.selectedPatientPageIndex = index
       @set "selectedSubViewIndex", (index - 1)
       @_subViewChanged @selectedSubViewIndex, params
+
+    # walletBalance = parseFloat(window.sessionStorage.getItem('wallet-balance'))
+    # console.log walletBalance
     
       
 

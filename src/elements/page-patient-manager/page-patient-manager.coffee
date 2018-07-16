@@ -777,9 +777,8 @@ Polymer {
 
     localPatientList = app.db.find 'patient-list', ({serial})=> serial is patient.patientSerial
 
-    if localPatientList.length is 1
+    if localPatientList.length
       localPatient = localPatientList[0]
-
       visitedPatientLogObject = {
         createdByUserSerial: @user.serial
         serial: @generateSerialForVisitedPatientLog()
@@ -789,22 +788,20 @@ Polymer {
         lastModifiedDatetimeStamp: lib.datetime.now()
         lastSyncedDatetimeStamp: 0
       }
-
       app.db.insert 'visited-patient-log', visitedPatientLogObject
-
       @domHost.setCurrentPatientsDetails localPatient
-
       @domHost.navigateToPage '#/patient-viewer/patient:' + localPatient.serial + '/selected:5'
-      
 
-    if localPatientList.length is 0
+    else
       @domHost.showModalInput "Please enter patient PIN", "0000", (answer)=>
         if answer
           @_importPatient patient.patientSerial, answer, (importedPatientLocalId)=>
             @searchFieldMainInput = ''
             @searchContextDropdownSelectedIndex = 0
             @oneTimeSearchFilter = patient.patientSerial
-            @listAllImportedAndOfflinePatientsPressed null
+            @domHost.setCurrentPatientsDetails localPatient
+            @domHost.navigateToPage '#/patient-viewer/patient:' + patient.patientSerial + '/selected:5'
+
 
        @selectedSearchViewIndex = 0
 
