@@ -345,8 +345,9 @@
                         </div>
                       </td>
                       <td>
-                        <div class="flex-2">[[$calculateItemTotalPrice(item.price, item.qty)]]
-                          <span class="text-mute">BDT</span>
+                        <div class="flex-2">
+                          <!-- [[$calculateItemTotalPrice(item.price, item.qty)]] -->
+                          [[$toTwoDecimalPlace(item.totalPrice)]]
                         </div>
                       </td>
                       <td>

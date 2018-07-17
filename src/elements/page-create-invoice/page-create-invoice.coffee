@@ -406,16 +406,17 @@ Polymer {
     invoiceItem = @invoice.data[index]
     invoiceItem.price = value
     invoiceItem.totalPrice = value * invoiceItem.qty
-    model.set 'item.price', value
+    # model.set 'item.price', value
+    model.set 'item.totalPrice', (value * model.item.qty)
     @splice 'invoice.data', index, 1, invoiceItem
+
   
   quantityChanged: (e)->
     model = e.model
-    value = parseInt e.target.value
-
-    if value > 1
-      model.set 'item.qty', value
-      model.set 'item.totalPrice', ( parseInt model.item.price * parseInt value)
+    qty = parseInt e.target.value
+    if qty > 1
+      model.set 'item.qty', qty
+      model.set 'item.totalPrice', ( model.item.price * qty)
       @calculateTotalPrice()
     else 
       model.set 'item.qty', 1
@@ -612,6 +613,8 @@ Polymer {
   
   
   _saveInvoice: (markAsCompleted)->
+
+    return console.log @invoice
     return unless @_validateInvoice @invoice
     
     if markAsCompleted
