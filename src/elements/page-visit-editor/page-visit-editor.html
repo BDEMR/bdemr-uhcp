@@ -1524,18 +1524,17 @@
 
             <div class="content right">
 
-              <!-- Card - History And Physical - start -->
+              <!--
+
               <div class="card-item-2">
 
-                <!-- preview-title - start -->
                 <div class="preview-title layout wrap">
-                  <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_history_and_physical.png"></iron-icon> -->
+                  <iron-icon class="m-right-8" src="../../images/icons/ico_history_and_physical.png"></iron-icon>
 
                   <div class="type title-2 flex">History &amp; Physical</div>
 
 
                   <div class="layout horizontal wrap">
-
 
                     <template is="dom-if" if="[[_isEmptyString(visit.historyAndPhysicalRecordSerial)]]">
                       <paper-button class="btn-add" on-tap="historyAndPhysicalRecordCreate">
@@ -1553,17 +1552,17 @@
                     <template is="dom-if" if="[[!_isEmptyString(visit.historyAndPhysicalRecordSerial)]]">
                       <paper-checkbox checked="[[historyAndPhysicalRecord.availableToPatient]]" on-change="historyAndPhysicalAvailableToPatientCheckBoxChanged">Available to Patient</paper-checkbox>
 
-                      <!-- <paper-icon-button icon="print" on-tap="historyAndPhysicalRecordPrint"></paper-icon-button> -->
+                       <paper-icon-button icon="print" on-tap="historyAndPhysicalRecordPrint"></paper-icon-button> 
 
                       <paper-icon-button icon="create" on-tap="historyAndPhysicalRecordEdit"></paper-icon-button>
                       <paper-icon-button icon="icons:content-copy" on-tap="historyAndPhysicalRecordCopy"></paper-icon-button>
                       <paper-icon-button icon="icons:delete" on-tap="historyAndPhysicalRecordRemove"></paper-icon-button>
 
-                      <!-- <div>[[$mkDate(record.content.preopAssessment.lastChangedDatetimeStamp)]]</div> -->
+                      <div>[[$mkDate(record.content.preopAssessment.lastChangedDatetimeStamp)]]</div>
                     </template>
                   </div>
                 </div>
-                <!-- preview-title - end -->
+                
 
 
                 <template is="dom-if" if="[[shouldRender]]">
@@ -1572,7 +1571,8 @@
                   </div>
                 </template>
               </div>
-              <!-- Card - History And Physical - end -->
+              
+              -->
 
               <!-- Card :: Prescription - start -->
               <div class="card-item-2">
