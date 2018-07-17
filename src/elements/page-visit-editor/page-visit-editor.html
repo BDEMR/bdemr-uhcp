@@ -25,6 +25,7 @@
 <link rel="import" href="../../bower-assets/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../../bower-assets/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../bower-assets/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower-assets/paper-spinner/paper-spinner-lite.html">
 
 
 <!-- 3rd party elements -->
@@ -826,6 +827,12 @@
           padding: 0;
         }
       }
+
+      paper-spinner-lite.small {
+        --paper-spinner-stroke-width: 2px;
+        width: 14px;
+        height: 14px;
+      }
     </style>
 
     <!-- local DOM -->
@@ -899,7 +906,10 @@
                   </div>
                   <div class="layout horizontal m-4">
                     <div class="type secondary caption-2">Member Wallet:
-                      <span class="type caption bold bg-gray">[[$toTwoDecimalPlace(patientServiceBalance.outdoorBalance)]]</span>
+                      <span class="type caption bold bg-gray">
+                        <paper-spinner-lite class="small" active hidden="[[patientServiceBalance.outdoorBalance]]"></paper-spinner-lite>
+                        [[$toTwoDecimalPlace(patientServiceBalance.outdoorBalance)]]
+                      </span>
                     </div>
                     <!-- <div class="type secondary caption-2 m-left-8">IPD:
                       <span class="type caption bold bg-gray">[[patientServiceBalance.indoorBalance]]</span>
@@ -1634,8 +1644,8 @@
                     </template>
 
                     <div class="p-0 b-radius">
-                      <paper-listbox>
-                        <template id="current-medicine-list-repeater" is="dom-repeat" items="[[matchingCurrentMedicineList]]">
+                      <iron-list style="max-height: 400px;" items="[[matchingCurrentMedicineList]]">
+                        <template id="current-medicine-list-repeater">
                           <paper-item class="custom layout horizontal center">
                             <div class="type caption secondary">[[_returnSerial(index)]]</div>
                             <div class="flex m-left-8">
@@ -1675,8 +1685,7 @@
                             </paper-menu-button> -->
                           </paper-item>
                         </template>
-
-                      </paper-listbox>
+                      </iron-list>
                     </div>
                   </section>
                   <!-- current medicine - end -->

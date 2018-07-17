@@ -72,7 +72,9 @@ app.behaviors.commonComputes =
     else
       return false
 
-  $toTwoDecimalPlace: (number)-> return Number.parseFloat(number).toFixed(2)
+  $toTwoDecimalPlace: (number)-> 
+    return if isNaN(number)
+    return Number.parseFloat(number).toFixed(2)
 
   $getFullName:(data)->
 
