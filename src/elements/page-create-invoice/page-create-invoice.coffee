@@ -395,7 +395,7 @@ Polymer {
     if el.value > due
       el.invalid = true
 
-  $calculateItemTotalPrice: (price=0, qty=1)-> return qty * price
+  $calculateItemTotalPrice: (price=0, qty=1)-> return @$toTwoDecimalPlace(qty * price)
 
   itemUnitPriceChanged: (e)->
     value = parseFloat e.target.value
@@ -437,7 +437,8 @@ Polymer {
     paid = parseFloat paid
     paid = 0 if Number.isNaN(paid)
     if total > 0
-      return total- ((paid) + (parseFloat lastPaid) )
+      due = total- ((paid) + (parseFloat lastPaid) )
+      return @$toTwoDecimalPlace due
    
       
 
@@ -446,7 +447,7 @@ Polymer {
     paid = 0 if Number.isNaN(paid)
     totalAmountReceieved = (paid) + (parseFloat lastPaid)
     @set 'invoice.totalAmountReceieved', totalAmountReceieved
-    return totalAmountReceieved
+    return @$toTwoDecimalPlace totalAmountReceieved
 
   _calculateCommission: (billed, commissionPercentage)->
     amount = (billed * commissionPercentage) / 100
