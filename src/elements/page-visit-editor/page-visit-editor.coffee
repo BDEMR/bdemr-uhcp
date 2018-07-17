@@ -5031,7 +5031,6 @@ Polymer {
   
   
   finishButtonPressed: ->
-    return console.log @visit
     if @invoice?.totalBilled
       @_deductServiceValueToPatient {patientId: @patient.idOnServer, outdoorBalanceToDeduct: @invoice.totalBilled, indoorBalanceToDeduct: 0}, (transactionId)=>
         if transactionId
