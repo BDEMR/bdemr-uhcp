@@ -5053,6 +5053,8 @@ Polymer {
   _SaveVisitToDb: ()->
 
     visit = @get 'visit'
+
+    return unless visit.serial
     
     visitDateTime = visit.createdDatetimeStamp
     
