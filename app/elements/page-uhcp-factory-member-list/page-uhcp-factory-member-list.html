@@ -163,7 +163,7 @@
 
           </div>
           <div class="card-actions">
-            <!-- <paper-button raised on-tap="exportButtonClicked">Export</paper-button> -->
+            <paper-button raised="" on-tap="exportButtonClicked">Export</paper-button>
           </div>
         </paper-card>
 
@@ -274,35 +274,43 @@
     });
   },
 
-  // _prepareJsonData(rawReport) {
-  //   return rawReport.map((item) => {
-  //     return {
+  _prepareJsonData(rawReport) {
+    return rawReport.map((item) => {
+      return {
+        'Employee Id': item.employeeId || '',
+        'Name': item.name || '',
+        'Age': item.age || '',
+        'Gender': item.gender || '',
+        'Factory Name': item.factoryName || '',
+        'Department': item.department || '',
+        'Wallet': item.walletAmount || 0,
+        'Remaining Balance': item.remainingBalance || 0,
+        'Worker Contribution (5%)': this.calculateContribution(item.walletAmount, item.remainingBalance)
+      }
+    })
+  },
 
-  //     }
-  //   })
-  // },
+  downloadCsv(csv) {
+    var exportedFilenmae = `uhcp-factory-member-list-export-${Date.now()}.csv`
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement("a");
+    var url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", exportedFilenmae);
+    link.style.visibility = 'hidden';
+    link.target = '_blank'
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-  // downloadCsv(csv) {
-  //   var exportedFilenmae = `uhcp-visit-report-export-${Date.now()}.csv`
-  //   var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  //   var link = document.createElement("a");
-  //   var url = URL.createObjectURL(blob);
-  //   link.setAttribute("href", url);
-  //   link.setAttribute("download", exportedFilenmae);
-  //   link.style.visibility = 'hidden';
-  //   link.target = '_blank'
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
+  },
 
-  // },
-
-  // exportButtonClicked() {
-  //   if (!this.reportResults.length) return this.domHost.showModalDialog('Search for a Report First')
-  //   const preppedData = this._prepareJsonData(this.reportResults);
-  //   const csvString = Papa.unparse(preppedData);
-  //   this.downloadCsv(csvString)
-  // }
+  exportButtonClicked() {
+    if (!this.factoryMemberList.length) return this.domHost.showModalDialog('No Report')
+    const preppedData = this._prepareJsonData(this.factoryMemberList);
+    const csvString = Papa.unparse(preppedData);
+    this.downloadCsv(csvString)
+  }
 
 });</script>
 </dom-module>
