@@ -614,7 +614,6 @@ Polymer {
   
   _saveInvoice: (markAsCompleted)->
 
-    return console.log @invoice
     return unless @_validateInvoice @invoice
     
     if markAsCompleted
