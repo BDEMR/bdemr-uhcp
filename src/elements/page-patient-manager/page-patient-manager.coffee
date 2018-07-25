@@ -525,6 +525,7 @@ Polymer {
 
     data = {
       apiKey: @user.apiKey
+      client: 'uhcp'
       knownPatientSerialList: [ serial ]
     }
     @callApi '/bdemr--get-patient-data-on-import', data, (err, response)=>
