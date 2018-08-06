@@ -1595,23 +1595,18 @@
 
 
                               <div class="flex">
-                                <div class="type body">{{item.data.brandName}}
+                                <div class="type body">[[item.data.brandName]]
                                   <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
                                 </div>
-                                <div class="type caption italic secondary">{{item.data.genericName}} {{item.data.strength}}</div>
+                                <div class="type caption italic secondary">[[item.data.genericName]] [[item.data.form]]</div>
                               </div>
 
                               <div>
                                 <div class="type caption m-horizontal-4">
-                                  <!-- <span>[[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]] [[$TRANSLATE('As', LANG)]]</span> -->[[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
+                                  [[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
                                   [[$TRANSLATE('Days',LANG)]]
                                 </div>
 
-                                <div class="type caption m-horizontal-4">
-                                  <span>[[$TRANSLATE('By', LANG)]] </span>
-                                  <span class="text-cap">[[$TRANSLATE(item.data.route, LANG)]]</span>
-                                  <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
-                                </div>
                                 <div class="type caption m-horizontal-4">[[item.data.comments]]</div>
                               </div>
 
@@ -1652,10 +1647,10 @@
                               <div class="layout horizontal wrap center">
 
                                 <div class="flex">
-                                  <div class="type body">{{item.data.brandName}} {{item.data.strength}}
+                                  <div class="type body">[[item.data.brandName]]
                                     <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
                                   </div>
-                                  <div class="type caption italic secondary">{{item.data.genericName}} {{item.data.strength}}</div>
+                                  <div class="type caption italic secondary">[[item.data.genericName]] [[item.data.form]]</div>
                                 </div>
 
                                 <div>
@@ -1666,11 +1661,7 @@
                                     [[$TRANSLATE('for',LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]] [[$TRANSLATE('Days',LANG)]]
                                   </div>
 
-                                  <div class="type caption m-horizontal-4">
-                                    <span>[[$TRANSLATE('By',LANG)]] </span>
-                                    <span class="text-cap">[[$TRANSLATE(item.data.route, LANG)]]</span>
-                                    <span>[[$TRANSLATE(item.data.direction, LANG)]] </span>
-                                  </div>
+
                                   <div class="type caption m-horizontal-4">[[item.data.comments]]</div>
                                 </div>
 
@@ -1698,25 +1689,31 @@
                       </div>
                       <div class="form-group">
                         <div>
-                          <!-- <paper-autocomplete id="brandName" label="[[$TRANSLATE('Brand Name',LANG)]]" text="{{medicine.brandName}}" source="[[brandNameSourceDataList]]"
-                            on-autocomplete-selected="brandNameAutocompleteSelected" on-autocomplete-reset-blur="brandNameCleared"
-                            min-length="2" on-input="validate" error-message="Input Required" required></paper-autocomplete> -->
-
-                          <vaadin-combo-box items="[[brandNameSourceDataList]]" on-change="brandNameAutocompleteSelected" allow-custom-value value="{{medicine.brandName}}"></vaadin-combo-box>
+                          <vaadin-combo-box label="Brand Name" items="[[medicineCompositionList]]" allow-custom-value value="{{medicine.brandName}}"
+                            item-label-path="brandName" on-selected-item-changed="brandNameAutocompleteSelected" on-value-changed="brandNameCustomValueSet">
+                            <template>
+                              <div class="layout vertical">
+                                <div>
+                                  <b>[[item.brandName]]</b> -
+                                  <i>[[item.type]]</i>
+                                  <span style="color: green" hidden="[[!item.price]]">([[item.price]]৳)</span>
+                                </div>
+                                <div style="font-size: 12px; color:#666">
+                                  <span>[[item.manufacturer]]</span>
+                                </div>
+                              </div>
+                            </template>
+                          </vaadin-combo-box>
                         </div>
                       </div>
 
                       <div hidden="[[!showDetailedForm]]">
                         <div class="form-group">
                           <div>
-                            <paper-autocomplete id="genericName" label="[[$TRANSLATE('Generic Name',LANG)]]" text="{{medicine.genericName}}" source="[[genericNameSourceDataList]]"
-                              on-autocomplete-selected="genericNameAutocompleteSelected" on-autocomplete-reset="genericNameCleared"
-                              min-length="2" error-message="Input Required" on-input="validate" required></paper-autocomplete>
+                            <paper-input label="Generic Name" value="{{medicine.genericName}}"></paper-input>
                           </div>
                           <div>
-                            <paper-autocomplete id="manufacturer" label="[[$TRANSLATE('Manufacturer Name',LANG)]]" text="{{medicine.manufacturer}}" source="[[manufacturerSourceDataList]]"
-                              on-autocomplete-selected="manufacturerAutocompleteSelected" on-autocomplete-reset="manufacturerCleared"
-                              error-message="Input Required" min-length="2" on-input="validate" required></paper-autocomplete>
+                            <paper-input label="Manufacturer" value="{{medicine.manufacturer}}"></paper-input>
                           </div>
                         </div>
                       </div>
@@ -1744,79 +1741,10 @@
                         <!--Direction-->
                         <!--Form-->
                         <div>
-                          <paper-dropdown-menu id="form" error-message="Chose an option" label="[[$TRANSLATE('Form',LANG)]]" required>
-                            <paper-menu selected="{{medicineFormSelectedIndex}}" class="dropdown-content" on-iron-select="_medicineFormSelectedIndexChanged">
-                              <template is="dom-repeat" items="{{medicineFormList}}">
-                                <paper-item>{{item}}</paper-item>
-                              </template>
-                            </paper-menu>
-                          </paper-dropdown-menu>
+                          <paper-input label="Form" value="{{medicine.form}}"></paper-input>
                         </div>
-                        <template is="dom-if" if="[[_isFormCustom(matchingMedicineList, medicineFormSelectedIndex)]]">
-                          <div>
-                            <paper-input label="Form" value="{{medicine.form}}" id="custom-form" error-message="Input Required" required></paper-input>
-                          </div>
-                        </template>
+
                         <!--Form-->
-                      </div>
-
-                      <div hidden="[[!showDetailedForm]]">
-                        <div class="form-group">
-                          <!--Strength-->
-                          <template is="dom-if" if="[[_isStregnthDropdown(matchingMedicineList)]]">
-                            <div>
-                              <paper-dropdown-menu label="[[$TRANSLATE('Strength',LANG)]]" id="strength" error-message="Chose an Option">
-                                <paper-menu id="strengthDropdown" selected="{{strengthSelectedIndex}}" class="dropdown-content" on-iron-select="_strengthSelectedIndexChanged">
-                                  <template is="dom-repeat" items="{{strengthList}}">
-                                    <paper-item>{{item}}</paper-item>
-                                  </template>
-                                </paper-menu>
-                              </paper-dropdown-menu>
-                            </div>
-                          </template>
-                          <template is="dom-if" if="[[_isStregnthCustom(matchingMedicineList, strengthSelectedIndex)]]">
-                            <div>
-                              <paper-input label="[[$TRANSLATE('Strength',LANG)]]" required value="{{medicine.strength}}" id="strength" error-message="Input Required"
-                                on-input="validate"></paper-input>
-                            </div>
-                          </template>
-                          <!--Strength-->
-                          <!--Route-->
-                          <div>
-                            <paper-dropdown-menu label="[[$TRANSLATE('Route',LANG)]]">
-                              <paper-menu selected="{{routeSelectedIndex}}" class="dropdown-content" on-iron-select="_routeSelectedIndexChanged">
-                                <template is="dom-repeat" items="[[routeList]]">
-                                  <paper-item>[[$TRANSLATE(item,LANG)]]</paper-item>
-                                </template>
-                              </paper-menu>
-                            </paper-dropdown-menu>
-                          </div>
-                          <template is="dom-if" if="[[_isRouteCustom(routeSelectedIndex)]]">
-                            <div>
-                              <paper-input label="[[$TRANSLATE('Route',LANG)]]" value="{{medicine.route}}" error-message="Input Required"></paper-input>
-                            </div>
-                          </template>
-                          <!--Route-->
-                        </div>
-
-                        <div class="form-group">
-                          <!--Unit-->
-                          <div>
-                            <paper-dropdown-menu id="doseUnit" error-message="Chose an option" label="[[$TRANSLATE('Unit',LANG)]]" required>
-                              <paper-menu selected="{{doseUnitSelectedIndex}}" class="dropdown-content" on-iron-select="_doseUnitSelectedIndexChanged">
-                                <template is="dom-repeat" items="[[doseUnitList]]">
-                                  <paper-item>{{item}}</paper-item>
-                                </template>
-                              </paper-menu>
-                            </paper-dropdown-menu>
-                          </div>
-                          <template is="dom-if" if="[[_isUnitCustom(doseUnitSelectedIndex)]]">
-                            <div>
-                              <paper-input id="custom-dose-unit" label="Custom Unit" value="{{medicine.doseUnit}}" required id="doseUnit" error-message="Input Required"></paper-input>
-                            </div>
-                          </template>
-                          <!--Unit-->
-                        </div>
                       </div>
 
 

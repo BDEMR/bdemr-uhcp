@@ -1409,91 +1409,24 @@ Polymer {
     @domHost.reloadPage()
     
 
-  toggleGuideline: (e)->
-    @.$.guidelineContainer.toggle()
-
   
-    
-  _loadDefaultMedicineCompositionList: ->  
-    brandNameMap = {}
-    manufacturerMap = {}
-    genericNameMap = {}
-    for item in @medicineCompositionList
-      brandNameMap[item.brandName] = null
-      manufacturerMap[item.manufacturer] = null
-      genericNameMap[item.genericName] = null
-    @brandNameSourceDataList = ({label: item, value: item} for item in Object.keys brandNameMap)
-    @manufacturerSourceDataList = ({text: item, value: item} for item in Object.keys manufacturerMap)
-    @genericNameSourceDataList = ({text: item, value: item} for item in Object.keys genericNameMap)
-
-
   brandNameAutocompleteSelected: (e)->
-    brandName = e.target.value
-    return @_resetMedicineForm() unless brandName
-
-    @matchingMedicineList = (item for item in @medicineCompositionList when item.brandName is brandName)
+    return unless e.detail.value
+    selectedItem = e.detail.value
+    @set 'medicine.brandName', selectedItem.brandName
+    @set 'medicine.manufacturer', selectedItem.manufacturer
+    @set 'medicine.genericName', selectedItem.genericName
+    @set 'medicine.form', selectedItem.type
+    if selectedItem.price
+      @set 'medicine.priceRelatedInfo', selectedItem
     
-    if @matchingMedicineList.length isnt 0
-      @set 'medicine.manufacturer', @matchingMedicineList[0].manufacturer
-      @set 'medicine.genericName', @matchingMedicineList[0].genericName
-      selectedMedicineFormList = lib.array.unique (item.type for item in @matchingMedicineList)
-      @medicineFormList = []
-      @medicineFormList = selectedMedicineFormList
-      @push 'medicineFormList', 'Custom'
-      @set 'medicineFormSelectedIndex', null
-      # HACK - to fix setting selected index to other paper-menu element
-      lib.util.delay 5, ()=>
-        @set 'medicineFormSelectedIndex', 0
-      # HACK End
 
-    @.$.form.invalid = false
-    @.$.doseUnit.invalid = false
-    
+  brandNameCustomValueSet: (e)->
+    brandName = e.detail.value
+    @set 'medicine.brandName', brandName
   
-  genericNameAutocompleteSelected: (e)->
-    genericName = e.detail.text
-    # For populating matching medicine brand name
-    
-    for item in @medicineCompositionList
-     if item.composition
-       if item.genericName is genericName
-        @matchingMedicineList.push item
-
-    brandNameMap = {}
-    manufacturerMap = {}
-    for item in @matchingMedicineList
-      brandNameMap[item.brandName] = null
-      manufacturerMap[item.manufacturer] = null
-    @brandNameSourceDataList = ({text: item, value: item} for item in Object.keys brandNameMap)
-    @manufacturerSourceDataList = ({text: item, value: item} for item in Object.keys manufacturerMap)
-    # @genericNameDependency = "by #{genericName} only"
-
-    # ==============
-    # @populateDoseGuideline()
-
-  manufacturerAutocompleteSelected: (e)->
-    manufacturer = e.detail.text
-    matchingMedicineList = (item for item in @medicineCompositionList when item.manufacturer is manufacturer)
-    if matchingMedicineList.length isnt 0
-      genericNameMap = {}
-      brandNameMap = {}
-      for item in matchingMedicineList
-        brandNameMap[item.brandName] = null
-        if item.composition
-          genericNameMap[item.genericName] = null
-      @genericNameSourceDataList = ({text: item, value: item} for item in Object.keys genericNameMap)
-      @brandNameSourceDataList = ({text: item, value: item} for item in Object.keys brandNameMap)
-      # @manufacturerDependency = "by #{manufacturer} only"
-
   brandNameCleared: (e)->
     @_resetMedicineForm()
-    @activeDoseGuideline = {}
-
-  manufacturerCleared: (e)->
-    @set 'medicine.manufacturer', null
-    
-  genericNameCleared: (e)->
-    @set 'medicine.genericName', null
     @activeDoseGuideline = {}
   
   _isNthWeekSelectedAsEndDate: (index)->
@@ -1506,24 +1439,6 @@ Polymer {
       return true
     return false
 
-  _isRouteCustom: ->
-    return true if @routeSelectedIndex is @routeList.length-1
-    return false
-
-  _isUnitCustom: ->
-    return true if @doseUnitSelectedIndex is @doseUnitList.length-1
-    return false
-  
-  _isStregnthDropdown: ->
-    return true if @matchingMedicineList.length
-
-  _isStregnthCustom: ->
-    return true if @matchingMedicineList.length is 0
-    return true if @strengthSelectedIndex is @strengthList.length-1
-    return false
-
-  _isFormCustom: ->
-    return true if @medicineFormSelectedIndex is @medicineFormList.length-1
 
   _makeEndDateStampfromCustom: (startDate, week, days)->
     unless week <= 0
@@ -1554,15 +1469,6 @@ Polymer {
     @set 'medicine.doseDirection', e.detail.value
 
 
-  _doseValueChanged: (e)->
-    if @medicine.dose > 20
-      @medicine.dose = 20
-      e.target.value = 20
-    if @medicine.dose < 1
-      @medicine.dose = 1
-      e.target.value = 1
-    
-  
   _computeIntervalInHours: (timesPerInterval, intervalInDays)->
     # console.log intervalInDays
     # console.log timesPerInterval
@@ -1572,125 +1478,6 @@ Polymer {
   _directionSelectedIndexChanged: ()->
     item = @get ['directionList', @directionSelectedIndex]
     @set 'medicine.direction', item
-
-  _changeStrengthByFormValue: (selectedForm)->
-    # Change strength depending on form
-    if @matchingMedicineList.length
-      strengthList = @matchingMedicineList.filter((medicine)=> medicine.type is selectedForm).map((item)-> item.strength)
-      if strengthList.length
-        @set 'strengthList', []
-        @set 'strengthList', strengthList
-        @push 'strengthList', 'Custom'
-        @set 'strengthSelectedIndex', null
-        # HACK - to fix setting selected index to other paper-menu element
-        lib.util.delay 10, =>
-          @set 'strengthSelectedIndex', 0
-        # HACK End
-      else
-        @set 'strengthList', ['n/a']
-
-  
-  _changeUnitByFormValue: (selectedForm)->
-    # Change dose unit depending on form
-    unitMap = {
-      'Tablet': ['Tablet']
-      'Injection': ['Injection']
-      'Syrup': ['ml', 't.s.f', 'teaspoonfull']
-      'Drop': ['Drop']
-      'Capsule': ['Capsule']
-      'Suspension': ['ml', 't.s.f', 'teaspoonfull']
-      'I.V Injection': ['ampoule', 'm/l', 'vial']
-      'I.M injection': ['ampoule', 'm/l', 'vial']
-      'I.M/I.V Injection': ['ampoule', 'm/l', 'vial']
-      'IV/IM Injection': ['ampoule', 'm/l', 'vial']
-      'S/C Injection' : ['Injection']
-      'PR (Per Rectal)':  ['Suppository']
-      'Suppository':  ['Suppository']
-      'Solution': ['ml']
-      'Ointment': ['application']
-      'Cream': ['application']
-      'Skin Patch': ['skin patch']
-    }
-
-    formToUnit = Object.keys(unitMap).find (formItem)=> formItem is selectedForm
-    if formToUnit
-      doseUnitList = unitMap[formToUnit]
-      @set 'doseUnitList', []
-      @set 'doseUnitList', doseUnitList
-      @push 'doseUnitList', 'Custom'
-      @set 'doseUnitSelectedIndex', null
-      # HACK - to fix setting selected index to other paper-menu element
-      lib.util.delay 10, =>
-        @set 'doseUnitSelectedIndex', 0
-      # HACK End
-    else
-      @set 'doseUnitList', ['Other']
-
-  
-  _changeRouteByFormValue: (selectedForm)->
-    routeMap = {
-      'Tablet': ['p.o']
-      'Injection': ['i.v injection', 'i.m injection', 's/c injection']
-      'Syrup': ['p.o']
-      'Drop': ['p.o', 'topical application ear', 'topical application eye']
-      'Capsule': ['p.o']
-      'Suspension': ['p.o']
-      'I.V Injection': ['i.v injection']
-      'I.M Injection': ['i.m injection']
-      'S/C Injection': ['s/c injection']
-      'PR (Per Rectal)':  ['p.r (per rectal)']
-      'Suppository':  ['p.r (per rectal)']
-      'Solution': ['nebulizer']
-      'Cream': ['topical application skin', 'topical application eye', 'topical application ear', 'intravaginal']
-      'Ointment': ['topical application skin','topical application eye', 'topical application ear', 'intravaginal']
-      'Skin Patch': ['transdermal']
-    }
-
-    formToRoute = Object.keys(routeMap).find((formItem2)=> formItem2 is selectedForm)
-    if formToRoute is selectedForm
-      routeList = routeMap[formToRoute]
-      @set 'routeList', []
-      @set 'routeList', routeList
-      @push 'routeList', 'Custom'
-      @set 'routeSelectedIndex', null
-      # HACK - to fix setting selected index to other paper-menu element
-      lib.util.delay 10, =>
-        @set 'routeSelectedIndex', 0
-      # HACK End
-    else
-      @set 'routeList', ['Other']
-
-  _medicineFormSelectedIndexChanged: ()->
-    selectedForm = @get ['medicineFormList', @medicineFormSelectedIndex]
-    return unless selectedForm
-    if @medicineFormSelectedIndex is @medicineFormList.length-1
-      # If Form is Custom Set Unit & Route to Custom
-      @doseUnitSelectedIndex = @doseUnitList.length-1
-      @routeSelectedIndex = @routeList.length-1
-      @set 'medicine.form', ''
-      @set 'medicine.doseUnit', ''
-      @set 'medicine.strength', ''
-    else
-      @set 'medicine.form', selectedForm
-
-    @_changeStrengthByFormValue selectedForm
-    @_changeUnitByFormValue selectedForm
-    @_changeRouteByFormValue selectedForm
-
-    @.$.form.invalid = false
-    @.$.doseUnit.invalid = false
-
-  _routeSelectedIndexChanged: ->
-    if @routeSelectedIndex is @routeList.length-1
-      @set 'medicine.route', ''
-    else
-      item = @get ['routeList', @routeSelectedIndex]
-      @set 'medicine.route', item
-    
-  _strengthSelectedIndexChanged: ->
-    item = @get ['strengthList', @strengthSelectedIndex]
-    unless @strengthSelectedIndex is @strengthList.length-1
-      @set 'medicine.strength', item
 
   _doseUnitSelectedIndexChanged: ->
     unless @doseUnitSelectedIndex is @doseUnitList.length-1
@@ -1734,8 +1521,7 @@ Polymer {
 
   
   _saveMedicine: (medicine)->
-    console.log medicine  
-  
+    @domHost.showModalDialog 'This method is deprecated in favor of not autosaving the prescription'  
   
   saveMedicineButtonClicked: (e)->
     params = @domHost.getPageParams()
@@ -1747,6 +1533,10 @@ Polymer {
     unless @medicine.doseDirection
       @.$.doseDirection.invalid = true
       return @domHost.showToast 'Please select a dose value'
+
+    if @medicine.priceRelatedInfo?
+      medicinePriceRelatedInfo = @medicine.priceRelatedInfo
+      delete @medicine.priceRelatedInfo
 
     # HACK to match object signature with Doctor App Medication Object for syncing purpose
     medicine = {}
@@ -1778,7 +1568,8 @@ Polymer {
 
     @domHost.showToast "Medicine Added!"
 
-    @_addMedicinePriceToInvoice medicine.data.brandName, medicine.data.quantityPerPrescription, @visit.serial
+    if medicinePriceRelatedInfo?.price
+      @_addMedicinePriceToInvoice medicinePriceRelatedInfo, medicine.data.quantityPerPrescription, @visit.serial
 
     @_resetMedicineForm()
     @_listPrescribedMedications @prescription.serial
@@ -4331,8 +4122,8 @@ Polymer {
 
   loadMedicineList: ()->
     @domHost.getStaticData 'pccMedicineList', (medicineCompositionList)=>
-      @medicineCompositionList = medicineCompositionList
-      @_loadDefaultMedicineCompositionList()
+      @set 'medicineCompositionList', medicineCompositionList
+      # @_loadDefaultMedicineCompositionList()
 
 
   _checkUserAccess: (accessId)->
@@ -4958,13 +4749,12 @@ Polymer {
   #     @domHost.navigateToPage '#/print-invoice/visit:' + @visit.serial + '/patient:' + @patient.serial + '/invoice:' + @invoice.serial
 
   
-  _addMedicinePriceToInvoice: (itemName, qty, visitSerial)->
-    matchedItem = (item for item in @priceList when item.name is itemName)[0]
+  _addMedicinePriceToInvoice: (item, qty, visitSerial)->
     invoiceItem = {
-      name: matchedItem?.brandName or itemName
+      name: "#{item.brandName} #{item.type}"
       qty: qty
-      price: matchedItem?.price or 0
-      actualCost: matchedItem?.actualCost or 0
+      price: item.price or 0
+      actualCost: item.actualCost or 0
       category: "medicine"
       subCategory: ""
       serial: null
@@ -4984,6 +4774,7 @@ Polymer {
     @_saveInvoice()
     @isInvoiceValid = true
 
+  
   
   _addToInvoice: (itemName, category, visitSerial)->
     matchedItem = (item for item in @priceList when item.name is itemName)[0]
