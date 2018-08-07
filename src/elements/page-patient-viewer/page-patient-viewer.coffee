@@ -275,9 +275,7 @@ Polymer {
       type: Array
       value: -> []
 
-    patientWalletBalance:
-      type: Number
-      value: -> parseFloat(window.sessionStorage.getItem('wallet-balance'))
+    patientWalletBalance: Number
 
     totalInvoiceIncome:
       type: Number
@@ -625,6 +623,9 @@ Polymer {
 
     if params['patient']
       @_loadPatient params['patient']
+      @$getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
+        @set 'patientWalletBalance', patientServiceBalance.outdoorBalance
+
     else
       @_notifyInvalidPatient()
     
