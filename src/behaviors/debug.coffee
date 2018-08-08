@@ -13,6 +13,8 @@ app.behaviors.debug =
     args.unshift name
     lib.debug.apply null, args
 
+    console.log 'hello'
+
   # created: ->
   #   @debugInfo 'created'
 
