@@ -120,7 +120,7 @@ app.behaviors.local['root-element'].dataLoader =
       }
       {
         name: 'pccMedicineList'
-        url: 'https://bdemr.b-cdn.net/uhcp-drug-list-price-6-8-2018.json'
+        url: 'https://bdemr.b-cdn.net/uhcp-drug-list-price-19-8-2018.json'
       }
     ]
 
