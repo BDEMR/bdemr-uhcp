@@ -101,9 +101,9 @@ Polymer {
       type: String
       value: null
       notify: true
-
-
-
+  
+  arrowBackButtonPressed: (e)->
+    @domHost.navigateToPreviousPage()
 
   calculateAge: (e)->
     selectedDate = e.detail.value
