@@ -4235,7 +4235,7 @@ Polymer {
 
           
           # Preloaded Data - Test Advised
-          @_loadInvestigationList @user.serial
+          @_loadInvestigationList @organization.idOnServer
           @_loadUserAddedInstitutionList @user.serial
 
           # Preloaded Data - Diagnosis
