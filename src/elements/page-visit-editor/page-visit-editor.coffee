@@ -2238,7 +2238,7 @@ Polymer {
       @_notifyInvalidTestAdvised()
       return false
 
-  _loadInvestigationList: (userIdentifier)->
+  _loadInvestigationList: (organizationIdentifier)->
   
     @domHost.getStaticData 'investigationList', (investigationList)=>
       # console.log investigationList
@@ -2287,7 +2287,7 @@ Polymer {
 
     
     # get all custom investigation list by curernt user
-    customInvestigationlist = app.db.find 'custom-investigation-list', ({createdByUserSerial})=> userIdentifier is createdByUserSerial
+    customInvestigationlist = app.db.find 'custom-investigation-list', ({organizationId})=> organizationIdentifier is organizationId
     # console.log customInvestigationlist
     
     # pushed all custom investigation on master investigatin list
@@ -2571,7 +2571,7 @@ Polymer {
     @saveAdvisedTest()
 
     # Load Investigation Data
-    @_loadInvestigationList @user.serial
+    @_loadInvestigationList @organization.idOnServer
 
     # clear combobox input
     @set 'comboBoxInvestigationInputValue', ''

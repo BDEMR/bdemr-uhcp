@@ -227,6 +227,7 @@ Polymer {
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
       createdByUserSerial: @user.serial
+      organizationId: @organization.idOnServer
       visitSerial: null
       patientSerial: null
       data:
