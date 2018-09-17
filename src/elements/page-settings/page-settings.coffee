@@ -43,15 +43,13 @@ Polymer {
 
   _saveSettings: ->
     @settings.lastModifiedDatetimeStamp = lib.datetime.now()
-    @settings.serial = 'only'
-    app.db.remove 'settings', item._id for item in app.db.find 'settings'
-    app.db.insert 'settings', @settings
+    app.db.upsert 'settings', @settings, ({serial})=> serial is @settings.serial
+
 
   arrowBackButtonPressed: (e)->
     @domHost.navigateToPreviousPage()
 
   saveButtonPressed: (e)->
-    console.log @settings
     @_saveSettings()
     @domHost.showToast 'Settings Saved!'
     # @arrowBackButtonPressed()
@@ -65,10 +63,10 @@ Polymer {
 
     @settings =
       createdByUserSerial: @user.serial
-      lastModifiedDatetimeStamp: 0
+      lastModifiedDatetimeStamp: null
       createdDatetimeStamp: lib.datetime.now()
-      lastSyncedDatetimeStamp: 0
-      serial: 'only'
+      lastSyncedDatetimeStamp: null
+      serial: @generateSerialForSettings()
       printDecoration:
         headerLine: ''
         leftSideLine1: ''
@@ -87,11 +85,7 @@ Polymer {
       flags:
         showFooterLine: true
         showUserNameOnPrintPreview: true
-
       authorizedOrganiztionList: []
-
-    @_saveSettings()
-
     
 
   showFooterLine:(e)->
@@ -107,16 +101,13 @@ Polymer {
     console.log @settings
 
 
-  loadSettings: (cbfn)->
-    list = app.db.find 'settings'
-
-    if list.length > 0
+  loadSettings: ()->
+    settingsSerial = @generateSerialForSettings()
+    list = app.db.find 'settings', ({serial})=> serial is settingsSerial
+    if list.length
       @settings = list[0]
-
     else
      @_makeSettings()
-
-    cbfn()
 
 
   ## change password - start
