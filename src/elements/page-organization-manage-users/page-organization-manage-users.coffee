@@ -490,12 +490,6 @@ Polymer {
           isSelected: false
       }
       {
-          serial: 'U00022'
-          name: 'Visit Reports'
-          type: 'visit-reports'
-          isSelected: false
-      }
-      {
           serial: 'U00023'
           name: 'Patient Manager'
           type: 'patient-manager'
@@ -548,19 +542,19 @@ Polymer {
     preListedRoles = [
       {
         title: 'Monitoring Role'
-        serialList: ['U0003', '00018', 'U0001', 'U0002', 'U00022', 'U0004']
+        serialList: ['U0003', 'U00018', 'U0001', 'U0002', 'U0004']
       }
       {
         title: 'Doctor'
-        serialList: ['00016', 'U0006', 'U0007', 'U0008', 'U0009', 'U00010', 'U00011', 'U00012', 'U00013', 'U00014', 'U00015', 'U00016', 'U00021', 'U00023']
+        serialList: ['U00016', 'U0006', 'U0007', 'U0008', 'U0009', 'U00010', 'U00011', 'U00012', 'U00013', 'U00014', 'U00015', 'U00016', 'U00021', 'U00023']
       }
       {
         title: 'Data Entry Operator'
-        serialList: ['00018', 'U00016', 'U0006', 'U00012', 'U00021', 'U00023']
+        serialList: ['U00018', 'U00016', 'U0006', 'U00012', 'U00021', 'U00023']
       }
       {
         title: 'Employer'
-        serialList: ['0003', 'U00018']
+        serialList: ['U0003', 'U00018']
       }
     ]
 
