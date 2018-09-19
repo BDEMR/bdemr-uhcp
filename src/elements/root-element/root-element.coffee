@@ -790,24 +790,31 @@ Polymer {
 
   _checkUserAccess: (accessId)->
     currentOrganization = @getCurrentOrganization()
-    return true if accessId is 'none' or !accessId
-    
-    if currentOrganization
-      if currentOrganization.isCurrentUserAnAdmin
-        return true
-      else if currentOrganization.isCurrentUserAMember
-        if currentOrganization.userActiveRole
-          privilegeList = currentOrganization.userActiveRole.privilegeList
-          unless privilegeList.length is 0
-            for privilege in privilegeList
-              if privilege.serial is accessId
-                return true
+
+    if accessId is 'none'
+      return true
+    else
+      if currentOrganization
+
+        if currentOrganization.isCurrentUserAnAdmin
+          return true
+        else if currentOrganization.isCurrentUserAMember
+          if currentOrganization.userActiveRole
+            privilegeList = currentOrganization.userActiveRole.privilegeList
+            unless privilegeList.length is 0
+              for privilege in privilegeList
+                if privilege.serial is accessId
+                  return true
+          else
+            return true
+
+          return false
         else
           return false
+
       else
-        return false
-    else
-      @navigateToPage "#/select-organization"
+        # @navigateToPage "#/select-organization"
+        return true
 
   # = REGION offline patient 
   _createOnlinePatient: (patient, cbfn) ->

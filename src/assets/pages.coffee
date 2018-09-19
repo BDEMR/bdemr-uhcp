@@ -21,7 +21,6 @@ app.pages.pageList = [
     hideHeaderTitle: false
     accessId: 'none'
     hideAd: true
-    accessId: 'none'
   }
   {
     name: 'my-wallet'
@@ -62,7 +61,7 @@ app.pages.pageList = [
     headerType: 'normal'
     leftMenuEnabled: true
     showPatientsName: false
-    accessId: 'D012'
+    accessId: 'U00020'
     showToolbar: true
   }
   {
@@ -136,7 +135,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D001'
+    accessId: 'U00023'
   }
 
   {
@@ -153,7 +152,7 @@ app.pages.pageList = [
     showOrganizationsName: true
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
   }
   {
     name: 'chamber-manager'
@@ -257,7 +256,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
   }
   {
     name: 'organization-records'
@@ -273,7 +272,7 @@ app.pages.pageList = [
     showOrganizationsName: true
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
   }
   {
     name: 'organization-medicine-sales-statistics'
@@ -289,7 +288,7 @@ app.pages.pageList = [
     showOrganizationsName: true
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
   }
   {
     name: 'organization-editor'
@@ -305,7 +304,7 @@ app.pages.pageList = [
     showOrganizationsName: true
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
   }
 
   {
@@ -322,7 +321,7 @@ app.pages.pageList = [
     showOrganizationsName: true
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
   }
 
   {
@@ -339,7 +338,7 @@ app.pages.pageList = [
     showOrganizationsName: true
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
   }
 
   {
@@ -371,7 +370,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'R001'
+    accessId: 'U0001'
   }
 
   {
@@ -387,7 +386,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'R002'
+    accessId: 'U0002'
   }
 
   {
@@ -403,7 +402,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'R003'
+    accessId: 'U0004'
   }
 
   {
@@ -470,46 +469,10 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'D001'
+    accessId: 'U0006'
     # showPrintButton: true
   }
 
-  {
-    name: 'ndr-editor'
-    element: 'page-ndr-editor'
-    windowTitlePostfix: 'NDR'
-    headerTitle: 'NDR Form'
-    preload: true
-    hrefList: [ 'ndr' ]
-    requireAuthentication : true
-    headerType: 'modal'
-    leftMenuEnabled: true
-    showSaveButton: false
-    showPatientsDetails: false
-    showToolbar: true
-    hideHeaderTitle: false
-    accessId: 'D001'
-    # showPrintButton: true
-  }
-
-  {
-    name: 'preconception-record'
-    element: 'page-preconception-record'
-    windowTitlePostfix: 'Preconception Record'
-    headerTitle: 'PCC Record'
-    preload: true
-    hrefList: [ 'preconception-record' ]
-    requireAuthentication : true
-    headerType: 'modal'
-    leftMenuEnabled: true
-    showSaveButton: false
-    showPatientsDetails: false
-    showToolbar: true
-    hideHeaderTitle: false
-    accessId: 'none'
-    showPrintButton: false
-    hideAd: false
-  }
   {
     name: 'patient-viewer'
     element: 'page-patient-viewer'
@@ -525,7 +488,7 @@ app.pages.pageList = [
     showToolbar: true
     showTallToolbar: true
     hideHeaderTitle: true
-    accessId: 'D014'
+    accessId: 'U0006'
   }
 
   {
@@ -691,7 +654,7 @@ app.pages.pageList = [
     showSaveButton: true
     showOrganizationsName: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
     showToolbar: true
   }
   {
@@ -707,7 +670,7 @@ app.pages.pageList = [
     showSaveButton: false
     showOrganizationsName: true
     hideHeaderTitle: false
-    accessId: 'D010'
+    accessId: 'U0005'
     showToolbar: true
   }
   {
@@ -954,7 +917,7 @@ app.pages.pageList = [
     showToolbar: true
     showTallToolbar: true
     hideHeaderTitle: true
-    accessId: 'D014'
+    accessId: 'U0007'
   }
 
   {
@@ -973,7 +936,7 @@ app.pages.pageList = [
     showPrintButton: true
     showToolbar: true
     hideHeaderTitle: true
-    accessId: 'D014'
+    accessId: 'U0007'
   }
 
   {
@@ -990,7 +953,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'none'
+    accessId: 'U00012'
   }
 
   {
@@ -1007,7 +970,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'none'
+    accessId: 'U00012'
   }
 
   {
@@ -1024,7 +987,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'none'
+    accessId: 'U00021'
   }
 
   {
@@ -1058,7 +1021,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'none'
+    accessId: 'U0009'
   }
 
   {
@@ -1078,7 +1041,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'none'
+    accessId: 'U00014'
   }
 
   {
@@ -1110,7 +1073,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'none'
+    accessId: 'U00011'
   }
 
   {
@@ -1126,7 +1089,7 @@ app.pages.pageList = [
     showSaveButton: false
     showPatientsDetails: false
     hideHeaderTitle: false
-    accessId: 'D016'
+    accessId: 'U00018'
     showToolbar: true
   }
 
@@ -1143,7 +1106,7 @@ app.pages.pageList = [
     showSaveButton: false
     showPatientsDetails: false
     hideHeaderTitle: false
-    accessId: 'D017'
+    accessId: 'U00018'
     showToolbar: true
   }
 
@@ -1160,7 +1123,7 @@ app.pages.pageList = [
     showSaveButton: false
     showPatientsDetails: false
     hideHeaderTitle: false
-    accessId: 'none'
+    accessId: 'U00018'
     showToolbar: true
   }
 
@@ -1227,25 +1190,6 @@ app.pages.pageList = [
     hideHeaderTitle: false
     accessId: 'none'
     showToolbar: true
-  }
-
-  {
-    name: 'preview-preconception-record'
-    element: 'page-preview-preconception-record'
-    windowTitlePostfix: 'Preview Preconception Record'
-    headerTitle: 'Preview Preconception Record'
-    preload: true
-    hrefList: [ 'preview-preconception-record' ]
-    requireAuthentication : true
-    headerType: 'modal'
-    leftMenuEnabled: false
-    showSaveButton: false
-    showPatientsDetails: false
-    hideAd: false
-    hideHeaderTitle: false
-    accessId: 'none'
-    showToolbar: true
-
   }
 
   {

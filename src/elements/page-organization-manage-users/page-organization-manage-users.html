@@ -9,8 +9,7 @@
 <link rel="import" href="../../bower-assets/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower-assets/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../../bower-assets/paper-dialog-scrollable/paper-dialog-scrollable.html">
-
-<link rel="import" href="../../bower-assets/paper-autocomplete/paper-autocomplete.html">
+<link rel="import" href="../../bower-assets/iron-collapse/iron-collapse.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -86,7 +85,7 @@
       }
 
       .organization-info-cards .row .modifier.locally-updated {
-        background: #009688;
+        background: #5c4575;
       }
 
       .organization-info-cards .row .modifier.imported {
@@ -145,6 +144,22 @@
         line-height: 28px;
         color: var(--brand-primary-color);
       }
+
+      .padding-for-rolewise-userslist {
+        padding-left: 35px;
+      }
+
+      .roleName-style-for-roleWise-userlist {
+        background: rgb(50, 114, 109);
+        color: #ffffff;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
     </style>
 
     <!-- local DOM -->
@@ -166,13 +181,14 @@
 
           <paper-card class="organization-info-cards">
             <div class="card-content">
-              <div class="info-row">
-                <span class="type bold headline">[[organization.name]]</span>
-              </div>
               <div class="horizontal layout center top-info-row">
-                <span class="type caption bg-gray">[[organization.idOnServer]]</span>
+                <div>ID: </div>
+                <div class="serial-number">[[organization.idOnServer]]</div>
+                <div class="flex"></div>
               </div>
-
+              <div class="info-row">
+                <div>Name: [[organization.name]]</div>
+              </div>
               <div class="info-row">
                 <div>Region: [[organization.effectiveRegion]]</div>
               </div>
@@ -207,19 +223,21 @@
                           <template is="dom-if" if="[[$equals(member.idOnServer, user.idOnServer)]]">
                             (You)
                           </template>
-                          <template is="dom-if" if="[[$isAdmin(member.idOnServer, organization.userList)]]">
-                            <span class="type caption uppercase bg-success">
-                              <iron-icon icon="done" class="icon small-tiny"></iron-icon>
-                              Admin</span>
-                          </template>
-                          <template is="dom-if" if="[[!$isAdmin(member.idOnServer, organization.userList)]]">
-                            <span class="type caption uppercase bg-gray">Member</span>
-                          </template>
+
                         </div>
 
                         <div class="type caption secondary">
+                          <template is="dom-if" if="[[$isAdmin(member.idOnServer, organization.userList)]]">
+                            Admin
+                          </template>
+                          <!-- <template is="dom-if" if="[[!$isAdmin(member.idOnServer, organization.userList)]]">
+                            Regular User
+                          </template> -->
+                        </div>
+                        <div class="type caption secondary">
                           <strong>Role:</strong> {{_getRoleTitleForUser(member.idOnServer)}}
                         </div>
+
 
                       </div>
 
@@ -262,11 +280,10 @@
             </template>
           </paper-card>
 
-          <!-- Add Member Start -->
           <paper-card class="organization-info-cards" heading="Add A Member">
             <div class="card-content">
               <div class="info-row horizontal layout center">
-                <paper-input class="flex" always-float-label value="{{memberOrganizationSearchString}}" label="Name/Phone/Email"></paper-input>
+                <paper-input class="flex" always-float-label value="{{memberOrganizationSearchString}}" label="Name/Region/Address of the organization"></paper-input>
                 <paper-button raised on-tap="searchMemberOrganizationTapped">Search</paper-button>
               </div>
             </div>
@@ -306,7 +323,6 @@
               </div>
             </template>
           </paper-card>
-          <!-- Add Member End -->
 
           <!-- Add Role - start -->
           <paper-card heading="Add Role(s)" class="organization-info-cards">
@@ -334,22 +350,74 @@
           </paper-card>
           <!-- Add Role - end -->
 
+          <paper-card heading="Role-wise userlist" class="organization-info-cards">
+            <!-- <paper-listbox>
+              <template is="dom-repeat" items="[[memberListByRole]]" as="role">
+                <paper-item class="custom layout horizontal center">
+                  <div class="roleName-style-for-roleWise-userlist"><strong>[[role.type]]</strong>
+                    ([[role.userList.length]])</div>
+                </paper-item>
+                <template is="dom-repeat" items="[[role.userList]]" as="user" index-as="entryIndex">
+                  <div class="p-bottom-8">
+                    <div class="p-left-16"><strong>[[_returnSerial(entryIndex)]]. [[user.name]]</strong></div>
+                    <div class="padding-for-rolewise-userslist">Email: [[user.email]]</div>
+                    <div class="padding-for-rolewise-userslist">Phone: [[user.phone]]</div>
+                  </div>
+                </template>
+              </template>
+            </paper-listbox> -->
+            <template is="dom-repeat" items="[[memberListByRole]]" as="role">
+              <paper-listbox>
+                <paper-item class="custom layout horizontal center">
+                  <div class="roleName-style-for-roleWise-userlist">
+                    <strong>[[role.type]]</strong> ([[role.userList.length]])
+                  </div>
+                  <div class="flex"></div>
+                  <paper-button raised class="btn btn-success" on-tap="toggleCollapseClicked">View</paper-button>
+                </paper-item>
+
+                <iron-collapse id="[[convertRoleNameToId(role.type)]]">
+                  <template is="dom-repeat" items="[[role.userList]]" as="user" index-as="entryIndex">
+                    <div class="p-bottom-8">
+                      <div class="p-left-16">
+                        <strong>[[_returnSerial(entryIndex)]].[[user.name]]</strong></div>
+                      <div class="padding-for-rolewise-userslist">Email: [[user.email]]</div>
+                      <div class="padding-for-rolewise-userslist">Phone: [[user.phone]]</div>
+                    </div>
+                  </template>
+                </iron-collapse>
+              </paper-listbox>
+            </template>
+          </paper-card>
+
           <!-- Dialog for - Add Role - start -->
           <paper-dialog id="dialogAddRole">
-            <h2 class="type body-lead" style="color: #5c4575;">
+            <div class="type body-lead" style="color: #5c4575;">
               <iron-icon icon="icons:check-circle" class="m-right-8 "></iron-icon>Add Role
-            </h2>
-
-            <div>
-              <paper-input label="Role Title" required value={{role.title}}></paper-input>
             </div>
 
-            <paper-dialog-scrollable>
+            <div>
+              <paper-input label="Role Title" value={{role.title}}></paper-input>
+            </div>
 
-              <div class="type body" style="color: #5c4575;">Select Privilege:</div>
+            
+
+            <div class="type body-lead" style="color: #5c4575;">Privileged features:</div>
+
+            <!-- <div class="type body">Pre Listed Roles:</div> -->
+
+            <div class="horizontal layout wrap">
+              <template is="dom-repeat" items="[[preListedRoles]]">
+                <paper-button class="btn default" style="background-color: fafafa;" raised on-tap="_onPreListedRoleTap">{{item.title}}</paper-button>
+              </template>
+            </div>
+
+            
+            <paper-dialog-scrollable>
+              
               <div class="horizontal layout wrap">
-                <template is="dom-repeat" items="[[privilegeList]]">
-                  <paper-checkbox class="m-8" checked="{{item.isSelected}}">{{item.name}}</paper-checkbox>
+                <template is="dom-repeat" items="{{privilegeList}}">
+                  <paper-checkbox id="{{item.serial}}" class="m-4" style="background-color: #E0F2F1; padding: 8px; border-radius: 4px; " checked="{{item.isSelected}}">{{item.name}}</paper-checkbox>
                 </template>
               </div>
 

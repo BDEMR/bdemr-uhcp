@@ -190,7 +190,9 @@
 
           </div>
           <div class="card-actions">
-            <paper-button raised on-tap="exportButtonClicked">Export</paper-button>
+            <template is="dom-if" if="[[!$checkUserAccess('U0004')]]">
+              <paper-button raised on-tap="exportButtonClicked">Export</paper-button>
+            </template>
           </div>
         </paper-card>
 

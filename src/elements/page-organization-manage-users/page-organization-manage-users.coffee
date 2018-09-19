@@ -36,10 +36,6 @@ Polymer {
       type: Array
       value: -> []
 
-    matchingPatientList:
-      type: Array
-      value: -> []
-
 
     ## Role Manager - start
 
@@ -72,6 +68,14 @@ Polymer {
       notify: true
       value: -> []
 
+    memberListByRole:
+      type: Array
+      value: -> []
+    
+    privilegeList:
+      type: Array
+      value: -> []
+      notify: true
 
 
     ## Role Manager - end
@@ -210,15 +214,18 @@ Polymer {
     #   @domHost.navigateToPage "#/select-organization"
       
     @_loadUser()
-    @_makePrivilegeList()
+    # @_getPrivilegedFeatureList()
     
     params = @domHost.getPageParams()
     if params['organization']
       @_loadOrganization params['organization']
       @_loadPatientStayObject params['organization']
+      
     else
       @_notifyInvalidOrganization()
     
+    
+
   navigatedOut: ->
     @organization = null
     @isOrganizationValid = false
@@ -256,6 +263,8 @@ Polymer {
         @set 'isOrganizationValid', true
         @_loadRoleList response.data.matchingOrganizationList[0]
         @_loadMemberList()
+        
+
 
   _loadMemberList: ->
     data = { 
@@ -269,6 +278,8 @@ Polymer {
         @domHost.showModalDialog response.error.message
       else
         @set 'memberList', response.data.matchingUserList
+        console.log @memberList
+        @_getMemberListByRole(@memberList, @organization)
 
   addMemberTapped: (e)->
     { member } = e.model
@@ -338,136 +349,168 @@ Polymer {
       @set 'roleList', @organization.roleList
 
     console.log @roleList
+  
 
-  _makePrivilegeList: ()->
-    @privilegeList = [
-      {
-        serial: 'D001'
-        type: 'manage-patient'
-        name: 'Patient Manager'
-        isSelected: false
-      }
-      {
-        serial: 'D002'
-        type: 'manage-reports'
-        name: 'Report Manger'
-        isSelected: false
-      }
-      
-      {
-        serial: 'D004'
-        type: 'medicine-dispension'
-        name: 'Medicine Dispension'
-        isSelected: false
-      }
-      {
-        serial: 'D005'
-        type: 'assistant-manager'
-        name: 'Assistant Manager'
-        isSelected: false
-      }
-      {
-        serial: 'D006'
-        type: 'search-records'
-        name: 'Records Manager'
-        isSelected: false
-      }
-      
-      {
-        serial: 'D010'
-        type: 'manage-organization'
-        name: 'Organization Manger'
-        isSelected: false
-      }
-      {
-        serial: 'D011'
-        type: 'send-notification'
-        name: 'Send Notification'
-        isSelected: false
-      }
-      {
-        serial: 'D012'
-        type: 'send-feedback'
-        name: 'Send Feedback'
-        isSelected: false
-      }
-      {
-        serial: 'D013'
-        name: 'Create Patient Visit Record'
-        type: 'create-visit-record'
-        isSelected: false
-      }
+  _getPrivilegedFeatureList: (cbfn)->
+    # data =
+    #   apiKey: @user.apiKey
 
-      {
-        serial: 'D014'
-        name: 'Patient Details'
-        type: 'patient-details'
-        isSelected: false
-      }
-      {
-        serial: 'D016'
-        name: 'Invoice Report'
-        type: 'report'
-        isSelected: false
-      }
-      {
-        serial: 'D017'
-        name: 'Manage Pending Invoice'
-        type: 'invoice'
-        isSelected: false
-      }
-      
-      # {
-      #   serial: 'D019'
-      #   name: 'Accounts Manager'
-      #   type: 'accounts-manager'
-      #   isSelected: false
-      # }
-      # {
-      #   serial: 'D020'
-      #   name: 'Pharmacy Manager'
-      #   type: 'pharmacy-manager'
-      #   isSelected: false
-      # }
-      # {
-      #   serial: 'D021'
-      #   name: 'Billing Report'
-      #   type: 'billing-report'
-      #   isSelected: false
-      # }
+    # @callApi '/get-privileged-feature-list-for-uhcp', data, (err, response)=>
+    #   if response.hasError
+    #     @domHost.showModalDialog response.error.message
+    #   else
+    #     @set 'privilegeList', response.data
+    #     cbfn()
 
+    data = [
       {
-        serial: 'D022'
-        name: 'Patient Leave Info'
-        type: 'Patient Leave'
-        isSelected: false
+          serial: 'U0001'
+          name: 'Summary Report'
+          type: 'summary-report'
+          isSelected: false
       }
       {
-        serial: 'D023'
-        name: 'Patient Policy Info'
-        type: 'billing-report'
-        isSelected: false
+          serial: 'U0002'
+          name: 'Visits Report'
+          type: 'uhcp-visits-report'
+          isSelected: false
       }
       {
-        serial: 'R001'
-        name: 'Summary Report'
-        type: 'report'
-        isSelected: false
+          serial: 'U0003'
+          name: 'Factory Member’s List'
+          type: 'factory-member-list'
+          isSelected: false
+      } 
+      {
+          serial: 'U0004'
+          name: 'Factory Member’s List - Hide "Export" Button'
+          type: 'factory-member-list'
+          isSelected: false
       }
       {
-        serial: 'R002'
-        name: 'All Visit Report'
-        type: 'report'
-        isSelected: false
+          serial: 'U0005'
+          name: 'Organization Manager'
+          type: 'organization-manager'
+          isSelected: false
       }
       {
-        serial: 'R003'
-        name: 'All Factory Member List'
-        type: 'report'
-        isSelected: false
+          serial: 'U0006'
+          name: 'Import/View Patient Profile'
+          type: 'patient-view-only-details'
+          isSelected: false
       }
-
+      {
+          serial: 'U0007'
+          name: 'Create new Visit/Prescription'
+          type: 'create-new-visit'
+          isSelected: false
+      } 
+      {
+          serial: 'U0008'
+          name: 'Patient Medicine'
+          type: 'patient-medicine'
+          isSelected: false
+      }
+      {
+          serial: 'U0009'
+          name: 'Patient Vitals'
+          type: 'patient-vitals'
+          isSelected: false
+      }
+      {
+          serial: 'U00010'
+          name: 'Visit History'
+          type: 'patient-visit-and-reports'
+          isSelected: false
+      }
+      {
+          serial: 'U00011'
+          name: 'Patient Invoice'
+          type: 'patient-invoice'
+          isSelected: false
+      }
+      {
+          serial: 'U00012'
+          name: 'Test results'
+          type: 'patient-invoice'
+          isSelected: false
+      }
+      {
+          serial: 'U00013'
+          name: 'Doctor Patients Notes'
+          type: 'doctor-patient-notes'
+          isSelected: false
+      }
+      {
+          serial: 'U00014'
+          name: 'Patient Gallery'
+          type: 'patient-gallery'
+          isSelected: false
+      }
+      {
+          serial: 'U00015'
+          name: 'Activity Log'
+          type: 'activity-log'
+          isSelected: false
+      }
+      {
+          serial: 'U00016'
+          name: 'Leave Info'
+          type: 'leave-info'
+          isSelected: false
+      }
+      {
+          serial: 'U00017'
+          name: 'Reports Manager'
+          type: 'reports-manager'
+          isSelected: false
+      }
+      {
+          serial: 'U00018'
+          name: 'Invoice Report'
+          type: 'invoice-report'
+          isSelected: false
+      }
+      {
+          serial: 'U00019'
+          name: 'Send Notification'
+          type: 'send-notification'
+          isSelected: false
+      }
+      {
+          serial: 'U00020'
+          name: 'Send Feedback'
+          type: 'send-feedback'
+          isSelected: false
+      }
+      {
+          serial: 'U00021'
+          name: 'App Settings'
+          type: 'app-settings'
+          isSelected: false
+      }
+      {
+          serial: 'U00022'
+          name: 'Visit Reports'
+          type: 'visit-reports'
+          isSelected: false
+      }
+      {
+          serial: 'U00023'
+          name: 'Patient Manager'
+          type: 'patient-manager'
+          isSelected: false
+      }
+      {
+          serial: 'U0024'
+          name: 'Patient Confirmed Diagnosis'
+          type: 'patient-confirmed-diagnosis'
+          isSelected: false
+      }
     ]
+
+    @set 'privilegeList', data
+    cbfn()
 
   _makeNewRole: ()->
 
@@ -501,10 +544,56 @@ Polymer {
         @_loadOrganization params['organization']
         @$$('#dialogAddRole').close()
 
+  _makePreListedRoles:()->
+    preListedRoles = [
+      {
+        title: 'Monitoring Role'
+        serialList: ['U0003', '00018', 'U0001', 'U0002', 'U00022', 'U0004']
+      }
+      {
+        title: 'Doctor'
+        serialList: ['00016', 'U0006', 'U0007', 'U0008', 'U0009', 'U00010', 'U00011', 'U00012', 'U00013', 'U00014', 'U00015', 'U00016', 'U00021', 'U00023']
+      }
+      {
+        title: 'Data Entry Operator'
+        serialList: ['00018', 'U00016', 'U0006', 'U00012', 'U00021', 'U00023']
+      }
+      {
+        title: 'Employer'
+        serialList: ['0003', 'U00018']
+      }
+    ]
+
+    @set 'preListedRoles', preListedRoles
+
+
+  _onPreListedRoleTap:(e)->
+
+    selectedIndex = e.model.index
+    role = @preListedRoles[selectedIndex]
+
+    modifiedPrivilegeList = []
+    # console.log privilegeList
+    for item, index in @privilegeList
+      if item.serial in role.serialList
+        item.isSelected = true
+        @$$('#'+ item.serial ).checked = true
+      else
+        item.isSelected = false
+        @$$('#'+ item.serial ).checked = false
+
+      modifiedPrivilegeList.push item
+    
+    @privilegeList = modifiedPrivilegeList
+
+    @set 'role.title', role.title
 
   showAddRoleDialog: ()->
-    @$$('#dialogAddRole').toggle()
-    @_makeNewRole()
+    @_getPrivilegedFeatureList =>
+      @_makePreListedRoles()
+
+      @$$('#dialogAddRole').toggle()
+      @_makeNewRole()
 
   filterPrivilegeList: ()->
     selectedItemSerialList = []
@@ -617,4 +706,32 @@ Polymer {
 
   ## Role Manager - end
 
-}
+  ## Rolewise statistics for members - start
+
+  _getMemberListByRole: (userList, organization)->
+    organizationCopy = Object.create organization
+
+    memberListByRole = organizationCopy.roleList
+
+    for organizationRole in memberListByRole
+      for user in organizationRole.userList
+       for member in userList
+        if user.id is member.idOnServer
+          Object.assign(user, member)
+
+    @set 'memberListByRole', memberListByRole
+
+  
+
+  convertRoleNameToId: (roleType)-> roleType.toLowerCase().split(" ").join("")
+
+  toggleCollapseClicked: (e)->
+    roleType = @convertRoleNameToId e.model.role.type
+    console.log roleType
+    @$$("##{roleType}").toggle()
+  
+  _returnSerial: (index)->
+    index+1
+  ## Rolewise statistics for members - end
+
+}         
