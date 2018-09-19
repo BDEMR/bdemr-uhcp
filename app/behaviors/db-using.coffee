@@ -432,13 +432,9 @@ app.behaviors.dbUsing =
 
   generateSerialForSettings: ->
     appIdentifier = 'U'
-    itemType = 'STN'
+    itemType = 'Setting'
     { serial: userSerial, sessionSerial } = (app.db.find 'user')[0]
-    serialGenerator = (app.db.find '--serial-generator')[0]
-    seed = serialGenerator['user-setting-record-seed']
-    serialGenerator['user-setting-record-seed'] += 1
-    app.db.update '--serial-generator', serialGenerator._id, serialGenerator
-    return (appIdentifier + userSerial + sessionSerial + itemType + seed)
+    return (appIdentifier + userSerial + itemType )
 
   generateSerialForActivity: ->
     appIdentifier = 'U'
