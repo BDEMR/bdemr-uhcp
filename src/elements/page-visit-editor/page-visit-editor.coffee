@@ -4154,7 +4154,9 @@ Polymer {
         return true
 
   _loadVariousWallets: ->
+    @gettingBalance = true
     @$getPatientServiceBalance @patient.idOnServer, (patientServiceBalance)=>
+      @gettingBalance = false
       @set 'patientServiceBalance', patientServiceBalance
 
 
@@ -4164,7 +4166,6 @@ Polymer {
 
   editPatientBtnPressed: ()->
     @domHost.navigateToPage "#/patient-editor/patient:" + @patient.serial
-    
   
   
   navigatedIn: ->
@@ -4188,7 +4189,7 @@ Polymer {
       @_loadPatient params['patient'], =>
 
           # load Wallets
-          @_loadVariousWallets => null
+          @_loadVariousWallets()
 
           # Reset Properties - History and Physical
           @historyAndPhysicalRecord = {}

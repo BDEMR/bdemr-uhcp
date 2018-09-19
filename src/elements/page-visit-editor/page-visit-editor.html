@@ -907,7 +907,7 @@
                   <div class="layout horizontal m-4">
                     <div class="type secondary caption-2">Member Wallet:
                       <span class="type caption bold bg-gray">
-                        <paper-spinner-lite class="small" active hidden="[[patientServiceBalance.outdoorBalance]]"></paper-spinner-lite>
+                        <paper-spinner-lite class="small" active hidden$="[[!gettingBalance]]"></paper-spinner-lite>
                         [[$toTwoDecimalPlace(patientServiceBalance.outdoorBalance)]]
                       </span>
                     </div>
@@ -1012,9 +1012,10 @@
               <div class="card-item-2">
                 <div class="preview-title">
                   <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_stethoscope.png"></iron-icon> -->
-                  <vaadin-combo-box class="flex combobox-custom-style" label="Examination" id="comboBoxExamination" items="{{examinationDataList}}"
-                    allow-custom-value="true" value-changed="onComboBoxExaminationValueChanged" on-keyup="comboBoxKeyUpExaminationValueChanged"
-                    selected-item="{{comboBoxExaminationSelectedItem}}" value="{{comboBoxExaminationInputValue}}">
+                  <vaadin-combo-box class="flex combobox-custom-style" label="Examination" id="comboBoxExamination"
+                    items="{{examinationDataList}}" allow-custom-value="true" value-changed="onComboBoxExaminationValueChanged"
+                    on-keyup="comboBoxKeyUpExaminationValueChanged" selected-item="{{comboBoxExaminationSelectedItem}}"
+                    value="{{comboBoxExaminationInputValue}}">
                   </vaadin-combo-box>
                   <div class="action-area">
                     <paper-button class="btn-add" on-tap="addExamination">
@@ -1062,17 +1063,26 @@
                     <paper-dropdown-menu class="dropdown-menu-custom-style" label="[[$TRANSLATE('Vital',LANG)]]">
                       <paper-menu class="dropdown-content" selected="{{selectedVitalIndex}}" on-iron-select="onVitalIndexChange">
                         <paper-item disabled$="{{isBPAdded}}">
-                          <iron-icon class="m-right-8" src="../../images/icons/ico_blood_pressure.png"></iron-icon>Blood Pressure</paper-item>
+                          <iron-icon class="m-right-8" src="../../images/icons/ico_blood_pressure.png"></iron-icon>Blood
+                          Pressure
+                        </paper-item>
                         <paper-item disabled$="{{isHRAdded}}">
-                          <iron-icon class="m-right-8" src="../../images/icons/ico_pulse_rate.png"></iron-icon>Heart Rate</paper-item>
+                          <iron-icon class="m-right-8" src="../../images/icons/ico_pulse_rate.png"></iron-icon>Heart
+                          Rate
+                        </paper-item>
                         <paper-item disabled$="{{isBMIAdded}}">
-                          <iron-icon class="m-right-8" src="../../images/icons/ico_body_shape.png"></iron-icon>BMI</paper-item>
+                          <iron-icon class="m-right-8" src="../../images/icons/ico_body_shape.png"></iron-icon>BMI
+                        </paper-item>
                         <paper-item disabled$="{{isRRAdded}}">
-                          <iron-icon class="m-right-8" src="../../images/icons/ico_lungs.png"></iron-icon>Respiratory Rate</paper-item>
+                          <iron-icon class="m-right-8" src="../../images/icons/ico_lungs.png"></iron-icon>Respiratory
+                          Rate
+                        </paper-item>
                         <paper-item disabled$="{{isSpO2Added}}">
-                          <iron-icon class="m-right-8" src="../../images/icons/oxygen-symbol.png"></iron-icon>SpO2</paper-item>
+                          <iron-icon class="m-right-8" src="../../images/icons/oxygen-symbol.png"></iron-icon>SpO2
+                        </paper-item>
                         <paper-item disabled$="{{isTempAdded}}">
-                          <iron-icon class="m-right-8" src="../../images/icons/ico_thermometer.png"></iron-icon>Temperature</paper-item>
+                          <iron-icon class="m-right-8" src="../../images/icons/ico_thermometer.png"></iron-icon>Temperature
+                        </paper-item>
                       </paper-menu>
                     </paper-dropdown-menu>
                   </div>
@@ -1117,11 +1127,12 @@
                   <section hidden$="{{isBPAdded}}">
 
                     <div class="custom-content">
-                      <paper-input class="p-horizontal-4 flex one" id="systolic" label="[[$TRANSLATE('Systolic',LANG)]]" type="number" min="0"
-                        max="300" value="{{bloodPressure.data.systolic}}" auto-validate error-message="Value must be within 1-300"></paper-input>
-                      <paper-input class="p-horizontal-4 flex one" id="diastolic" label="[[$TRANSLATE('Diastolic',LANG)]]" type="number" min="0"
-                        max="200" value="{{bloodPressure.data.diastolic}}" disabled$="[[!bloodPressure.data.systolic]]" auto-validate
-                        error-message="Value must not be greater than 200 and Systolic Value"></paper-input>
+                      <paper-input class="p-horizontal-4 flex one" id="systolic" label="[[$TRANSLATE('Systolic',LANG)]]"
+                        type="number" min="0" max="300" value="{{bloodPressure.data.systolic}}" auto-validate
+                        error-message="Value must be within 1-300"></paper-input>
+                      <paper-input class="p-horizontal-4 flex one" id="diastolic" label="[[$TRANSLATE('Diastolic',LANG)]]"
+                        type="number" min="0" max="200" value="{{bloodPressure.data.diastolic}}" disabled$="[[!bloodPressure.data.systolic]]"
+                        auto-validate error-message="Value must not be greater than 200 and Systolic Value"></paper-input>
                       <paper-input class="p-horizontal-4 flex one" label="[[$TRANSLATE('Unit',LANG)]]" readonly value="[[$TRANSLATE('mm Hg',LANG)]]"></paper-input>
                     </div>
                   </section>
@@ -1132,8 +1143,8 @@
                     <div class="card-content">
                       <div class="form-group">
                         <div>
-                          <paper-input label="[[$TRANSLATE('Heart Rate',LANG)]]" type="number" min="20" max="225" auto-validate value="{{pulseRate.data.bpm}}"
-                            error-message="Value must be within 20-225">
+                          <paper-input label="[[$TRANSLATE('Heart Rate',LANG)]]" type="number" min="20" max="225"
+                            auto-validate value="{{pulseRate.data.bpm}}" error-message="Value must be within 20-225">
                             <div class="text-muted" suffix>[[$TRANSLATE('bpm',LANG)]]</div>
                           </paper-input>
                         </div>
@@ -1158,18 +1169,19 @@
                         </div>
                         <template is="dom-if" if="[[ifChosenCmMtAsHeight(heightUnitSelectedIndex)]]">
                           <div>
-                            <paper-input label="[[$TRANSLATE('Height',LANG)]]" type="number" value="{{bmi.data.height}}" error-message="Value must be within 250"></paper-input>
+                            <paper-input label="[[$TRANSLATE('Height',LANG)]]" type="number" value="{{bmi.data.height}}"
+                              error-message="Value must be within 250"></paper-input>
                           </div>
                         </template>
                         <!--If Chosen Ft/inch as Unit-->
                         <template is="dom-if" if="[[ifChosenFtInchAsHeight(heightUnitSelectedIndex)]]">
                           <div>
-                            <paper-input label="[[$TRANSLATE('Ft',LANG)]]" type="number" max="8" min="0" auto-validate value="{{bmi.data.heightInFt}}"
-                              error-message="Value must be within 8"></paper-input>
+                            <paper-input label="[[$TRANSLATE('Ft',LANG)]]" type="number" max="8" min="0" auto-validate
+                              value="{{bmi.data.heightInFt}}" error-message="Value must be within 8"></paper-input>
                           </div>
                           <div>
-                            <paper-input label="[[$TRANSLATE('Inch',LANG)]]" type="number" max="12" min="0" auto-validate value="{{bmi.data.heightInInch}}"
-                              error-message="Value must be within 12"></paper-input>
+                            <paper-input label="[[$TRANSLATE('Inch',LANG)]]" type="number" max="12" min="0"
+                              auto-validate value="{{bmi.data.heightInInch}}" error-message="Value must be within 12"></paper-input>
                           </div>
                         </template>
                       </div>
@@ -1185,7 +1197,8 @@
                           </paper-dropdown-menu>
                         </div>
                         <div>
-                          <paper-input label="[[$TRANSLATE('Weight',LANG)]]" type="number" value="{{bmi.data.weight}}" min="0"></paper-input>
+                          <paper-input label="[[$TRANSLATE('Weight',LANG)]]" type="number" value="{{bmi.data.weight}}"
+                            min="0"></paper-input>
                         </div>
                       </div>
                     </div>
@@ -1197,8 +1210,8 @@
                     <div class="card-content">
                       <div class="form-group">
                         <div>
-                          <paper-input id="rr" label="[[$TRANSLATE('Respiratory Rate',LANG)]]" type="number" min="1" max="65" auto-validate value="{{respiratoryRate.data.respiratoryRate}}"
-                            error-message="Value Must be within 1-65">
+                          <paper-input id="rr" label="[[$TRANSLATE('Respiratory Rate',LANG)]]" type="number" min="1"
+                            max="65" auto-validate value="{{respiratoryRate.data.respiratoryRate}}" error-message="Value Must be within 1-65">
                             <div class="text-muted" suffix>[[$TRANSLATE('rpm',LANG)]]</div>
                           </paper-input>
                         </div>
@@ -1211,8 +1224,8 @@
                     <div class="card-content">
                       <div class="form-group">
                         <div>
-                          <paper-input label="[[$TRANSLATE('Oxygen Saturation',LANG)]]" type="number" min="0" max="100" auto-validate value="{{oxygenSaturation.data.spO2Percentage}}"
-                            error-message="Value must be within 100">
+                          <paper-input label="[[$TRANSLATE('Oxygen Saturation',LANG)]]" type="number" min="0" max="100"
+                            auto-validate value="{{oxygenSaturation.data.spO2Percentage}}" error-message="Value must be within 100">
                             <div class="text-muted" suffix>%</div>
                           </paper-input>
                         </div>
@@ -1227,12 +1240,12 @@
                       <div class="form-group">
                         <div>
                           <template is="dom-if" if="[[isTempCelsius(tempUnitSelectedIndex)]]">
-                            <paper-input label="[[$TRANSLATE('Temperature in Celsius',LANG)]]" type="number" max="48" auto-validate value="{{temperature.data.temperature}}"
-                              error-message="Value must be within 48"></paper-input>
+                            <paper-input label="[[$TRANSLATE('Temperature in Celsius',LANG)]]" type="number" max="48"
+                              auto-validate value="{{temperature.data.temperature}}" error-message="Value must be within 48"></paper-input>
                           </template>
                           <template is="dom-if" if="[[!isTempCelsius(tempUnitSelectedIndex)]]">
-                            <paper-input label="[[$TRANSLATE('Temperature in Fahrenheit',LANG)]]" type="number" max="115" auto-validate value="{{temperature.data.temperature}}"
-                              error-message="Value must be within 115"></paper-input>
+                            <paper-input label="[[$TRANSLATE('Temperature in Fahrenheit',LANG)]]" type="number" max="115"
+                              auto-validate value="{{temperature.data.temperature}}" error-message="Value must be within 115"></paper-input>
                           </template>
                         </div>
                         <div>
@@ -1277,9 +1290,10 @@
               <div class="card-item-2">
                 <div class="preview-title">
                   <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_medicine_flask.png"></iron-icon> -->
-                  <vaadin-combo-box class="flex combobox-custom-style" label="Investigation" id="comboBoxInvestigaiton" items="{{investigationDataList}}"
-                    allow-custom-value="true" value-changed="onComboBoxInvestigationValueChanged" on-keyup="comboBoxKeyUpInvestigationValueChanged"
-                    selected-item="{{comboBoxInvestigationSelectedItem}}" value="{{comboBoxInvestigationInputValue}}">
+                  <vaadin-combo-box class="flex combobox-custom-style" label="Investigation" id="comboBoxInvestigaiton"
+                    items="{{investigationDataList}}" allow-custom-value="true" value-changed="onComboBoxInvestigationValueChanged"
+                    on-keyup="comboBoxKeyUpInvestigationValueChanged" selected-item="{{comboBoxInvestigationSelectedItem}}"
+                    value="{{comboBoxInvestigationInputValue}}">
                   </vaadin-combo-box>
                   <div class="action-area">
                     <paper-button class="btn-add" on-tap="addInvestigation">
@@ -1288,7 +1302,8 @@
                   </div>
                 </div>
                 <div class="horizontal layout center end-justified">
-                  <paper-button class="btn-add colored" style="margin-bottom: 8px; margin-right: 12px; font-size: 14px;" on-tap="showFavoriteInvestigationDialog">pick from favorites</paper-button>
+                  <paper-button class="btn-add colored" style="margin-bottom: 8px; margin-right: 12px; font-size: 14px;"
+                    on-tap="showFavoriteInvestigationDialog">pick from favorites</paper-button>
                 </div>
                 <template is="dom-if" if="[[!_isEmpty(addedInvestigationList.length)]]">
 
@@ -1318,7 +1333,8 @@
                             </div>
                             <div class="type caption-2 secondary italic capitalize">
                               <template is="dom-if" if="[[_isEmptyString(item.suggestedInstitutionName)]]">
-                                <paper-button style="padding: 3px !important;" on-click="_openSuggestedInstitutionDialog">add suggeted institution</paper-button>
+                                <paper-button style="padding: 3px !important;" on-click="_openSuggestedInstitutionDialog">add
+                                  suggeted institution</paper-button>
                               </template>
 
 
@@ -1416,8 +1432,9 @@
                   <!-- <iron-icon class="m-right-8" src="../../images/icons/ico_calander_time.png"></iron-icon> -->
                   <vaadin-date-picker style="padding-top: 27px;" label="[[$TRANSLATE('Next Visit Date',LANG)]]" class="flex one date-picker-custom-style"
                     value="{{nextVisit.data.nextVisitDateTimestamp}}"></vaadin-date-picker>
-                  <vaadin-combo-box class="flex one combobox-custom-style" label="Add Priority" items="{{priorityTypeList}}" allow-custom-value="true"
-                    on-keyup="comboBoxKeyUpPriorityValueChanged" value="{{priorityValue}}" class="flex one">
+                  <vaadin-combo-box class="flex one combobox-custom-style" label="Add Priority" items="{{priorityTypeList}}"
+                    allow-custom-value="true" on-keyup="comboBoxKeyUpPriorityValueChanged" value="{{priorityValue}}"
+                    class="flex one">
                   </vaadin-combo-box>
                   <div class="action-area">
                     <paper-button class="btn-add" on-tap="_addNextVisitPressed">
@@ -1512,7 +1529,8 @@
                         </tr>
                         <tr>
                           <th colspan="2">Balance After Deduction</th>
-                          <th>[[calculatedOutDoorBalanceAfterDeduction(patientServiceBalance.outdoorBalance, invoice.totalBilled)]]</th>
+                          <th>[[calculatedOutDoorBalanceAfterDeduction(patientServiceBalance.outdoorBalance,
+                            invoice.totalBilled)]]</th>
                         </tr>
                       </tfoot>
                     </table>
@@ -1603,7 +1621,8 @@
 
                               <div>
                                 <div class="type caption m-horizontal-4">
-                                  [[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
+                                  [[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]] [[$TRANSLATE('for', LANG)]]
+                                  [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
                                   [[$TRANSLATE('Days',LANG)]]
                                 </div>
 
@@ -1621,11 +1640,13 @@
                   </div>
                 </template>
 
-                <paper-tabs class="basic-tabs" selected="{{selectedMedicinePage}}" class="flex" scrollable hide-scroll-buttons="true">
+                <paper-tabs class="basic-tabs" selected="{{selectedMedicinePage}}" class="flex" scrollable
+                  hide-scroll-buttons="true">
                   <paper-tab class="p-horizontal-16">Patient's Current Medicine</paper-tab>
                   <paper-tab class="p-horizontal-16">
                     <iron-icon icon="add"></iron-icon>
-                    Add New Medicine</paper-tab>
+                    Add New Medicine
+                  </paper-tab>
                   <!-- <paper-tab class="p-horizontal-16">Pick From Favorite</paper-tab> -->
                 </paper-tabs>
 
@@ -1650,7 +1671,8 @@
                                   <div class="type body">[[item.data.brandName]]
                                     <span class="type caption bg-gray">[[item.data.manufacturer]]</span>
                                   </div>
-                                  <div class="type caption italic secondary">[[item.data.genericName]] [[item.data.form]]</div>
+                                  <div class="type caption italic secondary">[[item.data.genericName]]
+                                    [[item.data.form]]</div>
                                 </div>
 
                                 <div>
@@ -1658,7 +1680,9 @@
                                     <!-- <span>[[$TRANSLATE_NUMBER(item.data.dose, LANG)]] [[$TRANSLATE(item.data.form, LANG)]] [[$TRANSLATE('As', LANG)]]</span> -->
                                     <span hidden="[[!item.data.doseDirection]]">
                                       [[$TRANSLATE_NUMBER(item.data.doseDirection, LANG)]]</span>
-                                    [[$TRANSLATE('for',LANG)]] [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]] [[$TRANSLATE('Days',LANG)]]
+                                    [[$TRANSLATE('for',LANG)]]
+                                    [[_computeTotalDaysCount(item.data.endDateTimeStamp,item.data.startDateTimeStamp)]]
+                                    [[$TRANSLATE('Days',LANG)]]
                                   </div>
 
 
@@ -1689,8 +1713,9 @@
                       </div>
                       <div class="form-group">
                         <div>
-                          <vaadin-combo-box label="Brand Name" items="[[medicineCompositionList]]" allow-custom-value value="{{medicine.brandName}}"
-                            item-label-path="brandName" on-selected-item-changed="brandNameAutocompleteSelected" on-value-changed="brandNameCustomValueSet">
+                          <vaadin-combo-box label="Brand Name" items="[[medicineCompositionList]]" allow-custom-value
+                            value="{{medicine.brandName}}" item-label-path="brandName" on-selected-item-changed="brandNameAutocompleteSelected"
+                            on-value-changed="brandNameCustomValueSet">
                             <template>
                               <div class="layout vertical">
                                 <div>
@@ -1721,8 +1746,9 @@
                       <div class="form-group">
                         <!--Dose-->
                         <div>
-                          <vaadin-combo-box id="doseDirection" label="Dose" items="[[doseList]]" allow-custom-value="true" value="{{medicine.doseDirection}}"
-                            on-value-changed="doseDirectionValueChanged" error-message="Input Required"></vaadin-combo-box>
+                          <vaadin-combo-box id="doseDirection" label="Dose" items="[[doseList]]" allow-custom-value="true"
+                            value="{{medicine.doseDirection}}" on-value-changed="doseDirectionValueChanged"
+                            error-message="Input Required"></vaadin-combo-box>
                         </div>
                         <!--Dose-->
                       </div>
@@ -1766,7 +1792,9 @@
                         <!--End Date-->
                       </div>
 
-                      <p class="type caption secondary">Total : [[_computeTotalDaysCount(medicine.endDateTimeStamp,medicine.startDateTimeStamp)]] days x [[medicine.intakePerDay]]
+                      <p class="type caption secondary">Total :
+                        [[_computeTotalDaysCount(medicine.endDateTimeStamp,medicine.startDateTimeStamp)]] days x
+                        [[medicine.intakePerDay]]
                         = [[medicine.quantityPerPrescription]] [[medicine.doseUnit]]</p>
 
                       <br>
@@ -1791,7 +1819,8 @@
                       <!-- <paper-button class="btn-add" on-click="saveAndAddAsFavoriteMedicinePressed" raised>
                         <iron-icon class="m-right-8" src="../../images/icons/medical-assistance-symbol.png"></iron-icon>Favorite</paper-button> -->
                       <paper-button class="btn-add colored" on-click="saveMedicineButtonClicked" raised>
-                        <iron-icon class="m-right-8" icon="add"></iron-icon>Add</paper-button>
+                        <iron-icon class="m-right-8" icon="add"></iron-icon>Add
+                      </paper-button>
                     </div>
 
                   </section>
@@ -1815,7 +1844,8 @@
                                 <div class="type caption secondary">[[_returnSerial(index)]]</div>
                                 <div class="flex m-left-8">
                                   <span class="type body capitalize">{{item.data.brandName}}</span>
-                                  <span class="m-horizontal-4 type caption secondary italic lowercase">[ {{item.data.genericName}} {{item.data.strength}} ]</span>
+                                  <span class="m-horizontal-4 type caption secondary italic lowercase">[
+                                    {{item.data.genericName}} {{item.data.strength}} ]</span>
                                   <span class="m-horizontal-4 type caption bg-gray">{{item.data.manufacturer}}</span>
                                 </div>
                                 <paper-icon-button class="m-left-8" icon="add" on-tap="addFavMedicineAsNewMedicineBtnPressed"></paper-icon-button>
@@ -1832,8 +1862,10 @@
 
                                   <!--End Date-->
                                   <div>
-                                    <paper-dropdown-menu id="duplicateMedicineEndDateTimeStamp" error-message="Chose an Date" label="Ends on">
-                                      <paper-menu selected="{{endDateTimeTypeSelectedIndex}}" class="dropdown-content" on-iron-select="_endDateTimeTypeSelectedIndexChanged">
+                                    <paper-dropdown-menu id="duplicateMedicineEndDateTimeStamp" error-message="Chose an Date"
+                                      label="Ends on">
+                                      <paper-menu selected="{{endDateTimeTypeSelectedIndex}}" class="dropdown-content"
+                                        on-iron-select="_endDateTimeTypeSelectedIndexChanged">
                                         <template is="dom-repeat" items="[[endDateTimeTypeList]]">
                                           <paper-item>[[item]]</paper-item>
                                         </template>
@@ -1847,7 +1879,8 @@
                                   <template is="dom-if" if="[[_isNthWeekSelectedAsEndDate(endDateTimeTypeSelectedIndex, endDateTimeTypeList)]]">
                                     <div>
                                       <paper-dropdown-menu label="Days">
-                                        <paper-menu selected="{{endDateTimeTypeArgument2SelectedIndex}}" class="dropdown-content" on-iron-select="_endDateTimeTypeSelectedIndexChanged">
+                                        <paper-menu selected="{{endDateTimeTypeArgument2SelectedIndex}}" class="dropdown-content"
+                                          on-iron-select="_endDateTimeTypeSelectedIndexChanged">
                                           <template is="dom-repeat" items="{{endDateTimeTypeArgument2List}}">
                                             <paper-item>{{item}}</paper-item>
                                           </template>
@@ -1889,7 +1922,8 @@
 
                   <div class="card-content layout vertical types">
 
-                    <paper-radio-group id="dischargeTypeRadioGroup" selected="{{selectedDischargeType}}" class="layout vertical" on-iron-select="dischargeTypeChanged">
+                    <paper-radio-group id="dischargeTypeRadioGroup" selected="{{selectedDischargeType}}" class="layout vertical"
+                      on-iron-select="dischargeTypeChanged">
                       <template is="dom-repeat" items="[[admissionTypeList]]">
                         <paper-radio-button name="[[item]]">[[item]]</paper-radio-button>
                       </template>
@@ -1911,10 +1945,12 @@
                     <div class="type body-lead p-vertical-8 p-horizontal-16">Admission to</div>
                     <div class="card-content layout horizontal">
                       <div class="m-right-8">
-                        <vaadin-date-picker label="Admission Date" value="{{visit.dischargeNote.admissionDateTimeStamp}}" style="width: 200px;"></vaadin-date-picker>
+                        <vaadin-date-picker label="Admission Date" value="{{visit.dischargeNote.admissionDateTimeStamp}}"
+                          style="width: 200px;"></vaadin-date-picker>
                       </div>
                       <paper-dropdown-menu class="m-right-8" label="Clinic/Hospital" id="organizationDropdown">
-                        <paper-listbox class="dropdown-content" on-iron-activate="admissionToOrganizationSelected" selected="{{selectedOrganizationIndex}}">
+                        <paper-listbox class="dropdown-content" on-iron-activate="admissionToOrganizationSelected"
+                          selected="{{selectedOrganizationIndex}}">
                           <template is="dom-repeat" items="[[organizationsIBelongToList]]" as="organization">
                             <paper-item>[[organization.name]]</paper-item>
                           </template>
@@ -1926,240 +1962,242 @@
 
 
 
-                  </div>
+                </div>
               </template>
               <!-- Card :: Patient Stay - end -->
 
-              </div>
             </div>
-            <!-- visit content - end -->
+          </div>
+          <!-- visit content - end -->
         </paper-card>
         <!-- New Visit - end -->
+      </div>
+    </div>
+
+    <!-- Dialog for - Continue Current Medication - start -->
+    <paper-dialog id="dialogContinueCurrentMedication">
+      <div>
+        <vaadin-date-picker id="continueEndDate" label="[[$TRANSLATE('Ends on',LANG)]]" value="{{continueMedicineEndsOnDate}}"></vaadin-date-picker>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button on-click="addSelectedCurrentMedicine" autofocus raised>Save</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Continue Current Medication - end -->
+
+    <!-- Dialog for - Suggested Institution - start -->
+    <paper-dialog id="dialogSuggestedInstitution">
+      <div>
+        <vaadin-combo-box label="Suggested Institution" items="{{machingUserAddedInstitutionList}}" allow-custom-value="true"
+          on-keyup="comboBoxKeyUpSeggestedInstitutionNameChanged" value="{{suggestedInstitutionValue}}">
+        </vaadin-combo-box>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <!-- <paper-button on-click="_saveSuggestedInstituonName" autofocus raised>Save</paper-button> -->
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Suggested Institution - end -->
+
+    <!-- Dialog for - Investigation Member Name - start -->
+    <paper-dialog id="dialogInvestigationMemberValue">
+      <div>
+        <paper-input label="Add Test" value="{{investigationMemberValue}}"></paper-input>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button on-click="addInvestigationMember" autofocus raised>Add</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Investigation Member Name - end -->
+
+    <!-- Dialog for - Examination Member Name - start -->
+    <paper-dialog id="dialogExaminationMemberValue">
+      <div>
+        <paper-input label="Add Examination" value="{{customExaminationValue}}"></paper-input>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button on-click="addExaminationMember" autofocus raised>Add</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Examination Member Name - end -->
+
+    <!-- Dialog for - Custom Investigation - start -->
+    <paper-dialog id="dialogCustomInvestigation">
+
+      <div class="dialog-content">
+        <div class="type body-lead" style="color: green;">[[comboBoxInvestigationInputValue]]</div>
+        <paper-input label="[[$TRANSLATE('Reference Range',LANG)]]" value="{{customInvestigationObject.data.investigationList.0.referenceRange}}"></paper-input>
+
+        <div class="horizontal layout center wrap">
+          <paper-input class="flex" label="[[$TRANSLATE('Add Unit',LANG)]]" value="{{customInvestigationUnitValue}}"></paper-input>
+          <paper-icon-button icon="add" on-click="_addUnitValueForCustomInvestigation"></paper-icon-button>
         </div>
+
+        <div>
+          <template is="dom-if" if="{{!_isEmpty(customInvestigationUnitList.length)}}">
+            <strong>Added Units: </strong>
+            <div class="horizontal layout wrap">
+              <template is="dom-repeat" items="{{customInvestigationUnitList}}">
+                <div class="card-item horizontal layout center">
+                  <div class="type body flex p-horizontal-8">{{item}}</div>
+                  <div style="border-left: 1px solid #eee;" class="horizontal layout center">
+                    <paper-icon-button style="color: red;" icon="delete" on-tap="_deleteSelectedUnit"></paper-icon-button>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+          </template>
+        </div>
+
       </div>
 
-      <!-- Dialog for - Continue Current Medication - start -->
-      <paper-dialog id="dialogContinueCurrentMedication">
-        <div>
-          <vaadin-date-picker id="continueEndDate" label="[[$TRANSLATE('Ends on',LANG)]]" value="{{continueMedicineEndsOnDate}}"></vaadin-date-picker>
-        </div>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button on-click="addSelectedCurrentMedicine" autofocus raised>Save</paper-button>
-        </div>
-      </paper-dialog>
-      <!-- Dialog for - Continue Current Medication - end -->
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="btn btn-success" on-click="_saveCustomInvestigation" autofocus raised>Save</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Custom Investigation - end -->
 
-      <!-- Dialog for - Suggested Institution - start -->
-      <paper-dialog id="dialogSuggestedInstitution">
-        <div>
-          <vaadin-combo-box label="Suggested Institution" items="{{machingUserAddedInstitutionList}}" allow-custom-value="true" on-keyup="comboBoxKeyUpSeggestedInstitutionNameChanged"
-            value="{{suggestedInstitutionValue}}">
-          </vaadin-combo-box>
+
+    <!-- Dialog for - Favorite Investigation - start -->
+    <paper-dialog id="dialogFavoriteInvestigation">
+      <div class="type body-lead">Add Test</div>
+      <div class="dialog-content">
+        <template is="dom-repeat" items="[[favoriteInvestigaitonList]]">
+          <paper-checkbox checked="{{item.isSelected}}">{{item.data.name}}</paper-checkbox>
+        </template>
+      </div>
+
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="colored" on-click="addInvestigationFromFavorite" autofocus raised>Add</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Custom Investigation - end -->
+
+    <!-- Dialog - Visit Settings - start -->
+    <paper-dialog id="dialogVisitSettings">
+      <div class="dialog-content">
+        <div class="type body-lead">
+          <iron-icon icon="icons:settings" class="m-right-8 "></iron-icon>Visit Settings
         </div>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <!-- <paper-button on-click="_saveSuggestedInstituonName" autofocus raised>Save</paper-button> -->
-        </div>
-      </paper-dialog>
-      <!-- Dialog for - Suggested Institution - end -->
 
-      <!-- Dialog for - Investigation Member Name - start -->
-      <paper-dialog id="dialogInvestigationMemberValue">
-        <div>
-          <paper-input label="Add Test" value="{{investigationMemberValue}}"></paper-input>
-        </div>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button on-click="addInvestigationMember" autofocus raised>Add</paper-button>
-        </div>
-      </paper-dialog>
-      <!-- Dialog for - Investigation Member Name - end -->
 
-      <!-- Dialog for - Examination Member Name - start -->
-      <paper-dialog id="dialogExaminationMemberValue">
-        <div>
-          <paper-input label="Add Examination" value="{{customExaminationValue}}"></paper-input>
-        </div>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button on-click="addExaminationMember" autofocus raised>Add</paper-button>
-        </div>
-      </paper-dialog>
-      <!-- Dialog for - Examination Member Name - end -->
-
-      <!-- Dialog for - Custom Investigation - start -->
-      <paper-dialog id="dialogCustomInvestigation">
-
-        <div class="dialog-content">
-          <div class="type body-lead" style="color: green;">[[comboBoxInvestigationInputValue]]</div>
-          <paper-input label="[[$TRANSLATE('Reference Range',LANG)]]" value="{{customInvestigationObject.data.investigationList.0.referenceRange}}"></paper-input>
-
-          <div class="horizontal layout center wrap">
-            <paper-input class="flex" label="[[$TRANSLATE('Add Unit',LANG)]]" value="{{customInvestigationUnitValue}}"></paper-input>
-            <paper-icon-button icon="add" on-click="_addUnitValueForCustomInvestigation"></paper-icon-button>
-          </div>
-
-          <div>
-            <template is="dom-if" if="{{!_isEmpty(customInvestigationUnitList.length)}}">
-              <strong>Added Units: </strong>
-              <div class="horizontal layout wrap">
-                <template is="dom-repeat" items="{{customInvestigationUnitList}}">
-                  <div class="card-item horizontal layout center">
-                    <div class="type body flex p-horizontal-8">{{item}}</div>
-                    <div style="border-left: 1px solid #eee;" class="horizontal layout center">
-                      <paper-icon-button style="color: red;" icon="delete" on-tap="_deleteSelectedUnit"></paper-icon-button>
-                    </div>
-                  </div>
-                </template>
-              </div>
-
+        <vaadin-combo-box class="flex combobox-custom-style" label="Change Record Title" id="comboBoxRecordTitle" items="{{visitHeaderTitleList}}"
+          allow-custom-value="true" on-keyup="comboBoxKeyUpRecordTitleValueChanged" value="{{visit.recordTitle}}"></vaadin-combo-box>
+        <paper-dropdown-menu label="Institution " class="flex ">
+          <paper-listbox class="dropdown-content " selected="{{doctorInstitutionSelectedIndex}} " on-iron-select="_institutionSelectedIndexChanged ">
+            <template is="dom-repeat " items="{{doctorInstitutionList}} ">
+              <paper-item>{{item}}</paper-item>
             </template>
-          </div>
 
-        </div>
+          </paper-listbox>
+        </paper-dropdown-menu>
 
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button class="btn btn-success" on-click="_saveCustomInvestigation" autofocus raised>Save</paper-button>
-        </div>
-      </paper-dialog>
-      <!-- Dialog for - Custom Investigation - end -->
+        <paper-dropdown-menu label="Speciality " class="flex ">
+          <paper-listbox class="dropdown-content " selected="{{doctorSpecialitySelectedIndex}} " on-iron-select="_specialitySelectedIndexChanged ">
+            <template is="dom-repeat " items="{{doctorSpecialityList}} ">
+              <paper-item>{{item}}</paper-item>
+            </template>
 
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </div>
 
-      <!-- Dialog for - Favorite Investigation - start -->
-      <paper-dialog id="dialogFavoriteInvestigation">
-        <div class="type body-lead">Add Test</div>
-        <div class="dialog-content">
-          <template is="dom-repeat" items="[[favoriteInvestigaitonList]]">
-            <paper-checkbox checked="{{item.isSelected}}">{{item.data.name}}</paper-checkbox>
-          </template>
-        </div>
+      <div class="buttons ">
+        <paper-button dialog-dismiss autofocus raised on-tap="saveVisitSettings">
+          <iron-icon icon="save" class="m-right-8"></iron-icon>Save
+        </paper-button>
+      </div>
+    </paper-dialog>
 
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button class="colored" on-click="addInvestigationFromFavorite" autofocus raised>Add</paper-button>
-        </div>
-      </paper-dialog>
-      <!-- Dialog for - Custom Investigation - end -->
+    <!-- Dialog for - Referral start -->
+    <paper-dialog id="dialogReferral" style="width: 360px">
+      <h2>Add Referral</h2>
+      <div class="p-16">
+        <paper-dropdown-menu label="Select Referral Type">
+          <paper-listbox class="dropdown-content" selected="{{selectedReferralTypeIndex}}">
+            <paper-item>Doctor</paper-item>
+            <paper-item>Hospital</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
 
-      <!-- Dialog - Visit Settings - start -->
-      <paper-dialog id="dialogVisitSettings">
-        <div class="dialog-content">
-          <div class="type body-lead">
-            <iron-icon icon="icons:settings" class="m-right-8 "></iron-icon>Visit Settings</div>
-
-
-          <vaadin-combo-box class="flex combobox-custom-style" label="Change Record Title" id="comboBoxRecordTitle" items="{{visitHeaderTitleList}}"
-            allow-custom-value="true" on-keyup="comboBoxKeyUpRecordTitleValueChanged" value="{{visit.recordTitle}}"></vaadin-combo-box>
-          <paper-dropdown-menu label="Institution " class="flex ">
-            <paper-listbox class="dropdown-content " selected="{{doctorInstitutionSelectedIndex}} " on-iron-select="_institutionSelectedIndexChanged ">
-              <template is="dom-repeat " items="{{doctorInstitutionList}} ">
-                <paper-item>{{item}}</paper-item>
-              </template>
-
-            </paper-listbox>
-          </paper-dropdown-menu>
-
-          <paper-dropdown-menu label="Speciality " class="flex ">
-            <paper-listbox class="dropdown-content " selected="{{doctorSpecialitySelectedIndex}} " on-iron-select="_specialitySelectedIndexChanged ">
-              <template is="dom-repeat " items="{{doctorSpecialityList}} ">
-                <paper-item>{{item}}</paper-item>
-              </template>
-
-            </paper-listbox>
-          </paper-dropdown-menu>
-        </div>
-
-        <div class="buttons ">
-          <paper-button dialog-dismiss autofocus raised on-tap="saveVisitSettings">
-            <iron-icon icon="save" class="m-right-8"></iron-icon>Save</paper-button>
-        </div>
-      </paper-dialog>
-
-      <!-- Dialog for - Referral start -->
-      <paper-dialog id="dialogReferral" style="width: 360px">
-        <h2>Add Referral</h2>
-        <div class="p-16">
-          <paper-dropdown-menu label="Select Referral Type">
-            <paper-listbox class="dropdown-content" selected="{{selectedReferralTypeIndex}}">
-              <paper-item>Doctor</paper-item>
-              <paper-item>Hospital</paper-item>
-            </paper-listbox>
-          </paper-dropdown-menu>
-
-          <template is="dom-if" if="[[!selectedReferralTypeIndex]]">
-            <paper-input label="Referred By" value="[[user.name]]"></paper-input>
-            <div>
-              <paper-autocomplete id="doctorSearch" label="[[$TRANSLATE('Search for Doctor',LANG)]]" text="{{doctorSearchFieldInput}}"
-                text-property="name" value-property="idOnServer" remote-source="true" on-autocomplete-reset="doctorSearchCleared"
-                on-keyup="doctorSearchStartKeyPressed" error-message="Input Required" required>
-                <template autocomplete-custom-template>
-                  <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-                    <paper-item-body two-line>
-                      <div class="type bold">[[item.name]]</div>
-                      <div secondary>
-                        <span class="type secondary caption-2">([[item.phone]])</span>
-                        <span class="type secondary caption-2 m-left-8">[[item.email]]</span>
-                      </div>
-                    </paper-item-body>
-                    <paper-ripple></paper-ripple>
-                  </paper-item>
-                </template>
-              </paper-autocomplete>
-              <paper-button class="btn btn-success" on-tap="doctorSearchButtonPressed">Search</paper-button>
-            </div>
-            <paper-dropdown-menu label="Specialist Type">
-              <paper-listbox class="dropdown-content" selected="{{referredDoctorSpecialitySelectedIndex}}">
-                <template is="dom-repeat" items="[[referredDoctorSpecialityList]]">
-                  <paper-item>[[item]]</paper-item>
-                </template>
-              </paper-listbox>
-            </paper-dropdown-menu>
-          </template>
-
-
-          <template is="dom-if" if="[[selectedReferralTypeIndex]]">
-            <paper-autocomplete class="flex" id="organizationSearch" label="[[$TRANSLATE('Search for Hospital',LANG)]]" text="{{organizationSearchFieldInput}}"
-              text-property="name" value-property="idOnServer" remote-source="true" on-autocomplete-selected="organizationSelected"
-              on-autocomplete-reset="organizationSearchCleared" on-keyup="organizationSearchStartKeyPressed" error-message="Input Required"
-              required>
+        <template is="dom-if" if="[[!selectedReferralTypeIndex]]">
+          <paper-input label="Referred By" value="[[user.name]]"></paper-input>
+          <div>
+            <paper-autocomplete id="doctorSearch" label="[[$TRANSLATE('Search for Doctor',LANG)]]" text="{{doctorSearchFieldInput}}"
+              text-property="name" value-property="idOnServer" remote-source="true" on-autocomplete-reset="doctorSearchCleared"
+              on-keyup="doctorSearchStartKeyPressed" error-message="Input Required" required>
               <template autocomplete-custom-template>
                 <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-                  <div class="type bold">[[item.name]]</div>
+                  <paper-item-body two-line>
+                    <div class="type bold">[[item.name]]</div>
+                    <div secondary>
+                      <span class="type secondary caption-2">([[item.phone]])</span>
+                      <span class="type secondary caption-2 m-left-8">[[item.email]]</span>
+                    </div>
+                  </paper-item-body>
                   <paper-ripple></paper-ripple>
                 </paper-item>
               </template>
             </paper-autocomplete>
-            <paper-button class="btn btn-success" on-tap="organizationSearchButtonPressed">Search</paper-button>
-          </template>
-        </div>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button class="btn btn-primary" on-tap="addReferralButtonClicked">Add Referral</paper-button>
-        </div>
-      </paper-dialog>
-      <!-- Dialog for - Referral start -->
-
-      <!-- Dialog for Changing Visit Date start -->
-      <paper-dialog id="visitDateModal">
-        <h2>Change Visit Date</h2>
-        <div class="p-16">
-          <vaadin-date-picker label="Chose Date" required value="{{customVisitDate}}"></vaadin-date-picker>
-          <div class="m-top-8">
-            <label for="">Chose Time</label>
-            <input class="m-left-8" type="time" is="iron-input" required bind-value="{{customVisitTime}}">
+            <paper-button class="btn btn-success" on-tap="doctorSearchButtonPressed">Search</paper-button>
           </div>
-        </div>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-button class="btn btn-primary" on-tap="saveNewVisitDateButtonClicked">Save</paper-button>
-        </div>
-      </paper-dialog>
+          <paper-dropdown-menu label="Specialist Type">
+            <paper-listbox class="dropdown-content" selected="{{referredDoctorSpecialitySelectedIndex}}">
+              <template is="dom-repeat" items="[[referredDoctorSpecialityList]]">
+                <paper-item>[[item]]</paper-item>
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
+        </template>
 
-      <!-- Dialog for Changing Visit Date end -->
 
-      <!-- local DOM -->
+        <template is="dom-if" if="[[selectedReferralTypeIndex]]">
+          <paper-autocomplete class="flex" id="organizationSearch" label="[[$TRANSLATE('Search for Hospital',LANG)]]"
+            text="{{organizationSearchFieldInput}}" text-property="name" value-property="idOnServer" remote-source="true"
+            on-autocomplete-selected="organizationSelected" on-autocomplete-reset="organizationSearchCleared" on-keyup="organizationSearchStartKeyPressed"
+            error-message="Input Required" required>
+            <template autocomplete-custom-template>
+              <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+                <div class="type bold">[[item.name]]</div>
+                <paper-ripple></paper-ripple>
+              </paper-item>
+            </template>
+          </paper-autocomplete>
+          <paper-button class="btn btn-success" on-tap="organizationSearchButtonPressed">Search</paper-button>
+        </template>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="btn btn-primary" on-tap="addReferralButtonClicked">Add Referral</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- Dialog for - Referral start -->
+
+    <!-- Dialog for Changing Visit Date start -->
+    <paper-dialog id="visitDateModal">
+      <h2>Change Visit Date</h2>
+      <div class="p-16">
+        <vaadin-date-picker label="Chose Date" required value="{{customVisitDate}}"></vaadin-date-picker>
+        <div class="m-top-8">
+          <label for="">Chose Time</label>
+          <input class="m-left-8" type="time" is="iron-input" required bind-value="{{customVisitTime}}">
+        </div>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button class="btn btn-primary" on-tap="saveNewVisitDateButtonClicked">Save</paper-button>
+      </div>
+    </paper-dialog>
+
+    <!-- Dialog for Changing Visit Date end -->
+
+    <!-- local DOM -->
   </template>
   <script src="../mixin/load-price-list-mixin.coffee-compiled.js "></script>
   <script src="invoice-module.coffee-compiled.js"></script>

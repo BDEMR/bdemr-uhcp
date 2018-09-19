@@ -198,6 +198,7 @@ app.behaviors.commonComputes =
         @domHost.showModalDialog 'Could not connect to Server'
       if response.hasError
         @domHost.showWarningToast response.error.message
+        return cbfn {outdoorBalance:0, indoorBalance:0}
       else
         if response.data.length
           window.sessionStorage.setItem 'wallet-balance', response.data[0].outdoorBalance
