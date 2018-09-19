@@ -440,46 +440,57 @@
             </a>
             <a name="patient-manager" href="#/patient-manager" drawer-toggle hidden$="[[!_checkUserAccess('U00023')]]">
               <iron-icon icon="account-box"></iron-icon>
-              Patient Manager</a>
+              Patient Manager
+            </a>
 
             <a name="patient-manager" href="#/reports-manager" drawer-toggle hidden$="[[!_checkUserAccess('U00017')]]">
-              <iron-icon icon="pageview"></iron-icon> Reports Manager</a>
+              <iron-icon icon="pageview"></iron-icon> Reports Manager
+            </a>
             <!-- <template is="dom-if" if="[[!user.isUsingAsAssistant]]">
               <a name="assistant-manager" href="#/assistant-manager" drawer-toggle hidden$="[[!_checkUserAccess('D005')]]">Assistant Manager</a>
             </template> -->
             <!-- <a name="search-record" href="#/search-record" drawer-toggle hidden$="[[!_checkUserAccess('D006')]]">Search Records</a> -->
 
             <a name="organization-manager" href="#/organization-manager" drawer-toggle hidden$="[[!_checkUserAccess('U0005')]]">
-              <iron-icon icon="account-balance"></iron-icon> Organization Manager</a>
+              <iron-icon icon="account-balance"></iron-icon> Organization Manager
+            </a>
 
             <!-- <a name="pending-invoice" href="#/pending-invoice" drawer-toggle hidden$="[[!_checkUserAccess('D017')]]">
               <iron-icon icon="time"></iron-icon> Pending Invoice</a> -->
 
             <a name="invoice-report" href="#/invoice-report" drawer-toggle hidden$="[[!_checkUserAccess('U00018')]]">
-              <iron-icon icon="assessment"></iron-icon> Invoice Report</a>
+              <iron-icon icon="assessment"></iron-icon> Invoice Report
+            </a>
 
             <a name="uhcp-report" href="#/uhcp-summary-report" drawer-toggle hidden$="[[!_checkUserAccess('U0001')]]">
-              <iron-icon icon="assessment"></iron-icon> Summary Reports</a>
+              <iron-icon icon="assessment"></iron-icon> Summary Reports
+            </a>
 
             <a name="uhcp-all-visits-report" href="#/uhcp-all-visits-report" drawer-toggle hidden$="[[!_checkUserAccess('U0002')]]">
-              <iron-icon icon="assignment"></iron-icon> Visits Reports</a>
+              <iron-icon icon="assignment"></iron-icon> Visits Reports
+            </a>
 
             <a name="uhcp-factory-member-list" href="#/uhcp-factory-member-list" drawer-toggle hidden$="[[!_checkUserAccess('U0003')]]">
-              <iron-icon icon="assignment"></iron-icon> Factory Member's List</a>
+              <iron-icon icon="assignment"></iron-icon> Factory Member's List
+            </a>
 
             <a name="notification-panel" href="#/notification-panel" drawer-toggle hidden$="[[!_checkUserAccess('U00019')]]">
-              <iron-icon icon="announcement"></iron-icon> Send Notification</a>
+              <iron-icon icon="announcement"></iron-icon> Send Notification
+            </a>
             <!-- <a name="my-wallet" href="#/wallet" drawer-toggle>[[$TRANSLATE('My Wallet',LANG)]]</a> -->
             <a name="send-feedback" href="#/send-feedback" drawer-toggle hidden$="[[!_checkUserAccess('U00020')]]">
-              <iron-icon icon="thumbs-up-down"></iron-icon> Send Feedback</a>
+              <iron-icon icon="thumbs-up-down"></iron-icon> Send Feedback
+            </a>
 
             <!-- <a name="welcome-internal" href="#/welcome-internal" drawer-toggle><iron-icon icon="assessment"></iron-icon> Welcome</a> -->
 
             <a name="settings" href="#/settings" hidden$="[[!_checkUserAccess('U00021')]]" drawer-toggle>
-              <iron-icon icon="settings"></iron-icon> Settings</a>
+              <iron-icon icon="settings"></iron-icon> Settings
+            </a>
             <hr>
             <a href="" on-tap="logoutPressed">
-              <iron-icon icon="exit-to-app"></iron-icon> Logout</a>
+              <iron-icon icon="exit-to-app"></iron-icon> Logout
+            </a>
             <!-- <hr> -->
             <!-- <a name="dev-tools" href="#/dev-tools">Dev Tools</a> -->
           </iron-selector>
@@ -524,7 +535,8 @@
               </iron-collapse>
             </div>
             <div class="notification-group-area">
-              <paper-button class="notification-header-button btn btn-sm btn-default block" on-tap="togglePatientNoteNotification">Patient Note</paper-button>
+              <paper-button class="notification-header-button btn btn-sm btn-default block" on-tap="togglePatientNoteNotification">Patient
+                Note</paper-button>
               <iron-collapse id="patientNoteNotification" opened>
                 <template is="dom-if" if="[[!patientNoteNotification.length]]">
                   <paper-item class="text-sm">No New Notifications!</paper-item>
@@ -705,8 +717,8 @@
 
         <!-- Page switcher - Start -->
 
-        <iron-pages role="main" selected="[[page.name]]" attr-for-selected="name" fallback-selection="error404" on-iron-select="ironPagesSelectedEvent"
-          on-iron-deselect="ironPagesDeselectedEvent">
+        <iron-pages role="main" selected="[[page.name]]" attr-for-selected="name" fallback-selection="error404"
+          on-iron-select="ironPagesSelectedEvent" on-iron-deselect="ironPagesDeselectedEvent">
           <!-- see assets/pages.coffee -->
         </iron-pages>
         <!-- Page switcher - End -->
@@ -715,8 +727,8 @@
         <div class="ad-area-1">
 
           <div class="ad layout">
-            <div class="horizontal layout justified center">
-              <div>
+            <div class="horizontal layout justified center wrap">
+              <div class="flex">
                 <h3>Universal Health Coverage Plan (UHCP)</h3>
                 <div class="">A Project of the Diabetic Association of Bangladesh (BADAS)</div>
               </div>
