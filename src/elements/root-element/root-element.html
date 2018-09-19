@@ -438,44 +438,44 @@
             <a name="dashboard" href="#/dashboard" drawer-toggle>
               <iron-icon icon="home"></iron-icon> Dashboard
             </a>
-            <a name="patient-manager" href="#/patient-manager" drawer-toggle hidden$="[[!_checkUserAccess('D001')]]">
+            <a name="patient-manager" href="#/patient-manager" drawer-toggle hidden$="[[!_checkUserAccess('U00023')]]">
               <iron-icon icon="account-box"></iron-icon>
               Patient Manager</a>
 
-            <a name="patient-manager" href="#/reports-manager" drawer-toggle hidden$="[[!_checkUserAccess('D002')]]">
+            <a name="patient-manager" href="#/reports-manager" drawer-toggle hidden$="[[!_checkUserAccess('U00017')]]">
               <iron-icon icon="pageview"></iron-icon> Reports Manager</a>
             <!-- <template is="dom-if" if="[[!user.isUsingAsAssistant]]">
               <a name="assistant-manager" href="#/assistant-manager" drawer-toggle hidden$="[[!_checkUserAccess('D005')]]">Assistant Manager</a>
             </template> -->
             <!-- <a name="search-record" href="#/search-record" drawer-toggle hidden$="[[!_checkUserAccess('D006')]]">Search Records</a> -->
 
-            <a name="organization-manager" href="#/organization-manager" drawer-toggle hidden$="[[!_checkUserAccess('D010')]]">
+            <a name="organization-manager" href="#/organization-manager" drawer-toggle hidden$="[[!_checkUserAccess('U0005')]]">
               <iron-icon icon="account-balance"></iron-icon> Organization Manager</a>
 
             <!-- <a name="pending-invoice" href="#/pending-invoice" drawer-toggle hidden$="[[!_checkUserAccess('D017')]]">
               <iron-icon icon="time"></iron-icon> Pending Invoice</a> -->
 
-            <a name="invoice-report" href="#/invoice-report" drawer-toggle hidden$="[[!_checkUserAccess('D016')]]">
+            <a name="invoice-report" href="#/invoice-report" drawer-toggle hidden$="[[!_checkUserAccess('U00018')]]">
               <iron-icon icon="assessment"></iron-icon> Invoice Report</a>
 
-            <a name="uhcp-report" href="#/uhcp-summary-report" drawer-toggle hidden$="[[!_checkUserAccess('R001')]]">
+            <a name="uhcp-report" href="#/uhcp-summary-report" drawer-toggle hidden$="[[!_checkUserAccess('U0001')]]">
               <iron-icon icon="assessment"></iron-icon> Summary Reports</a>
 
-            <a name="uhcp-all-visits-report" href="#/uhcp-all-visits-report" drawer-toggle hidden$="[[!_checkUserAccess('R002')]]">
+            <a name="uhcp-all-visits-report" href="#/uhcp-all-visits-report" drawer-toggle hidden$="[[!_checkUserAccess('U0002')]]">
               <iron-icon icon="assignment"></iron-icon> Visits Reports</a>
 
-            <a name="uhcp-factory-member-list" href="#/uhcp-factory-member-list" drawer-toggle hidden$="[[!_checkUserAccess('R003')]]">
+            <a name="uhcp-factory-member-list" href="#/uhcp-factory-member-list" drawer-toggle hidden$="[[!_checkUserAccess('U0003')]]">
               <iron-icon icon="assignment"></iron-icon> Factory Member's List</a>
 
-            <a name="notification-panel" href="#/notification-panel" drawer-toggle hidden$="[[!_checkUserAccess('D011')]]">
+            <a name="notification-panel" href="#/notification-panel" drawer-toggle hidden$="[[!_checkUserAccess('U00019')]]">
               <iron-icon icon="announcement"></iron-icon> Send Notification</a>
             <!-- <a name="my-wallet" href="#/wallet" drawer-toggle>[[$TRANSLATE('My Wallet',LANG)]]</a> -->
-            <a name="send-feedback" href="#/send-feedback" drawer-toggle hidden$="[[!_checkUserAccess('D012')]]">
+            <a name="send-feedback" href="#/send-feedback" drawer-toggle hidden$="[[!_checkUserAccess('U00020')]]">
               <iron-icon icon="thumbs-up-down"></iron-icon> Send Feedback</a>
 
             <!-- <a name="welcome-internal" href="#/welcome-internal" drawer-toggle><iron-icon icon="assessment"></iron-icon> Welcome</a> -->
 
-            <a name="settings" href="#/settings" drawer-toggle>
+            <a name="settings" href="#/settings" hidden$="[[!_checkUserAccess('U00021')]]" drawer-toggle>
               <iron-icon icon="settings"></iron-icon> Settings</a>
             <hr>
             <a href="" on-tap="logoutPressed">
