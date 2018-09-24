@@ -76,6 +76,11 @@ Polymer {
       type: Array
       value: -> []
       notify: true
+    
+    ROLE_EDIT_MODE:
+      type: Boolean
+      value: false
+      notify: true
 
 
     ## Role Manager - end
@@ -585,9 +590,9 @@ Polymer {
   showAddRoleDialog: ()->
     @_getPrivilegedFeatureList =>
       @_makePreListedRoles()
-
-      @$$('#dialogAddRole').toggle()
       @_makeNewRole()
+      @$$('#dialogAddRole').toggle()
+      
 
   filterPrivilegeList: ()->
     selectedItemSerialList = []
@@ -605,16 +610,42 @@ Polymer {
       console.log 'ROLE', @role
       @saveRole @role
     @domHost.showToast 'Type Role Title!'
+  
+  getSelectedRolePrevilizedList: (role, cbfn)->
+    serialMap = role.privilegeList.map (item) => (item.serial)
+
+    modifiedPrivilegeList = []
+    for item, index in @privilegeList
+      if item.serial in serialMap
+        item.isSelected = true
+      modifiedPrivilegeList.push item
+    
+    @privilegeList = modifiedPrivilegeList
+    
+    @set 'role.title', role.title
+    @set 'role.type',  role.type
+
+    cbfn()
 
   showEditRoleDialog: (e)->
     index = e.model.index
-    @role = @roleList[index]
-    @$$('#dialogEditRole').toggle()
+    role = @roleList[index]
+    @_getPrivilegedFeatureList =>
+      @_makePreListedRoles()
+      @_makeNewRole()
+      @getSelectedRolePrevilizedList role, =>
+        @$$('#dialogAddRole').toggle()
+        @set 'ROLE_EDIT_MODE', true
 
   editRole: (e)->
     unless @role.title is ''
       @role.type =  @role.title
+      @role.privilegeList = @filterPrivilegeList()
+      @role.serial = @generateSerialForOrgRole()
+
       @updateRole @role
+    @domHost.showToast 'Type Role Title!'
+
 
   updateRole: (role)->
     data = { 
@@ -631,7 +662,8 @@ Polymer {
         params = @domHost.getPageParams()
         @_makeNewRole()
         @_loadOrganization params['organization']
-        @$$('#dialogEditRole').close()
+        @set 'ROLE_EDIT_MODE', false
+        @$$('#dialogAddRole').close()
 
 
   showDialogForSetRole: (e)->

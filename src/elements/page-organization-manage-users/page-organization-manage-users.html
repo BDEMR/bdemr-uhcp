@@ -336,7 +336,7 @@
                       <span class="type caption secondary">{{item.name}}, </span>
                     </template>
                   </div>
-                  <!-- <paper-icon-button icon="create" on-tap="showEditRoleDialog"></paper-icon-button> -->
+                  <paper-icon-button icon="create" on-tap="showEditRoleDialog"></paper-icon-button>
                   <paper-icon-button style="color: red;" icon="delete" on-tap="removeRole"></paper-icon-button>
                 </paper-item>
 
@@ -390,10 +390,11 @@
             </template>
           </paper-card>
 
-          <!-- Dialog for - Add Role - start -->
+          <!-- Dialog for - Add/Update Role - start -->
           <paper-dialog id="dialogAddRole">
             <div class="type body-lead" style="color: #5c4575;">
               <iron-icon icon="icons:check-circle" class="m-right-8 "></iron-icon>Add Role
+              <iron-icon icon="icons:check-circle" class="m-right-8 "></iron-icon>Add/Edit Role
             </div>
 
             <div>
@@ -425,33 +426,15 @@
 
             <div class="buttons m-top-16">
               <paper-button dialog-dismiss>Cancel</paper-button>
-              <paper-button class="colored" on-tap="addRole" autofocus raised>Add</paper-button>
-            </div>
-          </paper-dialog>
-          <!-- Dialog for - Add Role - end -->
-
-          <!-- Dialog for - Edit Role - start -->
-          <paper-dialog id="dialogEditRole">
-            <div class="type body-lead" style="color: #5c4575;">
-              <iron-icon icon="icons:check-circle" class="m-right-8 "></iron-icon>Edit Role
-            </div>
-
-            <div>
-              <paper-input label="Role Title" value={{role.title}}></paper-input>
-            </div>
-
-            <div class="type body" style="color: #5c4575;">Selected Privilege:</div>
-            <div class="horizontal layout wrap">
-              <template is="dom-repeat" items="[[role.privilegeList]]">
-                <paper-checkbox class="m-horizontal-4" checked="{{item.isSelected}}">{{item.name}}</paper-checkbox>
+              <template is="dom-if" if="[[!ROLE_EDIT_MODE]]">
+                <paper-button class="colored" on-tap="addRole" autofocus raised>Add</paper-button>
+              </template>
+              <template is="dom-if" if="[[ROLE_EDIT_MODE]]">
+                <paper-button class="colored" on-click="editRole" autofocus raised>Edit</paper-button>
               </template>
             </div>
-            <div class="buttons m-top-16">
-              <paper-button dialog-dismiss>Cancel</paper-button>
-              <paper-button class="colored" on-click="editRole" autofocus raised>Edit</paper-button>
-            </div>
           </paper-dialog>
-          <!-- Dialog for - Edit Role - end -->
+          <!-- Dialog for - Add/Update Role - end -->
 
           <!-- Dialog for - Set Role For User- start -->
           <paper-dialog id="dialogSetRoleForUser">
