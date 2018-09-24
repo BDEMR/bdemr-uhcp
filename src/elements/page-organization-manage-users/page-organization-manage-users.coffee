@@ -588,6 +588,7 @@ Polymer {
     @set 'role.title', role.title
 
   showAddRoleDialog: ()->
+    @set 'ROLE_EDIT_MODE', false
     @_getPrivilegedFeatureList =>
       @_makePreListedRoles()
       @_makeNewRole()
