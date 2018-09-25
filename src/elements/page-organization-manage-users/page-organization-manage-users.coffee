@@ -604,16 +604,18 @@ Polymer {
     return selectedItemSerialList
 
   addRole: ()->
-    unless @role.title is ''
+    if (@role.title is null) or (@role.title is '')
+      @domHost.showToast 'Type Role Title!'
+      return
+    else
       @role.type =  @role.title
       @role.privilegeList = @filterPrivilegeList()
       @role.serial = @generateSerialForOrgRole()
       console.log 'ROLE', @role
       @saveRole @role
-    @domHost.showToast 'Type Role Title!'
   
-  getSelectedRolePrevilizedList: (role, cbfn)->
-    serialMap = role.privilegeList.map (item) => (item.serial)
+  getSelectedRolePrevilizedList: (cbfn)->
+    serialMap = @role.privilegeList.map (item) => (item.serial)
 
     modifiedPrivilegeList = []
     for item, index in @privilegeList
@@ -623,29 +625,26 @@ Polymer {
     
     @privilegeList = modifiedPrivilegeList
     
-    @set 'role.title', role.title
-    @set 'role.type',  role.type
-
     cbfn()
 
   showEditRoleDialog: (e)->
     index = e.model.index
-    role = @roleList[index]
+    @role = @roleList[index]
+    console.log @role
     @_getPrivilegedFeatureList =>
       @_makePreListedRoles()
-      @_makeNewRole()
-      @getSelectedRolePrevilizedList role, =>
+      @getSelectedRolePrevilizedList =>
         @$$('#dialogAddRole').toggle()
         @set 'ROLE_EDIT_MODE', true
 
   editRole: (e)->
-    unless @role.title is ''
-      @role.type =  @role.title
-      @role.privilegeList = @filterPrivilegeList()
-      @role.serial = @generateSerialForOrgRole()
-
-      @updateRole @role
-    @domHost.showToast 'Type Role Title!'
+    if (@role.title is null) or (@role.title is '')
+      @domHost.showToast 'Type Role Title!'
+      return
+    
+    @role.privilegeList = @filterPrivilegeList()
+    @updateRole @role
+    
 
 
   updateRole: (role)->
