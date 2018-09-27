@@ -268,14 +268,14 @@ Polymer {
         wasPageFound = true
         break
 
+    console.log href
     if wasPageFound
       if possiblePage.requireAuthentication
         if @isUserLoggedIn()
           if @_checkUserAccess possiblePage.accessId
             @page = possiblePage
           else
-            @page = app.pages.error404
-
+            @page = app.pages.accessDenied
         else
           if @skipWelcomePage()
             @navigateToPage '#/login'
@@ -288,7 +288,7 @@ Polymer {
 
   _preloadOtherPages: ->
     # @debug '_preloadOtherPages'
-    fullPageList = [].concat app.pages.pageList, [ app.pages.error404 ]
+    fullPageList = [].concat app.pages.pageList, [ app.pages.error404, app.pages.accessDenied ]
 
     for page in fullPageList
       do (page)=>
@@ -318,7 +318,7 @@ Polymer {
   _fillIronPagesFromPageList: ->
     ironPages = Polymer.dom(@root).querySelector 'iron-pages'
 
-    fullPageList = [].concat app.pages.pageList, app.pages.error404
+    fullPageList = [].concat app.pages.pageList, app.pages.error404, app.pages.accessDenied
 
     for page in fullPageList
       pageElement = document.createElement page.element
