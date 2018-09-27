@@ -402,7 +402,7 @@ app.pages.pageList = [
     showPatientsDetails: false
     showToolbar: true
     hideHeaderTitle: false
-    accessId: 'U0004'
+    accessId: 'U0003'
   }
 
   {
