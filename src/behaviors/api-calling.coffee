@@ -45,8 +45,8 @@ app.behaviors.apiCalling =
           return
         else
           if not err and response.hasError and response.error.name is "API_KEY_AUTH_FAILED"
-            # errorMessage = 'You have been automatically logged out. Taking you to the login page.'
-            # @showMessageLocal errorMessage
+            errorMessage = 'You have been automatically logged out. Taking you to the login page.'
+            @showMessageLocal errorMessage
             context = if @logoutPressed then @ else @domHost
             try
               unless context.routeData and (context.routeData.page.indexOf("login") > -1)

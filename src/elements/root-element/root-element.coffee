@@ -441,16 +441,16 @@ Polymer {
 
   refreshButtonPressed: (e)->
     @reloadPage()
-
+  
   logoutPressed: (e)->
     user = (app.db.find 'user')[0]
-    if navigator.onLine
-      @callApi '/bdemr-app-logout', {apiKey: user.apiKey}, (err, response)=> {}
+    window.localStorage.setItem('lastSyncedDatetimeStamp', 0);
+    if navigator.onLine and e
+      @callApi '/bdemr-app-logout', {apiKey: user.apiKey}, (err, response)=> null
+      @$$('app-drawer').toggle()
     user.apiKey = ""
     app.db.update 'user', user._id, user
-    @$$('app-drawer').toggle()
     @navigateToPage '#/login'
-    @reloadPage()
     
 
   # === NOTE - Common Dialog Boxes ===
