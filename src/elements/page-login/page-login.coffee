@@ -32,6 +32,9 @@ Polymer {
       type: Boolean
       notify: true
       value: true
+    loading:
+      type: Boolean
+      value: false
 
 
   navigatedIn: ->

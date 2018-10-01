@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
 <link rel="import" href="../../bower-assets/paper-input/paper-input.html">
 <link rel="import" href="../../bower-assets/paper-checkbox/paper-checkbox.html">
-
+<link rel="import" href="../../bower-assets/paper-spinner/paper-spinner.html">
 
 <!-- style -->
 <link rel="import" href="../../styles/common-style.html">
@@ -97,7 +97,8 @@
                   <br />
                   <br />
                   <div class="horizontal layout center wrap">
-                    <paper-button class="login-button" on-tap="loginAsSomeoneElsePressed" raised>Login on behalf of [[ofDoctor.name]]</paper-button>
+                    <paper-button class="login-button" on-tap="loginAsSomeoneElsePressed" raised>Login on behalf of
+                      [[ofDoctor.name]]</paper-button>
                   </div>
                 </template>
 
@@ -115,30 +116,40 @@
 
               <div class="card-content vertical layout">
 
-                <div class="horizontal layout center wrap">
-                  <paper-input class="flex" label="Email or phone number" value="{{loginFormData.emailOrPhone}}" placeholder="john@example.com"
-                    always-float-label></paper-input>
-                </div>
+                <template is='dom-if' if='[[loading]]'>
+                  <div class="layout vertical center">
+                    <div class="layout horizontal center" style="height: 202px;">
+                      <paper-spinner active></paper-spinner>
+                    </div>
+                  </div>
+                </template>
 
-                <div class="horizontal layout center wrap">
-                  <paper-input class="flex" label="Password" type="password" value="{{loginFormData.password}}" placeholder="XXXXXXXX" on-keyup="enterKeyPressed"
-                    always-float-label></paper-input>
-                </div>
+                <template is='dom-if' if='[[!loading]]'>
 
-                <div class="horizontal layout center wrap row-3">
-                  <paper-checkbox checked="{{shouldRememberUser}}">Remember Me</paper-checkbox>
-                  <div class="flex"></div>
-                  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys>
-                  <paper-button class="login-button" on-tap="loginButtonPressed" raised>Login</paper-button>
+                  <div class="horizontal layout center wrap">
+                    <paper-input class="flex" label="Email or phone number" value="{{loginFormData.emailOrPhone}}"
+                      placeholder="john@example.com" always-float-label></paper-input>
+                  </div>
 
+                  <div class="horizontal layout center wrap">
+                    <paper-input class="flex" label="Password" type="password" value="{{loginFormData.password}}"
+                      placeholder="XXXXXXXX" on-keyup="enterKeyPressed" always-float-label></paper-input>
+                  </div>
 
-                </div>
+                  <div class="horizontal layout center wrap row-3">
+                    <paper-checkbox checked="{{shouldRememberUser}}">Remember Me</paper-checkbox>
+                    <div class="flex"></div>
+                    <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys>
+                    <paper-button class="login-button" on-tap="loginButtonPressed" raised>Login</paper-button>
+                  </div>
 
-                <div class="horizontal layout center wrap row-4">
-                  <a href="https://my.bdemr.com/#!/login" target="_blank">Forgot Password?</a>
-                  <div class="flex"></div>
-                  <a href="https://bdemr.com/signup" target="_blank">Signup</a>
-                </div>
+                  <div class="horizontal layout center wrap row-4">
+                    <a href="https://my.bdemr.com/#!/login" target="_blank">Forgot Password?</a>
+                    <div class="flex"></div>
+                    <a href="https://bdemr.com/signup" target="_blank">Signup</a>
+                  </div>
+
+                </template>
 
               </div>
 
