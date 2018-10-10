@@ -230,6 +230,38 @@ Polymer {
         @set 'reportResults', response.data
         console.log @reportResults
         @loading = false
+
+  
+  _prepareJsonData:(rawReport)->
+    return rawReport.map (item) =>
+      return {
+        name: item.serviceName
+        count: item.serviceCount
+        amount: item.serviceAmount
+      }
+    
+  
+  downloadCsv:(csv)->
+    exportedFilenmae = "uhcp-summary-report-export-#{Date.now()}.csv"
+    blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    link = document.createElement("a")
+    url = URL.createObjectURL(blob)
+    link.setAttribute("href", url)
+    link.setAttribute("download", exportedFilenmae);
+    link.style.visibility = 'hidden'
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+
+  exportButtonClicked:->
+    return this.domHost.showModalDialog('Search for a Report First') unless this.reportResults.length
+    preppedData = this._prepareJsonData(this.reportResults);
+    csvString = Papa.unparse(preppedData);
+    this.downloadCsv(csvString)
+  
+  
   
 
 }
