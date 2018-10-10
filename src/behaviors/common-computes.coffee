@@ -19,6 +19,13 @@ app.behaviors.commonComputes =
     return '' unless date
     lib.datetime.mkDate date
 
+  $formatCurrency: (num = 0)->
+    return 0 if (isNaN(parseFloat num))
+    return num.toLocaleString 'en-IN', { style: 'currency', currency: 'BDT', currencyDisplay: 'symbol', maximumSignificantDigits: 21}
+
+  $formatNumber: (num = 0)->
+    return 0 if (isNaN(parseFloat num))
+    return num.toLocaleString 'en-IN'
 
   $compareFn: (left, op, right)->
     if (op=='<')

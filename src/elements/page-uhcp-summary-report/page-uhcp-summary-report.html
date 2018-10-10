@@ -25,6 +25,7 @@
 <link rel="import" href="../../behaviors/translating.html">
 <link rel="import" href="../../behaviors/page-like.html">
 <link rel="import" href="../../behaviors/api-calling.html">
+<link rel="import" href="../../behaviors/common-computes.html">
 
 <!-- element -->
 <dom-module id="page-uhcp-summary-report">
@@ -34,7 +35,7 @@
 
     <style is="custom-style" include="common-style">
       .limiting-container {
-        width: 90%;
+        width: 95%;
         margin: 0 auto;
         margin-top: 10px;
       }
@@ -115,14 +116,15 @@
 
       <div class="limiting-container vertical layout">
 
-        <paper-card heading="Summary Reports">
+        <paper-card>
 
           <div class="card-content">
 
             <div class="search layout horizontal end wrap">
 
-              <vaadin-combo-box id="summaryOrganizationSelector" class="organization-dropdown m-right-8" label="Consultation Site" items="[[childOrganizationList]]"
-                on-value-changed="organizationSelected" loading="[[loading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
+              <vaadin-combo-box id="summaryOrganizationSelector" class="organization-dropdown m-right-8" label="Consultation Site"
+                items="[[childOrganizationList]]" on-value-changed="organizationSelected" loading="[[loading]]"
+                disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
               <paper-dropdown-menu label="Report Type" class="m-right-8">
                 <paper-listbox class="dropdown-content" on-iron-activate="categorySelected">
@@ -170,11 +172,11 @@
 
               <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
 
-              <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
+              <div class="flex"></div>
 
-            </div>
-            <div class="layout horizontal">
-              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-button class="btn btn-primary btn-large" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-icon-button icon="clear" on-tap="resetButtonClicked">Reset</paper-icon-button>
+
             </div>
 
             <div class="results">
@@ -196,7 +198,7 @@
                     <span>Number of Service</span>
                   </template>
                   <template>
-                    <span>[[item.serviceCount]]</span>
+                    <span>[[$formatNumber(item.serviceCount)]]</span>
                   </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="150px" flex-grow="0">
@@ -204,10 +206,10 @@
                     <span>Service Amount</span>
                   </template>
                   <template>
-                    <span>[[item.serviceAmount]]</span>
+                    <span>[[$formatCurrency(item.serviceAmount)]]</span>
                   </template>
                   <template class="footer">
-                    <span>[[totalServiceAmount]]</span>
+                    <span>[[$formatCurrency(totalServiceAmount)]]</span>
                   </template>
                 </vaadin-grid-column>
 

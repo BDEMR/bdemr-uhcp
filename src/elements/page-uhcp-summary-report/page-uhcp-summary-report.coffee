@@ -8,6 +8,7 @@ Polymer {
     app.behaviors.translating
     app.behaviors.pageLike
     app.behaviors.apiCalling
+    app.behaviors.commonComputes
   ]
 
   properties:
@@ -180,10 +181,10 @@ Polymer {
     @dateCreatedTo = 0
 
   getTotalServiceAmount: (reports)->
-    totalCost = reports.reduce (total, item)=> 
+    return reports.reduce (total, item)=> 
       return total += (parseFloat item.serviceAmount)
     , 0
-    return totalCost.toFixed(2)
+    
 
   _getTotalPatientCountByReport: (reports)->
     return reports.reduce((list, item) => 

@@ -268,7 +268,6 @@ Polymer {
         wasPageFound = true
         break
 
-    console.log href
     if wasPageFound
       if possiblePage.requireAuthentication
         if @isUserLoggedIn()
