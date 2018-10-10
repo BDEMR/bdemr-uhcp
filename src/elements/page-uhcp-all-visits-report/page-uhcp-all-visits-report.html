@@ -32,7 +32,7 @@
     <!-- style -->
     <style is="custom-style" include="common-style">
       .limiting-container {
-        width: 90%;
+        width: 95%;
         margin: 0 auto;
         margin-top: 10px;
       }
@@ -57,9 +57,7 @@
         margin-left: 0;
       }
 
-      .results {
-        margin-top: 20px;
-      }
+      
 
       .results span {
         color: #333;
@@ -88,16 +86,17 @@
 
     <div class="master-container">
 
-      <div class="limiting-container vertical layout">
+      <div class="limiting-container">
 
-        <paper-card heading="Reports">
+        <paper-card>
 
           <div class="card-content">
 
             <div class="search layout horizontal justified end">
 
-              <vaadin-combo-box id="organizationSelector" class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]"
-                on-value-changed="organizationSelected" loading="[[organizationLoading]]" disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
+              <vaadin-combo-box id="organizationSelector" class="organization-dropdown m-right-8" label="Organization"
+                items="[[childOrganizationList]]" on-value-changed="organizationSelected" loading="[[organizationLoading]]"
+                disabled="[[!childOrganizationList.length]]"></vaadin-combo-box>
 
               <paper-dropdown-menu label="Filter by Gender" class="m-right-8">
                 <paper-listbox class="dropdown-content" on-iron-activate="genderSelected" selected="0">
@@ -129,9 +128,11 @@
 
             </div>
             <div class="layout horizontal">
-              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-button class="btn btn-primary btn-large" style="margin:0" on-tap="searchButtonClicked">Search</paper-button>
               <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
             </div>
+
+            <br>
 
             <div class="layout horizontal">
               <h4 class="m-right-16">Total Visit: [[reportResults.length]]</h4>
@@ -139,7 +140,6 @@
             </div>
 
             <div class="results">
-
               <paper-progress indeterminate hidden="[[!loading]]"></paper-progress>
               <vaadin-grid items="[[reportResults]]">
                 <vaadin-grid-column frozen width="50px" flex-grow="0">

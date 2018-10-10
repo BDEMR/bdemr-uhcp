@@ -189,11 +189,11 @@ Polymer({
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0
+    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * (invoiceItem.qty ? parseInt(invoiceItem.qty) : 1)) : 0), 0) : 0;
   },
 
   $getCategoryCostByDecimal(category, invoice) {
-    let cost = invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0;
+    let cost = invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * (invoiceItem.qty ? parseInt(invoiceItem.qty) : 1)) : 0), 0) : 0;
     return cost.toFixed(2);
   },
 
