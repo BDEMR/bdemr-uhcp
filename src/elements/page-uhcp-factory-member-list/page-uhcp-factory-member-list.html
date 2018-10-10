@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower-assets/polymer/polymer.html">
 <!-- paper-* -->
 <link rel="import" href="../../bower-assets/paper-button/paper-button.html">
+<link rel="import" href="../../bower-assets/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower-assets/paper-card/paper-card.html">
 <link rel="import" href="../../bower-assets/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower-assets/paper-listbox/paper-listbox.html">
@@ -30,7 +31,7 @@
     <!-- style -->
     <style is="custom-style" include="common-style">
       .limiting-container {
-        width: 90%;
+        width: 95%;
         margin: 0 auto;
         margin-top: 10px;
       }
@@ -88,19 +89,20 @@
 
       <div class="limiting-container vertical layout">
 
-        <paper-card heading="Member's List">
+        <paper-card>
 
           <div class="card-content">
 
             <div class="search layout horizontal justified end">
 
-              <vaadin-combo-box id="factorySelector" class="organization-dropdown m-right-8" label="Factory" items="[[factoryList]]" on-value-changed="factorySelected"></vaadin-combo-box>
+              <vaadin-combo-box id="factorySelector" class="organization-dropdown m-right-8" label="Factory" items="[[factoryList]]"
+                on-value-changed="factorySelected" no-label-float></vaadin-combo-box>
 
-            </div>
+              <div class="flex"></div>
 
-            <div class="layout horizontal">
-              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
-              <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
+              <paper-button class="btn btn-primary btn-large" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-icon-button icon="clear" on-tap="resetButtonClicked">Reset</paper-icon-button>
+
             </div>
 
             <div class="layout horizontal">
