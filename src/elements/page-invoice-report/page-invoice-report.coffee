@@ -233,6 +233,7 @@ Polymer {
     else
       @set 'matchingInvoiceReportList', @invoiceReportList
         
+  resetButtonClicked: -> @domHost.reloadPage()
 
   navigatedOut: ->
     @employeeIdOrPhone = ''

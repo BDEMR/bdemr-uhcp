@@ -38,21 +38,7 @@
     <style is="custom-style" include="common-style">
       .limiting-container {
         margin-top: 10px;
-        width: 90%;
-      }
-
-
-      .card-custom-header {
-        padding: 15px;
-        border-bottom: 1px solid var(--paper-grey-200);
-        background-color: var(--paper-grey-50);
-      }
-
-      .card-custom-header .title {
-        font-size: 20px;
-        font-weight: 500;
-        line-height: 28px;
-        color: var(--brand-primary-color);
+        width: 95%;
       }
 
       .header {
@@ -91,7 +77,7 @@
       <div class="limiting-container">
 
         <!-- Card - Search - start -->
-        <paper-card heading="Invoice Report">
+        <paper-card>
 
           <paper-progress indeterminate hidden$="[[!getBoolean(loadingCounter)]]"></paper-progress>
 
@@ -101,8 +87,9 @@
               <!-- <paper-autocomplete id="invoiceSearchInput" label="Search By Investigation" source="[[investigationNameSourceDataList]]"
                   text="{{investigationQuery}}" on-autocomplete-reset-blur="resetInvestigationSearchPressed">
                 </paper-autocomplete> -->
-              <vaadin-combo-box id="invoiceOrganizationSelector" class="organization-dropdown m-right-8" label="Organization" items="[[childOrganizationList]]"
-                on-value-changed="organizationSelected" loading="[[loading]]" disabled="[[!childOrganizationList.length]]">
+              <vaadin-combo-box id="invoiceOrganizationSelector" class="organization-dropdown m-right-8" label="Organization"
+                items="[[childOrganizationList]]" on-value-changed="organizationSelected" loading="[[loading]]"
+                disabled="[[!childOrganizationList.length]]">
               </vaadin-combo-box>
 
               <!-- <paper-dropdown-menu label="Filter by Category" class="m-right-8">
@@ -118,11 +105,13 @@
 
               <custom-vital-search class="" on-date-select="filterByDateClicked" on-clear="filterByDateClearButtonClicked"></custom-vital-search>
 
-            </div>
-            <div class="layout horizontal">
+              <div class="flex"></div>
+
               <paper-button class="btn btn-primary btn-large" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
-              <paper-button raised on-tap="resetButtonClicked">Reset</paper-button>
+              <paper-icon-button icon="clear" on-tap="resetButtonClicked">Reset</paper-icon-button>
+
             </div>
+
           </div>
           <br>
 
@@ -141,7 +130,7 @@
                 <strong class="label">[[item.visitSerial]]</strong>
               </template>
             </vaadin-grid-column>
-            <vaadin-grid-column>
+            <vaadin-grid-column resizable>
               <template class="header">
                 <vaadin-grid-sorter path="createdDatetimeStamp" direction="desc">Date</vaadin-grid-sorter>
               </template>
@@ -149,7 +138,7 @@
                 <div>[[$formatDateTime(item.createdDatetimeStamp)]]</div>
               </template>
             </vaadin-grid-column>
-            <vaadin-grid-column>
+            <vaadin-grid-column resizable>
               <template class="header">
                 <span>Patient Name</span>
               </template>
@@ -157,7 +146,7 @@
                 <div>[[item.patientInfo.name]]</div>
               </template>
             </vaadin-grid-column>
-            <vaadin-grid-column>
+            <vaadin-grid-column resizable>
               <template class="header">
                 <span>Employee Id</span>
               </template>
