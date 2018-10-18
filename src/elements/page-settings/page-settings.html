@@ -190,13 +190,14 @@
 
           <paper-card heading="Change Password" class="info-card">
             <div class="card-content">
-              <paper-input required type="password" label="Current Password" value="{{changePassword.oldPassword}}" error-message="{{validationError.oldPassword.0}}"></paper-input>
+              <paper-input required type="password" label="Current Password" value="{{changePassword.oldPassword}}"
+                error-message="{{validationError.oldPassword.0}}"></paper-input>
 
 
               <paper-input type="password" label="New Password" value="{{changePassword.newPassword}}" error-message="{{validationError.newPassword.0}}"
                 required></paper-input>
-              <paper-input type="password" label="Retype Password" value="{{changePassword.newRetypePassword}}" error-message="{{validationError.newRetypePassword.0}}"
-                required></paper-input>
+              <paper-input type="password" label="Retype Password" value="{{changePassword.newRetypePassword}}"
+                error-message="{{validationError.newRetypePassword.0}}" required></paper-input>
             </div>
             <div class="card-actions">
               <paper-button class="btn colored" raised on-tap="changePasswordBtnPressed">Change password</paper-button>
@@ -242,7 +243,7 @@
                 <template is="dom-if" if="[[settings.printDecoration.logoDataUri]]">
                   <img class="logo-preview" src$="[[settings.printDecoration.logoDataUri]]" />
                 </template>
-                <paper-input class="logo-input flex" type="file" accept="image/*" on-change="fileInputChanged"></paper-input>
+                <paper-input class="logo-input flex" type="file" accept="image/*" on-change="logoDataUriChanged"></paper-input>
               </div>
 
             </div>
@@ -266,7 +267,7 @@
                 <template is="dom-if" if="[[settings.printDecoration.signatureDataUri]]">
                   <img class="logo-preview" src$="[[settings.printDecoration.signatureDataUri]]" />
                 </template>
-                <paper-input class="logo-input flex" type="file" accept="image/*" on-change="fileInputChanged2"></paper-input>
+                <paper-input class="logo-input flex" type="file" accept="image/*" on-change="signatureDataUriChanged"></paper-input>
               </div>
 
             </div>
@@ -276,8 +277,10 @@
           <paper-card class="info-card" heading="NSQIP and Billing">
             <div class="card-content">
 
-              <paper-input placeholder="john@example.com" always-float-label label="NSQIP Recipient's Email Address" value="{{settings.nsqipTargetEmailAddress}}"></paper-input>
-              <paper-input placeholder="john@example.com" always-float-label label="Billing Recipient's Email Address" value="{{settings.billingTargetEmailAddress}}"></paper-input>
+              <paper-input placeholder="john@example.com" always-float-label label="NSQIP Recipient's Email Address"
+                value="{{settings.nsqipTargetEmailAddress}}"></paper-input>
+              <paper-input placeholder="john@example.com" always-float-label label="Billing Recipient's Email Address"
+                value="{{settings.billingTargetEmailAddress}}"></paper-input>
 
             </div>
           </paper-card>

@@ -175,30 +175,24 @@ Polymer {
   navigatedOut: ->
     null
 
-  fileInputChanged: (e)->
+  getUploadedFileDataUri: (file, cbfn)->
     reader = new FileReader
-    file = e.target.files[0]
-
     if file.size > @maximumLogoImageSizeAllowedInBytes
       @domHost.showModalDialog 'Please provide a file less than 1mb in size.'
       return
-
     reader.readAsDataURL file
     reader.onload = =>
       dataUri = reader.result
+      cbfn(dataUri)
+  
+  logoDataUriChanged: (e)->
+    file = e.target.files[0]
+    @getUploadedFileDataUri file, (dataUri)=>
       @set 'settings.printDecoration.logoDataUri', dataUri
 
-  fileInputChanged2: (e)->
-    reader = new FileReader
+  signatureDataUriChanged: (e)->
     file = e.target.files[0]
-
-    if file.size > @maximumLogoImageSizeAllowedInBytes
-      @domHost.showModalDialog 'Please provide a file less than 1mb in size.'
-      return
-
-    reader.readAsDataURL file
-    reader.onload = =>
-      dataUri = reader.result
+    @getUploadedFileDataUri file, (dataUri)=>
       @set 'settings.printDecoration.signatureDataUri', dataUri
 
   partner1LogoFileInputChanged: (e)->
@@ -227,7 +221,7 @@ Polymer {
     now = lib.datetime.now()
     data = {
       from: 'from@local.com'
-      to: 'tareqf1@gmail.com'
+      to: 'tareq@bdemr.com'
       subject: "Local Data on #{now}"
       body: JSON.stringify localStorage
     }
