@@ -78,7 +78,8 @@
                   <br>
                   <br>
                   <div class="horizontal layout center wrap">
-                    <paper-button class="login-button" on-tap="loginAsSomeoneElsePressed" raised="">Login on behalf of [[ofDoctor.name]]</paper-button>
+                    <paper-button class="login-button" on-tap="loginAsSomeoneElsePressed" raised="">Login on behalf of
+                      [[ofDoctor.name]]</paper-button>
                   </div>
                 </template>
 
@@ -96,28 +97,38 @@
 
               <div class="card-content vertical layout">
 
-                <div class="horizontal layout center wrap">
-                  <paper-input class="flex" label="Email or phone number" value="{{loginFormData.emailOrPhone}}" placeholder="john@example.com" always-float-label=""></paper-input>
-                </div>
+                <template is="dom-if" if="[[loading]]">
+                  <div class="layout vertical center">
+                    <div class="layout horizontal center" style="height: 202px;">
+                      <paper-spinner active=""></paper-spinner>
+                    </div>
+                  </div>
+                </template>
 
-                <div class="horizontal layout center wrap">
-                  <paper-input class="flex" label="Password" type="password" value="{{loginFormData.password}}" placeholder="XXXXXXXX" on-keyup="enterKeyPressed" always-float-label=""></paper-input>
-                </div>
+                <template is="dom-if" if="[[!loading]]">
 
-                <div class="horizontal layout center wrap row-3">
-                  <paper-checkbox checked="{{shouldRememberUser}}">Remember Me</paper-checkbox>
-                  <div class="flex"></div>
-                  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys>
-                  <paper-button class="login-button" on-tap="loginButtonPressed" raised="">Login</paper-button>
+                  <div class="horizontal layout center wrap">
+                    <paper-input class="flex" label="Email or phone number" value="{{loginFormData.emailOrPhone}}" placeholder="john@example.com" always-float-label=""></paper-input>
+                  </div>
 
+                  <div class="horizontal layout center wrap">
+                    <paper-input class="flex" label="Password" type="password" value="{{loginFormData.password}}" placeholder="XXXXXXXX" on-keyup="enterKeyPressed" always-float-label=""></paper-input>
+                  </div>
 
-                </div>
+                  <div class="horizontal layout center wrap row-3">
+                    <paper-checkbox checked="{{shouldRememberUser}}">Remember Me</paper-checkbox>
+                    <div class="flex"></div>
+                    <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys>
+                    <paper-button class="login-button" on-tap="loginButtonPressed" raised="">Login</paper-button>
+                  </div>
 
-                <div class="horizontal layout center wrap row-4">
-                  <a href="https://my.bdemr.com/#!/login" target="_blank">Forgot Password?</a>
-                  <div class="flex"></div>
-                  <a href="https://bdemr.com/signup" target="_blank">Signup</a>
-                </div>
+                  <div class="horizontal layout center wrap row-4">
+                    <a href="https://my.bdemr.com/#!/login" target="_blank">Forgot Password?</a>
+                    <div class="flex"></div>
+                    <a href="https://bdemr.com/signup" target="_blank">Signup</a>
+                  </div>
+
+                </template>
 
               </div>
 
@@ -139,6 +150,6 @@
     </div>
 
   </template>
-  <script>(function(){Polymer({is:"page-login",behaviors:[app.behaviors.dbUsing,app.behaviors.apiCalling,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.commonComputes],properties:{loginFormData:{type:Object,notify:!0,value:function(){return"production"===app.mode?{emailOrPhone:"",password:""}:{emailOrPhone:"doctor1@doctor1.com",password:"asdfasdf"}}()},mode:{type:String,value:"login"},tempUser:{type:String,value:null},shouldRememberUser:{type:Boolean,notify:!0,value:!0}},navigatedIn:function(){return this.mode="login"},loginAsMyselfPressed:function(e){return this.tempUser.isUsingAsAssistant=!1,this.loginDbAction(this.tempUser,this.shouldRememberUser),this.domHost.navigateToPage("#/")},loginAsSomeoneElsePressed:function(e){var t;return t=e.model.ofDoctor,t.isUsingAsAssistant=!0,delete this.tempUser.listOfDoctorsAssistantTo,t.usingAsAssistantUserObject=this.tempUser,this.loginDbAction(t,this.shouldRememberUser),this.domHost.navigateToPage("#/")},enterKeyPressed:function(e){if(13===e.keyCode)return this.loginApiCalled()},loginButtonPressed:function(){return this.loginApiCalled()},_checkUserActivation:function(e,t){var s,o,i;return o=new Date(e.accountExpiresOnDate),i=new Date(lib.datetime.mkDate(lib.datetime.now())),s=Math.floor(lib.datetime.diff(o,i)/1e3/60/60/24),s<0?void this.domHost.navigateToPage("#/activate"):t()},loginApiCalled:function(){return this.callApi("/bdemr-app-login",this.loginFormData,function(e){return function(t,s){var o;return s.hasError?e.domHost.showModalDialog(s.error.message):(o=s.data,("isUserThemselvesADoctor"in o||"listOfDoctorsAssistantTo"in o)&&(e.set("tempUser",o),e.set("mode","doctor-selection")),"isUserThemselvesAStudent"in o?(e.loginDbAction(o,e.shouldRememberUser),e._checkUserActivation(o,function(){return e.domHost._callAfterUserLogsIn(),e.domHost.navigateToPage("#/")})):(o.isUsingAsAssistant=!1,e.loginDbAction(o,e.shouldRememberUser),e._checkUserActivation(o,function(){return e.domHost._callAfterUserLogsIn(),e.domHost.navigateToPage("#/")})))}}(this))}})}).call(this);
+  <script>(function(){Polymer({is:"page-login",behaviors:[app.behaviors.dbUsing,app.behaviors.apiCalling,app.behaviors.translating,app.behaviors.pageLike,app.behaviors.commonComputes],properties:{loginFormData:{type:Object,notify:!0,value:function(){return"production"===app.mode?{emailOrPhone:"",password:""}:{emailOrPhone:"doctor1@doctor1.com",password:"asdfasdf"}}()},mode:{type:String,value:"login"},tempUser:{type:String,value:null},shouldRememberUser:{type:Boolean,notify:!0,value:!0},loading:{type:Boolean,value:!1}},navigatedIn:function(){return this.mode="login"},loginAsMyselfPressed:function(e){return this.tempUser.isUsingAsAssistant=!1,this.loginDbAction(this.tempUser,this.shouldRememberUser),this.domHost.navigateToPage("#/")},loginAsSomeoneElsePressed:function(e){var t;return t=e.model.ofDoctor,t.isUsingAsAssistant=!0,delete this.tempUser.listOfDoctorsAssistantTo,t.usingAsAssistantUserObject=this.tempUser,this.loginDbAction(t,this.shouldRememberUser),this.domHost.navigateToPage("#/")},enterKeyPressed:function(e){if(13===e.keyCode)return this.loginApiCalled()},loginButtonPressed:function(){return this.loginApiCalled()},_checkUserActivation:function(e,t){var o,s,i;return s=new Date(e.accountExpiresOnDate),i=new Date(lib.datetime.mkDate(lib.datetime.now())),o=Math.floor(lib.datetime.diff(s,i)/1e3/60/60/24),o<0?void this.domHost.navigateToPage("#/activate"):t()},loginApiCalled:function(){return this.callApi("/bdemr-app-login",this.loginFormData,function(e){return function(t,o){var s;return o.hasError?e.domHost.showModalDialog(o.error.message):(s=o.data,("isUserThemselvesADoctor"in s||"listOfDoctorsAssistantTo"in s)&&(e.set("tempUser",s),e.set("mode","doctor-selection")),"isUserThemselvesAStudent"in s?(e.loginDbAction(s,e.shouldRememberUser),e._checkUserActivation(s,function(){return e.domHost._callAfterUserLogsIn(),e.domHost.navigateToPage("#/")})):(s.isUsingAsAssistant=!1,e.loginDbAction(s,e.shouldRememberUser),e._checkUserActivation(s,function(){return e.domHost._callAfterUserLogsIn(),e.domHost.navigateToPage("#/")})))}}(this))}})}).call(this);
 //# sourceMappingURL=page-login.coffee-compiled.js.map</script>
 </dom-module>

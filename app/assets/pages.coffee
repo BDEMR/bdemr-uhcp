@@ -1288,3 +1288,15 @@ app.pages.error404 = {
   headerType: 'normal'
   leftMenuEnabled: true
 }
+
+app.pages.accessDenied = {
+  name: 'access-denied'
+  element: 'page-access-denied'
+  windowTitlePostfix: 'Access Denied'
+  headerTitle: 'Access Denied'
+  preload: true
+  href: [ '/access-denied' ]
+  requireAuthentication : false
+  headerType: 'normal'
+  leftMenuEnabled: true
+}

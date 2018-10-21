@@ -3,7 +3,7 @@
     <!-- style -->
     <style is="custom-style" include="common-style">
       .limiting-container {
-        width: 90%;
+        width: 95%;
         margin: 0 auto;
         margin-top: 10px;
       }
@@ -28,9 +28,7 @@
         margin-left: 0;
       }
 
-      .results {
-        margin-top: 20px;
-      }
+      
 
       .results span {
         color: #333;
@@ -59,9 +57,9 @@
 
     <div class="master-container">
 
-      <div class="limiting-container vertical layout">
+      <div class="limiting-container">
 
-        <paper-card heading="Reports">
+        <paper-card>
 
           <div class="card-content">
 
@@ -99,9 +97,11 @@
 
             </div>
             <div class="layout horizontal">
-              <paper-button class="btn btn-primary btn-large flex" style="margin: 0" on-tap="searchButtonClicked">Search</paper-button>
+              <paper-button class="btn btn-primary btn-large" style="margin:0" on-tap="searchButtonClicked">Search</paper-button>
               <paper-button raised="" on-tap="resetButtonClicked">Reset</paper-button>
             </div>
+
+            <br>
 
             <div class="layout horizontal">
               <h4 class="m-right-16">Total Visit: [[reportResults.length]]</h4>
@@ -109,7 +109,6 @@
             </div>
 
             <div class="results">
-
               <paper-progress indeterminate="" hidden="[[!loading]]"></paper-progress>
               <vaadin-grid items="[[reportResults]]">
                 <vaadin-grid-column frozen="" width="50px" flex-grow="0">
@@ -497,11 +496,11 @@
   },
 
   $getCategoryCost(category, invoice) {
-    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0
+    return invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * (invoiceItem.qty ? parseInt(invoiceItem.qty) : 1)) : 0), 0) : 0;
   },
 
   $getCategoryCostByDecimal(category, invoice) {
-    let cost = invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * invoiceItem.qty) : 0), 0) : 0;
+    let cost = invoice && invoice.data.length ? invoice.data.filter((invoiceItem) => category.toLowerCase() == invoiceItem.category.toLowerCase()).reduce((totalCost, invoiceItem) => totalCost + (invoiceItem.price ? (parseFloat(invoiceItem.price) * (invoiceItem.qty ? parseInt(invoiceItem.qty) : 1)) : 0), 0) : 0;
     return cost.toFixed(2);
   },
 

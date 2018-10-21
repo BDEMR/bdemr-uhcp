@@ -28,7 +28,7 @@ app.behaviors.apiCalling =
     if args.length is 3
       [ api, data, cbfn ] = args
       options = 
-        automaticallyHandleNetworkErrors: false
+        automaticallyHandleNetworkErrors: true
     else if args.length is 4
       [ api, data, options, cbfn ] = args
     else
@@ -39,13 +39,14 @@ app.behaviors.apiCalling =
     if navigator.onLine or (window.location.href.indexOf('localhost:') isnt -1)
       lib.network.callBdemrPostApi api, data, (err, response)=>
         if err and automaticallyHandleNetworkErrors
-          errorMessage = "Could not contact server. Please make sure you have an active internet connection and try again."
+          errorMessage = "An Error Occured on Server. Please try again in few moments."
           el = document.querySelector 'root-element'
           el.showModalDialog errorMessage
+          return
         else
           if not err and response.hasError and response.error.name is "API_KEY_AUTH_FAILED"
-            # errorMessage = 'You have been automatically logged out. Taking you to the login page.'
-            # @showMessageLocal errorMessage
+            errorMessage = 'You have been automatically logged out. Taking you to the login page.'
+            @showMessageLocal errorMessage
             context = if @logoutPressed then @ else @domHost
             try
               unless context.routeData and (context.routeData.page.indexOf("login") > -1)
