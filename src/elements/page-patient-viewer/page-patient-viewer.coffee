@@ -1119,6 +1119,7 @@ Polymer {
       @loadingCounter--
 
   _computedTotalTransactionBalance: (transactionList)->
+    return unless transactionList?.length
     return transactionList.reduce (total, item)-> 
       total + item.amount
     , 0
