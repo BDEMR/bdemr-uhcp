@@ -33,7 +33,6 @@
 
     <style is="custom-style" include="common-style">
       .limiting-container {
-        width: 965px;
         margin: 10px auto;
       }
 
@@ -196,12 +195,14 @@
             <paper-card>
               <div class="p-8 preview-title">
 
-                <paper-input class="flex paper-input-custom" value="{{searchFieldMainInput}}" label="Search Patient Online" on-keyup="searchOnlineEnterKeyPressed"></paper-input>
+                <paper-input class="flex paper-input-custom" value="{{searchFieldMainInput}}" label="Search Patient Online"
+                  on-keyup="searchOnlineEnterKeyPressed"></paper-input>
 
                 <div class="horizontal layout end-justifed center flex">
                   <paper-toggle-button class="flex" checked="{{isAdvancedSearchEnabled}}">Advanced Search</paper-toggle-button>
                   <paper-button class="btn-add colored" raised on-tap="searchOnlineButtonPressed">
-                    <iron-icon icon="search" class="m-right-8"></iron-icon>SEARCH</paper-button>
+                    <iron-icon icon="search" class="m-right-8"></iron-icon>SEARCH
+                  </paper-button>
                 </div>
               </div>
 
@@ -210,42 +211,56 @@
                 <paper-listbox>
                   <paper-item class="custom">
                     <div class="layout horizontal center wrap">
-                      <paper-checkbox checked="{{advancedSearchParameters.initialVisitDate.enabled}}">Initial Visited date Between </paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.initialVisitDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-checkbox checked="{{advancedSearchParameters.initialVisitDate.enabled}}">Initial Visited
+                        date Between </paper-checkbox>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.initialVisitDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div> and </div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.initialVisitDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.initialVisitDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
                     <div class="horizontal layout center wrap">
-                      <paper-checkbox checked="{{advancedSearchParameters.lastVisitDate.enabled}}">Last Visited date Between </paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.lastVisitDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-checkbox checked="{{advancedSearchParameters.lastVisitDate.enabled}}">Last Visited date
+                        Between </paper-checkbox>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.lastVisitDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div> and </div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.lastVisitDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.lastVisitDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
                     <div class="horizontal layout center wrap">
-                      <paper-checkbox checked="{{advancedSearchParameters.admissionDate.enabled}}">Admission Between </paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.admissionDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-checkbox checked="{{advancedSearchParameters.admissionDate.enabled}}">Admission Between
+                      </paper-checkbox>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.admissionDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div> and </div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.admissionDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.admissionDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
                     <div class="horizontal layout center wrap">
-                      <paper-checkbox checked="{{advancedSearchParameters.createdDate.enabled}}">Created Between </paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.createdDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-checkbox checked="{{advancedSearchParameters.createdDate.enabled}}">Created Between
+                      </paper-checkbox>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.createdDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div> and </div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.createdDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.createdDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
                     <div class="horizontal layout center wrap">
                       <paper-checkbox>Handled by me between</paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.handledDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.handledDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div>and</div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.handledDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.handledDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
@@ -389,7 +404,8 @@
                   <paper-toggle-button class="flex" checked="{{isAdvancedSearchEnabled}}">Advanced Search</paper-toggle-button>
                   <paper-button on-tap="listAllImportedAndOfflinePatientsPressed" raised="">List All Imported</paper-button>
                   <paper-button class="btn-add colored" raised on-tap="searchOfflineButtonPressed">
-                    <iron-icon icon="search" class="m-right-8"></iron-icon>SEARCH</paper-button>
+                    <iron-icon icon="search" class="m-right-8"></iron-icon>SEARCH
+                  </paper-button>
                 </div>
               </div>
 
@@ -398,42 +414,56 @@
                 <paper-listbox>
                   <paper-item class="custom">
                     <div class="layout horizontal center wrap">
-                      <paper-checkbox checked="{{advancedSearchParameters.initialVisitDate.enabled}}">Initial Visited date Between </paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.initialVisitDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-checkbox checked="{{advancedSearchParameters.initialVisitDate.enabled}}">Initial Visited
+                        date Between </paper-checkbox>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.initialVisitDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div> and </div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.initialVisitDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.initialVisitDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
                     <div class="horizontal layout center wrap">
-                      <paper-checkbox checked="{{advancedSearchParameters.lastVisitDate.enabled}}">Last Visited date Between </paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.lastVisitDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-checkbox checked="{{advancedSearchParameters.lastVisitDate.enabled}}">Last Visited date
+                        Between </paper-checkbox>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.lastVisitDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div> and </div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.lastVisitDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.lastVisitDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
                     <div class="horizontal layout center wrap">
-                      <paper-checkbox checked="{{advancedSearchParameters.admissionDate.enabled}}">Admission Between </paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.admissionDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-checkbox checked="{{advancedSearchParameters.admissionDate.enabled}}">Admission Between
+                      </paper-checkbox>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.admissionDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div> and </div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.admissionDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.admissionDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
                     <div class="horizontal layout center wrap">
-                      <paper-checkbox checked="{{advancedSearchParameters.createdDate.enabled}}">Created Between </paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.createdDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-checkbox checked="{{advancedSearchParameters.createdDate.enabled}}">Created Between
+                      </paper-checkbox>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.createdDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div> and </div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.createdDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.createdDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
                     <div class="horizontal layout center wrap">
                       <paper-checkbox>Handled by me between</paper-checkbox>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.handledDate.lowerBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.handledDate.lowerBound}}"
+                        no-label-float></paper-input>
                       <div>and</div>
-                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.handledDate.upperBound}}" no-label-float></paper-input>
+                      <paper-input class="m-horizontal-8" type="date" value="{{advancedSearchParameters.handledDate.upperBound}}"
+                        no-label-float></paper-input>
                     </div>
                   </paper-item>
                   <paper-item class="custom">
@@ -488,7 +518,8 @@
                 <div class="p-0">
                   <paper-listbox>
 
-                    <template id="imported-patient-list-repeater" is="dom-repeat" items="[[offlineMatchingPatientList]]" as="patient">
+                    <template id="imported-patient-list-repeater" is="dom-repeat" items="[[offlineMatchingPatientList]]"
+                      as="patient">
                       <paper-item class="custom layout horizontal center">
                         <div class="type caption secondary">[[patient.serial]]</div>
 
@@ -597,7 +628,8 @@
                     </div>
 
                     <paper-button raised class="btn-add" on-tap="viewPatientPressedFromLog">
-                      <iron-icon icon="visibility" class="m-right-8"></iron-icon>view</paper-button>
+                      <iron-icon icon="visibility" class="m-right-8"></iron-icon>view
+                    </paper-button>
 
                   </paper-item>
                 </template>
@@ -617,7 +649,8 @@
                   <!-- <paper-button raised class="btn-add colored" on-tap="uploadAllOfflineRegisteredPatient"><iron-icon icon="icons:cloud-upload" class="m-right-8"></iron-icon>Upload All</paper-button> -->
                 </div>
                 <template is="dom-if" if="[[_isEmptyArray(conflictedPatientList)]]">
-                  <div class="type body-caption secondary">Your offline created patient already exist on our server. your can either change phone/email or provide
+                  <div class="type body-caption secondary">Your offline created patient already exist on our server.
+                    your can either change phone/email or provide
                     patients Doctor Access Pin in order to upload all the records related to this patients.</div>
                 </template>
 
@@ -640,7 +673,8 @@
 
 
                     <paper-button raised class="btn-add" on-tap="checkAndUpdateConflictedPatientData">
-                      <iron-icon icon="save" class="m-right-8"></iron-icon>save</paper-button>
+                      <iron-icon icon="save" class="m-right-8"></iron-icon>save
+                    </paper-button>
 
                 </template>
               </paper-listbox>

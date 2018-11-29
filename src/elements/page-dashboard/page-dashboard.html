@@ -37,7 +37,6 @@
       }
 
       .limiting-container {
-        width: 965px;
         margin: 10px auto;
       }
 
@@ -86,6 +85,7 @@
         .row.one .card-group:first-child {
           margin-right: 10px;
         }
+
         .row.one .card-group:last-child {
           margin-top: 10px;
           margin-left: 10px;
@@ -96,9 +96,11 @@
         .row.one .card-group {
           display: block;
         }
+
         .row.one .card:first-child {
           margin-right: 0px;
         }
+
         .row.one .card:last-child {
           margin-top: 10px;
           margin-left: 0px;
@@ -136,10 +138,12 @@
           margin-right: 5px;
           display: block;
         }
+
         .row.two .card.one {
           margin-left: 5px;
           margin-right: 5px;
         }
+
         .row.two .card.two {
           margin-top: 10px;
           margin-left: 5px;
@@ -249,6 +253,7 @@
           @apply(--layout-wrap);
           padding: 4px;
         }
+
         .dashboard-item-2 {
           width: 96px;
         }
@@ -285,7 +290,8 @@
           <div class="card-custom-header" on-tap="toggleCollapseClicked">
             <div class="layout horizontal justified center">
               <div class="title flex">
-                <iron-icon icon="expand-more"></iron-icon> Authorize Records To</div>
+                <iron-icon icon="expand-more"></iron-icon> Authorize Records To
+              </div>
             </div>
           </div>
           <template is="dom-if" if="[[loadingCounter]]">
