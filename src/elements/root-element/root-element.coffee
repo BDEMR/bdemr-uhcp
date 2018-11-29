@@ -339,7 +339,7 @@ Polymer {
     else
       @selectedVisitSerial = localStorage.getItem("selectedVisitSerial")
     patientsDetails = localStorage.getItem("currentPatientsDetails")
-    @currentPatientsDetails = JSON.parse(patientsDetails)
+    @currentPatientsDetails = if patientsDetails then JSON.parse(patientsDetails) else null
 
     @user = (try (app.db.find 'user')[0] catch ex then null) or null
 
@@ -608,6 +608,7 @@ Polymer {
       @ws.addEventListener 'message', ((e)=> @inAppNotificationMessageHandler e), false, false
 
   inAppNotificationMessageHandler: (e)->
+    return unless e.data
     json = JSON.parse e.data
     if json.operation is 'register' and json.status is 'successful'
       @inAppNotificationMyId = json.userId
