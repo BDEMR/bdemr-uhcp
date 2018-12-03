@@ -137,7 +137,6 @@ Polymer({
       this.set('organization', organizationList[0]);
       this._loadChildOrganizationList(this.organization.idOnServer)
     }
-
   },
 
   _loadChildOrganizationList(organizationIdentifier) {
@@ -167,7 +166,6 @@ Polymer({
   $getItemCounter(index) {
     return index + 1
   },
-
 
   organizationSelected(e) {
     const organizationId = e.detail.value;

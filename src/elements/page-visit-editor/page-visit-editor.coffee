@@ -1666,7 +1666,7 @@ Polymer {
 
   # _makeCustomSymptomsObject : ()->
   #   @customSymptomsObject
-  #     serial: @generateSerialForCustomSymptoms
+  #     serial: @generateSerialForCustomSymptoms()
   #     lastModifiedDatetimeStamp: lib.datetime.now()
   #     createdDatetimeStamp: lib.datetime.now()
   #     lastSyncedDatetimeStamp: 0
@@ -1731,7 +1731,7 @@ Polymer {
   saveUserAddedCustomSymptoms: (symptomName)->
 
     object =
-      serial: @generateSerialForCustomSymptoms
+      serial: @generateSerialForCustomSymptoms()
       lastModifiedDatetimeStamp: lib.datetime.now()
       createdDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
@@ -2340,7 +2340,7 @@ Polymer {
   ## User Added Institution Name
   saveUserAddedInstituion: ()->
     userAddedInsitution = {
-      serial: @generateSerialForUserAddedInstituion
+      serial: @generateSerialForUserAddedInstituion()
       createdDatetimeStamp: lib.datetime.now()
       lastModifiedDatetimeStamp: lib.datetime.now()
       lastSyncedDatetimeStamp: 0
@@ -2524,6 +2524,7 @@ Polymer {
       return
     else
       object =
+        serial: @generateSerialForFavoriteInvestigation()
         createdByUserSerial: @user.serial
         isSelected: false
         data: data
@@ -4170,8 +4171,6 @@ Polymer {
   
   navigatedIn: ->
 
-    console.log 'navigated in'
-
     @organization = @getCurrentOrganization()
     unless @organization
       return @domHost.navigateToPage "#/select-organization"
@@ -4414,23 +4413,23 @@ Polymer {
         @historyAndPhysicalRecord.availableToPatient = false
 
 
-  prescriptionAvailableToPatientCheckBoxChanged: (e)->
-    if @prescription
-      if e.target.checked
-        @prescription.availableToPatient = true
-        @_saveVisitPrescription()
-      else
-        @prescription.availableToPatient = false
-        @_saveVisitPrescription()
+  # prescriptionAvailableToPatientCheckBoxChanged: (e)->
+  #   if @prescription
+  #     if e.target.checked
+  #       @prescription.availableToPatient = true
+  #       @_saveVisitPrescription()
+  #     else
+  #       @prescription.availableToPatient = false
+  #       @_saveVisitPrescription()
 
-  testAdvisedAvailableToPatientCheckBoxChanged: (e)->
-    if @testAdvised
-      if e.target.checked
-        @testAdvised.availableToPatient = true
-        @_saveVisitTestAdvised()
-      else
-        @testAdvised.availableToPatient = false
-        @_saveVisitTestAdvised()
+  # testAdvisedAvailableToPatientCheckBoxChanged: (e)->
+  #   if @testAdvised
+  #     if e.target.checked
+  #       @testAdvised.availableToPatient = true
+  #       @_saveVisitTestAdvised()
+  #     else
+  #       @testAdvised.availableToPatient = false
+  #       @_saveVisitTestAdvised()
 
 
   ## diagnosis - start
