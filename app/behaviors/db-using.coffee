@@ -99,6 +99,7 @@ app.behaviors.dbUsing =
     
     if previousUser 
       unless user.serial is previousUser.serial
+        app.db.removeExistingDatabase()
         window.localStorage.clear()
         app.db.initializeDatabase()
     
