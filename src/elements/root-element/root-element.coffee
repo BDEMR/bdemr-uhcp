@@ -443,7 +443,6 @@ Polymer {
   
   logoutPressed: (e)->
     user = (app.db.find 'user')[0]
-    window.localStorage.setItem('lastSyncedDatetimeStamp', 0);
     if navigator.onLine and e
       @callApi '/bdemr-app-logout', {apiKey: user.apiKey}, (err, response)=> null
       @$$('app-drawer').toggle()
