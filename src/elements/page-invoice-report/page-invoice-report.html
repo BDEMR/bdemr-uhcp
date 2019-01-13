@@ -61,6 +61,11 @@
         text-align: right;
       }
 
+      .data{
+        margin: 0;
+        padding-left: 10px;
+      }
+
       .paper-custom {
         background-color: #fafafa;
         border: 1px solid #dadada;
@@ -154,6 +159,18 @@
                 <div>[[item.patientInfo.employeeId]]</div>
               </template>
             </vaadin-grid-column>
+            <vaadin-grid-column resizable>
+              <template class="header">
+                <span>Items</span>
+              </template>
+              <template>
+                <ul class="data">
+                  <template is='dom-repeat' items='[[item.data]]'>
+                    <li>[[item.name]]</li>
+                  </template>
+                </ul>
+              </template>
+            </vaadin-grid-column>
             <vaadin-grid-column>
               <template class="header">
                 <span>Total Billed</span>
@@ -198,6 +215,12 @@
               </template>
             </vaadin-grid-column>
           </vaadin-grid>
+
+          <div class="card-actions">
+            <paper-button raised on-tap="exportButtonClicked">Export</paper-button>
+          </div>
+
+        </paper-card>
 
       </div>
 

@@ -240,5 +240,42 @@ Polymer {
     @doctorPhone = ''
     @dateCreatedFrom = ''
     @dateCreatedTo  = ''
+
+  
+
+  _prepareJsonData:(rawReport)->
+    return rawReport.map (item) =>
+      return {
+        'Visit Serial': item.visitSerial,
+        'Invoice Serial': item.serial
+        'Date': this.$formatDateTime(item.createdDatetimeStamp),
+        'EmployeeId': if item.patientInfo then item.patientInfo.employeeId else '',
+        'Name': if item.patientInfo then item.patientInfo.name else '',
+        'Invoice Items': if item.data.length then item.data.map (i)-> i.name else "",
+        'Total Billed': item.totalBilled,
+        'Total Received': item.totalAmountReceieved,
+        'Due': @$calculateDue(item.totalBilled, item.totalAmountReceieved)
+      }
+    
+  downloadCsv:(csv)->
+    exportedFilenmae = "uhcp-invoice-export-#{Date.now()}.csv"
+    blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    link = document.createElement("a")
+    url = URL.createObjectURL(blob)
+    link.setAttribute("href", url)
+    link.setAttribute("download", exportedFilenmae);
+    link.style.visibility = 'hidden'
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+
+  exportButtonClicked:->
+    return this.domHost.showModalDialog('Search for a Report First') unless this.matchingInvoiceReportList.length
+    preppedData = this._prepareJsonData(this.matchingInvoiceReportList);
+    csvString = Papa.unparse(preppedData);
+    this.downloadCsv(csvString)
+
     
 }
