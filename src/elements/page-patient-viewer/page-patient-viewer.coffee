@@ -2759,6 +2759,7 @@ Polymer {
   invoiceMarkedAsCompleteButtonClicked: (e)->
     item = e.model.item
     item.flags.markAsCompleted = true
+    item.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'visit-invoice', item, ({serial})=> item.serial is serial
     @_loadInvoice @patient.serial, @organization.idOnServer
     @$$('#invoiceMenuButton').close()
@@ -2766,6 +2767,7 @@ Polymer {
   flagAsErrorInvoiceItemClicked: (e)->
     item = e.model.item
     item.flags.flagAsError = true
+    item.lastModifiedDatetimeStamp = lib.datetime.now()
     app.db.upsert 'visit-invoice', item, ({serial})=> item.serial is serial
     @_loadInvoice @patient.serial, @organization.idOnServer
     @$$('#invoiceMenuButton').close()
