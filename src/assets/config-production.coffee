@@ -26,8 +26,8 @@ window.app =
 
       'production':
 
-        serverHost: 'https://bdemr.xyz'
-        serverWsHost: 'wss://bdemr.xyz:443'
+        serverHost: 'https://bdemr.services'
+        serverWsHost: 'wss://bdemr.services:443'
         
 
   options:

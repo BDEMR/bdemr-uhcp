@@ -340,6 +340,7 @@
 
                                 <template is="dom-if" if="[[seat.patientSerial]]">
                                   <div hidden>[[seat]]</div>
+                                  <paper-item on-tap="viewAdmittedPatientData">View Patient</paper-item>
                                   <paper-item on-tap="seatVacantTapped">Force Vacant</paper-item>
                                 </template>
                                 <template is="dom-if" if="[[!seat.patientSerial]]">

@@ -532,5 +532,8 @@ Polymer {
 
   sortBySeatIndex: (a, b)->
     return b.uid - a.uid
+  
+
+  
       
 }
